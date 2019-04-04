@@ -45,9 +45,17 @@ class HomePageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $entityManager =  $this->container->get('entityManager');        
+        $entityManager =  $this->container->get('entityManager');      
+        $dm =  $this->container->get('documentManager');        
         
-        $userEntity = new \App\Entity\UserEntity();
+        $userDocument  = new \App\Documents\UserDocument();
+        $userDocument->setTitle('title');
+        $userDocument->setBody('sdfsdfsdfsdfsdf');
+        $dm->persist($userDocument);
+        $dm->flush();
+
+
+        /*$userEntity = new \App\Entity\UserEntity();
         $userEntity->setId('dsfsfd');
         $userEntity->setName('dsfsfd');
         $userEntity->setSkype('dsfsfd');
@@ -55,7 +63,7 @@ class HomePageHandler implements RequestHandlerInterface
         
         $entityManager->persist($userEntity);
         $entityManager->flush();
-       
+       */
         return new JsonResponse([
             'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',

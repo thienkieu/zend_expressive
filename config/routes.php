@@ -34,7 +34,8 @@ use Zend\Expressive\Authentication\OAuth2;
  * );
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
-    $app->get('/', Zend\Expressive\Authentication\AuthenticationMiddleware::class, App\Handler\HomePageHandler::class, 'home');
+    //$app->get('/', Zend\Expressive\Authentication\AuthenticationMiddleware::class, App\Handler\HomePageHandler::class, 'home');
+    $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
     $app->post('/token', OAuth2\TokenEndpointHandler::class, 'api.token');
     
