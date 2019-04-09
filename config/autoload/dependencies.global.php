@@ -28,6 +28,7 @@ return [
         'factories'  => [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             'entityManager'                     => App\Factory\DoctrineORMFactory::class,
+            'documentManager'                     => App\Factory\DoctrineODMFactory::class,
             Authentication\AuthenticationMiddleware::class => Authentication\AuthenticationMiddlewareFactory::class,
             Authentication\OAuth2\OAuth2Adapter::class => Authentication\OAuth2\OAuth2AdapterFactory::class,
             League\OAuth2\Server\ResourceServer::class => Authentication\OAuth2\ResourceServerFactory::class,  
@@ -59,6 +60,15 @@ return [
     'entity-path' => [
         $dir.'/App/src/Entity'
     ],
+
+    'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243963.mlab.com:43963/thienkieu',
+    'document-path' => [
+        $dir.'/App/src/Documents',
+        $dir.'/Test/src/Documents'
+    ],
+    'proxy-path' =>  $dir.'/Proxies',
+    'hydrators-path' =>  $dir.'/../Hydrators',
+
     'authentication' => [
         'private_key'    => __DIR__ . '/../../data/oauth/private.key',
         'public_key'     => __DIR__ . '/../../data/oauth/public.key',
