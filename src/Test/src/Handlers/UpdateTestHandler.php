@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace Test\Handlers;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,7 +17,7 @@ use Zend\Expressive\ZendView\ZendViewRenderer;
 use Psr\Container\ContainerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class HomePageHandler implements RequestHandlerInterface
+class UpdateTestHandler implements RequestHandlerInterface
 {
     /** @var string */
     private $containerName;
@@ -49,19 +49,19 @@ class HomePageHandler implements RequestHandlerInterface
         $entityManager =  $this->container->get('entityManager');      
         $dm =  $this->container->get('documentManager');        
         
-        $readingSection  = new \Test\Documents\ReadingSection();
+        $readingSection  = new \App\Documents\ReadingSection();
         $readingSection->setContent('reading section');
 
-        $answer = new \Test\Documents\Answer();
+        $answer = new \App\Documents\Answer();
         $answer->setContent('answer content 1');
         $answer->setIsCorrect(true);
 
-        $answer2 = new \Test\Documents\Answer();
+        $answer2 = new \App\Documents\Answer();
         $answer2->setContent('answer content 2');
         $answer2->setIsCorrect(false);
 
 
-        $question = new \Test\Documents\Question();
+        $question = new \App\Documents\Question();
         $question->setContent('this is question content');
         $question->addAnswer($answer);
         $question->addAnswer($answer2);
@@ -70,19 +70,19 @@ class HomePageHandler implements RequestHandlerInterface
         $dm->persist($readingSection);
 
 
-        $listeningSection  = new \Test\Documents\ListeningSection();
+        $listeningSection  = new \App\Documents\ListeningSection();
         $listeningSection->setContent('listening section');
 
-        $answer = new \Test\Documents\Answer();
+        $answer = new \App\Documents\Answer();
         $answer->setContent('answer content 1');
         $answer->setIsCorrect(true);
 
-        $answer2 = new \Test\Documents\Answer();
+        $answer2 = new \App\Documents\Answer();
         $answer2->setContent('answer content 2');
         $answer2->setIsCorrect(false);
 
 
-        $question = new \Test\Documents\Question();
+        $question = new \App\Documents\Question();
         $question->setContent('this is question content of listening');
         $question->addAnswer($answer);
         $question->addAnswer($answer2);

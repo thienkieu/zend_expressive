@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace Test;
 
 /**
  * The configuration provider for the App module
@@ -36,8 +36,8 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
-                Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
-                Handler\ViewPageHandler::class => Handler\ViewPageHandlerFactory::class,
+                Handlers\CreateTestHandler::class => Factories\CreateTestHandlerFactory::class,
+                Handlers\CreateSectionHandler::class => Factories\CreateSectionHandlerFactory::class,
             ],
         ];
     }
