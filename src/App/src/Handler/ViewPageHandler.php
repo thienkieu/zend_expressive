@@ -45,24 +45,8 @@ class ViewPageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $entityManager =  $this->container->get('entityManager');      
-        $dm =  $this->container->get('documentManager');        
-        
-        $builder = $dm->createQueryBuilder(array(\App\Documents\ReadingSection::class, \App\Documents\ListeningSection::class));
-        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*this.*/i'));
-        $query = $builder->getQuery();
-        $documents = $query->execute();
-
-        foreach($documents as $document){
-            echo "<pre>".print_r($document, true)."</pre>";
-            $questions = $document->getQuestions();
-            foreach($questions as $question){
-                echo $question->getContent().'<br>';
-            }
-        }
-
         return new JsonResponse([
-            'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
+            'welcome' => '1111Congratulations! You have installed the zend-expressive skeleton application.',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
         ]);
         

@@ -44,7 +44,7 @@ class ViewPageHandler implements RequestHandlerInterface
     }
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
-    {
+    {        
         $entityManager =  $this->container->get('entityManager');      
         $dm =  $this->container->get('documentManager');        
         

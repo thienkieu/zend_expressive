@@ -37,7 +37,8 @@ class ConfigProvider
             ],
             'factories'  => [
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
-                Handler\ViewPageHandler::class => Handler\ViewPageHandlerFactory::class,
+                Handler\ViewPageHandler::class => Handler\ViewPageHandlerFactory::class,   
+                Validator\ValidatorMiddleware::class => Factory\ValidatorMiddlewareFactory::class,             
             ],
         ];
     }

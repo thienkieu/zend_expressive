@@ -28,7 +28,8 @@ return [
         'factories'  => [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             'entityManager'                     => App\Factory\DoctrineORMFactory::class,
-            'documentManager'                     => App\Factory\DoctrineODMFactory::class,
+            'documentManager'                   => App\Factory\DoctrineODMFactory::class,            
+            Zend\Log\LoggerInterface::class     => App\Factory\LogFactory::class,
             Authentication\AuthenticationMiddleware::class => Authentication\AuthenticationMiddlewareFactory::class,
             Authentication\OAuth2\OAuth2Adapter::class => Authentication\OAuth2\OAuth2AdapterFactory::class,
             League\OAuth2\Server\ResourceServer::class => Authentication\OAuth2\ResourceServerFactory::class,  
@@ -47,6 +48,7 @@ return [
             League\OAuth2\Server\Grant\RefreshTokenGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\RefreshTokenGrantFactory::class,
             League\OAuth2\Server\Grant\AuthCodeGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\AuthCodeGrantFactory::class,
             League\OAuth2\Server\Grant\ImplicitGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\ImplicitGrantFactory::class,
+            
 
         ],
     ],

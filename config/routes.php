@@ -35,8 +35,9 @@ use Zend\Expressive\Authentication\OAuth2;
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     //$app->get('/', Zend\Expressive\Authentication\AuthenticationMiddleware::class, App\Handler\HomePageHandler::class, 'home');
-   // 
-    $app->get('/view', App\Handler\ViewPageHandler::class, 'view');
+   // App\Middleware\ValidatorMiddleware::class,
+    //$app->get('/', Zend\Expressive\Authentication\AuthenticationMiddleware::class, App\Handler\HomePageHandler::class, 'home');
+    $app->get('/view/{name}', [App\Validator\ValidatorMiddleware::class, App\Handler\ViewPageHandler::class], 'view');
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
     $app->post('/token', OAuth2\TokenEndpointHandler::class, 'api.token');
