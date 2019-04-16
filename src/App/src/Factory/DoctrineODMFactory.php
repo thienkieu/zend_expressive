@@ -17,17 +17,18 @@ class DoctrineODMFactory
     public function __invoke(ContainerInterface $container) : DocumentManager
     {
         $appConfig = $container->get('config');
+        $dbConfig = $appConfig['nonsqldb'];
 
-        $client = new Client($appConfig['mongodb-connection'], [], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
+        $client = new Client($dbConfig['mongodb-connection'], [], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
         $connection = new Connection($client);
 
         $config = new Configuration();
-        $config->setProxyDir($appConfig['proxy-path']);
+        $config->setProxyDir($dbConfig['proxy-path']);
         $config->setProxyNamespace('Proxies');
-        $config->setHydratorDir($appConfig['hydrators-path']);
+        $config->setHydratorDir($dbConfig['hydrators-path']);
         $config->setHydratorNamespace('Hydrators');
-        $config->setDefaultDB('thienkieu');
-        $config->setMetadataDriverImpl(AnnotationDriver::create($appConfig['document-path']));
+        $config->setDefaultDB($dbConfig['dbname']);
+        $config->setMetadataDriverImpl(AnnotationDriver::create($dbConfig['document-path']));
         
         AnnotationDriver::registerAnnotationClasses();
         

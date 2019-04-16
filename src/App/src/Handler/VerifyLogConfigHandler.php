@@ -17,7 +17,7 @@ use Zend\Expressive\ZendView\ZendViewRenderer;
 use Psr\Container\ContainerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class ViewPageHandler implements RequestHandlerInterface
+class VerifyLogConfigHandler implements RequestHandlerInterface
 {
     /** @var string */
     private $containerName;
@@ -50,7 +50,7 @@ class ViewPageHandler implements RequestHandlerInterface
         $logger->debug('debug info');
 
         return new JsonResponse([
-            'welcome' => '1111Congratulations! You have installed the zend-expressive skeleton application.',
+            'welcome' => 'Verify log config',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
         ]);
         

@@ -16,8 +16,10 @@ use Zend\Expressive\Twig\TwigRenderer;
 use Zend\Expressive\ZendView\ZendViewRenderer;
 use Psr\Container\ContainerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Documents;
 
-class ViewPageHandler implements RequestHandlerInterface
+
+class VerifyODMConfigHandler implements RequestHandlerInterface
 {
     /** @var string */
     private $containerName;
@@ -45,13 +47,28 @@ class ViewPageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $logger = $this->container->get('logger');
-        $logger->info('Informational message');
-        $logger->debug('debug info');
+        $dm =  $this->container->get('documentManager');        
+        $repository = $dm->getRepository(Documents\SectionDocument::class);
+        $obj = $repository->find("5caac4c7ce10c916c8007032");
+               
+        $builder = $dm->createQueryBuilder(array(Documents\ReadingSectionDocument::class, Documents\ListeningSectionDocument::class));
+        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*this.*/i'));
+        $query = $builder->getQuery();
+        $documents = $query->execute();
+
+        $questionContent  = [];
+        foreach($documents as $document){
+            $questions = $document->getQuestions();
+            foreach($questions as $question){
+                $questionContent = $question->getContent();
+            }
+        }
 
         return new JsonResponse([
-            'welcome' => '1111Congratulations! You have installed the zend-expressive skeleton application.',
+            'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
+            'content' => $questionContent,
+            'obj' => $obj->getId()
         ]);
         
     }

@@ -46,7 +46,7 @@ class HomePageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
-        $entityManager =  $this->container->get('entityManager');      
+        /*$entityManager =  $this->container->get('entityManager');      
         $dm =  $this->container->get('documentManager');        
         
         $readingSection  = new \Test\Documents\ReadingSection();

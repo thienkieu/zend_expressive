@@ -36,9 +36,12 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
+                Handler\VerifyODMConfigHandler::class => Factory\VerifyODMConfigHandlerFactory::class,
+                Handler\VerifyLogConfigHandler::class => Factory\VerifyLogConfigHandlerFactory::class,
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
                 Handler\ViewPageHandler::class => Handler\ViewPageHandlerFactory::class,   
-                Validator\ValidatorMiddleware::class => Factory\ValidatorMiddlewareFactory::class,             
+                Validator\ValidatorMiddleware::class => Factory\ValidatorMiddlewareFactory::class,  
+                Services\SectionServiceInterface::class => Factory\SectionService::class,           
             ],
         ];
     }

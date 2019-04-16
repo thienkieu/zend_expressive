@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Zend\ConfigAggregator\ConfigAggregator;
+use League\OAuth2\Server\Grant;
 
 return [
     // Toggle the configuration cache. Set this to boolean false, or remove the
@@ -21,5 +22,5 @@ return [
             'template_404'   => 'error::404',
             'template_error' => 'error::error',
         ],
-    ],
+    ]
 ];

@@ -42,8 +42,22 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
     $app->post('/token', OAuth2\TokenEndpointHandler::class, 'api.token');
 
+    
     $app->get('/test/create-test', Test\Handlers\CreateTestHandler::class, 'createTest');
 
     $app->get('/test/search-section', Test\Handlers\SearchSectionHandler::class, 'search');
+
+
+
+    // Verify config
+    $app->get('/verify-odm', Test\Handlers\VerifyODMConfigHandler::class, 'verifyODM');
+    $app->get('/verify-log', App\Handler\VerifyLogConfigHandler::class, 'verifyLOG');
+
+
+    $app->post('/test/create-section/{name}', [
+        Test\Middlewares\Validators\CreateSectionValidatorMiddleware::class, 
+        Test\Middlewares\RequestToSectionDTOMiddleware::class,
+        Test\Handlers\CreateSectionHandler::class
+    ], 'createSection');
     
 };

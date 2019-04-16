@@ -5,8 +5,6 @@ declare(strict_types=1);
 use Zend\Expressive\Authentication;
 use League\OAuth2\Server\Grant;
 
-$dir = realpath('src');
-
 return [
     // Provides application-wide services.
     // We recommend using fully-qualified class names whenever possible as
@@ -29,7 +27,7 @@ return [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             'entityManager'                     => App\Factory\DoctrineORMFactory::class,
             'documentManager'                   => App\Factory\DoctrineODMFactory::class,            
-            Zend\Log\LoggerInterface::class     => App\Factory\LogFactory::class,
+            'logger'                               => App\Factory\LogFactory::class,
             Authentication\AuthenticationMiddleware::class => Authentication\AuthenticationMiddlewareFactory::class,
             Authentication\OAuth2\OAuth2Adapter::class => Authentication\OAuth2\OAuth2AdapterFactory::class,
             League\OAuth2\Server\ResourceServer::class => Authentication\OAuth2\ResourceServerFactory::class,  
@@ -51,39 +49,7 @@ return [
             
 
         ],
-    ],
 
-    'db' => [
-        'driver'   => 'pdo_mysql',
-        'user'     => 'root',
-        'password' => '',
-        'dbname'   => 'onlinetest',
-    ],
-    'entity-path' => [
-        $dir.'/App/src/Entity'
-    ],
-
-    'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243963.mlab.com:43963/thienkieu',
-    'document-path' => [
-        $dir.'/App/src/Documents',
-        $dir.'/Test/src/Documents'
-    ],
-    'proxy-path' =>  $dir.'/Proxies',
-    'hydrators-path' =>  $dir.'/../Hydrators',
-
-    'authentication' => [
-        'private_key'    => __DIR__ . '/../../data/oauth/private.key',
-        'public_key'     => __DIR__ . '/../../data/oauth/public.key',
-        'encryption_key' => require __DIR__ . '/../../data/oauth/encryption.key',
-        'access_token_expire'  => 'P1D',
-        'refresh_token_expire' => 'P1M',
-        'auth_code_expire'     => 'PT10M',
-        'pdo' => [
-            'dsn'      => 'mysql:host=localhost;dbname=onlinetest',
-            'username' => 'root',
-            'password' => ''
-        ],
-    
         // Set value to null to disable a grant
         'grants' => [
             Grant\ClientCredentialsGrant::class => Grant\ClientCredentialsGrant::class,
@@ -93,5 +59,4 @@ return [
             Grant\RefreshTokenGrant::class      => Grant\RefreshTokenGrant::class
         ],
     ]
-
 ];

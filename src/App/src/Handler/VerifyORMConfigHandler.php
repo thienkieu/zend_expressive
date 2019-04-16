@@ -17,7 +17,7 @@ use Zend\Expressive\ZendView\ZendViewRenderer;
 use Psr\Container\ContainerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class ViewPageHandler implements RequestHandlerInterface
+class VerifyORMConfigHandler implements RequestHandlerInterface
 {
     /** @var string */
     private $containerName;
@@ -45,9 +45,6 @@ class ViewPageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $logger = $this->container->get('logger');
-        $logger->info('Informational message');
-        $logger->debug('debug info');
 
         return new JsonResponse([
             'welcome' => '1111Congratulations! You have installed the zend-expressive skeleton application.',

@@ -14,8 +14,10 @@ class DoctrineORMFactory
     public function __invoke(ContainerInterface $container) : EntityManager
     {
         $config = $container->get('config');
-        $entityConfig = Setup::createAnnotationMetadataConfiguration($config['entity-path'], false);
-        $entityManager = EntityManager::create($config['db'], $entityConfig);
+        $dbConfig = $config['sqldb'];
+
+        $entityConfig = Setup::createAnnotationMetadataConfiguration($dbConfig['entity-path'], false);
+        $entityManager = EntityManager::create($dbConfig['db'], $entityConfig);
         return $entityManager;
     }
 }

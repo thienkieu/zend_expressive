@@ -36,8 +36,11 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
+                Handlers\VerifyODMConfigHandler::class => Factories\VerifyODMConfigHandlerFactory::class,
                 Handlers\CreateTestHandler::class => Factories\CreateTestHandlerFactory::class,
                 Handlers\CreateSectionHandler::class => Factories\CreateSectionHandlerFactory::class,
+                Validators\CreateSectionValidatorMiddleware::class => Factories\CreateSectionValidatorMiddlewareFactory::class,
+                Middlewares\RequestToSectionDTOMiddleware::class => Factories\RequestToSectionDTOMiddlewareFactory::class
             ],
         ];
     }

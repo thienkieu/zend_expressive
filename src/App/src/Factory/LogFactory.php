@@ -20,11 +20,13 @@ class LogFactory
     public function __invoke(ContainerInterface $container) : LoggerInterface
     {
         $appConfig = $container->get('config');
-
-        $writer = new Stream($appConfig['logPath']);
-        $logger = new Logger;
-        $logger->addWriter($writer);
+        if ($appConfig['log']['enable']) {
+            $logger = new Logger;
+            $logger->addWriter($appConfig['log']['stream']);
+            return $logger;
+        } else {
+            return new \App\EmptyLogger();
+        }
         
-        return $logger;
     }
 }

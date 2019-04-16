@@ -13,6 +13,7 @@ $cacheConfig = [
 ];
 
 $aggregator = new ConfigAggregator([
+    \Zend\Hydrator\ConfigProvider::class,
     \Zend\Log\ConfigProvider::class,
     \Zend\Validator\ConfigProvider::class,
     \Zend\Expressive\Authentication\ConfigProvider::class,
