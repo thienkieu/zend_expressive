@@ -9,7 +9,6 @@ class SectionDTO
     private $type;
     private $content;
     private $question;
-
     
     /**
      * Get the value of content

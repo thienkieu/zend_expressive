@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Factory;
+namespace Test\Factory\Middlewares;
 
 use Psr\Container\ContainerInterface;
 use App\Validator\ValidatorMiddleware;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Factories;
+namespace App\Factory;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -11,12 +11,12 @@ use Zend\Expressive\Template\TemplateRendererInterface;
 
 use function get_class;
 
-class CreateSectionHandlerFactory
+class HandlerFactory
 {
-    public function __invoke(ContainerInterface $container) : RequestHandlerInterface
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null) : RequestHandlerInterface
     {
         $router   = $container->get(RouterInterface::class);
-
-        return new \Test\Handlers\CreateSectionHandler(get_class($container), $container, $router);
+               
+        return new $requestedName(get_class($container), $container, $router);
     }
 }

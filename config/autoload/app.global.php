@@ -47,6 +47,10 @@ return [
             'password' => ''
         ],
         
+    ],
+
+    'i18n' => [
+        'default_locale' => 'en_US',
     ]
 
 ];

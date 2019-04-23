@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Factories;
+namespace Test\Factories\Middlewares;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;

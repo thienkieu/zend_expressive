@@ -16,6 +16,8 @@ use Zend\Expressive\Router\Middleware\RouteMiddleware;
 use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 use Zend\Stratigility\Middleware\ErrorHandler;
 
+use Infrastructure\i18n\LocaleMiddleware;
+
 /**
  * Setup middleware pipeline:
  */
@@ -57,7 +59,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->pipe(ImplicitOptionsMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);
     $app->pipe(BodyParamsMiddleware::class);
-
+    
+    $app->pipe(LocaleMiddleware::class);
     // Seed the UrlHelper with the routing results:
     $app->pipe(UrlHelperMiddleware::class);
 

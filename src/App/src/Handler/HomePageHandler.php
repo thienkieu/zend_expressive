@@ -46,6 +46,12 @@ class HomePageHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
+        $translator = $this->container->get('translator');
+        $message = $translator->translate('Skeleton Application');
+        $currentLocale = $translator->getLocale();
+
+        $sectionService = $this->container->get(\Test\Services\SectionServiceInterface::class);
+
         /*$entityManager =  $this->container->get('entityManager');      
         $dm =  $this->container->get('documentManager');        
         
@@ -106,6 +112,8 @@ class HomePageHandler implements RequestHandlerInterface
         return new JsonResponse([
             'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
+            'translator-message' => $message,
+            'locale' => $currentLocale
         ]);
         
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test;
 
+use Zend\ServiceManager\Factory\InvokableFactory; 
 /**
  * The configuration provider for the App module
  *
@@ -36,11 +37,17 @@ class ConfigProvider
                 Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
-                Handlers\VerifyODMConfigHandler::class => Factories\VerifyODMConfigHandlerFactory::class,
-                Handlers\CreateTestHandler::class => Factories\CreateTestHandlerFactory::class,
-                Handlers\CreateSectionHandler::class => Factories\CreateSectionHandlerFactory::class,
-                Validators\CreateSectionValidatorMiddleware::class => Factories\CreateSectionValidatorMiddlewareFactory::class,
-                Middlewares\RequestToSectionDTOMiddleware::class => Factories\RequestToSectionDTOMiddlewareFactory::class
+                Handlers\VerifyODMConfigHandler::class => \App\Factory\HandlerFactory::class,
+                Handlers\CreateTestHandler::class => \App\Factory\HandlerFactory::class,
+                Handlers\CreateSectionHandler::class => \App\Factory\HandlerFactory::class,
+                Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
+                Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
+                Services\SectionService::class => \Infrastructure\Factory\BaseFactory::class,
+                //Services\SectionService::class => InvokableFactory::class,
+            ],
+
+            'aliases' => [
+                Services\SectionServiceInterface::class => Services\SectionService::class
             ],
         ];
     }

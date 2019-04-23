@@ -24,10 +24,13 @@ return [
         ],
         // Use 'factories' for services provided by callbacks/factory classes.
         'factories'  => [
+            'translator'                        => Infrastructure\i18n\TranslatorFactory::class,
+            Infrastructure\i18n\LocaleMiddleware::class =>   Infrastructure\i18n\LocaleMiddlewareFactory::class,         
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             'entityManager'                     => App\Factory\DoctrineORMFactory::class,
             'documentManager'                   => App\Factory\DoctrineODMFactory::class,            
             'logger'                               => App\Factory\LogFactory::class,
+            
             Authentication\AuthenticationMiddleware::class => Authentication\AuthenticationMiddlewareFactory::class,
             Authentication\OAuth2\OAuth2Adapter::class => Authentication\OAuth2\OAuth2AdapterFactory::class,
             League\OAuth2\Server\ResourceServer::class => Authentication\OAuth2\ResourceServerFactory::class,  

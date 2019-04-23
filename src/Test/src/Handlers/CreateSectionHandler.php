@@ -43,12 +43,12 @@ class CreateSectionHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        
-        //$sectionService = $this->container(SectionServiceInterface::class);
-        //$sectionService->createSection();
-
         $hydrator = new ReflectionHydrator();
-        $data = $hydrator->extract($request->getAttribute('dtoObject'));
+        $dto = $request->getAttribute('dtoObject');
+        $data = $hydrator->extract($dto);
+
+        $sectionService = $this->container->get(SectionServiceInterface::class);
+        $sectionService->createSection($dto);
 
         return new JsonResponse([
             'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',

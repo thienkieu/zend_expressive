@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Factories;
+namespace Test\Factories\Handlers;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -11,7 +11,7 @@ use Zend\Expressive\Template\TemplateRendererInterface;
 
 use function get_class;
 
-class CreateSectionHandlerFactory
+class VerifyODMConfigHandlerFactory
 {
     public function __invoke(ContainerInterface $container) : RequestHandlerInterface
     {
@@ -20,6 +20,6 @@ class CreateSectionHandlerFactory
             ? $container->get(TemplateRendererInterface::class)
             : null;
 
-        return new \Test\Handlers\HomePageHandler(get_class($container), $container, $router, $template);
+        return new \Test\Handlers\VerifyODMConfigHandler(get_class($container), $container, $router, $template);
     }
 }
