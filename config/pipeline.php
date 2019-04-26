@@ -17,6 +17,7 @@ use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 use Zend\Stratigility\Middleware\ErrorHandler;
 
 use Infrastructure\i18n\LocaleMiddleware;
+use Infrastructure\Convertor\RequestToDTOMiddleware;
 
 /**
  * Setup middleware pipeline:
@@ -61,6 +62,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->pipe(BodyParamsMiddleware::class);
     
     $app->pipe(LocaleMiddleware::class);
+    $app->pipe(RequestToDTOMiddleware::class);
     // Seed the UrlHelper with the routing results:
     $app->pipe(UrlHelperMiddleware::class);
 

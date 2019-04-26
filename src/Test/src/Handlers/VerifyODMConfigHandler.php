@@ -17,7 +17,7 @@ use Zend\Expressive\ZendView\ZendViewRenderer;
 use Psr\Container\ContainerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Test\Documents;
-
+use Zend\Hydrator\ReflectionHydrator;
 
 class VerifyODMConfigHandler implements RequestHandlerInterface
 {
@@ -49,27 +49,46 @@ class VerifyODMConfigHandler implements RequestHandlerInterface
     {
         $dm =  $this->container->get('documentManager');        
         $repository = $dm->getRepository(Documents\SectionDocument::class);
-        $obj = $repository->find("5caac4c7ce10c916c8007032");
+        $obj = $repository->find("5cc12636ce10c91f10004f3b");
                
-        $builder = $dm->createQueryBuilder(array(Documents\ReadingSectionDocument::class, Documents\ListeningSectionDocument::class));
-        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*this.*/i'));
+        $builder = $dm->createQueryBuilder(Documents\SectionDocument::class);
+        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*d.*/i'));
         $query = $builder->getQuery();
         $documents = $query->execute();
+        
+        $hydrator = new ReflectionHydrator();
+        $data = $hydrator->extract($obj);
+       
+        foreach($documents as $document) {
 
-        $questionContent  = [];
+            $d = $hydrator->extract($document);
+
+            $questions = $document->getQuestions();
+            $qJson = [];
+            foreach($questions as $q) {
+                 $qJson[]= $hydrator->extract($q);
+            }
+            $d['jsonQuestions'] = $qJson;
+
+            $documentsJson = $d;
+
+        }
+       /* $questionContent  = [];
         foreach($documents as $document){
             $questions = $document->getQuestions();
             foreach($questions as $question){
                 $questionContent = $question->getContent();
             }
-        }
+        }*/
 
         return new JsonResponse([
             'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
-            'content' => $questionContent,
+           // 'content' => $questionContent,
             'obj' => $obj->getId(),
-            'module' => 'Test'
+            'module' => 'Test',
+            'data' => $data,
+            'documents' => $documentsJson,
         ]);
         
     }

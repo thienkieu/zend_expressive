@@ -48,27 +48,30 @@ class VerifyODMConfigHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $dm =  $this->container->get('documentManager');        
-        $repository = $dm->getRepository(Documents\SectionDocument::class);
-        $obj = $repository->find("5caac4c7ce10c916c8007032");
+        //$repository = $dm->getRepository(Documents\SectionDocument::class);
+        //$obj = $repository->find("5caac4c7ce10c916c8007032");
                
         $builder = $dm->createQueryBuilder(array(Documents\ReadingSectionDocument::class, Documents\ListeningSectionDocument::class));
-        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*this.*/i'));
+        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*dsf*/i'));
         $query = $builder->getQuery();
         $documents = $query->execute();
 
-        $questionContent  = [];
-        foreach($documents as $document){
-            $questions = $document->getQuestions();
-            foreach($questions as $question){
-                $questionContent = $question->getContent();
-            }
-        }
+        $hydrator = new ReflectionHydrator();
+        $data = $hydrator->extract($documents);
+
+        // $questionContent  = [];
+        // foreach($documents as $document){
+        //     $questions = $document->getQuestions();
+        //     foreach($questions as $question){
+        //         $questionContent = $question->getContent();
+        //     }
+        // }
 
         return new JsonResponse([
             'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
-            'content' => $questionContent,
-            'obj' => $obj->getId()
+            'content' => $questionContent,           
+            'data' => $data,
         ]);
         
     }

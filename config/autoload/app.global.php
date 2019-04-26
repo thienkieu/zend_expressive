@@ -51,6 +51,26 @@ return [
 
     'i18n' => [
         'default_locale' => 'en_US',
+    ],
+
+    'convertorDocumentAdapters' => [
+        new \Test\Convertor\Adapter\Documents\ToListeningDocumentAdapter(),
+        new \Test\Convertor\Adapter\Documents\ToReadingDocumentAdapter(),
+        new \Test\Convertor\Adapter\Documents\ToWritingDocumentAdapter()
+    ],
+
+    'convertorDTOAdapters' => [
+        new \Test\Convertor\Adapter\DTOs\ToListeningDTOAdapter(),
+        new \Test\Convertor\Adapter\DTOs\ToReadingDTOAdapter(),
+        new \Test\Convertor\Adapter\DTOs\ToWritingDTOAdapter()
+    ],
+
+    'convertorDocumentToDTOAdapters' => [
+    ],
+
+    'validatorRequestAdapters' => [
+        new \Test\Validator\CreateSectionValidatorAdapter(),
+        new \App\Validator\VerifyValidatorAdapter()
     ]
 
 ];

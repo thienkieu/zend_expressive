@@ -6,9 +6,14 @@ namespace Test\DTOs;
 
 class SectionDTO
 {
-    private $type;
-    private $content;
-    private $question;
+    protected $id;
+    protected $type;
+    protected $content;
+
+    /**
+     * @var $questions QuestionDTO[]
+     */
+    protected $questions;
     
     /**
      * Get the value of content
@@ -49,23 +54,45 @@ class SectionDTO
 
         return $this;
     }
+    
+    
 
     /**
-     * Get the value of question
+     * Get the value of questions
      */ 
-    public function getQuestion()
+    public function getQuestions()
     {
-        return $this->question;
+        return $this->questions;
     }
 
     /**
-     * Set the value of question
+     * Set the value of questions
      *
      * @return  self
      */ 
-    public function setQuestion($question)
+    public function setQuestions($questions)
     {
-        $this->question = $question;
+        $this->questions = $questions;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
 
         return $this;
     }

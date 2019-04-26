@@ -31,6 +31,11 @@ return [
             'documentManager'                   => App\Factory\DoctrineODMFactory::class,            
             'logger'                               => App\Factory\LogFactory::class,
             
+            Infrastructure\Convertor\DTOToDocumentConvertorInterface::class => Infrastructure\Convertor\DTOToDocumentConvertorFactory::class,
+            Infrastructure\Convertor\RequestToDTOConvertorInterface::class => Infrastructure\Convertor\RequestToDTOConvertorFactory::class,
+            Infrastructure\Convertor\RequestToDTOMiddleware::class => Infrastructure\Factory\BaseFactory::class,
+            Infrastructure\Validator\ValidatorRequestInterface::class => Infrastructure\Validator\ValidatorRequestFactory::class,
+            
             Authentication\AuthenticationMiddleware::class => Authentication\AuthenticationMiddlewareFactory::class,
             Authentication\OAuth2\OAuth2Adapter::class => Authentication\OAuth2\OAuth2AdapterFactory::class,
             League\OAuth2\Server\ResourceServer::class => Authentication\OAuth2\ResourceServerFactory::class,  
