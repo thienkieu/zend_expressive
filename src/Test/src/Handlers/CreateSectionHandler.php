@@ -16,7 +16,6 @@ use Zend\Expressive\Twig\TwigRenderer;
 use Zend\Expressive\ZendView\ZendViewRenderer;
 use Psr\Container\ContainerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Zend\Hydrator\ReflectionHydrator;
 
 use Test\Services\SectionServiceInterface;
 
@@ -43,7 +42,6 @@ class CreateSectionHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $hydrator = new ReflectionHydrator();
         $dto = $request->getAttribute('dtoObject');
         
         $sectionService = $this->container->get(SectionServiceInterface::class);

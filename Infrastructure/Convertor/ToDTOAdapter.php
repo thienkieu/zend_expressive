@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Infrastructure\Convertor;
 
-use Zend\Hydrator\ReflectionHydrator;
 use Infrastructure\Convertor\ConvertAdapterInterface;
 
 abstract class ToDTOAdapter implements ConvertAdapterInterface {
