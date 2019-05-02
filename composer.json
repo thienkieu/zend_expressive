@@ -41,6 +41,7 @@
         "alcaeus/mongo-php-adapter": "^1.1",
         "doctrine/mongodb-odm": "^1.2",
         "doctrine/orm": "2.6.3",
+        "netresearch/jsonmapper": "^1.4",
         "zendframework/zend-component-installer": "^2.1.1",
         "zendframework/zend-config-aggregator": "^1.0",
         "zendframework/zend-diactoros": "^1.7.1 || ^2.0",

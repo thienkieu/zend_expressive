@@ -15,7 +15,6 @@ use Test\Enum\DTOName;
 
 class CreateSectionValidatorAdapter implements ValidatorAdapterInterface
 {
-    
     public function isHandle($request) : bool
     {
         $name = $request->getAttribute('dto_name');

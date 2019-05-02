@@ -11,7 +11,7 @@ class SectionDTO
     protected $content;
 
     /**
-     * @var $questions QuestionDTO[]
+     * @var QuestionDTO[]
      */
     protected $questions;
     
@@ -55,28 +55,6 @@ class SectionDTO
         return $this;
     }
     
-    
-
-    /**
-     * Get the value of questions
-     */ 
-    public function getQuestions()
-    {
-        return $this->questions;
-    }
-
-    /**
-     * Set the value of questions
-     *
-     * @return  self
-     */ 
-    public function setQuestions($questions)
-    {
-        $this->questions = $questions;
-
-        return $this;
-    }
-
     /**
      * Get the value of id
      */ 
@@ -93,6 +71,30 @@ class SectionDTO
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of questions
+     *
+     * @return  QuestionDTO[]
+     */ 
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    /**
+     * Set the value of questions
+     *
+     * @param  QuestionDTO[]  $questions
+     *
+     * @return  self
+     */ 
+    public function setQuestions($questions)
+    {
+        $this->questions = $questions;
 
         return $this;
     }

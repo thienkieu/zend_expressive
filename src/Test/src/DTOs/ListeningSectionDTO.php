@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Test\DTOs;
 
-class ListeningSectionDTO extends SectionDTO
+class ListeningSectionDTO extends SectionDTO implements \JsonSerializable
 {
     protected $path;
     protected $repeat;
-
-    
-
+        
     /**
      * Get the value of repeat
      */ 
@@ -44,10 +42,19 @@ class ListeningSectionDTO extends SectionDTO
      *
      * @return  self
      */ 
-    public function setPath($path)
+    public function setPath(string $path)
     {
         $this->path = $path;
 
         return $this;
     }
+
+    public function jsonSerialize() {
+        $ret = new \stdClass();
+        $ret->content = $this->getContent();
+        $ret->repeat = $this->getRepeat();
+        $ret->questions = $this->getQuestions();
+        return $ret;
+    }
+
 }

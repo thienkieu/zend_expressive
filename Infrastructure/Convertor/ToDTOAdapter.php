@@ -11,14 +11,10 @@ abstract class ToDTOAdapter implements ConvertAdapterInterface {
     
     public function convert($request) 
     {  
-        $class = $dtoClass = $this->getDTOClass();
-        
-        $hydrator = new ReflectionHydrator();        
-        $dto = $hydrator->hydrate(
-            $request->getParsedBody(),
-            (new \ReflectionClass($class))->newInstanceWithoutConstructor()
-        );
-        
+        $dtoClass = $this->getDTOClass();
+       
+        $mapper = new \JsonMapper();
+        $dto = $mapper->map(\json_decode((string)$request->getBody()), new $dtoClass());
         return $dto;            
     }
 

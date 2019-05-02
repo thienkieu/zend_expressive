@@ -10,7 +10,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class AnswerDocument
 {
   /** @ODM\Id */
-  protected $id;
+  private $id;
 
   /** @ODM\Field(type="string") */
   private $content;

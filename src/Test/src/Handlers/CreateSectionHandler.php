@@ -45,15 +45,14 @@ class CreateSectionHandler implements RequestHandlerInterface
     {
         $hydrator = new ReflectionHydrator();
         $dto = $request->getAttribute('dtoObject');
-        $data = $hydrator->extract($dto);
-
+        
         $sectionService = $this->container->get(SectionServiceInterface::class);
         $sectionService->createSection($dto);
 
         return new JsonResponse([
             'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
-            'request' =>  $data,
+            'request' =>  $dto,
         ]);
         
     }

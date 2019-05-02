@@ -1,0 +1,54 @@
+GET http://{{host}}/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
+
+###
+
+POST http://{{host}}/test/create-section/rewrwer
+content-type: application/json
+
+{
+	"data":{
+  "dto_name":"listening",
+  "type":"listening",
+  "content":"def123",
+  "repeat": 3,
+  "path": "sdfsfd dsf ath",
+  "questions":[
+  		{
+  			"content": "22222222dsf",
+  			"title": "dsfsf",
+  			"answers": [
+  					{
+  						"content" : "ansercontnet1"
+  					},
+  					{
+  						"content" : "ansercontnet2"
+  					},
+  					{
+  						"content" : "ansercontnet3"
+  					}
+  			]
+  		},
+  		{
+  			"content": "flsjldsf",
+  			"title": "dsfsf",
+  			"answers": [
+  					{
+  						"content" : "ansercontnet1"
+  					},
+  					{
+  						"content" : "ansercontnet2"
+  					},
+  					{
+  						"content" : "ansercontnet3"
+  					}
+  			]
+  		}
+  	]
+	}
+}

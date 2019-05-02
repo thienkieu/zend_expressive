@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Test\DTOs;
 
-class QuestionDTO
+class QuestionDTO implements \JsonSerializable
 {
     protected $content;
     protected $title;
 
-    
+    /**
+     * @var AnswerDTO[]
+     */
+    protected $answers;
 
     /**
      * Get the value of title
@@ -49,5 +52,36 @@ class QuestionDTO
         $this->content = $content;
 
         return $this;
+    }
+
+    /**
+     * Get the value of answers
+     *
+     * @return  AnswerDTO[]
+     */ 
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * Set the value of answers
+     *
+     * @param  AnswerDTO[]  $answers
+     *
+     * @return  self
+     */ 
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
+
+        return $this;
+    }
+
+    public function jsonSerialize() {
+        $ret = new \stdClass();
+        $ret->content = $this->getContent();
+        $ret->answers = $this->getAnswers();
+        return $ret;
     }
 }

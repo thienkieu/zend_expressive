@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class QuestionDocument
 {
   /** @ODM\Id */
-  protected $id;
+  private $id;
 
   /** @ODM\Field(type="string") */
   private $content;

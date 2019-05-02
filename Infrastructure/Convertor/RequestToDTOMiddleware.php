@@ -44,7 +44,7 @@ class RequestToDTOMiddleware implements MiddlewareInterface
 
             $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
             $dto = $convertorToDTO->convertToDTO($request);
-
+            
             return $handler->handle($request->withAttribute('dtoObject', $dto));
         }
         
