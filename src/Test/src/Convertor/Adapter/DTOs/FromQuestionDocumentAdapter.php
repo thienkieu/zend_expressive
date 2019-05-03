@@ -30,6 +30,7 @@ class FromQuestionDocumentAdapter implements ConvertAdapterInterface {
     public function convert($document) {
         $dto = new \Test\DTOs\QuestionDTO();
         $dto->setContent($document->getContent());
+        $dto->setOrder($document->getOrder());
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         

@@ -43,15 +43,13 @@ class CreateSectionHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $dto = $request->getAttribute('dtoObject');
-        
         $sectionService = $this->container->get(SectionServiceInterface::class);
-        $dtoFormDocument = $sectionService->createSection($dto);
+        $ret = $sectionService->createSection($dto, $resultDTO, $messages);
 
         return new JsonResponse([
-            'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
-            'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
-            'request' =>  $dto,
-            'dto' => $dtoFormDocument
+            'isSuccess' => $ret,      
+            'messages'  => $messages,
+            'data' => new \stdClass()
         ]);
         
     }

@@ -55,7 +55,12 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/verify-log', App\Handler\VerifyLogConfigHandler::class, 'verifyLOG');
 
 
-    $app->post('/test/create-section/{name}', [        
+    /*$app->post('/test/create-section/{name}', [        
+        Test\Handlers\CreateSectionHandler::class
+    ], 'section.create');
+    */
+    
+    $app->post('/coordinator/section/create', [        
         Test\Handlers\CreateSectionHandler::class
     ], 'section.create');
     

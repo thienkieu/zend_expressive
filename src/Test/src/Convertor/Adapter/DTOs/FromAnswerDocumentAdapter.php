@@ -21,6 +21,7 @@ class FromAnswerDocumentAdapter implements ConvertAdapterInterface {
         $dto = new \Test\DTOs\AnswerDTO();
         $dto->setContent($document->getContent());
         $dto->setIsCorrect($document->getIsCorrect());
+        $dto->setOrder($document->getOrder());
 
         return $dto;
     }

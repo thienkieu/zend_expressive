@@ -7,5 +7,5 @@ namespace Test\Services;
 
 interface SectionServiceInterface
 {
-    public function createSection(\Test\DTOS\SectionDTO $sectionDTO);
+    public function createSection(\Test\DTOS\SectionDTO $sectionDTO,  & $dto, & $messages);
 }

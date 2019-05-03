@@ -15,15 +15,18 @@ class ValidatorRequest implements ValidatorRequestInterface{
      */
     private  $adapters;
 
-    public function __construct(array $adapters = [])
+    private $container;
+
+    public function __construct($container, array $adapters = [])
     {
+        $this->container = $container;
         $this->adapters = $adapters;
     }
     
     public function valid(ServerRequestInterface $request, ResponseInterface & $messageResponse): bool
     {
         foreach($this->adapters as $adapter) {
-            $adapterInstance = new $adapter();
+            $adapterInstance = new $adapter($this->container);
             if ($adapterInstance->isHandle($request)) {
                 return $adapterInstance->valid($request, $messageResponse);
             }

@@ -20,11 +20,13 @@ class ToQuestionDocumentAdapter implements ConvertAdapterInterface {
     {
         $document = new \Test\Documents\QuestionDocument();                    
         $document->setContent($dtoObject->getContent());
+        $document->setOrder($dtoObject->getOrder());
         
         $answers = $dtoObject->getAnswers();
         foreach($answers as $answer){
             $a = new \Test\Documents\AnswerDocument();
             $a->setContent($answer->getContent());
+            $a->setOrder($answer->getOrder());
             $document->addAnswer($a);
         }
         

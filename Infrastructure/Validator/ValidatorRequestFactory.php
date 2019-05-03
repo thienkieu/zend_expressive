@@ -13,7 +13,7 @@ class ValidatorRequestFactory
         $appConfig = $container->get('config');
         $validatorAdapters = $appConfig['validatorRequestAdapters'];
 
-        $validator = new ValidatorRequest($validatorAdapters);
+        $validator = new ValidatorRequest($container, $validatorAdapters);
         return $validator;
     }
 }

@@ -6,6 +6,7 @@ namespace Test\Services;
 
 use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
+use Zend\Log\Logger;
 
 class SectionService implements SectionServiceInterface
 {
@@ -19,16 +20,28 @@ class SectionService implements SectionServiceInterface
         $this->dm = $this->container->get('documentManager');
     }
 
-    public function createSection(\Test\DTOS\SectionDTO $sectionDTO) {
-        $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-        $document = $dtoToDocumentConvertor->convertToDocument($sectionDTO);
+    public function createSection(\Test\DTOS\SectionDTO $sectionDTO, & $dto, & $messages) {
+        $messages = [];
 
-        $this->dm->persist($document);
-        $this->dm->flush();
-        
-        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-        $dto = $documentToDTOConvertor->convertToDTO($document);
-        return $dto;
+        try{
+            $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
+            $document = $dtoToDocumentConvertor->convertToDocument($sectionDTO);
+
+            $this->dm->persist($document);
+            $this->dm->flush();
+            
+            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+            $dto = $documentToDTOConvertor->convertToDTO($document);
+
+            return true;
+        } catch(\Exception $e){
+            $messages[] = 'There is error with create section, Please check admin site';
+           
+            $logger = $this->container->get(Logger::class);
+            $logger->info($e);
+            
+            return false;
+        }        
     }
 
     public function getSectionByContent($content) {

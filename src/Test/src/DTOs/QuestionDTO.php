@@ -7,32 +7,12 @@ namespace Test\DTOs;
 class QuestionDTO implements \JsonSerializable
 {
     protected $content;
-    protected $title;
+    protected $order;
 
     /**
      * @var AnswerDTO[]
      */
     protected $answers;
-
-    /**
-     * Get the value of title
-     */ 
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set the value of title
-     *
-     * @return  self
-     */ 
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
 
     /**
      * Get the value of content
@@ -82,6 +62,27 @@ class QuestionDTO implements \JsonSerializable
         $ret = new \stdClass();
         $ret->content = $this->getContent();
         $ret->answers = $this->getAnswers();
+        $ret->order = $this->getOrder();
         return $ret;
+    }
+
+    /**
+     * Get the value of order
+     */ 
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set the value of order
+     *
+     * @return  self
+     */ 
+    public function setOrder($order)
+    {
+        $this->order = $order;
+
+        return $this;
     }
 }

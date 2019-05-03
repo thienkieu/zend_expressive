@@ -40,7 +40,7 @@ return [
                             'name' => 'priority',
                             'options' => [
                                 'operator' => '>=', 
-                                'priority' => \Zend\Log\Logger::DEBUG,
+                                'priority' => \Zend\Log\Logger::EMERG,
                             ]
                         ],
                     ],
@@ -91,6 +91,7 @@ return [
     ],
 
     'validatorRequestAdapters' => [
+        \Test\Validator\CreateReadingSectionValidatorAdapter::class,
         \Test\Validator\CreateSectionValidatorAdapter::class,
         \App\Validator\VerifyValidatorAdapter::class
     ]

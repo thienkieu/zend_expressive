@@ -8,7 +8,7 @@ class AnswerDTO implements \JsonSerializable
 {
     protected $content;
     protected $isCorrect;
-    
+    protected $order;
     
 
     /**
@@ -54,7 +54,28 @@ class AnswerDTO implements \JsonSerializable
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->content = $this->getContent();
-        $ret->isCorrect = $this->isCorrect;
+        $ret->isCorrect = $this->getIsCorrect();
+        $ret->order = $this->getOrder();
         return $ret;
+    }
+
+    /**
+     * Get the value of order
+     */ 
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set the value of order
+     *
+     * @return  self
+     */ 
+    public function setOrder($order)
+    {
+        $this->order = $order;
+
+        return $this;
     }
 }

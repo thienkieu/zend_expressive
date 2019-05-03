@@ -7,4 +7,7 @@ abstract class AppConstant
     const Writing = 'writing';
     const Listening = 'listening';
     const RequestDTOName = 'dto_name';
+
+
+    const Translator = 'translator';
 }

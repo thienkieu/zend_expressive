@@ -18,6 +18,9 @@ class AnswerDocument
   /** @ODM\Field(type="boolean") */
   private $isCorrect;
 
+  /** @ODM\Field(type="int") */
+  private $order;
+
   
 
   /**
@@ -76,6 +79,26 @@ class AnswerDocument
   public function setId($id)
   {
     $this->id = $id;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of order
+   */ 
+  public function getOrder()
+  {
+    return $this->order;
+  }
+
+  /**
+   * Set the value of order
+   *
+   * @return  self
+   */ 
+  public function setOrder($order)
+  {
+    $this->order = $order;
 
     return $this;
   }

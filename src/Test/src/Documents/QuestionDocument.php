@@ -16,6 +16,9 @@ class QuestionDocument
   /** @ODM\Field(type="string") */
   private $content;
 
+  /** @ODM\Field(type="int") */
+  private $order;
+
   /** @ODM\EmbedMany(targetDocument="AnswerDocument") */
   private $answers;
 
@@ -85,6 +88,26 @@ class QuestionDocument
   public function setAnswers($answers)
   {
     $this->answers = $answers;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of order
+   */ 
+  public function getOrder()
+  {
+    return $this->order;
+  }
+
+  /**
+   * Set the value of order
+   *
+   * @return  self
+   */ 
+  public function setOrder($order)
+  {
+    $this->order = $order;
 
     return $this;
   }
