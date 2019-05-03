@@ -12,17 +12,20 @@ class DocumentToDTOConvertor implements DocumentToDTOConvertorInterface{
      * @var $adapters ConvertAdapterInterface[]
      */
     private  $adapters;
+    private  $container;
 
-    public function __construct(array $adapters = [])
+    public function __construct($container, array $adapters = [])
     {
+        $this->container = $container;
         $this->adapters = $adapters;
     }
 
     
     public function convertToDTO($document) {
         foreach($this->adapters as $adapter) {
-            if ($adapter->isHandle($document)) {
-                return $adapter->convert($document);
+            $adapterInstance = new $adapter($this->container);
+            if ($adapterInstance->isHandle($document)) {
+                return $adapterInstance->convert($document);
             }
         }
 

@@ -68,7 +68,8 @@
         "psr-4": {
             "App\\": "src/App/src/",
             "Test\\": "src/Test/src/",
-            "Infrastructure\\": "Infrastructure"
+            "Infrastructure\\": "Infrastructure",
+            "Config\\": "config"
         }
     },
     "autoload-dev": {

@@ -29,10 +29,10 @@ return [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             'entityManager'                     => App\Factory\DoctrineORMFactory::class,
             'documentManager'                   => App\Factory\DoctrineODMFactory::class,            
-            'logger'                               => App\Factory\LogFactory::class,
             
             Infrastructure\Convertor\DTOToDocumentConvertorInterface::class => Infrastructure\Convertor\DTOToDocumentConvertorFactory::class,
             Infrastructure\Convertor\RequestToDTOConvertorInterface::class => Infrastructure\Convertor\RequestToDTOConvertorFactory::class,
+            Infrastructure\Convertor\DocumentToDTOConvertorInterface::class => Infrastructure\Convertor\DocumentToDTOConvertorFactory::class,
             Infrastructure\Convertor\RequestToDTOMiddleware::class => Infrastructure\Factory\BaseFactory::class,
             Infrastructure\Validator\ValidatorRequestInterface::class => Infrastructure\Validator\ValidatorRequestFactory::class,
             

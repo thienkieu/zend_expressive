@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test\Services;
 
 use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
+use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
 class SectionService implements SectionServiceInterface
 {
@@ -25,7 +26,9 @@ class SectionService implements SectionServiceInterface
         $this->dm->persist($document);
         $this->dm->flush();
         
-        return true;
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+        $dto = $documentToDTOConvertor->convertToDTO($document);
+        return $dto;
     }
 
     public function getSectionByContent($content) {

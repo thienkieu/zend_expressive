@@ -44,6 +44,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     
     $app->get('/test/create-test', Test\Handlers\CreateTestHandler::class, 'createTest');
+   // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 
     $app->get('/test/search-section', Test\Handlers\SearchSectionHandler::class, 'search');
 
@@ -56,6 +57,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     $app->post('/test/create-section/{name}', [        
         Test\Handlers\CreateSectionHandler::class
-    ], 'createSection');
+    ], 'section.create');
     
 };

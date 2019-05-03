@@ -19,13 +19,13 @@ class ValidatorRequest implements ValidatorRequestInterface{
     {
         $this->adapters = $adapters;
     }
-
     
     public function valid(ServerRequestInterface $request, ResponseInterface & $messageResponse): bool
     {
         foreach($this->adapters as $adapter) {
-            if ($adapter->isHandle($request)) {
-                return $adapter->valid($request, $messageResponse);
+            $adapterInstance = new $adapter();
+            if ($adapterInstance->isHandle($request)) {
+                return $adapterInstance->valid($request, $messageResponse);
             }
         }
 

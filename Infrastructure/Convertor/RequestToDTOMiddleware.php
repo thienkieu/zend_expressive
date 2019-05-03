@@ -16,6 +16,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Hydrator\ReflectionHydrator;
 use Infrastructure\Validator\ValidatorRequestInterface;
+use Zend\Expressive\Router\RouteResult;
+use Config\AppConstant;
 
 class RequestToDTOMiddleware implements MiddlewareInterface
 {
@@ -30,10 +32,14 @@ class RequestToDTOMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
-        $body = $request->getParsedBody();
-        if (isset($body['dto_name'])) {
-            $dtoName = $body['dto_name'];
-            $request = $request->withAttribute('dto_name', $dtoName);
+        $rotuer = $request->getAttribute(RouteResult::class);
+        $routerName = $rotuer->getMatchedRouteName();
+        if ($routerName) {
+            $appConfig = $this->container->get('config');
+            $routertoDTO = $appConfig['requestToDTO'];
+            $dtoName = $routertoDTO[$routerName];
+
+            $request = $request->withAttribute(AppConstant::RequestDTOName, $dtoName);
             
             $validator = $this->container->get(ValidatorRequestInterface::class);
             $messageResponse = new JsonResponse([]);                

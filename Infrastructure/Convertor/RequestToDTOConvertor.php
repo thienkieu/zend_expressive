@@ -22,8 +22,9 @@ class RequestToDTOConvertor implements RequestToDTOConvertorInterface {
     public function convertToDTO($request) {
         
         foreach($this->adapters as $adapter) {
-            if ($adapter->isHandle($request)) {
-                return $adapter->convert($request);
+            $adapterInstance = new $adapter();
+            if ($adapterInstance->isHandle($request)) {
+                return $adapterInstance->convert($request);
             }
         }
 

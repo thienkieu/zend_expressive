@@ -30,9 +30,25 @@ return [
     ],
     
     'log' => [
-        'stream' => new Zend\Log\Writer\Stream($dir.'/../Logs/'.date('Y-m-d').'.txt'),        
-        'enable'  => true,  
+        'writers' => [
+            [
+                'name' => 'stream',
+                'options' => [
+                    'stream' => $dir.'/../Logs/'.date('Y-m-d').'.txt',
+                    'filters' => [
+                        'allMessages' => [
+                            'name' => 'priority',
+                            'options' => [
+                                'operator' => '>=', 
+                                'priority' => \Zend\Log\Logger::DEBUG,
+                            ]
+                        ],
+                    ],
+                ]
+            ]
+        ] 
     ],
+
     
     'authentication' => [
         'private_key'    => __DIR__ . '/../../data/oauth/private.key',
@@ -54,23 +70,29 @@ return [
     ],
 
     'convertorDocumentAdapters' => [
-        new \Test\Convertor\Adapter\Documents\ToListeningDocumentAdapter(),
-        new \Test\Convertor\Adapter\Documents\ToReadingDocumentAdapter(),
-        new \Test\Convertor\Adapter\Documents\ToWritingDocumentAdapter()
+        \Test\Convertor\Adapter\Documents\ToListeningDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToReadingDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToWritingDocumentAdapter::class
     ],
 
     'convertorDTOAdapters' => [
-        new \Test\Convertor\Adapter\DTOs\ToListeningDTOAdapter(),
-        new \Test\Convertor\Adapter\DTOs\ToReadingDTOAdapter(),
-        new \Test\Convertor\Adapter\DTOs\ToWritingDTOAdapter()
+        \Test\Convertor\Adapter\DTOs\ToListeningDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToReadingDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToWritingDTOAdapter::class
     ],
 
     'convertorDocumentToDTOAdapters' => [
+        \Test\Convertor\Adapter\DTOs\FromListeningDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromReadingDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromWritingDocumentAdapter::class,
+        
+        \Test\Convertor\Adapter\DTOs\FromQuestionDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromAnswerDocumentAdapter::class
     ],
 
     'validatorRequestAdapters' => [
-        new \Test\Validator\CreateSectionValidatorAdapter(),
-        new \App\Validator\VerifyValidatorAdapter()
+        \Test\Validator\CreateSectionValidatorAdapter::class,
+        \App\Validator\VerifyValidatorAdapter::class
     ]
 
 ];

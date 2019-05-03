@@ -8,12 +8,15 @@ use Zend\Hydrator\ReflectionHydrator;
 use Infrastructure\Convertor\ToDTOAdapter;
 
 use Test\Enum\DTOName;
+use Config\AppConstant;
 
 class ToListeningDTOAdapter extends ToDTOAdapter {
     public function isHandle($request) : bool
     {
-        $name = $request->getAttribute('dto_name');
-        if ($name === DTOName::Listening) {
+        $name = $request->getAttribute(AppConstant::RequestDTOName);
+        $body = $request->getParsedBody();
+        $type = $body['type'];
+        if ($name === DTOName::Section && $type === DTOName::Listening ) {
             return true;
         }
 

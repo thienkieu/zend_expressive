@@ -16,6 +16,7 @@ use Zend\Expressive\Twig\TwigRenderer;
 use Zend\Expressive\ZendView\ZendViewRenderer;
 use Psr\Container\ContainerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Zend\Log\Logger;
 
 class VerifyLogConfigHandler implements RequestHandlerInterface
 {
@@ -45,7 +46,7 @@ class VerifyLogConfigHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $logger = $this->container->get('logger');
+        $logger = $this->container->get(Logger::class);
         $logger->info('Informational message');
         $logger->debug('debug info');
 

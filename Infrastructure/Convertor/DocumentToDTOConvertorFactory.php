@@ -13,7 +13,7 @@ class DocumentToDTOConvertorFactory
         $appConfig = $container->get('config');
         $convertorAdapters = $appConfig['convertorDocumentToDTOAdapters'];
 
-        $convertor = new DocumentToDTOConvertor($convertorAdapters);
+        $convertor = new DocumentToDTOConvertor($container, $convertorAdapters);
         return $convertor;
     }
 }

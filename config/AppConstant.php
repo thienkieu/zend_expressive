@@ -1,10 +1,10 @@
 <?php
-namespace Test\Enum;
+namespace Config;
 
-abstract class DTOName
+abstract class AppConstant
 {
     const Reading = 'reading';
     const Writing = 'writing';
     const Listening = 'listening';
-    const Section = \Test\DTOs\SectionDTO::class;
+    const RequestDTOName = 'dto_name';
 }
