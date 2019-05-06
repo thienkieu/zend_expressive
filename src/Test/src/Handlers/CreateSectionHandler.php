@@ -49,7 +49,7 @@ class CreateSectionHandler implements RequestHandlerInterface
         return new JsonResponse([
             'isSuccess' => $ret,      
             'messages'  => $messages,
-            'data' => new \stdClass()
+            'data' => $resultDTO
         ]);
         
     }

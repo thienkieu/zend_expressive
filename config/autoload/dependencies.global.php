@@ -35,6 +35,9 @@ return [
             Infrastructure\Convertor\DocumentToDTOConvertorInterface::class => Infrastructure\Convertor\DocumentToDTOConvertorFactory::class,
             Infrastructure\Convertor\RequestToDTOMiddleware::class => Infrastructure\Factory\BaseFactory::class,
             Infrastructure\Validator\ValidatorRequestInterface::class => Infrastructure\Validator\ValidatorRequestFactory::class,
+            Infrastructure\Middleware\UploadFileMiddleware::class => Infrastructure\Factory\BaseFactory::class,
+
+            Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class => Infrastructure\Factory\BodyParamsMiddlewareFactory::class,
             
             Authentication\AuthenticationMiddleware::class => Authentication\AuthenticationMiddlewareFactory::class,
             Authentication\OAuth2\OAuth2Adapter::class => Authentication\OAuth2\OAuth2AdapterFactory::class,

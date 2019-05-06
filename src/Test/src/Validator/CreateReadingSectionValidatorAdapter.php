@@ -31,7 +31,8 @@ class CreateReadingSectionValidatorAdapter implements ValidatorAdapterInterface
     {
         $name = $request->getAttribute(AppConstant::RequestDTOName);
         $body = $request->getParsedBody();
-        $type = $body['type'];
+           
+        $type = $body->type;
         if ($name === DTOName::Section && $type === DTOName::Reading ) {
             return true;
         }
@@ -40,13 +41,14 @@ class CreateReadingSectionValidatorAdapter implements ValidatorAdapterInterface
     }
 
     public function valid(ServerRequestInterface $request, ResponseInterface & $messageResponse): bool
-    {      
+    {   
         $bodyRequest = $request->getParsedBody();
+        
         $translator = $this->container->get(AppConstant::Translator);
         $errors = [];
         $isError = false;
 
-        if (count($bodyRequest['questions']) < 1) {
+        if (count($bodyRequest->questions) < 1) {
             $isError = true;
             $errors = [
                 'questions' => [
@@ -55,7 +57,7 @@ class CreateReadingSectionValidatorAdapter implements ValidatorAdapterInterface
             ];            
         }
         
-        if (!isset($bodyRequest['content']) || strlen($bodyRequest['content']) < 1) {
+        if (!isset($bodyRequest->content) || strlen($bodyRequest->content) < 1) {
             $isError = true;
             $errors = [
                 'content' => [

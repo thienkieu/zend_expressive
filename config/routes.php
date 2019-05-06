@@ -61,7 +61,10 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     */
     
     $app->post('/coordinator/section/create', [        
-        Test\Handlers\CreateSectionHandler::class
+        [
+            
+            Test\Handlers\CreateSectionHandler::class
+        ]
     ], 'section.create');
     
 };

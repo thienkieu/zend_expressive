@@ -13,7 +13,7 @@ abstract class ToDTOAdapter implements ConvertAdapterInterface {
         $dtoClass = $this->getDTOClass();
        
         $mapper = new \JsonMapper();
-        $dto = $mapper->map(\json_decode((string)$request->getBody()), new $dtoClass());
+        $dto = $mapper->map($request->getParsedBody(), new $dtoClass());
         return $dto;            
     }
 

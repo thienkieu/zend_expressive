@@ -18,6 +18,7 @@ use Zend\Stratigility\Middleware\ErrorHandler;
 
 use Infrastructure\i18n\LocaleMiddleware;
 use Infrastructure\Convertor\RequestToDTOMiddleware;
+use Infrastructure\Middleware\UploadFileMiddleware;
 
 /**
  * Setup middleware pipeline:
@@ -58,8 +59,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // after the Implicit*Middleware.
     $app->pipe(ImplicitHeadMiddleware::class);
     $app->pipe(ImplicitOptionsMiddleware::class);
-    $app->pipe(MethodNotAllowedMiddleware::class);
+    $app->pipe(MethodNotAllowedMiddleware::class);    
     $app->pipe(BodyParamsMiddleware::class);
+    $app->pipe(UploadFileMiddleware::class);
     
     $app->pipe(LocaleMiddleware::class);
     $app->pipe(RequestToDTOMiddleware::class);

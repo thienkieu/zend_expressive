@@ -54,6 +54,7 @@ class ListeningSectionDTO extends SectionDTO implements \JsonSerializable
         $ret->content = $this->getContent();
         $ret->repeat = $this->getRepeat();
         $ret->questions = $this->getQuestions();
+        $ret->path = $this->getPath();
         return $ret;
     }
 

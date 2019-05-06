@@ -94,6 +94,12 @@ return [
         \Test\Validator\CreateReadingSectionValidatorAdapter::class,
         \Test\Validator\CreateSectionValidatorAdapter::class,
         \App\Validator\VerifyValidatorAdapter::class
-    ]
+    ],
+
+    'uploadConfig' => [
+        'fileTypes' => ['image/png','image/gif','image/jpeg'],
+        'uploadFolder' => $dir.'/../Uploads',
+        'maxUploadSizeAllow' => 1024,
+    ],
 
 ];

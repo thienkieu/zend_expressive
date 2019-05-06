@@ -10,4 +10,9 @@ abstract class AppConstant
 
 
     const Translator = 'translator';
+    
+    const UploadConfigName = 'uploadConfig';
+    const UploadConfigFileTypes = 'fileTypes';
+    const UploadFolder = 'uploadFolder';
+    const UploadSizeAllow = 'maxUploadSizeAllow';
 }

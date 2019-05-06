@@ -15,7 +15,7 @@ class ToListeningDTOAdapter extends ToDTOAdapter {
     {
         $name = $request->getAttribute(AppConstant::RequestDTOName);
         $body = $request->getParsedBody();
-        $type = $body['type'];
+        $type = $body->type;
         if ($name === DTOName::Section && $type === DTOName::Listening ) {
             return true;
         }

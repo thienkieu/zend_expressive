@@ -13,7 +13,7 @@ class ToWritingDTOAdapter extends ToDTOAdapter {
     {
         $name = $request->getAttribute(AppConstant::RequestDTOName);
         $body = $request->getParsedBody();
-        $type = $body['type'];
+        $type = $body->type;
         if ($name === DTOName::Section && $type === DTOName::Writing ) {
             return true;
         }
