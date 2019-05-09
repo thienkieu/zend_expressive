@@ -53,6 +53,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // Verify config
     $app->get('/verify-odm', Test\Handlers\VerifyODMConfigHandler::class, 'verifyODM');
     $app->get('/verify-log', App\Handler\VerifyLogConfigHandler::class, 'verifyLOG');
+    $app->post('/verify-rsa', App\Handler\VerifyRSAConfigHandler::class, 'verifyRSA');
+    $app->post('/verify-cors', App\Handler\VerifyCORSConfigHandler::class, 'verifyCORS');
 
 
     /*$app->post('/test/create-section/{name}', [        
@@ -60,11 +62,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     ], 'section.create');
     */
     
-    $app->post('/coordinator/section/create', [        
-        [
-            
-            Test\Handlers\CreateSectionHandler::class
-        ]
-    ], 'section.create');
+    $app->post('/coordinator/section/create', Test\Handlers\CreateSectionHandler::class, 'section.create');
+
+    
     
 };

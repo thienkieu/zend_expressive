@@ -38,8 +38,11 @@ class ConfigProvider
             'factories'  => [
                 Handler\VerifyODMConfigHandler::class => Factory\VerifyODMConfigHandlerFactory::class,
                 Handler\VerifyLogConfigHandler::class => Factory\VerifyLogConfigHandlerFactory::class,
+                Handler\VerifyCORSConfigHandler::class => Factory\VerifyCORSConfigHandlerFactory::class,
+                Handler\VerifyRSAConfigHandler::class => Factory\VerifyRSAConfigHandlerFactory::class,
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
                 Handler\ViewPageHandler::class => Handler\ViewPageHandlerFactory::class,   
+                
                 Validator\ValidatorMiddleware::class => Factory\ValidatorMiddlewareFactory::class,  
                 Services\SectionServiceInterface::class => Factory\SectionService::class,           
             ],

@@ -37,21 +37,23 @@ class RequestToDTOMiddleware implements MiddlewareInterface
         if ($routerName) {
             $appConfig = $this->container->get('config');
             $routertoDTO = $appConfig['requestToDTO'];
-            $dtoName = $routertoDTO[$routerName];
+            if (isset($routertoDTO[$routerName])) {
+                $dtoName = $routertoDTO[$routerName];
 
-            $request = $request->withAttribute(AppConstant::RequestDTOName, $dtoName);
-            
-            $validator = $this->container->get(ValidatorRequestInterface::class);
-            $messageResponse = new JsonResponse([]);                
-            $isValid = $validator->valid($request, $messageResponse);
-            if (!$isValid) {
-                return $messageResponse;
+                $request = $request->withAttribute(AppConstant::RequestDTOName, $dtoName);
+                
+                $validator = $this->container->get(ValidatorRequestInterface::class);
+                $messageResponse = new JsonResponse([]);                
+                $isValid = $validator->valid($request, $messageResponse);
+                if (!$isValid) {
+                    return $messageResponse;
+                }
+
+                $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
+                $dto = $convertorToDTO->convertToDTO($request);
+                
+                return $handler->handle($request->withAttribute('dtoObject', $dto));
             }
-
-            $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
-            $dto = $convertorToDTO->convertToDTO($request);
-            
-            return $handler->handle($request->withAttribute('dtoObject', $dto));
         }
         
         return $handler->handle($request);      

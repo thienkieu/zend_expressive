@@ -15,6 +15,7 @@ use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
 use Zend\Expressive\Router\Middleware\RouteMiddleware;
 use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 use Zend\Stratigility\Middleware\ErrorHandler;
+use Tuupola\Middleware\CorsMiddleware;
 
 use Infrastructure\i18n\LocaleMiddleware;
 use Infrastructure\Convertor\RequestToDTOMiddleware;
@@ -57,8 +58,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - method not allowed
     // Order here matters; the MethodNotAllowedMiddleware should be placed
     // after the Implicit*Middleware.
-    $app->pipe(ImplicitHeadMiddleware::class);
-    $app->pipe(ImplicitOptionsMiddleware::class);
+    //$app->pipe(ImplicitHeadMiddleware::class);
+    //$app->pipe(ImplicitOptionsMiddleware::class);
+    $app->pipe(CorsMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);    
     $app->pipe(BodyParamsMiddleware::class);
     $app->pipe(UploadFileMiddleware::class);
