@@ -148,3 +148,10 @@ Please note that the installer tests remove installed config files and templates
 before and after running the tests.
 
 Before contributing read [the contributing guide](docs/CONTRIBUTING.md).
+
+*install mogodb
+
+$ composer config "platform.ext-mongo" "1.6.16" && composer require alcaeus/mongo-php-adapter
+
+enable intl gd2 extension
+

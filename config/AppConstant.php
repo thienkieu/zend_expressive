@@ -3,6 +3,18 @@ namespace Config;
 
 abstract class AppConstant
 {
+    /**
+     * General config
+     */
+    const DocumentManager = 'documentManager';
+    const AppConfig       = 'config';
+
+    /**
+     * CORS config
+     */
+    const CORSConfig  = 'CORS';
+    const AllowHeader = 'headers.allow';
+
     const Reading = 'reading';
     const Writing = 'writing';
     const Listening = 'listening';

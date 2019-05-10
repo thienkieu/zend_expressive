@@ -102,4 +102,8 @@ return [
         'maxUploadSizeAllow' => 1024,
     ],
 
+    'CORS' => [
+        'headers.allow' => ['Content-Type']
+    ]
+
 ];
