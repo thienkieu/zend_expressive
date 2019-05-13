@@ -28,7 +28,7 @@ class FromListeningDocumentAdapter implements ConvertAdapterInterface {
 
     public function convert($document) {
         $dto = new \Test\DTOs\ListeningSectionDTO();
-        $dto->setContent($document->getContent());
+        $dto->setContent(json_decode($document->getContent()));
         $dto->setRepeat($document->getRepeat());
         $dto->setPath($document->getPath());
         

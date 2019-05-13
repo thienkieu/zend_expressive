@@ -28,7 +28,7 @@ class FromReadingDocumentAdapter implements ConvertAdapterInterface {
 
     public function convert($document) {
         $dto = new \Test\DTOs\ReadingSectionDTO();
-        $dto->setContent($document->getContent());
+        $dto->setContent(json_decode($document->getContent()));
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         

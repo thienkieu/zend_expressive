@@ -18,8 +18,8 @@ class ToQuestionDocumentAdapter implements ConvertAdapterInterface {
     
     public function convert($dtoObject) 
     {
-        $document = new \Test\Documents\QuestionDocument();                    
-        $document->setContent($dtoObject->getContent());
+        $document = new \Test\Documents\QuestionDocument();        
+        $document->setContent(json_encode($dtoObject->getContent()));
         $document->setOrder($dtoObject->getOrder());
         
         $answers = $dtoObject->getAnswers();

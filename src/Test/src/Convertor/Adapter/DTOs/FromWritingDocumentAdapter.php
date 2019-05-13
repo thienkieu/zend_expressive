@@ -28,7 +28,7 @@ class FromWritingDocumentAdapter implements ConvertAdapterInterface {
 
     public function convert($document) {
         $dto = new \Test\DTOs\WritingSectionDTO();
-        $dto->setContent($document->getContent());
+        $dto->setContent(json_decode($document->getContent()));
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         

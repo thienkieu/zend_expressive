@@ -57,7 +57,7 @@ class CreateReadingSectionValidatorAdapter implements ValidatorAdapterInterface
             ];            
         }
         
-        if (!isset($bodyRequest->content) || strlen($bodyRequest->content) < 1) {
+        if (empty($bodyRequest->content)) {
             $isError = true;
             $errors = [
                 'content' => [
