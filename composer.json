@@ -73,7 +73,8 @@
             "App\\": "src/App/src/",
             "Test\\": "src/Test/src/",
             "Infrastructure\\": "Infrastructure",
-            "Config\\": "config"
+            "Config\\": "config",
+            "ODMAuth\\": "src/ODMAuth/src/"
         }
     },
     "autoload-dev": {

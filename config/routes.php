@@ -34,13 +34,14 @@ use Zend\Expressive\Authentication\OAuth2;
  * );
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
-    //$app->get('/', Zend\Expressive\Authentication\AuthenticationMiddleware::class, App\Handler\HomePageHandler::class, 'home');
+    $app->get('/', [Zend\Expressive\Authentication\AuthenticationMiddleware::class, App\Handler\HomePageHandler::class], 'home');
    // App\Middleware\ValidatorMiddleware::class,
     //$app->get('/', Zend\Expressive\Authentication\AuthenticationMiddleware::class, App\Handler\HomePageHandler::class, 'home');
     $app->get('/view/{name}', [App\Validator\ValidatorMiddleware::class, App\Handler\ViewPageHandler::class], 'view');
-    $app->get('/', App\Handler\HomePageHandler::class, 'home');
+    //$app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
     $app->post('/token', OAuth2\TokenEndpointHandler::class, 'api.token');
+    $app->get('/publickey', App\Handler\GetPublicKeyHandler::class, 'api.publickey');
 
     
     $app->get('/test/create-test', Test\Handlers\CreateTestHandler::class, 'createTest');
@@ -63,6 +64,10 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     */
     
     $app->post('/coordinator/section/create', Test\Handlers\CreateSectionHandler::class, 'section.create');
+
+
+    //odm auth
+    $app->get('/odmauth/setup', ODMAuth\Handler\SetupSampleDataHandler::class, 'odmauth.setup');
 
     
     

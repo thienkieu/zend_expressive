@@ -44,32 +44,24 @@ return [
             Authentication\AuthenticationMiddleware::class => Authentication\AuthenticationMiddlewareFactory::class,
             Authentication\OAuth2\OAuth2Adapter::class => Authentication\OAuth2\OAuth2AdapterFactory::class,
             League\OAuth2\Server\ResourceServer::class => Authentication\OAuth2\ResourceServerFactory::class,  
-            League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface::class => Authentication\OAuth2\Repository\Pdo\AccessTokenRepositoryFactory::class,
-            Authentication\OAuth2\Repository\Pdo\PdoService::class => Authentication\OAuth2\Repository\Pdo\PdoServiceFactory::class,
+            //Authentication\OAuth2\Repository\Pdo\PdoService::class => Authentication\OAuth2\Repository\Pdo\PdoServiceFactory::class,
             Zend\Expressive\Authentication\OAuth2\TokenEndpointHandler::class => Zend\Expressive\Authentication\OAuth2\TokenEndpointHandlerFactory::class,
             League\OAuth2\Server\AuthorizationServer::class => Authentication\OAuth2\AuthorizationServerFactory::class,
-            League\OAuth2\Server\Repositories\ClientRepositoryInterface::class => Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ClientRepositoryFactory::class,
-            League\OAuth2\Server\Repositories\ScopeRepositoryInterface::class => Zend\Expressive\Authentication\OAuth2\Repository\Pdo\ScopeRepositoryFactory::class,
-            League\OAuth2\Server\Repositories\UserRepositoryInterface::class => Zend\Expressive\Authentication\OAuth2\Repository\Pdo\UserRepositoryFactory::class,
-            League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface::class => Zend\Expressive\Authentication\OAuth2\Repository\Pdo\RefreshTokenRepositoryFactory::class,
-            League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface::class => Zend\Expressive\Authentication\OAuth2\Repository\Pdo\AuthCodeRepositoryFactory::class,
+            
+            League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface::class => \ODMAuth\Repositories\AccessTokenRepositoryFactory::class,
+            League\OAuth2\Server\Repositories\ClientRepositoryInterface::class => \ODMAuth\Repositories\ClientRepositoryFactory::class,
+            League\OAuth2\Server\Repositories\ScopeRepositoryInterface::class => \ODMAuth\Repositories\ScopeRepositoryFactory::class,
+            League\OAuth2\Server\Repositories\UserRepositoryInterface::class => \ODMAuth\Repositories\UserRepositoryFactory::class,
+            League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface::class => \ODMAuth\Repositories\RefreshTokenRepositoryFactory::class,
+            League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface::class => \ODMAuth\Repositories\AuthCodeRepositoryFactory::class,
             
             League\OAuth2\Server\Grant\ClientCredentialsGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\ClientCredentialsGrantFactory::class,
             League\OAuth2\Server\Grant\PasswordGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\PasswordGrantFactory::class,
             League\OAuth2\Server\Grant\RefreshTokenGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\RefreshTokenGrantFactory::class,
             League\OAuth2\Server\Grant\AuthCodeGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\AuthCodeGrantFactory::class,
             League\OAuth2\Server\Grant\ImplicitGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\ImplicitGrantFactory::class,
-            
+            ODMAuth\Grant\SSOGrant::class                   => ODMAuth\Grant\SSOGrantFactory::class, 
 
-        ],
-
-        // Set value to null to disable a grant
-        'grants' => [
-            Grant\ClientCredentialsGrant::class => Grant\ClientCredentialsGrant::class,
-            Grant\PasswordGrant::class          => Grant\PasswordGrant::class,
-            Grant\AuthCodeGrant::class          => Grant\AuthCodeGrant::class,
-            Grant\ImplicitGrant::class          => Grant\ImplicitGrant::class,
-            Grant\RefreshTokenGrant::class      => Grant\RefreshTokenGrant::class
-        ],
+        ]
     ]
 ];

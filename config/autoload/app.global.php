@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use League\OAuth2\Server\Grant;
 
 $dir = realpath('src');
 
@@ -22,7 +23,8 @@ return [
         'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243963.mlab.com:43963/thienkieu',
         'document-path' => [
             $dir.'/App/src/Documents',
-            $dir.'/Test/src/Documents'
+            $dir.'/Test/src/Documents',
+            $dir.'/ODMAuth/src/Documents',
         ],
         'proxy-path' =>  $dir.'/Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
@@ -63,7 +65,18 @@ return [
             'password' => ''
         ],
         
+        'grants' => [
+            Grant\ClientCredentialsGrant::class => Grant\ClientCredentialsGrant::class,
+            Grant\PasswordGrant::class          => Grant\PasswordGrant::class,
+            Grant\AuthCodeGrant::class          => Grant\AuthCodeGrant::class,
+            Grant\ImplicitGrant::class          => Grant\ImplicitGrant::class,
+            Grant\RefreshTokenGrant::class      => Grant\RefreshTokenGrant::class,
+            ODMAuth\Grant\SSOGrant::class       => ODMAuth\Grant\SSOGrant::class,            
+        ],
+
     ],
+
+    
 
     'i18n' => [
         'default_locale' => 'en_US',

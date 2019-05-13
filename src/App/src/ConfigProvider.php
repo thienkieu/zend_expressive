@@ -40,6 +40,7 @@ class ConfigProvider
                 Handler\VerifyLogConfigHandler::class => Factory\VerifyLogConfigHandlerFactory::class,
                 Handler\VerifyCORSConfigHandler::class => Factory\VerifyCORSConfigHandlerFactory::class,
                 Handler\VerifyRSAConfigHandler::class => Factory\VerifyRSAConfigHandlerFactory::class,
+                Handler\GetPublicKeyHandler::class => Factory\GetPublicKeyHandlerFactory::class,
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
                 Handler\ViewPageHandler::class => Handler\ViewPageHandlerFactory::class,   
                 
