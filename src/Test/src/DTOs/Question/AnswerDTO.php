@@ -6,6 +6,7 @@ namespace Test\DTOs\Question;
 
 class AnswerDTO implements \JsonSerializable
 {
+    protected $id;
     protected $content;
     protected $isCorrect;
     protected $order;
@@ -75,6 +76,26 @@ class AnswerDTO implements \JsonSerializable
     public function setOrder($order)
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
 
         return $this;
     }

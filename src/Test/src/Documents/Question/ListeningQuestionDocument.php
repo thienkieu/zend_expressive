@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents\Section;
+namespace Test\Documents\Question;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ODM\Document
  */
 
-class ListeningSectionDocument extends SectionDocument
+class ListeningQuestionDocument extends QuestionDocument
 {
   
   /** @ODM\Field(type="string") */
@@ -16,14 +16,6 @@ class ListeningSectionDocument extends SectionDocument
 
   /** @ODM\Field(type="int") */
   private $repeat;
-
-  /** @ODM\EmbedMany(targetDocument="QuestionDocument") */
-  private $questions;
-  
-  public function __construct()
-  {
-    $this->questions = new ArrayCollection();
-  }
 
   /**
    * Get the value of path
@@ -63,29 +55,5 @@ class ListeningSectionDocument extends SectionDocument
     $this->repeat = $repeat;
 
     return $this;
-  }
-
-  /**
-   * Get the value of questions
-   */ 
-  public function getQuestions()
-  {
-    return $this->questions;
-  }
-
-  /**
-   * Set the value of questions
-   *
-   * @return  self
-   */ 
-  public function setQuestions($questions)
-  {
-    $this->questions = $questions;
-
-    return $this;
-  }
-
-  public function addQuestion($question){
-    $this->questions->add($question);
   }
 }

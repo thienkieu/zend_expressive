@@ -6,6 +6,5 @@ namespace Test\DTOs\Test;
 
 class BaseTestDTO
 {
-    protected $title;
-    protected $time;     
+    protected $title;   
 }

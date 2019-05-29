@@ -51,4 +51,5 @@ abstract class AppConstant
     const TestServiceTypeKey = 'testServices';
     const ResolveService = 'resolveService';
 
+    const Log = \Zend\Log\Logger::class;
 }

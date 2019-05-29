@@ -8,7 +8,7 @@ use Infrastructure\Interfaces\HandlerInterface;
 
 class ImportQuestionService implements ImportQuestionServiceInterface, HandlerInterface
 {
-    private $index = 1;
+    private $id = 1;
     private $type = 2;
     private $subType = 3;
     private $source = 4;
@@ -17,39 +17,190 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     private $content = 7;
     private $question = 8;
     private $correctAnswers = 9;
-    private $answer1 = 10;
-    private $answer2 = 11;
-    private $answer3 = 12;
-    private $answer4 = 13;
-    private $answer5 = 143;
+    private $answer = 10;
+
+    private $readingType = 'Reading';
+    private $listeningType = 'Listening';
+    private $writingType = 'Writing';
+    private $imageFiles = '/images/';
+
+    private $container;
+
+    /**
+     * Class constructor.
+     */
+    public function __construct($container = null)
+    {
+        $this->container = $container;
+    }
 
     public function isHandler($dto) {
         return true;
     }
 
     public function importQuestion($dtoObject, & $dto, & $messages) {
-        if ( $xls = \SimpleXLSX::parse($dtoObject->file) ) {
-            $rows = $xls->rows();
-        } else {
-            echo  \SimpleXLSX::parseError();
+        try {
+            if ( $xls = \SimpleXLSX::parse($dtoObject->file) ) {
+                $rows = $xls->rows();
+                $numberRows = count($rows);
+                $lstQuestions = [];
+                $rowIndex = 0;
+                $dm = $this->container->get(\Config\AppConstant::DocumentManager);
+
+                while($rowIndex < $numberRows) {
+                    if (!isset($row[$this->id])) {
+                        $rowIndex += 1;
+                        continue;
+                    }
+
+                    $row = $rows[$rowIndex];
+                    $previousId = $row[$this->id];
+                    
+                    switch($row[$this->type]) {
+                        case $this->readingType:                        
+                            $question = $this->buildReadingQuestion($row);                        
+                            while(true){
+                                $subQuestion = $this->buildSubQuestion($row);
+                                $question->addQuestion($subQuestion);
+
+                                $rowIndex += 1;
+                                $row = $rows[$rowIndex];
+                                if($row[$this->id] !== $previousId) {
+                                    break;
+                                }
+                            }
+                            $dm->persist($question);
+                            continue;                        
+                        break;
+
+                        case $this->listeningType: 
+                            $question = $this->buildListeningQuestion($row);                        
+                            while(true){
+                                $subQuestion = $this->buildSubQuestion($row);
+                                $question->addQuestion($subQuestion);
+
+                                $rowIndex += 1;
+                                $row = $rows[$rowIndex];
+                                if($row[$this->id] !== $previousId) {
+                                    break;
+                                }
+                            }
+                            $dm->persist($question);
+                            continue;   
+                        break;
+
+                        case $this->writingType: 
+                            $question = $this->buildWritingQuestion($row);                        
+                            while(true){
+                                $subQuestion = $this->buildSubQuestion($row);
+                                $question->addQuestion($subQuestion);
+
+                                $rowIndex += 1;
+                                $row = $rows[$rowIndex];
+                                if($row[$this->id] !== $previousId) {
+                                    break;
+                                }
+                            }
+                            $dm->persist($question);
+                            continue;   
+                        break;
+
+                        default:
+                            $rowIndex += 1;
+                        break;
+                    }
+                    
+                }
+                        
+                $dm->flush();
+                return true;
+            } else {
+                $messages[] = \SimpleXLSX::parseError();       
+                return false;
+            }
+        } catch(\Exception $e) {
+            $log = $this->container->get(\Config\AppConstant::Log);
+            $log->debug('Caught exception: '. $e->getMessage());
+            $log->debug($e->getTraceAsString());
+
+            $messages[] = 'There is error when parsed excel file, Please check with admin';       
+            return false;
         }
 
     }
-
-    protected function buildReadingQuestion($data){
-        $readingQuestiong = new \Test\DTOs\Question\ReadingQuestionDTO();
-        $readingQuestiong->setContent($data[$this->content]);
-        $readingQuestiong->setType($data[$this->type]);
-        $readingQuestiong->setSource($data[$this->source]);
-        $readingQuestiong->setSubType($data[$this->subType]);
+    
+    protected function buidGeneralQuestion($data, &$question) {
+        $question->setContent($data[$this->content]);
+        $question->setType($data[$this->type]);
+        $question->setSource($data[$this->source]);
+        $question->setSubType($data[$this->subType]);
     }
 
-    protected function buildListeningQuestion($data){
+    protected function buildReadingQuestion($data){
+        $readingQuestion = new \Test\Documents\Question\ReadingQuestionDocument();
+        $this->buidGeneralQuestion($data, $readingQuestion);
 
+        $content = $readingQuestion->getContent();
+        $images = $data[$this->fileName];
+        if (!empty($images)) {
+            $images = \explode(',', $images);
+            foreach ($images as $image) {
+                $content = str_replace('['.trim($image,' ').']', '<img src="'.$this->imageFiles.$image.'"/>', $content);
+            }
+            
+        }
+        
+        $readingQuestion->setContent($content);
+        return $readingQuestion;
+    }
+    
+    protected function buildListeningQuestion($data){
+        $listeningQuestion = new \Test\Documents\Question\ListeningQuestionDocument();
+        $listeningQuestion->setRepeat($data[$this->repeatTime]);
+        $listeningQuestion->setPath($data[$this->fileName]);
+
+        $this->buidGeneralQuestion($data, $listeningQuestion);
+        return $listeningQuestion;
     }
 
     protected function buildWritingQuestion($data){
-
+        $writingQuestion = new \Test\Documents\Question\WritingQuestionDocument();
+        $this->buidGeneralQuestion($data, $writingQuestion);
+        return $writingQuestion;
     }
-    
+
+    protected function buildSubQuestion($data){
+        $subQuestion = new \Test\Documents\Question\SubQuestionDocument();
+        $subQuestion->setContent($data[$this->question]);
+        
+        $answers = $this->buildAnswers($data);
+        $subQuestion->setAnswers($answers);
+        
+        return $subQuestion;
+    }
+
+    protected function buildAnswers($data){
+        $numberColumns = count($data);
+        $lstAnswers = [];
+
+        $correctAnswers = (string)$data[$this->correctAnswers];
+        $correctAnswers = explode(',', $correctAnswers);
+
+        for ($i=$this->answer; $i < $numberColumns; $i++) { 
+            if (!empty($data[$i])) {
+                $answer = new \Test\Documents\Question\AnswerDocument();
+                $answer->setContent($data[$i]);
+                $answer->setOrder($i - $this->answer);
+
+                if (in_array($i - $this->answer + 1, $correctAnswers)) {
+                    $answer->setIsCorrect(true);
+                }
+
+                $lstAnswers[] = $answer;
+            }
+            
+        }
+
+        return $lstAnswers;
+    }
 }

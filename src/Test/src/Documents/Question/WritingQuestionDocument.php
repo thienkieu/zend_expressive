@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents\Section;
+namespace Test\Documents\Question;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
@@ -7,6 +7,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @ODM\Document
  */
 
-class WritingSectionDocument extends SectionDocument
+class WritingQuestionDocument extends QuestionDocument
 {  
 }

@@ -11,7 +11,6 @@ class SectionTestDTO extends BaseTestDTO implements \JsonSerializable
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->title = $this->getTitle();
-        $ret->time = $this->getTime();
         $ret->sections = $this->getSections();       
         return $ret;
     }

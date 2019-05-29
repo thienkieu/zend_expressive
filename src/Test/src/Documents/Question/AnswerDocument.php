@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents\Section;
+namespace Test\Documents\Question;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 

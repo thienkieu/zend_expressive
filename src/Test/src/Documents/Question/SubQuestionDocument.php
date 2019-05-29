@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents\Section;
+namespace Test\Documents\Question;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ODM\EmbeddedDocument
  */
 
-class QuestionDocument
+class SubQuestionDocument
 {
   /** @ODM\Id */
   private $id;

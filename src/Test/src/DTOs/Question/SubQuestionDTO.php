@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Test\DTOs\Question;
 
-class QuestionDTO implements \JsonSerializable
+class SubQuestionDTO implements \JsonSerializable
 {
+    protected $id;
     protected $content;
     protected $order;
 
@@ -82,6 +83,26 @@ class QuestionDTO implements \JsonSerializable
     public function setOrder($order)
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
 
         return $this;
     }

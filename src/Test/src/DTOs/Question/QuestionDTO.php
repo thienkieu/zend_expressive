@@ -12,11 +12,16 @@ class QuestionDTO
     protected $subType;
     protected $source;
     
-
     /**
      * @var SubQuestionDTO[]
      */
     protected $subQuestions;
+
+    public function __construct()
+    {
+        $this->subQuestions = [];
+    }
+
     
     /**
      * Get the value of content
@@ -138,6 +143,20 @@ class QuestionDTO
     public function setSubQuestions($subQuestions)
     {
         $this->subQuestions = $subQuestions;
+
+        return $this;
+    }
+
+    /**
+     * Add the value of subQuestions
+     *
+     * @param  SubQuestionDTO  $subQuestion
+     *
+     * @return  self
+     */ 
+    public function addSubQuestion($subQuestion)
+    {
+        $this->subQuestions[] = $subQuestions;
 
         return $this;
     }
