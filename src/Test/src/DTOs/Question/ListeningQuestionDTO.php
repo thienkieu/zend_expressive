@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Test\DTOs;
+namespace Test\DTOs\Question;
 
-class ListeningSectionDTO extends SectionDTO implements \JsonSerializable
+class ListeningQuestionDTO extends QuestionDTO implements \JsonSerializable
 {
     protected $path;
     protected $repeat;
@@ -53,7 +53,7 @@ class ListeningSectionDTO extends SectionDTO implements \JsonSerializable
         $ret = new \stdClass();
         $ret->content = $this->getContent();
         $ret->repeat = $this->getRepeat();
-        $ret->questions = $this->getQuestions();
+        $ret->subQuestions = $this->getSubQuestions();
         $ret->path = $this->getPath();
         return $ret;
     }

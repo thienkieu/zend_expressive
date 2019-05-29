@@ -35,7 +35,7 @@ class RequestToDTOMiddleware implements MiddlewareInterface
         $rotuer = $request->getAttribute(RouteResult::class);
         $routerName = $rotuer->getMatchedRouteName();
         if ($routerName) {
-            $appConfig = $this->container->get('config');
+            $appConfig = $this->container->get(\Config\AppConstant::AppConfig);
             $routertoDTO = $appConfig['requestToDTO'];
             if (isset($routertoDTO[$routerName])) {
                 $dtoName = $routertoDTO[$routerName];
@@ -52,7 +52,10 @@ class RequestToDTOMiddleware implements MiddlewareInterface
                 $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
                 $dto = $convertorToDTO->convertToDTO($request);
                 
-                return $handler->handle($request->withAttribute('dtoObject', $dto));
+                return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $dto));
+            } else {
+                $body =  $request->getParsedBody();
+                return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $body));
             }
         }
         

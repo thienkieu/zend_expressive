@@ -2,17 +2,34 @@
 
 declare(strict_types=1);
 
-namespace Test\DTOs;
+namespace Test\DTOs\Question;
 
-class QuestionDTO implements \JsonSerializable
+class AnswerDTO implements \JsonSerializable
 {
     protected $content;
+    protected $isCorrect;
     protected $order;
+    
 
     /**
-     * @var AnswerDTO[]
-     */
-    protected $answers;
+     * Get the value of isCorrect
+     */ 
+    public function getIsCorrect()
+    {
+        return $this->isCorrect;
+    }
+
+    /**
+     * Set the value of isCorrect
+     *
+     * @return  self
+     */ 
+    public function setIsCorrect($isCorrect)
+    {
+        $this->isCorrect = $isCorrect;
+
+        return $this;
+    }
 
     /**
      * Get the value of content
@@ -34,34 +51,10 @@ class QuestionDTO implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * Get the value of answers
-     *
-     * @return  AnswerDTO[]
-     */ 
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
-
-    /**
-     * Set the value of answers
-     *
-     * @param  AnswerDTO[]  $answers
-     *
-     * @return  self
-     */ 
-    public function setAnswers($answers)
-    {
-        $this->answers = $answers;
-
-        return $this;
-    }
-
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->content = $this->getContent();
-        $ret->answers = $this->getAnswers();
+        $ret->isCorrect = $this->getIsCorrect();
         $ret->order = $this->getOrder();
         return $ret;
     }

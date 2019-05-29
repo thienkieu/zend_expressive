@@ -34,7 +34,7 @@ use Zend\Expressive\Authentication\OAuth2;
  * );
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
-    $app->get('/', [Zend\Expressive\Authentication\AuthenticationMiddleware::class, App\Handler\HomePageHandler::class], 'home');
+    $app->get('/', [App\Handler\HomePageHandler::class], 'home');
    // App\Middleware\ValidatorMiddleware::class,
     //$app->get('/', Zend\Expressive\Authentication\AuthenticationMiddleware::class, App\Handler\HomePageHandler::class, 'home');
     $app->get('/view/{name}', [App\Validator\ValidatorMiddleware::class, App\Handler\ViewPageHandler::class], 'view');
@@ -44,7 +44,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/publickey', App\Handler\GetPublicKeyHandler::class, 'api.publickey');
 
     
-    $app->get('/test/create-test', Test\Handlers\CreateTestHandler::class, 'createTest');
+    $app->post('/test/create-test', Test\Handlers\CreateTestHandler::class, 'createTest');
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 
     $app->get('/test/search-section', Test\Handlers\SearchSectionHandler::class, 'search');
@@ -63,12 +63,15 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     ], 'section.create');
     */
     
-    $app->post('/coordinator/section/create', Test\Handlers\CreateSectionHandler::class, 'section.create');
+    // Question
+    $app->post('/coordinator/questions/create', Test\Handlers\CreateSectionHandler::class, 'questions.create');
+    $app->post('/coordinator/questions/import', Test\Handlers\ImportQuestionHandler::class, 'questions.import');
 
 
     //odm auth
     $app->get('/odmauth/setup', ODMAuth\Handler\SetupSampleDataHandler::class, 'odmauth.setup');
 
     
+
     
 };

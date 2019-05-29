@@ -1,4 +1,4 @@
 <?php
 return array(
-    'Skeleton Application' => 'Skelett Applikation En Translator',    
+    'Skeleton Application' => 'Skelett Applikation En Translator %s',    
 );

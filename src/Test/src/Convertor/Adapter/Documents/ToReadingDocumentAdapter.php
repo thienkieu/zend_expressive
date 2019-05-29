@@ -18,7 +18,7 @@ class ToReadingDocumentAdapter implements ConvertAdapterInterface {
     
     public function convert($dto) 
     {  
-        $document = new \Test\Documents\ReadingSectionDocument();
+        $document = new \Test\Documents\Section\ReadingSectionDocument();
         $document->setContent(json_encode($dto->getContent()));
 
         $toQuestionDocumentAdatper = new ToQuestionDocumentAdapter();

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Test\DTOs;
+namespace Test\DTOs\Question;
 
-class ReadingSectionDTO extends SectionDTO implements \JsonSerializable
+class ReadingQuestionDTO extends QuestionDTO implements \JsonSerializable
 {
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->content = $this->getContent();
-        $ret->questions = $this->getQuestions();
+        $ret->subQuestions = $this->getSubQuestions();
         return $ret;
     }
 }

@@ -18,7 +18,7 @@ class ToWritingDocumentAdapter implements ConvertAdapterInterface {
     
     public function convert($dto) 
     {  
-        $document = new \Test\Documents\WritingSectionDocument();
+        $document = new \Test\Documents\Section\WritingSectionDocument();
         $document->setContent(json_encode($dto->getContent()));
 
         $toQuestionDocumentAdatper = new ToQuestionDocumentAdapter();

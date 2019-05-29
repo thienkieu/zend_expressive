@@ -40,14 +40,14 @@ class MultipartJsonStrategy implements StrategyInterface
     {
         $rawBody = $request->getParsedBody();
 
-        if (empty($rawBody) || empty($rawBody['data'])) {
+        if (empty($rawBody) || empty($rawBody[\Config\AppConstant::RequestDataFieldName])) {
             return $request
                 ->withAttribute('rawBody', $rawBody)
-                ->withParsedBody(null);
+                ->withParsedBody(new \stdClass());
         }
 
 
-        $parsedBody = json_decode((string)$rawBody['data'], false);
+        $parsedBody = json_decode((string)$rawBody[\Config\AppConstant::RequestDataFieldName], false);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new MalformedRequestBodyException(sprintf(
@@ -57,7 +57,7 @@ class MultipartJsonStrategy implements StrategyInterface
         }
 
         return $request
-            ->withAttribute('rawBody', $rawBody['data'])
+            ->withAttribute('rawBody', $rawBody[\Config\AppConstant::RequestDataFieldName])
             ->withParsedBody($parsedBody);
     }
 }

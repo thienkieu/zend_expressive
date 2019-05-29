@@ -7,7 +7,6 @@ namespace Infrastructure\Convertor;
 use Infrastructure\Convertor\ConvertAdapterInterface;
 
 abstract class ToDTOAdapter implements ConvertAdapterInterface {
-    
     public function convert($request) 
     {  
         $dtoClass = $this->getDTOClass();

@@ -47,7 +47,7 @@ class HomePageHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
         $translator = $this->container->get('translator');
-        $message = $translator->translate('Skeleton Application');
+        $message = $translator->translate('Skeleton Application',['%abc%' => 'def']);
         $currentLocale = $translator->getLocale();
 
         $sectionService = $this->container->get(\Test\Services\SectionServiceInterface::class);

@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents;
+namespace Test\Documents\Section;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,24 +8,33 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ODM\EmbeddedDocument
  */
 
-class TestSectionDocument
+class QuestionDocument
 {
   /** @ODM\Id */
   private $id;
 
+  
   /** @ODM\Field(type="string") */
   private $content;
 
   /** @ODM\Field(type="int") */
   private $order;
 
-  /** @ODM\Embedded */
-  private $sections;
+  /** @ODM\Field(type="int") */
+  private $selectedAnswer;
+
+  /** @ODM\EmbedMany(targetDocument="AnswerDocument") */
+  private $answers;
 
   public function __construct()
   {
-    $this->sections = new ArrayCollection();
-  } 
+    $this->answers = new ArrayCollection();
+  }
+
+  public function addAnswer($answer){
+    $this->answers->add($answer);
+  }
+
 
   /**
    * Get the value of id
@@ -68,6 +77,26 @@ class TestSectionDocument
   }
 
   /**
+   * Get the value of answers
+   */ 
+  public function getAnswers()
+  {
+    return $this->answers;
+  }
+
+  /**
+   * Set the value of answers
+   *
+   * @return  self
+   */ 
+  public function setAnswers($answers)
+  {
+    $this->answers = $answers;
+
+    return $this;
+  }
+
+  /**
    * Get the value of order
    */ 
   public function getOrder()
@@ -88,21 +117,21 @@ class TestSectionDocument
   }
 
   /**
-   * Get the value of sections
+   * Get the value of selectedAnswer
    */ 
-  public function getSections()
+  public function getSelectedAnswer()
   {
-    return $this->sections;
+    return $this->selectedAnswer;
   }
 
   /**
-   * Set the value of sections
+   * Set the value of selectedAnswer
    *
    * @return  self
    */ 
-  public function setSections($sections)
+  public function setSelectedAnswer($selectedAnswer)
   {
-    $this->sections = $sections;
+    $this->selectedAnswer = $selectedAnswer;
 
     return $this;
   }

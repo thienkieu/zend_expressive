@@ -46,6 +46,7 @@ class UploadFileMiddleware implements MiddlewareInterface
                     $messages[] =  $translator->translate('Size of upload file can not larger than');
                 }
                 $fileType = $file->getClientMediaType();
+                
                 if (!in_array($fileType,  $uploadFileTypes)) {
                     $isError = true;
                     
@@ -57,13 +58,13 @@ class UploadFileMiddleware implements MiddlewareInterface
             if ($isError) {
                 return CommonFunction::buildResponseFormat(!$isError, $messages);
             }
-
+            
             foreach($files as $file) {
                 $file->moveTo($uploadToFolder.'/'.$file->getclientFilename()) ;        
                 $body->$key = $uploadToFolder.'/'.$file->getclientFilename();
             }
 
-            return $handler->handle($request->withAttribute('parsedBody', $body));
+            return $handler->handle($request->withParsedBody($body));
         }
 
         return $handler->handle($request);

@@ -47,32 +47,44 @@ class VerifyODMConfigHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $dm =  $this->container->get('documentManager');        
+        $dm =  $this->container->get('documentManager');
         $repository = $dm->getRepository(Documents\SectionDocument::class);
-        $obj = $repository->find("5cc12636ce10c91f10004f3b");
+        $obj = $repository->find("5cdbba6ace10c914380016a5");
+        //$writing = new \Test\Documents\WritingSectionDocument();
+        //$writing->setContent('this is content writing');
+
+        $reading = new \Test\Documents\ReadingSectionDocument();
+        $reading->setContent('this is reading content');
+        $reading->addWriting($obj);
+
+        $dm->persist($reading);
+        $dm->flush();
+
+        // $repository = $dm->getRepository(Documents\SectionDocument::class);
+        // $obj = $repository->find("5cc12636ce10c91f10004f3b");
                
-        $builder = $dm->createQueryBuilder(Documents\SectionDocument::class);
-        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*d.*/i'));
-        $query = $builder->getQuery();
-        $documents = $query->execute();
+        // $builder = $dm->createQueryBuilder(Documents\SectionDocument::class);
+        // $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*d.*/i'));
+        // $query = $builder->getQuery();
+        // $documents = $query->execute();
         
-        $hydrator = new ReflectionHydrator();
-        $data = $hydrator->extract($obj);
+        // $hydrator = new ReflectionHydrator();
+        // $data = $hydrator->extract($obj);
        
-        foreach($documents as $document) {
+        // foreach($documents as $document) {
 
-            $d = $hydrator->extract($document);
+        //     $d = $hydrator->extract($document);
 
-            $questions = $document->getQuestions();
-            $qJson = [];
-            foreach($questions as $q) {
-                 $qJson[]= $hydrator->extract($q);
-            }
-            $d['jsonQuestions'] = $qJson;
+        //     $questions = $document->getQuestions();
+        //     $qJson = [];
+        //     foreach($questions as $q) {
+        //          $qJson[]= $hydrator->extract($q);
+        //     }
+        //     $d['jsonQuestions'] = $qJson;
 
-            $documentsJson = $d;
+        //     $documentsJson = $d;
 
-        }
+        // }
        /* $questionContent  = [];
         foreach($documents as $document){
             $questions = $document->getQuestions();
@@ -85,10 +97,10 @@ class VerifyODMConfigHandler implements RequestHandlerInterface
             'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
            // 'content' => $questionContent,
-            'obj' => $obj->getId(),
-            'module' => 'Test',
-            'data' => $data,
-            'documents' => $documentsJson,
+            // 'obj' => $obj->getId(),
+            // 'module' => 'Test',
+            // 'data' => $data,
+            // 'documents' => $documentsJson,
         ]);
         
     }

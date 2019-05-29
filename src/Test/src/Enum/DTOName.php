@@ -7,4 +7,5 @@ abstract class DTOName
     const Writing = 'writing';
     const Listening = 'listening';
     const Section = \Test\DTOs\SectionDTO::class;
+    const Test = \Test\DTOs\Test\BaseTestDTO::class;
 }

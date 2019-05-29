@@ -36,6 +36,7 @@ return [
             Infrastructure\Convertor\RequestToDTOMiddleware::class => Infrastructure\Factory\BaseFactory::class,
             Infrastructure\Validator\ValidatorRequestInterface::class => Infrastructure\Validator\ValidatorRequestFactory::class,
             Infrastructure\Middleware\UploadFileMiddleware::class => Infrastructure\Factory\BaseFactory::class,
+            
 
             Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class => Infrastructure\Factory\BodyParamsMiddlewareFactory::class,
             

@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents;
+namespace Test\Documents\Section;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;

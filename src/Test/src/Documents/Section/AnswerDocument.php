@@ -1,54 +1,44 @@
 <?php
-namespace Test\Documents;
+namespace Test\Documents\Section;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
  * @ODM\EmbeddedDocument
  */
 
-class QuestionDocument
+class AnswerDocument
 {
   /** @ODM\Id */
   private $id;
 
-  
   /** @ODM\Field(type="string") */
   private $content;
+
+  /** @ODM\Field(type="boolean") */
+  private $isCorrect;
 
   /** @ODM\Field(type="int") */
   private $order;
 
-  /** @ODM\EmbedMany(targetDocument="AnswerDocument") */
-  private $answers;
-
-  public function __construct()
-  {
-    $this->answers = new ArrayCollection();
-  }
-
-  public function addAnswer($answer){
-    $this->answers->add($answer);
-  }
-
+  
 
   /**
-   * Get the value of id
+   * Get the value of isCorrect
    */ 
-  public function getId()
+  public function getIsCorrect()
   {
-    return $this->id;
+    return $this->isCorrect;
   }
 
   /**
-   * Set the value of id
+   * Set the value of isCorrect
    *
    * @return  self
    */ 
-  public function setId($id)
+  public function setIsCorrect($isCorrect)
   {
-    $this->id = $id;
+    $this->isCorrect = $isCorrect;
 
     return $this;
   }
@@ -74,21 +64,21 @@ class QuestionDocument
   }
 
   /**
-   * Get the value of answers
+   * Get the value of id
    */ 
-  public function getAnswers()
+  public function getId()
   {
-    return $this->answers;
+    return $this->id;
   }
 
   /**
-   * Set the value of answers
+   * Set the value of id
    *
    * @return  self
    */ 
-  public function setAnswers($answers)
+  public function setId($id)
   {
-    $this->answers = $answers;
+    $this->id = $id;
 
     return $this;
   }

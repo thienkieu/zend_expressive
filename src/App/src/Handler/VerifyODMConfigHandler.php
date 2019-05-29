@@ -47,17 +47,28 @@ class VerifyODMConfigHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $dm =  $this->container->get('documentManager');        
+        $dm =  $this->container->get('documentManager');    
+        
+        $writing = new \Test\Documents\WritingSectionDocument();
+        $writing->setContent('this is content writing');
+
+        $reading = new \Test\Documents\ReadingSectionDocument();
+        $reading->setContent('this is reading content');
+        $reading->addWriting($writing);
+
+        $dm->persist($reading);
+        $dm->flush();
+
         //$repository = $dm->getRepository(Documents\SectionDocument::class);
         //$obj = $repository->find("5caac4c7ce10c916c8007032");
                
-        $builder = $dm->createQueryBuilder(array(Documents\ReadingSectionDocument::class, Documents\ListeningSectionDocument::class));
-        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*dsf*/i'));
-        $query = $builder->getQuery();
-        $documents = $query->execute();
-
-        $hydrator = new ReflectionHydrator();
-        $data = $hydrator->extract($documents);
+        //$builder = $dm->createQueryBuilder(array(Documents\ReadingSectionDocument::class, Documents\ListeningSectionDocument::class));
+        //$builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*dsf*/i'));
+        //$query = $builder->getQuery();
+        //$documents = $query->execute();
+//
+        //$hydrator = new ReflectionHydrator();
+        //$data = $hydrator->extract($documents);
 
         // $questionContent  = [];
         // foreach($documents as $document){
@@ -70,8 +81,8 @@ class VerifyODMConfigHandler implements RequestHandlerInterface
         return new JsonResponse([
             'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
             'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
-            'content' => $questionContent,           
-            'data' => $data,
+            //'content' => $questionContent,           
+            //'data' => $data,
         ]);
         
     }

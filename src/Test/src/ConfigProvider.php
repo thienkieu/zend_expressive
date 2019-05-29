@@ -38,16 +38,26 @@ class ConfigProvider
             ],
             'factories'  => [
                 Handlers\VerifyODMConfigHandler::class => \App\Factory\HandlerFactory::class,
-                Handlers\CreateTestHandler::class => \App\Factory\HandlerFactory::class,
-                Handlers\CreateSectionHandler::class => \App\Factory\HandlerFactory::class,
+                Handlers\CreateTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\CreateSectionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\ImportQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
+                Services\SectionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\TestService::class => \Infrastructure\Factory\BaseFactory::class,
+                
+                Services\AdvanceTestService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\SectionService::class => \Infrastructure\Factory\BaseFactory::class,
-                //Services\SectionService::class => InvokableFactory::class,
+                Services\TestServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                
+                Services\ImportQuestionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\ImportQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
             ],
 
             'aliases' => [
-                Services\SectionServiceInterface::class => Services\SectionService::class
+                //Services\SectionServiceInterface::class => Services\SectionService::class,
+                
             ],
         ];
     }

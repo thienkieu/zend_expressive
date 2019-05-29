@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Test\Services;
 
-use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
-use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Zend\Log\Logger;
 
-class SectionService implements SectionServiceInterface
+use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
+use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
+use Infrastructure\Interfaces\HandlerInterface;
+
+class SectionService implements SectionServiceInterface, HandlerInterface
 {
     private $container;
     private $dm;
@@ -20,6 +22,10 @@ class SectionService implements SectionServiceInterface
         $this->dm = $this->container->get('documentManager');
     }
 
+    public function isHandler($param){
+        return true;
+    }
+    
     public function createSection(\Test\DTOS\SectionDTO $sectionDTO, & $dto, & $messages) {
         $messages = [];
 
@@ -27,7 +33,6 @@ class SectionService implements SectionServiceInterface
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($sectionDTO);
 
-            //echo '<pre>'.print_r($document, true).'</pre>'; die;
             $this->dm->persist($document);
             $this->dm->flush();
             

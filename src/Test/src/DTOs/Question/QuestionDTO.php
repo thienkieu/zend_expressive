@@ -2,18 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Test\DTOs;
+namespace Test\DTOs\Question;
 
-class SectionDTO
+class QuestionDTO
 {
     protected $id;
     protected $type;
     protected $content;
+    protected $subType;
+    protected $source;
+    
 
     /**
-     * @var QuestionDTO[]
+     * @var SubQuestionDTO[]
      */
-    protected $questions;
+    protected $subQuestions;
     
     /**
      * Get the value of content
@@ -76,25 +79,65 @@ class SectionDTO
     }
 
     /**
-     * Get the value of questions
-     *
-     * @return  QuestionDTO[]
+     * Get the value of subType
      */ 
-    public function getQuestions()
+    public function getSubType()
     {
-        return $this->questions;
+        return $this->subType;
     }
 
     /**
-     * Set the value of questions
-     *
-     * @param  QuestionDTO[]  $questions
+     * Set the value of subType
      *
      * @return  self
      */ 
-    public function setQuestions($questions)
+    public function setSubType($subType)
     {
-        $this->questions = $questions;
+        $this->subType = $subType;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of source
+     */ 
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * Set the value of source
+     *
+     * @return  self
+     */ 
+    public function setSource($source)
+    {
+        $this->source = $source;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of subQuestions
+     *
+     * @return  SubQuestionDTO[]
+     */ 
+    public function getSubQuestions()
+    {
+        return $this->subQuestions;
+    }
+
+    /**
+     * Set the value of subQuestions
+     *
+     * @param  SubQuestionDTO[]  $subQuestions
+     *
+     * @return  self
+     */ 
+    public function setSubQuestions($subQuestions)
+    {
+        $this->subQuestions = $subQuestions;
 
         return $this;
     }
