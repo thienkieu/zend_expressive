@@ -2,15 +2,24 @@
 namespace Test\Documents\Test;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
  * @ODM\Document
  */
 
-class CRMTestDocument extends BaseTestDocument
-{  
+class TestWithSectionDocument extends BaseTestDocument
+{
+  /** @ODM\EmbedMany(targetDocument="SectionDocument") */
+  private $sections;
+  
+  public function __construct()
+  {
+    $this->sections = new ArrayCollection();
+  }
+
   /**
-   * Get "reading"="ReadingSectionDocument",
+   * Get the value of sections
    */ 
   public function getSections()
   {
@@ -18,7 +27,7 @@ class CRMTestDocument extends BaseTestDocument
   }
 
   /**
-   * Set "reading"="ReadingSectionDocument",
+   * Set the value of sections
    *
    * @return  self
    */ 
@@ -29,8 +38,8 @@ class CRMTestDocument extends BaseTestDocument
     return $this;
   }
 
-  /**
-   * Add
+   /**
+   * Add the value of sections
    *
    * @return  self
    */ 

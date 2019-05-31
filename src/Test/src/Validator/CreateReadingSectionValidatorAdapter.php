@@ -31,8 +31,8 @@ class CreateReadingSectionValidatorAdapter implements ValidatorAdapterInterface
     {
         $name = $request->getAttribute(AppConstant::RequestDTOName);
         $body = $request->getParsedBody();
-           
-        $type = $body->type;
+        
+        $type = isset($body->type) ? $body->type: '';
         if ($name === DTOName::Section && $type === DTOName::Reading ) {
             return true;
         }

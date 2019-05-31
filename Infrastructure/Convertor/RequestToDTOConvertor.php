@@ -20,11 +20,11 @@ class RequestToDTOConvertor implements RequestToDTOConvertorInterface {
 
     
     public function convertToDTO($request) {
-        
+        $jsonData = $request->getParsedBody();
         foreach($this->adapters as $adapter) {
             $adapterInstance = new $adapter();
             if ($adapterInstance->isHandle($request)) {
-                return $adapterInstance->convert($request);
+                return $adapterInstance->convert($jsonData);
             }
         }
 

@@ -7,5 +7,5 @@ namespace Test\Services;
 
 interface TestServiceInterface
 {
-    public function createTest(\Test\DTOs\TestDTO $testDTO,  & $dto, & $messages);
+    public function createTest(\Test\DTOs\Test\BaseTestDTO $testDTO,  & $dto, & $messages);
 }

@@ -7,7 +7,7 @@ namespace Test\Convertor\Adapter\DTOs;
 use Infrastructure\Convertor\ConvertAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromQuestionDocumentAdapter implements ConvertAdapterInterface {
+class FromSubQuestionDocumentAdapter implements ConvertAdapterInterface {
     
     private $container;
     /**
@@ -20,7 +20,7 @@ class FromQuestionDocumentAdapter implements ConvertAdapterInterface {
 
     public function isHandle($document) : bool
     {
-        if ($document instanceof \Test\Documents\Question\QuestionDocument) {
+        if ($document instanceof \Test\Documents\Question\SubQuestionDocument) {
             return true;
         }
 
@@ -28,8 +28,8 @@ class FromQuestionDocumentAdapter implements ConvertAdapterInterface {
     }
 
     public function convert($document) {
-        $dto = new \Test\DTOs\Question\QuestionDTO();
-        $dto->setContent(json_decode($document->getContent()));
+        $dto = new \Test\DTOs\Question\SubQuestionDTO();
+        $dto->setContent($document->getContent());
         $dto->setOrder($document->getOrder());
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);

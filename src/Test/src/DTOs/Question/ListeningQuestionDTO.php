@@ -55,6 +55,9 @@ class ListeningQuestionDTO extends QuestionDTO implements \JsonSerializable
         $ret->repeat = $this->getRepeat();
         $ret->subQuestions = $this->getSubQuestions();
         $ret->path = $this->getPath();
+        $ret->type = $this->getType();
+        $ret->id = $this->getId();
+        $ret->source = $this->getSource();
         return $ret;
     }
 

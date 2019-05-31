@@ -18,17 +18,20 @@ class ToListeningDocumentAdapter implements ConvertAdapterInterface {
     
     public function convert($dto) 
     {  
-        $document = new \Test\Documents\Section\ListeningSectionDocument();
+        $document = new \Test\Documents\Question\ListeningQuestionDocument();
         $document->setContent(json_encode($dto->getContent()));
         $document->setPath($dto->getPath());
         $document->setRepeat($dto->getRepeat());
+        $document->setSource($dto->getSource());
+        $document->setType($dto->getType());
+        $document->setSubType($dto->getSubType());
 
         $toQuestionDocumentAdatper = new ToQuestionDocumentAdapter();
-        $questions = $dto->getQuestions();
+        $questions = $dto->getSubQuestions();
 
         foreach($questions as $question) {
             $questionDocument = $toQuestionDocumentAdatper->convert($question);
-            $document->addQuestion($questionDocument);            
+            $document->addSubQuestion($questionDocument);            
         }
         
         return $document;

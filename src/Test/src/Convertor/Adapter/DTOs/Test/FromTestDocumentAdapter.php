@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Test\Convertor\Adapter\DTOs;
+namespace Test\Convertor\Adapter\DTOs\Test;
 
 use Infrastructure\Convertor\ConvertAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromQuestionDocumentAdapter implements ConvertAdapterInterface {
+class FromTestDocumentAdapter implements ConvertAdapterInterface {
     
     private $container;
     /**
@@ -20,7 +20,7 @@ class FromQuestionDocumentAdapter implements ConvertAdapterInterface {
 
     public function isHandle($document) : bool
     {
-        if ($document instanceof \Test\Documents\Question\QuestionDocument) {
+        if ($document instanceof \Test\Documents\Test\TestWithSectionDocument) {
             return true;
         }
 
@@ -28,18 +28,17 @@ class FromQuestionDocumentAdapter implements ConvertAdapterInterface {
     }
 
     public function convert($document) {
-        $dto = new \Test\DTOs\Question\QuestionDTO();
-        $dto->setContent(json_decode($document->getContent()));
-        $dto->setOrder($document->getOrder());
+        $dto = new \Test\DTOs\Test\TestWithSectionDTO();
+        $dto->setTitle($document->getTitle());
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
-        $answersDocuments = $document->getAnswers();
-        $answers = [];
-        foreach($answersDocuments as $a) {
-            $answers[] = $documentToDTOConvertor->convertToDTO($a);
+        $sectionDocuments = $document->getSections();
+        $sectionDTO = [];
+        foreach($sectionDocuments as $section) {
+            $sectionDTO[] = $documentToDTOConvertor->convertToDTO($section);
         }
-        $dto->setAnswers($answers);
+        $dto->setSections($sectionDTO);
 
         return $dto;
     }

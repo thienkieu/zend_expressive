@@ -19,7 +19,7 @@ class FromListeningDocumentAdapter implements ConvertAdapterInterface {
 
     public function isHandle($document) : bool
     {
-        if ($document instanceof \Test\Documents\ListeningSectionDocument) {
+        if ($document instanceof \Test\Documents\Question\ListeningQuestionDocument) {
             return true;
         }
 
@@ -27,19 +27,23 @@ class FromListeningDocumentAdapter implements ConvertAdapterInterface {
     }
 
     public function convert($document) {
-        $dto = new \Test\DTOs\ListeningSectionDTO();
+        $dto = new \Test\DTOs\Question\ListeningQuestionDTO();
         $dto->setContent(json_decode($document->getContent()));
         $dto->setRepeat($document->getRepeat());
         $dto->setPath($document->getPath());
+        $dto->setType($document->getType());
+        $dto->setSource($document->getSource());
+        $dto->setId($document->getId());
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
-        $questionDocuments = $document->getQuestions();
+        $questionDocuments = $document->getSubQuestions();
+       
         $questions = [];
         foreach($questionDocuments as $q) {
             $questions[] = $documentToDTOConvertor->convertToDTO($q);
         }
-        $dto->setQuestions($questions);
+        $dto->setSubQuestions($questions);
 
         return $dto;
     }

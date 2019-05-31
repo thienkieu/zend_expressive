@@ -26,19 +26,18 @@ class TestService implements TestServiceInterface, HandlerInterface
         return true;
     }
 
-    public function createTest(\Test\DTOs\TestDTO $testDTO, & $dto, & $messages) {
+    public function createTest(\Test\DTOs\Test\BaseTestDTO $testDTO, & $dto, & $messages) {
         $messages = [];
 
         try{
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $document = $dtoToDocumentConvertor->convertToDocument($sectionDTO);
-
-            //echo '<pre>'.print_r($document, true).'</pre>'; die;
+            $document = $dtoToDocumentConvertor->convertToDocument($testDTO);
+            
             $this->dm->persist($document);
             $this->dm->flush();
             
-            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-            $dto = $documentToDTOConvertor->convertToDTO($document);
+            //$documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+            //$dto = $documentToDTOConvertor->convertToDTO($document);
 
             return true;
         } catch(\Exception $e){

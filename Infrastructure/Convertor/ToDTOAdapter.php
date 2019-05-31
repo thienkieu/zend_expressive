@@ -7,12 +7,12 @@ namespace Infrastructure\Convertor;
 use Infrastructure\Convertor\ConvertAdapterInterface;
 
 abstract class ToDTOAdapter implements ConvertAdapterInterface {
-    public function convert($request) 
+    public function convert($jsonObject) 
     {  
         $dtoClass = $this->getDTOClass();
        
         $mapper = new \JsonMapper();
-        $dto = $mapper->map($request->getParsedBody(), new $dtoClass());
+        $dto = $mapper->map($jsonObject, new $dtoClass());
         return $dto;            
     }
 

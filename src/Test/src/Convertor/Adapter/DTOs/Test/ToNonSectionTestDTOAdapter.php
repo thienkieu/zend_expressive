@@ -10,13 +10,13 @@ use Infrastructure\Convertor\ToDTOAdapter;
 use Test\Enum\DTOName;
 use Config\AppConstant;
 
-class ToSectionTestDTOAdapter extends ToDTOAdapter {
+class ToNonSectionTestDTOAdapter extends ToDTOAdapter {
     public function isHandle($request) : bool
     {
         $name = $request->getAttribute(AppConstant::RequestDTOName);
         $body = $request->getParsedBody();
-        $type = $body->sections;
-        if ($name === DTOName::Test && !empty($type)) {
+        $type = isset($body->sections) ? $body->sections: '';
+        if ($name === DTOName::Test && empty($type)) {
             return true;
         }
 
@@ -24,6 +24,15 @@ class ToSectionTestDTOAdapter extends ToDTOAdapter {
     }
     
     public function getDTOClass() {
-        return \Test\DTOs\Test\ToSectionTestDTO::class;
+        return \Test\DTOs\Test\NonSectionTestDTO::class;
+    }
+
+    public function convert($request) 
+    {  
+        $dtoClass = $this->getDTOClass();
+       
+        $mapper = new \JsonMapper();
+        $dto = $mapper->map($request->getParsedBody(), new $dtoClass());
+        return $dto;            
     }
 }

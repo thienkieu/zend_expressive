@@ -4,68 +4,55 @@ declare(strict_types=1);
 
 namespace Test\DTOs\Test;
 
-class SectionDTO
+class QuestionDTO implements \JsonSerializable
 {
-
-    protected $type;
-
-    /**
-     * @var PickupQuestionDTO[]
-     */
-    protected $pickupInfo;  
+    protected $generateFrom;
+    protected $questionInfo;
 
     /**
-     * @var RandomQuestionDTO[]
-     */
-    protected $randomInfo;
-
-    /**
-     * Get the value of randomInfo
-     *
-     * @return  RandomQuestionDTO[]
+     * Get the value of questionInfo
      */ 
-    public function getRandomInfo()
+    public function getQuestionInfo()
     {
-        return $this->randomInfo;
+        return $this->questionInfo;
     }
 
     /**
-     * Set the value of randomInfo
-     *
-     * @param  RandomQuestionDTO[]  $randomInfo
+     * Set the value of questionInfo
      *
      * @return  self
      */ 
-    public function setRandomInfo($randomInfo)
+    public function setQuestionInfo($questionInfo)
     {
-        //convert to Question Type
-        
-        $this->randomInfo = $randomInfo;
+        $this->questionInfo = $questionInfo;
 
         return $this;
     }
 
     /**
-     * Get the value of pickupInfo
-     *
-     * @return  PickupQuestionDTO[]
+     * Get the value of generateFrom
      */ 
-    public function getPickupInfo()
+    public function getGenerateFrom()
     {
-        return $this->pickupInfo;
+        return $this->generateFrom;
     }
 
     /**
-     * Set the value of pickupInfo
-     *
-     * @param  PickupQuestionDTO[]  $pickupInfo
+     * Set the value of generateFrom
      *
      * @return  self
      */ 
-    public function setPickupInfo($pickupInfo)
+    public function setGenerateFrom($generateFrom)
     {
-        $this->pickupInfo = $pickupInfo;
+        $this->generateFrom = $generateFrom;
 
         return $this;
+    }
+
+    public function jsonSerialize() {
+        $ret = new \stdClass();
+        $ret->generateFrom = $this->getGenerateFrom();
+        $ret->questionInfo = $this->getQuestionInfo();       
+        return $ret;
     }
 }

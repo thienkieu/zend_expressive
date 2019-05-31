@@ -29,11 +29,11 @@ class QuestionDocument
   private $subType;
 
   /** @ODM\EmbedMany(targetDocument="SubQuestionDocument") */
-  private $questions;
+  private $subQuestions;
   
   public function __construct()
   {
-    $this->questions = new ArrayCollection();
+    $this->subQuestions = new ArrayCollection();
   }
 
   /**
@@ -140,9 +140,9 @@ class QuestionDocument
     /**
    * Get the value of questions
    */ 
-  public function getQuestions()
+  public function getSubQuestions()
   {
-    return $this->questions;
+    return $this->subQuestions;
   }
 
   /**
@@ -150,14 +150,14 @@ class QuestionDocument
    *
    * @return  self
    */ 
-  public function setQuestions($questions)
+  public function setSubQuestions($subQuestions)
   {
-    $this->questions = $questions;
+    $this->subQuestions = $subQuestions;
 
     return $this;
   }
 
-  public function addQuestion($question){
-    $this->questions->add($question);
+  public function addSubQuestion($subQuestion){
+    $this->subQuestions->add($subQuestion);
   }
 }

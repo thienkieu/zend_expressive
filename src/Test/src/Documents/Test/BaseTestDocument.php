@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents;
+namespace Test\Documents\Test;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
@@ -7,20 +7,16 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @ODM\Document(collection="test")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField("type")
- * @ODM\DiscriminatorMap({"testGroup"="TestWithGroupDocument", "normal"="TestDocument", "crm"="CRMTestDocument"})
+ * @ODM\DiscriminatorMap({"testGroup"="TestWithSectionDocument", "normal"="NormalTestDocument", "crm"="CRMTestDocument"})
  */
 
-class TestDocument
+class BaseTestDocument
 {
   /** @ODM\Id */
   protected $id;
 
   /** @ODM\Field(type="string") */
   protected $title;
-
-  /** @ODM\Field(type="int") */
-  protected $time;
-  
 
   /**
    * Get the value of title
@@ -38,26 +34,6 @@ class TestDocument
   public function setTitle($title)
   {
     $this->title = $title;
-
-    return $this;
-  }
-
-  /**
-   * Get the value of time
-   */ 
-  public function getTime()
-  {
-    return $this->time;
-  }
-
-  /**
-   * Set the value of time
-   *
-   * @return  self
-   */ 
-  public function setTime($time)
-  {
-    $this->time = $time;
 
     return $this;
   }

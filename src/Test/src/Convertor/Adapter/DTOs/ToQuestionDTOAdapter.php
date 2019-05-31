@@ -19,6 +19,6 @@ class ToQuestionDTOAdapter extends ToDTOAdapter {
     }
     
     public function getDTOClass() {
-        return \Test\DTOs\QuestionSectionDTO::class;
+        return \Test\DTOs\Question\QuestionDTO::class;
     }
 }

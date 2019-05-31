@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents;
+namespace Test\Documents\Test;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
@@ -9,15 +9,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 class NormalTestDocument extends BaseTestDocument
 {
-  /** @ODM\EmbedMany(discriminatorMap={
-   *     "reading"="ReadingSectionDocument",
-   *     "writing"="WritingSectionDocument",
-   *     "listening"="ListeningSectionDocument"
-   *   }) */
-  private $sections;
-
-  
-
   /**
    * Get "reading"="ReadingSectionDocument",
    */ 

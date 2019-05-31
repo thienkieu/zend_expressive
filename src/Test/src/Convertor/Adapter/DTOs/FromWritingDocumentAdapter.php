@@ -19,7 +19,7 @@ class FromWritingDocumentAdapter implements ConvertAdapterInterface {
 
     public function isHandle($document) : bool
     {
-        if ($document instanceof \Test\Documents\WritingSectionDocument) {
+        if ($document instanceof \Test\Documents\Question\WritingQuestionDocument) {
             return true;
         }
 
@@ -27,7 +27,7 @@ class FromWritingDocumentAdapter implements ConvertAdapterInterface {
     }
 
     public function convert($document) {
-        $dto = new \Test\DTOs\WritingSectionDTO();
+        $dto = new \Test\DTOs\Question\WritingQuestionDTO();
         $dto->setContent(json_decode($document->getContent()));
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);

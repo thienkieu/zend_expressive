@@ -10,7 +10,7 @@ use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 class FromAnswerDocumentAdapter implements ConvertAdapterInterface {
     public function isHandle($document) : bool
     {
-        if ($document instanceof \Test\Documents\AnswerDocument) {
+        if ($document instanceof \Test\Documents\Question\AnswerDocument) {
             return true;
         }
 
@@ -18,7 +18,7 @@ class FromAnswerDocumentAdapter implements ConvertAdapterInterface {
     }
 
     public function convert($document) {
-        $dto = new \Test\DTOs\AnswerDTO();
+        $dto = new \Test\DTOs\Question\AnswerDTO();
         $dto->setContent($document->getContent());
         $dto->setIsCorrect($document->getIsCorrect());
         $dto->setOrder($document->getOrder());

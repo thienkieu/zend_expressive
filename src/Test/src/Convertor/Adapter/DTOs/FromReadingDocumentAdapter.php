@@ -19,7 +19,7 @@ class FromReadingDocumentAdapter implements ConvertAdapterInterface {
 
     public function isHandle($document) : bool
     {
-        if ($document instanceof \Test\Documents\ReadingSectionDocument) {
+        if ($document instanceof \Test\Documents\Question\ReadingQuestionDocument) {
             return true;
         }
 
@@ -27,7 +27,7 @@ class FromReadingDocumentAdapter implements ConvertAdapterInterface {
     }
 
     public function convert($document) {
-        $dto = new \Test\DTOs\ReadingSectionDTO();
+        $dto = new \Test\DTOs\Question\ReadingQuestionDTO();
         $dto->setContent(json_decode($document->getContent()));
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);

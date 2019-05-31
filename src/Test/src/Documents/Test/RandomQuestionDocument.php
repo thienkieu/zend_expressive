@@ -2,25 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Test\DTOs\Test;
+namespace Test\Documents\Test;
 
-class RandomQuestionDTO extends QuestionDTO implements \JsonSerializable
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
+/** 
+ * @ODM\EmbeddedDocument
+ */
+class RandomQuestionDocument
 {
-    /**
-     * @var string
-     */
+    /** @ODM\Id */
+    protected $id;
+
+    /** @ODM\Field(type="string") */
     protected $type;
 
-    /**
-     * @var bool
-     */
+    /** @ODM\Field(type="bool") */
     protected $isDifferentSource;
     
+    /** @ODM\Field(type="int") */
     protected $numberQuestion;
 
-    /**
-     * @var string
-     */
+    /** @ODM\Field(type="string") */
     protected $subType;
 
     /**
@@ -115,14 +118,4 @@ class RandomQuestionDTO extends QuestionDTO implements \JsonSerializable
         return $this;
     }
 
-    public function jsonSerialize() {
-        $ret = new \stdClass();
-        $ret->type = $this->getType();
-        $ret->subType = $this->getSubType();
-        $ret->numberQuestion = $this->getNumberQuestion();    
-        $ret->isDifferentSource = $this->getIsDifferentSource();
-        $ret->generateFrom = $this->getGenerateFrom();
-        
-        return $ret;
-    }
 }

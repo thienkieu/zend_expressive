@@ -23,10 +23,13 @@ class CreateTestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
+        $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         $dm =  $this->container->get('documentManager'); 
-        $testService = $this->container->build(TestServiceInterface::class, [\Config\AppConstant::DTOKey=> new \stdClass()]);
+        $testService = $this->container->get(TestServiceInterface::class);
+        $ok = $testService->createTest($dto, $resultDTO, $messages);
         return new JsonResponse([
             'welcome' => 'Create Test Handler.',
+            'success' => $ok,
         ]);
     }
 }
