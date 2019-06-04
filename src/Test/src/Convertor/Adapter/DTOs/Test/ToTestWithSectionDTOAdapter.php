@@ -1,0 +1,43 @@
+<?php 
+
+declare(strict_types=1);
+
+namespace Test\Convertor\Adapter\DTOs\Test;
+
+use Zend\Hydrator\ReflectionHydrator;
+use Infrastructure\Convertor\ToDTOAdapter;
+
+use Test\Enum\DTOName;
+use Config\AppConstant;
+
+class ToTestWithSectionDTOAdapter extends ToDTOAdapter {
+    public function isHandle($dtoObject, $name) : bool
+    {
+        $type = isset($dtoObject->sections) ? $dtoObject->sections: '';
+        if ($name === DTOName::Test && !empty($type)) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    public function getDTOClass() {
+        return \Test\DTOs\Test\TestWithSectionDTO::class;
+    }
+
+    public function convert($jsonObject) 
+    {
+        $dtoObject = new \Test\DTOs\Test\TestWithSectionDTO();
+        $dtoObject->setTitle($jsonObject->title);
+        
+        $sectionDTOs = [];
+        foreach ($jsonObject->sections as $jsonSection) {
+            $section = $this->convertor->convertToDTO($jsonSection, \Test\DTOs\Test\SectionDTO::class);
+            $sectionDTOs[] = $section;
+        }
+
+        $dtoObject->setSections($sectionDTOs);
+        
+        return $dtoObject;            
+    }
+}

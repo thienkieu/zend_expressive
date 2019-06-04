@@ -1,0 +1,47 @@
+<?php 
+
+declare(strict_types=1);
+
+namespace Test\Convertor\Adapter\Documents;
+
+use Infrastructure\Convertor\ConvertAdapterInterface;
+
+class ToQuestionDocumentAdapter implements ConvertAdapterInterface {
+    protected $container;
+    protected $convertor;
+
+    /**
+     * Class constructor.
+     */
+    public function __construct($container, $convertor)
+    {
+        $this->container = $container;
+        $this->convertor = $convertor;
+    }
+    
+    public function isHandle($dtoObject) : bool
+    {
+        if ($dtoObject instanceof \Test\DTOs\Question\SubQuestionDTO) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    public function convert($dtoObject) 
+    {
+        $document = new \Test\Documents\Question\SubQuestionDocument();        
+        $document->setContent(json_encode($dtoObject->getContent()));
+        $document->setOrder($dtoObject->getOrder());
+        
+        $answers = $dtoObject->getAnswers();
+        foreach($answers as $answer){
+            $a = new \Test\Documents\Question\AnswerDocument();
+            $a->setContent($answer->getContent());
+            $a->setOrder($answer->getOrder());
+            $document->addAnswer($a);
+        }
+        
+        return $document;            
+    }
+}

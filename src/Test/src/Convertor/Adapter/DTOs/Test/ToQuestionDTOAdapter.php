@@ -1,0 +1,61 @@
+<?php 
+
+declare(strict_types=1);
+
+namespace Test\Convertor\Adapter\DTOs\Test;
+
+use Zend\Hydrator\ReflectionHydrator;
+use Infrastructure\Convertor\ToDTOAdapter;
+
+use Test\Enum\DTOName;
+use Config\AppConstant;
+
+class ToQuestionDTOAdapter extends ToDTOAdapter {
+    public function isHandle($dtoObject, $name) : bool
+    {
+        if ($name ===  \Test\DTOs\Test\QuestionDTO::class) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    public function getDTOClass() {
+        return \Test\DTOs\Test\QuestionDTO::class;
+    }
+
+    public function convert($jsonObject) 
+    {  
+        $dto = new \Test\DTOs\Test\QuestionDTO();
+        $dto->setGenerateFrom($jsonObject->generateFrom);
+        switch($jsonObject->generateFrom) {
+            case 'pickup': 
+                $question = $this->getPickupQuestion($jsonObject);
+                $dto->setQuestionInfo($question);
+            break;
+            case 'random':
+                $question = $this->getRandomQuestion($jsonObject);
+                $dto->setQuestionInfo($question);
+            break;
+            default:
+                return null;
+            break;
+        }
+        
+        return $dto;   
+    }
+
+    protected function getPickupQuestion($jsonObject) {
+        return $questionInfo = $question = $this->convertor->convertToDTO($jsonObject, \Test\DTOs\Question\QuestionDTO::class);
+    }
+
+    protected function getRandomQuestion($jsonObject) {
+        $dto = new \Test\DTOs\Test\RandomQuestionDTO();
+        $dto->setNumberSubQuestion($jsonObject->numberSubQuestion);
+        $dto->setType($jsonObject->type);
+        $dto->setSubType($jsonObject->subType);
+        $dto->setIsDifferentSource($jsonObject->isDifferentSource);
+
+        return $dto;
+    }
+}
