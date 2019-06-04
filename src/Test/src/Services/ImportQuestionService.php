@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test\Services;
 
 use Infrastructure\Interfaces\HandlerInterface;
+use Test\Exceptions\ImportQuestionException;
 
 class ImportQuestionService implements ImportQuestionServiceInterface, HandlerInterface
 {
@@ -23,7 +24,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     private $listeningType = 'Listening';
     private $writingType = 'Writing';
     private $imageFiles = 'MediaQuestion';
-
+    
     private $container;
 
     /**
@@ -42,11 +43,16 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         try {
             $translator = $this->container->get(\Config\AppConstant::Translator);
 
-            $extractResult = $this->extractZipFile($dtoObject->media, $this->imageFiles);
-            if (!$extractResult) {                
-                $messages[] = $translator->translate('Can not extract media file, Please check format again.');
-                return false;
+            $hasUploadMedia = false;
+            if (isset($dtoObject->media)) {
+                $hasUploadMedia = true;
+                $extractResult = $this->extractZipFile($dtoObject->media, $this->imageFiles);
+                if (!$extractResult) {                
+                    $messages[] = $translator->translate('Can not extract media file, Please check format again.');
+                    return false;
+                }
             }
+            
 
             if ( $xls = \SimpleXLSX::parse($dtoObject->file) ) {
                 $rows = $xls->rows();
@@ -66,7 +72,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                     
                     switch($row[$this->type]) {
                         case $this->readingType:        
-                            $question = $this->buildReadingQuestion($row);                        
+                            $question = $this->buildReadingQuestion($row, $hasUploadMedia);
+                            if ($question )                        
                             while(true){
                                 $subQuestion = $this->buildSubQuestion($row);
                                 $question->addSubQuestion($subQuestion);
@@ -83,7 +90,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                         break;
 
                         case $this->listeningType: 
-                            $question = $this->buildListeningQuestion($row);                        
+                            $question = $this->buildListeningQuestion($row, $hasUploadMedia);                        
                             while(true){
                                 $subQuestion = $this->buildSubQuestion($row);
                                 $question->addSubQuestion($subQuestion);
@@ -129,6 +136,9 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                 $messages[] = \SimpleXLSX::parseError();       
                 return false;
             }
+        } catch(ImportQuestionException $e) {
+            $messages[] =  $translator->translate('Please upload media file.');       
+            return false;                        
         } catch(\Exception $e) {
             
             $log = $this->container->get(\Config\AppConstant::Log);
@@ -148,12 +158,17 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         $question->setSubType($data[$this->subType]);
     }
 
-    protected function buildReadingQuestion($data){
+    protected function buildReadingQuestion($data, $hasUploadMedia){
         $readingQuestion = new \Test\Documents\Question\ReadingQuestionDocument();
         $this->buidGeneralQuestion($data, $readingQuestion);
 
         $content = $readingQuestion->getContent();
         $images = $data[$this->fileName];
+
+        if (!empty($images) && $hasUploadMedia === false) {
+            throw new ImportQuestionException('Please upload media file.');
+        }
+
         if (!empty($images)) {
             $images = \explode(',', $images);
             foreach ($images as $image) {
@@ -166,7 +181,11 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         return $readingQuestion;
     }
     
-    protected function buildListeningQuestion($data){
+    protected function buildListeningQuestion($data, $hasUploadMedia){
+        if ($hasUploadMedia === false) {
+            throw new ImportQuestionException('Please upload media file.');
+        }
+
         $listeningQuestion = new \Test\Documents\Question\ListeningQuestionDocument();
         $listeningQuestion->setRepeat($data[$this->repeatTime]);
         $listeningQuestion->setPath($this->imageFiles.'/'.$data[$this->fileName]);
