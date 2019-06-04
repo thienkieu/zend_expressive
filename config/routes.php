@@ -44,7 +44,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/publickey', App\Handler\GetPublicKeyHandler::class, 'api.publickey');
 
     
-    $app->post('/test/create-test', Test\Handlers\CreateTestHandler::class, 'test.create');
+    $app->post('/coordinator/test/create', Test\Handlers\CreateTestHandler::class, 'test.create');
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 
     $app->get('/test/search-section', Test\Handlers\SearchSectionHandler::class, 'search');

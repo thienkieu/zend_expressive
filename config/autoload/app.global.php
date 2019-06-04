@@ -85,7 +85,8 @@ return [
             'image/png',
             'image/gif',
             'image/jpeg',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/zip',
         ],
         'uploadFolder' => $dir.'/../Uploads',
         'maxUploadSizeAllow' => 1024,

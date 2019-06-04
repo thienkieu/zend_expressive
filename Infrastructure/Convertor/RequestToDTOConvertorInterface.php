@@ -7,5 +7,5 @@ namespace Infrastructure\Convertor;
 use Zend\Hydrator\ReflectionHydrator;
 
 interface RequestToDTOConvertorInterface {    
-    public function convertToDTO($request);
+    public function convertToDTO($dtoObject, $toDTOName);
 }

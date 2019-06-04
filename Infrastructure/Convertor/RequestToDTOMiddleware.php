@@ -48,9 +48,10 @@ class RequestToDTOMiddleware implements MiddlewareInterface
                 if (!$isValid) {
                     return $messageResponse;
                 }
-
+                
                 $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
-                $dto = $convertorToDTO->convertToDTO($request);
+                $jsonData = $request->getParsedBody();
+                $dto = $convertorToDTO->convertToDTO($jsonData, $dtoName);
                 
                 return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $dto));
             } else {

@@ -11,7 +11,12 @@ return [
         \Test\Convertor\Adapter\Documents\ToListeningDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToReadingDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToWritingDocumentAdapter::class,
-        \Test\Convertor\Adapter\Documents\ToTestDocumentAdapter::class
+        \Test\Convertor\Adapter\Documents\ToTestDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToQuestionDocumentAdapter::class,
+        
+        \Test\Convertor\Adapter\Documents\ToSectionDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\Test\ToRandomQuestionDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\Test\ToQuestionDocumentAdapter::class,
     ],
 
     'convertorDTOAdapters' => [
@@ -20,6 +25,7 @@ return [
         \Test\Convertor\Adapter\DTOs\ToWritingDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\ToTestWithSectionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\ToSectionDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\Test\ToQuestionDTOAdapter::class,  
     ],
 
     'convertorDocumentToDTOAdapters' => [

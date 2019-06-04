@@ -42,16 +42,14 @@ class UploadFileMiddleware implements MiddlewareInterface
                 if ($file->getSize() / 1024 > $maxUploadFileSize) {
                     $isError = true;
                     
-                    // TODO need implement translator with params.
-                    $messages[] =  $translator->translate('Size of upload file can not larger than');
+                    $messages[] =  $translator->translate('Size of upload file can not larger than', ['%max_size%'=> $maxUploadFileSize]);
                 }
                 $fileType = $file->getClientMediaType();
                 
                 if (!in_array($fileType,  $uploadFileTypes)) {
                     $isError = true;
                     
-                    // TODO need implement translator with params.
-                    $messages[] =  $translator->translate('File type is not support');
+                    $messages[] =  $translator->translate('File type is not support', ['%file_type%'=> $fileType]);
                 }            
             }
 
@@ -59,7 +57,7 @@ class UploadFileMiddleware implements MiddlewareInterface
                 return CommonFunction::buildResponseFormat(!$isError, $messages);
             }
             
-            foreach($files as $file) {
+            foreach($files as $key => $file) {
                 $file->moveTo($uploadToFolder.'/'.$file->getclientFilename()) ;        
                 $body->$key = $uploadToFolder.'/'.$file->getclientFilename();
             }

@@ -24,9 +24,9 @@ abstract class AppConstant
     /**
      * Question type
      */
-    const Reading = 'reading';
-    const Writing = 'writing';
-    const Listening = 'listening';
+    const Reading = 'Reading';
+    const Writing = 'Writing';
+    const Listening = 'Listening';
 
     /**
      * DTO key name

@@ -13,7 +13,7 @@ class RequestToDTOConvertorFactory
         $appConfig = $container->get('config');
         $convertorAdapters = $appConfig['convertorDTOAdapters'];
 
-        $convertor = new RequestToDTOConvertor($convertorAdapters);
+        $convertor = new RequestToDTOConvertor($container, $convertorAdapters);
         return $convertor;
     }
 }
