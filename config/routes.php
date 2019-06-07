@@ -53,7 +53,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/coordinator/test/tests', Test\Handlers\GetTestHandler::class, 'test.tests');
 
     //Exam
-    $app->get('/coordinator/exam/candidates', Test\Handlers\GetCandidateHandler::class, 'exam.create');
+    $app->get('/coordinator/exam/candidates', Test\Handlers\GetCandidateHandler::class, 'exam.candidates');
+    $app->post('/coordinator/exam/create', Test\Handlers\CreateExamHandler::class, 'exam.create');
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 
     $app->get('/test/search-section', Test\Handlers\SearchSectionHandler::class, 'search');

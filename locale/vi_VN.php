@@ -17,5 +17,6 @@ return array(
     'Listening must have radio file at question' => 'Listening must have radio file at question %lineNumber%',
     'Source is existed, Please check your spelling again!' => 'Source is existed, Please check your spelling again!',
     'Field \'%field%\' can not empty' => 'Field \'%field%\' can not empty',
+    'Question content can not empty' => 'Question content can not empty at line %lineNumber%',
 );
 

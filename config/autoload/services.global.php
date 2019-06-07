@@ -23,6 +23,9 @@ return [
         ],
         \Test\Services\SourceServiceInterface::class => [
             \Test\Services\SourceService::class,
+        ],
+        \Test\Services\ExamServiceInterface::class => [
+            \Test\Services\ExamService::class,
         ]
     ],
 ];

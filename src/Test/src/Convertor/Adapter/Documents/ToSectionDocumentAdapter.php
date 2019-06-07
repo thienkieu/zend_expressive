@@ -35,10 +35,9 @@ class ToSectionDocumentAdapter implements ConvertAdapterInterface {
         $document->setDescription($dto->getDescription());
                 
         $questions = $dto->getQuestions();
-        
         foreach($questions as $question) {
             $questionDocument = $this->convertor->convertToDocument($question);
-            $document->addQuestion($questionDocument);            
+            $document->addQuestion($questionDocument);          
         }
         
         return $document;            

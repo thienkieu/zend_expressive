@@ -1,13 +1,13 @@
 <?php
-namespace Test\Documents;
+namespace Test\Documents\Exam;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /** 
- * @ODM\Document(collection="exam_result_summary")
+ * @ODM\Document(collection="exam")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField("type")
- * @ODM\DiscriminatorMap({"english"="EnglishExamResultSummaryDocument", "testarchitect"="TestArchitectExamResultSummaryDocument", "oldEnglish"="OldEnglishExamResultSummaryDocument"})
+ * @ODM\DiscriminatorMap({"testWithSection"="ExamHasSectionTestDocument", "normal"="ExamNormalDocument"})
  */
 
 class ExamDocument
@@ -15,14 +15,14 @@ class ExamDocument
   /** @ODM\Id */
   protected $id;
 
-  /** @ODM\Field(type="string") */
-  protected $testId;
-
-  /** @ODM\EmbedOne(targetDocument="Test\BaseTestDocument") */
-  private $test;
-
   /** @ODM\Field(type="int") */
   protected $time;
+
+  /** @ODM\Field(type="string") */
+  protected $title;
+
+  /** @ODM\Field(type="timestamp") */
+  protected $startDate;
   
   /**
    * Get the value of id
@@ -45,46 +45,6 @@ class ExamDocument
   }
 
   /**
-   * Get the value of test
-   */ 
-  public function getTest()
-  {
-    return $this->test;
-  }
-
-  /**
-   * Set the value of test
-   *
-   * @return  self
-   */ 
-  public function setTest($test)
-  {
-    $this->test = $test;
-
-    return $this;
-  }
-
-  /**
-   * Get the value of testId
-   */ 
-  public function getTestId()
-  {
-    return $this->testId;
-  }
-
-  /**
-   * Set the value of testId
-   *
-   * @return  self
-   */ 
-  public function setTestId($testId)
-  {
-    $this->testId = $testId;
-
-    return $this;
-  }
-
-  /**
    * Get the value of time
    */ 
   public function getTime()
@@ -100,6 +60,46 @@ class ExamDocument
   public function setTime($time)
   {
     $this->time = $time;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of startDate
+   */ 
+  public function getStartDate()
+  {
+    return $this->startDate;
+  }
+
+  /**
+   * Set the value of startDate
+   *
+   * @return  self
+   */ 
+  public function setStartDate($startDate)
+  {
+    $this->startDate = $startDate;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of title
+   */ 
+  public function getTitle()
+  {
+    return $this->title;
+  }
+
+  /**
+   * Set the value of title
+   *
+   * @return  self
+   */ 
+  public function setTitle($title)
+  {
+    $this->title = $title;
 
     return $this;
   }

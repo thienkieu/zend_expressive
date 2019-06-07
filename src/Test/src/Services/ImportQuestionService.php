@@ -80,10 +80,10 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                     
                     switch($row[$this->type]) {
                         case $this->readingType:        
-                            $question = $this->buildReadingQuestion($row);
+                            $question = $this->buildReadingQuestion($row, $rowIndex + 1);
                             if ($question )                        
                             while(true){
-                                $subQuestion = $this->buildSubQuestion($row);
+                                $subQuestion = $this->buildSubQuestion($row, $rowIndex + 1);
                                 $question->addSubQuestion($subQuestion);
 
                                 $rowIndex += 1;
@@ -98,9 +98,9 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                         break;
 
                         case $this->listeningType: 
-                            $question = $this->buildListeningQuestion($row);                        
+                            $question = $this->buildListeningQuestion($row, $rowIndex + 1);                        
                             while(true){
-                                $subQuestion = $this->buildSubQuestion($row);
+                                $subQuestion = $this->buildSubQuestion($row, $rowIndex + 1);
                                 $question->addSubQuestion($subQuestion);
 
                                 $rowIndex += 1;
@@ -114,9 +114,9 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                         break;
 
                         case $this->writingType: 
-                            $question = $this->buildWritingQuestion($row);                        
+                            $question = $this->buildWritingQuestion($row, $rowIndex + 1);                        
                             while(true){
-                                $subQuestion = $this->buildSubQuestion($row);
+                                $subQuestion = $this->buildSubQuestion($row, $rowIndex + 1);
                                 $question->addSubQuestion($subQuestion);
 
                                 $rowIndex += 1;
@@ -184,11 +184,19 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         }
     }
 
-    protected function buildReadingQuestion($data){
+    protected function buildReadingQuestion($data, $lineNumber){
         $readingQuestion = new \Test\Documents\Question\ReadingQuestionDocument();
         $this->buidGeneralQuestion($data, $readingQuestion);
 
         $content = $readingQuestion->getContent();
+        if (empty($content)) {
+            $translatorParams = [
+                '%lineNumber%' => $lineNumber
+            ];
+            $error = $this->translator->translate('Question content can not empty', $translatorParams);
+            throw new ImportQuestionException($error);
+        }
+
         $images = $data[$this->fileName];
 
         if (!empty($images)) {
@@ -210,10 +218,10 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         return $readingQuestion;
     }
     
-    protected function buildListeningQuestion($data){
+    protected function buildListeningQuestion($data, $lineNumber){
         if (empty($data[$this->fileName])) {
             $translatorParams = [
-                '%lineNumber%' => $data[$this->id]
+                '%lineNumber%' => $lineNumber
             ];
             $error = $this->translator->translate('Listening must have radio file at question', $translatorParams);
             throw new ImportQuestionException($error);
@@ -233,17 +241,26 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         return $listeningQuestion;
     }
 
-    protected function buildWritingQuestion($data){
+    protected function buildWritingQuestion($data, $lineNumber){
         $writingQuestion = new \Test\Documents\Question\WritingQuestionDocument();
         $this->buidGeneralQuestion($data, $writingQuestion);
+        $content = $writingQuestion->getContent();
+        if (empty($content)) {
+            $translatorParams = [
+                '%lineNumber%' => $lineNumber
+            ];
+            $error = $this->translator->translate('Question content can not empty', $translatorParams);
+            throw new ImportQuestionException($error);
+        }
+
         return $writingQuestion;
     }
 
-    protected function buildSubQuestion($data){
+    protected function buildSubQuestion($data, $rowIndex){
         $subQuestion = new \Test\Documents\Question\SubQuestionDocument();
         $subQuestion->setContent($data[$this->question]);
         
-        $answers = $this->buildAnswers($data);
+        $answers = $this->buildAnswers($data, $rowIndex);
         $subQuestion->setAnswers($answers);
         
         return $subQuestion;
@@ -258,14 +275,14 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         return false;
     }
 
-    protected function buildAnswers($data){
+    protected function buildAnswers($data, $lineNumber){
         $numberColumns = count($data);
         $lstAnswers = [];
 
         $correctAnswerString = (string)$data[$this->correctAnswers];
-        if (empty($correctAnswerString)) {
+        if (empty($correctAnswerString) && $data[$this->type] !== $this->writingType) {
             $translatorParams = [
-                '%lineNumber%' => $data[$this->id]
+                '%lineNumber%' => $lineNumber
             ];
             $error = $this->translator->translate('Correct answer can not empty at question', $translatorParams);
             throw new ImportQuestionException($error);
@@ -276,10 +293,10 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         $numberCorrectAnswer = 0;
 
         for ($i=$this->answer; $i < $numberColumns; $i++) { 
-            if(empty($data[$i]) && ($isFirstAnswer || $this->hasValueAfterColumn($data, $i+1))) {
+            if(empty($data[$i]) && (($isFirstAnswer && $data[$this->type] !== $this->writingType) || $this->hasValueAfterColumn($data, $i+1))) {
                 $translatorParams = [
                     '%answerIndex%'=> $i - $this->answer + 1, 
-                    '%lineNumber%' => $data[$this->id]
+                    '%lineNumber%' => $lineNumber
                 ];
 
                 $error = $this->translator->translate('Answer can not empty at question', $translatorParams);
@@ -302,10 +319,10 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             
         }
 
-        if ($numberCorrectAnswer != count($correctAnswers)) {
+        if ($numberCorrectAnswer != count($correctAnswers) && $data[$this->type] !== $this->writingType) {
             $translatorParams = [
                 '%correctAnswer%' => $correctAnswerString,
-                '%lineNumber%' => $data[$this->id]
+                '%lineNumber%' => $lineNumber
             ];
             $error = $this->translator->translate('Correct answer is incorrect. There is not answer at question', $translatorParams);
             throw new ImportQuestionException($error);

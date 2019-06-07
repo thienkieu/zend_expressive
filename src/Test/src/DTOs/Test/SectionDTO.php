@@ -72,6 +72,12 @@ class SectionDTO implements \JsonSerializable
         return $this->questions;
     }
 
+    
+    /**
+     * Get the value of questions
+     *
+     * @return  QuestionDTO[]
+     */ 
     public function setQuestions($questions)
     {
         $this->questions = $questions;

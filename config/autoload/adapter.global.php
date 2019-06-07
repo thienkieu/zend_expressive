@@ -18,6 +18,9 @@ return [
         \Test\Convertor\Adapter\Documents\ToSectionDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\Test\ToRandomQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\Test\ToQuestionDocumentAdapter::class,
+
+        \Test\Convertor\Adapter\Documents\ToExamDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToCandidateDocumentAdapter::class,
     ],
 
     'convertorDTOAdapters' => [
@@ -28,6 +31,8 @@ return [
         \Test\Convertor\Adapter\DTOs\Test\ToTestWithSectionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\ToSectionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\ToQuestionDTOAdapter::class,  
+        \Test\Convertor\Adapter\DTOs\Exam\ToExamHasSectionTestDTOAdapter::class,  
+        \Test\Convertor\Adapter\DTOs\Exam\ToCandidateDTOAdapter::class,  
     ],
 
     'convertorDocumentToDTOAdapters' => [
@@ -43,6 +48,8 @@ return [
         \Test\Convertor\Adapter\DTOs\Test\FromSectionTestDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromTestWithSectionDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromRandomQuestionDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromCandidateDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromExamHasSectionTestDocumentAdapter::class,
     ],
 
     'validatorRequestAdapters' => [
