@@ -16,7 +16,7 @@ use Test\Enum\DTOName;
 class VerifyValidatorAdapter implements ValidatorAdapterInterface
 {
     
-    public function isHandle($request) : bool
+    public function isHandle($routerName, $request) : bool
     {
         $name = $request->getAttribute('dto_name');
         if ($name === DTOName::Listening) {

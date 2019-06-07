@@ -9,4 +9,5 @@ abstract class DTOName
     const Section = \Test\DTOs\Test\SectionDTO::class;
     const Test = \Test\DTOs\Test\BaseTestDTO::class;
     const QuestionDTO = \Test\DTOs\Question\QuestionDTO::class;
+    const SourceDTO = \Test\DTOs\Question\SourceDTO::class;
 }

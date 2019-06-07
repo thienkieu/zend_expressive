@@ -8,4 +8,13 @@ return array(
     'There is error when parsed excel file, Please check with admin' => 'There is error when parsed excel file, Please check with admin',
     'Your test have been created successfull!' => 'Your test have been created successfully!',
     'Please upload media file.' => 'Please upload media file.',
+    'Source is not exist.' => '"%sourceName%" is not exist, Please check spelling or creating source first!',
+    'File name is not exist.' => 'File "%fileName%" is not exist, Please update media file and upload again',
+    'File is not correct format.' => 'File \'%file%\' is not correct format.',
+    'Answer can not empty at question' => 'Answer %answerIndex% can not empty at question %lineNumber%',
+    'Correct answer can not empty at question' => 'Correct answer can not empty at question %lineNumber%',
+    'Correct answer is incorrect. There is not answer at question' => 'Correct answer is incorrect. There is not answer %correctAnswer% at question %lineNumber%',
+    'Listening must have radio file at question' => 'Listening must have radio file at question %lineNumber%',
+    'Source is existed, Please check your spelling again!' => 'Source is existed, Please check your spelling again!',
+    'Field \'%field%\' can not empty' => 'Field \'%field%\' is required',
 );

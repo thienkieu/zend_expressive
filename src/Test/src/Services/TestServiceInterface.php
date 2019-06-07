@@ -8,4 +8,5 @@ namespace Test\Services;
 interface TestServiceInterface
 {
     public function createTest(\Test\DTOs\Test\BaseTestDTO $testDTO,  & $dto, & $messages);
+    public function getTests(& $tests, & $messages, $pageNumber = 1, $itemPerPage = 25);
 }

@@ -17,6 +17,12 @@ return [
         ],
         \Test\Services\ImportQuestionServiceInterface::class => [
             \Test\Services\ImportQuestionService::class,
+        ],
+        \Test\Services\CandidateServiceInterface::class => [
+            \Test\Services\CandidateService::class,
+        ],
+        \Test\Services\SourceServiceInterface::class => [
+            \Test\Services\SourceService::class,
         ]
     ],
 ];

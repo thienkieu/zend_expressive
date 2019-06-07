@@ -52,6 +52,29 @@ class TestService implements TestServiceInterface, HandlerInterface
         }        
     }
 
+    public function getTests(& $ret, & $messages, $pageNumber = 1, $itemPerPage = 25) {
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+
+        $testRepository = $this->dm->getRepository(\Test\Documents\Test\BaseTestDocument::class);
+        $testDocuments = $testRepository->findAll();
+        
+        //TODO need pagination
+        $tests = [];
+        foreach ($testDocuments as $test) {
+            $dto = $documentToDTOConvertor->convertToDTO($test);
+            $tests[] = $dto;
+        }
+
+        $ret = new \stdClass();
+        $ret->data = $tests;
+        $totalItems = count($tests);
+        $ret->itemPerPage = $itemPerPage;
+        $ret->pageNumber = $pageNumber;
+        $ret->totalPage = $totalItems % $itemPerPage > 0 ? (int)($totalItems / $itemPerPage) + 1 : $totalItems / $itemPerPage;
+
+        return true;
+    }
+
     public function getSectionByContent($content) {
         $repository = $this->dm->getRepository(Documents\SectionDocument::class);
         $obj = $repository->find("5caac4c7ce10c916c8007032");

@@ -41,6 +41,10 @@ class ConfigProvider
                 Handlers\CreateTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\CreateSectionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ImportQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\GetCandidateHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\GetTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\CreateSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\GetSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
@@ -53,6 +57,12 @@ class ConfigProvider
                 
                 Services\ImportQuestionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\ImportQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
+
+                Services\CandidateServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\CandidateService::class => \Infrastructure\Factory\BaseFactory::class,
+
+                Services\SourceServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\SourceService::class => \Infrastructure\Factory\BaseFactory::class,
             ],
 
             'aliases' => [

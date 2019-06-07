@@ -21,7 +21,7 @@ class LocaleMiddleware implements MiddlewareInterface
     {
         $this->helper = $helper;
         if ($defaultLocale) {
-            $this->defaultLocale = $defaultLocale;
+            $this->defaultLocale = $defaultLocale;            
         }
     }
 
@@ -32,6 +32,7 @@ class LocaleMiddleware implements MiddlewareInterface
         $path = $uri->getPath();
 
         if (preg_match(self::REGEX_LOCALE, $path, $matches)) {
+            echo 1;
             $locale = $matches['locale'];
             Locale::setDefault(Locale::canonicalize($locale));
             $this->helper->setBasePath($locale);
@@ -53,9 +54,9 @@ class LocaleMiddleware implements MiddlewareInterface
         $acceptLanguage = $request->getHeaderLine('Accept-Language');
         if (!empty($acceptLanguage) && $acceptLanguage != '*') {
             $locale = \explode(',', $acceptLanguage);
-            if (strpos($locale[0],'_')) {
-                Locale::setDefault(Locale::canonicalize($locale[0]));
-            } else {
+            if (strpos($locale[0],'_') || strpos($locale[0],'-')) {
+                Locale::setDefault(Locale::canonicalize(str_replace('-','_',$locale[0])));
+            } else {                
                 $l = \explode(';', $locale[1]);
                 Locale::setDefault(Locale::canonicalize($l[0]));
             }

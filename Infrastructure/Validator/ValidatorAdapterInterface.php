@@ -8,6 +8,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 interface ValidatorAdapterInterface {
-    public function isHandle($request) : bool;
+    public function isHandle($routerName, $request) : bool;
     public function valid(ServerRequestInterface $request, ResponseInterface & $messageResponse): bool;
 }

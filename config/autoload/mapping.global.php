@@ -6,9 +6,11 @@ return [
     'requestToDTO' => [
         'section.create' => \Test\DTOs\SectionDTO::class,
         'test.create'   => \Test\DTOs\Test\BaseTestDTO::class,
+        'question.source.create'   => \Test\DTOs\Question\SourceDTO::class,
     ],
     'validator' => [
-        'section.create' => [            
+        'test.create' => [  
+            \Test\Validator\CreateTestWithSectionValidatorAdapter::class,         
         ]
     ]
 ];

@@ -7,7 +7,7 @@ namespace Test\Convertor\Adapter\DTOs\Test;
 use Infrastructure\Convertor\ConvertAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromTestDocumentAdapter implements ConvertAdapterInterface {
+class FromTestWithSectionDocumentAdapter implements ConvertAdapterInterface {
     
     private $container;
     /**

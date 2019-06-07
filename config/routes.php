@@ -43,13 +43,20 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/token', OAuth2\TokenEndpointHandler::class, 'api.token');
     $app->get('/publickey', App\Handler\GetPublicKeyHandler::class, 'api.publickey');
 
+    //Source
+    $app->post('/coordinator/question/source/create', Test\Handlers\CreateSourceHandler::class, 'question.source.create');
+    $app->get('/coordinator/question/sources', Test\Handlers\GetSourceHandler::class, 'question.sources');
+
     
+    //Test
     $app->post('/coordinator/test/create', Test\Handlers\CreateTestHandler::class, 'test.create');
+    $app->get('/coordinator/test/tests', Test\Handlers\GetTestHandler::class, 'test.tests');
+
+    //Exam
+    $app->get('/coordinator/exam/candidates', Test\Handlers\GetCandidateHandler::class, 'exam.create');
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 
     $app->get('/test/search-section', Test\Handlers\SearchSectionHandler::class, 'search');
-
-
 
     // Verify config
     $app->get('/verify-odm', Test\Handlers\VerifyODMConfigHandler::class, 'verifyODM');

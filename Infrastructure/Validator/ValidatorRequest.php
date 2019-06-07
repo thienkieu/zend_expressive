@@ -7,6 +7,7 @@ namespace Infrastructure\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
+use Zend\Expressive\Router\RouteResult;
 
 class ValidatorRequest implements ValidatorRequestInterface{
     
@@ -25,10 +26,14 @@ class ValidatorRequest implements ValidatorRequestInterface{
     
     public function valid(ServerRequestInterface $request, ResponseInterface & $messageResponse): bool
     {
-        foreach($this->adapters as $adapter) {
-            $adapterInstance = new $adapter($this->container);
-            if ($adapterInstance->isHandle($request)) {
-                return $adapterInstance->valid($request, $messageResponse);
+        $rotuer = $request->getAttribute(RouteResult::class);
+        $routerName = $rotuer->getMatchedRouteName();        
+        if ($routerName) {
+            foreach($this->adapters as $adapter) {
+                $adapterInstance = new $adapter($this->container);
+                if ($adapterInstance->isHandle($routerName, $request)) {
+                    return $adapterInstance->valid($request, $messageResponse);
+                }
             }
         }
 

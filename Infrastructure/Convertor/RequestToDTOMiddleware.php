@@ -33,7 +33,7 @@ class RequestToDTOMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
         $rotuer = $request->getAttribute(RouteResult::class);
-        $routerName = $rotuer->getMatchedRouteName();
+        $routerName = $rotuer->getMatchedRouteName();        
         if ($routerName) {
             $appConfig = $this->container->get(\Config\AppConstant::AppConfig);
             $routertoDTO = $appConfig['requestToDTO'];

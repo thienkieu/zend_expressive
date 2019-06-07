@@ -87,13 +87,19 @@ return [
             'image/jpeg',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'application/zip',
+            'application/x-zip-compressed',
+            'application/octet-stream',
         ],
         'uploadFolder' => $dir.'/../Uploads',
-        'maxUploadSizeAllow' => 1024,
+        'maxUploadSizeAllow' => 10024,
     ],
 
     'CORS' => [
         'headers.allow' => ['Content-Type']
-    ]
+    ],
 
+    'CRM' => [
+        'candidates' => 'http://localhost:12346/Portal/ExcuteByCommand/GetCandiates'
+    ]
+    
 ];

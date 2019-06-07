@@ -52,4 +52,9 @@ abstract class AppConstant
     const ResolveService = 'resolveService';
 
     const Log = \Zend\Log\Logger::class;
+
+
+    //external site
+    const CRM = 'CRM';
+    const Candidate = 'candidates';
 }

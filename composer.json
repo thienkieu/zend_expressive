@@ -55,6 +55,7 @@
         "zendframework/zend-expressive-authentication-oauth2": "^1.1",
         "zendframework/zend-expressive-fastroute": "^3.0",
         "zendframework/zend-expressive-helpers": "^5.0",
+        "zendframework/zend-http": "^2.10",
         "zendframework/zend-hydrator": "^3.0",
         "zendframework/zend-i18n": "^2.9",
         "zendframework/zend-log": "^2.10",

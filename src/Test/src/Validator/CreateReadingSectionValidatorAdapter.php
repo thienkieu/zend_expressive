@@ -27,7 +27,7 @@ class CreateReadingSectionValidatorAdapter implements ValidatorAdapterInterface
         $this->container = $container;
     }
 
-    public function isHandle($request) : bool
+    public function isHandle($routerName, $request) : bool
     {
         $name = $request->getAttribute(AppConstant::RequestDTOName);
         $body = $request->getParsedBody();
