@@ -30,7 +30,7 @@ class CreateExamHandler implements RequestHandlerInterface
             'welcome' => 'Create Exam Handler.',
             'success' => $ok,
             'messages' => $messages,
-            'dto' => $dto
+            'dto' => $resultDTO
         ]);
     }
 }

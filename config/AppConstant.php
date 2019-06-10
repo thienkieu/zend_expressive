@@ -53,7 +53,8 @@ abstract class AppConstant
 
     const Log = \Zend\Log\Logger::class;
 
-
+    const MediaQuestionFolder = 'MediaQuestion';
+    const DS = DIRECTORY_SEPARATOR ;
     //external site
     const CRM = 'CRM';
     const Candidate = 'candidates';

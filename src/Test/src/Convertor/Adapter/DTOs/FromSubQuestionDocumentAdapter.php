@@ -29,6 +29,7 @@ class FromSubQuestionDocumentAdapter implements ConvertAdapterInterface {
 
     public function convert($document) {
         $dto = new \Test\DTOs\Question\SubQuestionDTO();
+        $dto->setId($document->getId());
         $dto->setContent($document->getContent());
         $dto->setOrder($document->getOrder());
         

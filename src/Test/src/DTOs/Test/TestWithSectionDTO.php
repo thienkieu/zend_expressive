@@ -13,6 +13,7 @@ class TestWithSectionDTO extends BaseTestDTO implements \JsonSerializable
     
     public function jsonSerialize() {
         $ret = new \stdClass();
+        $ret->id = $this->getId();
         $ret->title = $this->getTitle();
         $ret->sections = $this->getSections();       
         return $ret;

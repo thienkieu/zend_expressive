@@ -30,9 +30,9 @@ class FromTestWithSectionDocumentAdapter implements ConvertAdapterInterface {
     public function convert($document) {
         $dto = new \Test\DTOs\Test\TestWithSectionDTO();
         $dto->setTitle($document->getTitle());
-        
+        $dto->setId($document->getId());
+
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-        
         $sectionDocuments = $document->getSections();
         $sectionDTO = [];
         foreach($sectionDocuments as $section) {

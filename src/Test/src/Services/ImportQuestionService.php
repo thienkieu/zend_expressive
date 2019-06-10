@@ -49,6 +49,11 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         try {
             
             if (isset($dtoObject->media)) {
+                $this->imageFiles = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.date('Ymd');
+                if (!file_exists($this->imageFiles)) {
+                    mkdir($this->imageFiles, 0777, true);
+                }
+
                 $extractResult = $this->extractZipFile($dtoObject->media, $this->imageFiles);
                 if (!$extractResult) {                
                     $messages[] = $this->translator->translate('Can not extract media file, Please check format again.');

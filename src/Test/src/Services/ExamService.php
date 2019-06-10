@@ -35,10 +35,10 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO);
             $this->dm->persist($document);
             $this->dm->flush();
-            
+                        
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $dto = $documentToDTOConvertor->convertToDTO($document);
-
+            
             $messages[] = $translator->translate('Your test have been created successfull!');
             return true;
         } catch(\Exception $e){

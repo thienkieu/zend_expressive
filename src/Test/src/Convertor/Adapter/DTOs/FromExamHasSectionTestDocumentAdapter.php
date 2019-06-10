@@ -35,7 +35,6 @@ class FromExamHasSectionTestDocumentAdapter implements ConvertAdapterInterface {
         $dto->setStartDate($document->getStartDate());
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-        
         $candiateDocuments = $document->getCandidates();
         $candiateDTOs = [];
         foreach($candiateDocuments as $candiate) {
