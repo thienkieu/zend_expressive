@@ -6,6 +6,7 @@ namespace Test\DTOs\Test;
 
 class QuestionDTO implements \JsonSerializable
 {
+    protected $id;
     protected $generateFrom;
     protected $questionInfo;
 
@@ -51,8 +52,29 @@ class QuestionDTO implements \JsonSerializable
 
     public function jsonSerialize() {
         $ret = new \stdClass();
+        $ret->id = $this->getId();
         $ret->generateFrom = $this->getGenerateFrom();
         $ret->questionInfo = $this->getQuestionInfo();       
         return $ret;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }
