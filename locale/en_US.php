@@ -18,4 +18,5 @@ return array(
     'Source is existed, Please check your spelling again!' => 'Source is existed, Please check your spelling again!',
     'Field \'%field%\' can not empty' => 'Field \'%field%\' is required',
     'Question content can not empty' => 'Question content can not empty at line %lineNumber%',
+    'Content content can not empty' => 'Content content can not empty at line %lineNumber%',
 );

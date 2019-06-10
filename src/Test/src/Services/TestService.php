@@ -56,6 +56,7 @@ class TestService implements TestServiceInterface, HandlerInterface
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
         $testRepository = $this->dm->getRepository(\Test\Documents\Test\BaseTestDocument::class);
+        //var_dump($testRepository);
         $testDocuments = $testRepository->findAll();
         
         //TODO need pagination
@@ -66,7 +67,7 @@ class TestService implements TestServiceInterface, HandlerInterface
         }
 
         $ret = new \stdClass();
-        $ret->data = $tests;
+        $ret->test = $tests;
         $totalItems = count($tests);
         $ret->itemPerPage = $itemPerPage;
         $ret->pageNumber = $pageNumber;

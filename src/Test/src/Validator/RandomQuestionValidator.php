@@ -14,5 +14,6 @@ class RandomQuestionValidator extends RequireField {
         'questions.isDifferentSource'=>'isDifferentSource',
         'questions.numberQuestion'=>'numberSubQuestion',
         'question.subType'=>'subType',
+        'generateFrom'=>'generateFrom',
     ];
 }

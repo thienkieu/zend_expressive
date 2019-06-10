@@ -10,6 +10,9 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @ODM\DiscriminatorMap({"testGroup"="TestWithGroupDocument", "normal"="TestDocument", "crm"="CRMTestDocument"})
  */
 
+ /** 
+ * @ODM\Document(collection="oauth_clients", repositoryClass="\ODMAuth\Repositories\ClientRepository")
+ */
 class TestDocument
 {
   /** @ODM\Id */

@@ -61,6 +61,23 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                 }
             }
             
+            /*$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            $reader->setReadDataOnly(false);
+            $spreadsheet = $reader->load($dtoObject->file);
+            $rowItertor = $spreadsheet->getActiveSheet()->getRowIterator();
+            $indexA = 0;
+            while($rowItertor->valid()) {
+                $rowData = $rowItertor->current();
+                if ($indexA === 4) {
+                    $cellIterator = $rowData->getCellIterator();
+                    echo '<pre>'.print_r( $cellIterator->current()->getValue()).'</pre>'; die;
+                }
+                $rowItertor->next();
+                $indexA++;
+                
+            }
+            echo '<pre>'.print_r($spreadsheet->getActiveSheet()->getRowIterator(), true).'</pre>'; die;
+            */
             if ( $xls = \SimpleXLSX::parse($dtoObject->file) ) {
                 $rows = $xls->rows();
                 $numberRows = count($rows);
@@ -121,8 +138,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                         case $this->writingType: 
                             $question = $this->buildWritingQuestion($row, $rowIndex + 1);                        
                             while(true){
-                                $subQuestion = $this->buildSubQuestion($row, $rowIndex + 1);
-                                $question->addSubQuestion($subQuestion);
+                                //$subQuestion = $this->buildSubQuestion($row, $rowIndex + 1);
+                                //$question->addSubQuestion($subQuestion);
 
                                 $rowIndex += 1;
                                 $row = $rows[$rowIndex];
@@ -198,7 +215,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             $translatorParams = [
                 '%lineNumber%' => $lineNumber
             ];
-            $error = $this->translator->translate('Question content can not empty', $translatorParams);
+            $error = $this->translator->translate('Content content can not empty', $translatorParams);
             throw new ImportQuestionException($error);
         }
 
@@ -254,7 +271,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             $translatorParams = [
                 '%lineNumber%' => $lineNumber
             ];
-            $error = $this->translator->translate('Question content can not empty', $translatorParams);
+            $error = $this->translator->translate('Content content can not empty', $translatorParams);
             throw new ImportQuestionException($error);
         }
 
@@ -263,6 +280,15 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
     protected function buildSubQuestion($data, $rowIndex){
         $subQuestion = new \Test\Documents\Question\SubQuestionDocument();
+        $questionContent =  $data[$this->question];
+        if (empty($questionContent)) {
+            $translatorParams = [
+                '%lineNumber%' => $rowIndex
+            ];
+            $error = $this->translator->translate('Question content can not empty', $translatorParams);
+            throw new ImportQuestionException($error);
+        }
+
         $subQuestion->setContent($data[$this->question]);
         
         $answers = $this->buildAnswers($data, $rowIndex);

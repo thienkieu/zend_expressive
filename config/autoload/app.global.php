@@ -99,7 +99,7 @@ return [
     ],
 
     'CRM' => [
-        'candidates' => 'http://localhost:12346/Portal/ExcuteByCommand/GetCandiates'
+        'candidates' => 'http://192.168.190.92:8089/Portal/ExcuteByCommand/GetCandiates'
     ]
     
 ];
