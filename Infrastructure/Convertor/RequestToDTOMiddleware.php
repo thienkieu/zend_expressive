@@ -19,6 +19,7 @@ use Infrastructure\Validator\ValidatorRequestInterface;
 use Zend\Expressive\Router\RouteResult;
 use Config\AppConstant;
 
+use Zend\Log\Logger;
 class RequestToDTOMiddleware implements MiddlewareInterface
 {
     private $container;
@@ -32,34 +33,43 @@ class RequestToDTOMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
-        $rotuer = $request->getAttribute(RouteResult::class);
-        $routerName = $rotuer->getMatchedRouteName();        
-        if ($routerName) {
-            $appConfig = $this->container->get(\Config\AppConstant::AppConfig);
-            $routertoDTO = $appConfig['requestToDTO'];
-            if (isset($routertoDTO[$routerName])) {
-                $dtoName = $routertoDTO[$routerName];
+        try{
+            $rotuer = $request->getAttribute(RouteResult::class);
+            $routerName = $rotuer->getMatchedRouteName();        
+            if ($routerName) {
+                $appConfig = $this->container->get(\Config\AppConstant::AppConfig);
+                $routertoDTO = $appConfig['requestToDTO'];
+                if (isset($routertoDTO[$routerName])) {
+                    $dtoName = $routertoDTO[$routerName];
 
-                $request = $request->withAttribute(AppConstant::RequestDTOName, $dtoName);
-                
-                $validator = $this->container->get(ValidatorRequestInterface::class);
-                $messageResponse = new JsonResponse([]);                
-                $isValid = $validator->valid($request, $messageResponse);
-                if (!$isValid) {
-                    return $messageResponse;
+                    $request = $request->withAttribute(AppConstant::RequestDTOName, $dtoName);
+                    
+                    $validator = $this->container->get(ValidatorRequestInterface::class);
+                    $messageResponse = new JsonResponse([]);                
+                    $isValid = $validator->valid($request, $messageResponse);
+                    if (!$isValid) {
+                        return $messageResponse;
+                    }
+                    
+                    $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
+                    $jsonData = $request->getParsedBody();
+                    $dto = $convertorToDTO->convertToDTO($jsonData, $dtoName);
+                    
+                    return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $dto));
+                } else {
+                    $body =  $request->getParsedBody();
+                    return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $body));
                 }
-                
-                $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
-                $jsonData = $request->getParsedBody();
-                $dto = $convertorToDTO->convertToDTO($jsonData, $dtoName);
-                
-                return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $dto));
-            } else {
-                $body =  $request->getParsedBody();
-                return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $body));
             }
-        }
-        
+        } catch(\Exception $e){
+            $logger = $this->container->get(Logger::class);
+            $logger->info($e);
+
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $messages[] = $translator->translate('There is error with format data, Please check it again');
+            
+            return \Infrastructure\CommonFunction::buildResponseFormat(false, $messages);
+        }  
         return $handler->handle($request);      
     }
 

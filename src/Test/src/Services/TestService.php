@@ -55,7 +55,7 @@ class TestService implements TestServiceInterface, HandlerInterface
     public function getTests(& $ret, & $messages, $pageNumber = 1, $itemPerPage = 25) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
-        $testRepository = $this->dm->getRepository(\Test\Documents\Test\BaseTestDocument::class);
+        $testRepository = $this->dm->getRepository(\Test\Documents\Test\TestWithSectionDocument::class);
         //var_dump($testRepository);
         $testDocuments = $testRepository->findAll();
         

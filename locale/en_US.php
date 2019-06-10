@@ -19,4 +19,5 @@ return array(
     'Field \'%field%\' can not empty' => 'Field \'%field%\' is required',
     'Question content can not empty' => 'Question content can not empty at line %lineNumber%',
     'Content content can not empty' => 'Content content can not empty at line %lineNumber%',
+    'There is error with format data, Please check it again' => 'There is error with format data, Please check it again',
 );

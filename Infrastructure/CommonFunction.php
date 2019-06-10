@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Infrastructure;
 
 use Zend\Diactoros\Response\JsonResponse;
+use Zend\Log\Logger;
 
 class CommonFunction
 {
@@ -17,4 +18,5 @@ class CommonFunction
             'data' => $data
         ]);
     }
+
 }
