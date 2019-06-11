@@ -50,7 +50,8 @@ class CandidateService implements CandidateServiceInterface, HandlerInterface
         $candiates = new \stdClass();
         $candiates->itemPerPage = $data->itemPerPage;
         $candiates->pageNumber = $data->pageNumber;
-        $candiates->data = $candidates;
+        $candiates->totalPage = $data->totalPage;
+        $candiates->candidates = $candidates;
         
         return true;
     }

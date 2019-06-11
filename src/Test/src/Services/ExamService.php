@@ -26,6 +26,17 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         return true;
     }
 
+
+    protected function assignPin(&$document) {
+        $candidates = $document->getCandidates();
+        $pins = \Infrastructure\CommonFunction::generateUniquePin(count($candidates));
+        $index =0;
+        foreach ($candidates as $candiate) {
+            $candiate->setPin($pins[$index]);
+            $index++;
+        }
+    }
+
     public function createExam(\Test\DTOs\Exam\ExamDTO $examDTO, & $dto, & $messages) {
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
@@ -33,6 +44,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         try{
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO);
+            $this->assignPin($document);
             $this->dm->persist($document);
             $this->dm->flush();
                         

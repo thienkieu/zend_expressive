@@ -24,6 +24,9 @@ class CandidateDocument
   /** @ODM\Field(type="string") */
   protected $name;
 
+  /** @ODM\Field(type="string") */
+  protected $pin;
+
 
   /**
    * Get the value of id
@@ -121,6 +124,26 @@ class CandidateDocument
   public function setName($name)
   {
     $this->name = $name;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of pin
+   */ 
+  public function getPin()
+  {
+    return $this->pin;
+  }
+
+  /**
+   * Set the value of pin
+   *
+   * @return  self
+   */ 
+  public function setPin($pin)
+  {
+    $this->pin = $pin;
 
     return $this;
   }

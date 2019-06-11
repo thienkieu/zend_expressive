@@ -55,7 +55,16 @@ abstract class AppConstant
 
     const MediaQuestionFolder = 'MediaQuestion';
     const DS = DIRECTORY_SEPARATOR ;
+    
     //external site
     const CRM = 'CRM';
     const Candidate = 'candidates';
+
+    // pagination config
+    const ItemPerPage = 25;
+    const PageNumber = 1;
+
+
+    const PinLength = 6;
+
 }

@@ -24,8 +24,8 @@ class GetTestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
         $queryData = $request->getQueryParams();
-        $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
-        $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
+        $pageNumber = \Infrastructure\CommonFunction::getPageNumber($queryData, \Config\AppConstant::PageNumber);
+        $itemPerPage = \Infrastructure\CommonFunction::getItemPerPage($queryData, \Config\AppConstant::ItemPerPage);
 
         $testService = $this->container->get(TestServiceInterface::class);
         $ok = $testService->getTests($tests, $messages, $pageNumber, $itemPerPage);

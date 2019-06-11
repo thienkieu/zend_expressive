@@ -33,6 +33,7 @@ class FromCandidateDocumentAdapter implements ConvertAdapterInterface {
         $dto->setName($document->getName());
         $dto->setEmail($document->getEmail());
         $dto->setType($document->getType());
+        $dto->setPin($document->getPin());
         $dto->setObjectId($document->getObjectId());
         
         return $dto;
