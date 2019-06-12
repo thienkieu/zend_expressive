@@ -13,6 +13,7 @@ namespace Test\Repositories;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
 use  Doctrine\MongoDB\Query\Expr;
+use date;
 
 class ExamWithSectionRepository extends DocumentRepository
 {
@@ -21,18 +22,24 @@ class ExamWithSectionRepository extends DocumentRepository
         $expr = new Expr();
         $equalPin = $expr->field('candidate.pin')->equals($pin);
 
+        //$timeBefore5MinutesAgo  = new \DateTime(date('Y-m-d H:i:s',\time() - 36000 * 60));
+        //$mongoDateBefore5MinutesAgo = new \MongoDate($timeBefore5MinutesAgo->getTimestamp());
+
+        $now  = new \DateTime(date('Y-m-d H:i:s',\time()));
         $builder = $this->createAggregationBuilder();
         $command = $builder
                 ->hydrate(\Test\Documents\Exam\ExamHasSectionTestDocument::class)
                 ->match()
-                    ->field('candidates.pin')->equals($pin)                
+                    ->field('candidates.pin')->equals($pin)
+                    ->field('startDate')->gte($now)                
                 ->project()   
                     ->includeFields(['title', 'startDate'])                
                     ->field('candidates')
                     ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
                     
                 ->execute();
-        
+        //echo '<pre>'.print_r($command, true).'</pre>'; die;
+
         $candidateDocument = null;
         $document = $command->getSingleResult();
         

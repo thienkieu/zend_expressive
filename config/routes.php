@@ -66,6 +66,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/verify-rsa', App\Handler\VerifyRSAConfigHandler::class, 'verifyRSA');
     $app->post('/verify-cors', App\Handler\VerifyCORSConfigHandler::class, 'verifyCORS');
 
+    $app->get('/viewLog', App\Handler\GetLogHandler::class, 'log');
+
 
     /*$app->post('/test/create-section/{name}', [        
         Test\Handlers\CreateSectionHandler::class
