@@ -21,7 +21,7 @@ class CommonFunction
 
     public static function getPageNumber($data, $defaultValue) {
         $pageNumber = isset($data['pageNumber']) ? $data['pageNumber'] : $defaultValue;
-        if (!is_int($pageNumber)) {
+        if (!intval($pageNumber)) {
             $pageNumber = $defaultValue;
         }
 
@@ -30,7 +30,7 @@ class CommonFunction
 
     public static function getItemPerPage($data, $defaultValue) {
         $itemPerPage = isset($data['itemPerPage']) ? $data['itemPerPage'] : $defaultValue;
-        if (!is_int($itemPerPage)) {
+        if (!intval($itemPerPage)) {
             $itemPerPage = $defaultValue;
         }
 
