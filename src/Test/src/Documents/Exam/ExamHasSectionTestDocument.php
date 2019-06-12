@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document
+ * @ODM\Document(repositoryClass="\Test\Repositories\ExamWithSectionRepository")
  */
 
 class ExamHasSectionTestDocument extends ExamDocument
@@ -73,4 +73,28 @@ class ExamHasSectionTestDocument extends ExamDocument
     return $this;
   }
 
+
+  /** @ODM\Field(type="date") */
+  protected $startDate;
+
+
+  /**
+   * Get the value of startDate
+   */ 
+  public function getStartDate()
+  {
+    return $this->startDate;
+  }
+
+  /**
+   * Set the value of startDate
+   *
+   * @return  self
+   */ 
+  public function setStartDate($startDate)
+  {
+    $this->startDate = $startDate;
+
+    return $this;
+  }
 }

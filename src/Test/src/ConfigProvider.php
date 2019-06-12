@@ -46,6 +46,7 @@ class ConfigProvider
                 Handlers\CreateSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\CreateExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\EnterPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,

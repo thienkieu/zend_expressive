@@ -67,4 +67,6 @@ abstract class AppConstant
 
     const PinLength = 6;
 
+    const DateTimeFormat = 'm/d/Y';
+
 }

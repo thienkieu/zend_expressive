@@ -47,11 +47,11 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             $this->assignPin($document);
             $this->dm->persist($document);
             $this->dm->flush();
-                        
+            
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $dto = $documentToDTOConvertor->convertToDTO($document);
             
-            $messages[] = $translator->translate('Your test have been created successfull!');
+            $messages[] = $translator->translate('Your exam have been created successfull!');
             return true;
         } catch(\Exception $e){
             $messages[] = $translator->translate('There is error with create section, Please check admin site');
@@ -63,6 +63,19 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         }        
     }
 
+    public function enterPin($dto, & $results, & $messages) {
+        $testRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
+        $document = $testDocuments = $testRepository->getCandidateInfo($dto->pin);
+        if ($document) {
+            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+            $results = $documentToDTOConvertor->convertToDTO($document);
+            return true;
+        }
+        
+        $translator = $this->container->get(\Config\AppConstant::Translator);
+        $messages[] = $translator->translate('There isnot exist candidate with pin', ['%pin%' => $dto->pin]);
+        return false;
+    }
     public function getTests(& $ret, & $messages, $pageNumber = 1, $itemPerPage = 25) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 

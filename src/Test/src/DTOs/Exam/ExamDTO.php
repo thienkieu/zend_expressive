@@ -20,7 +20,7 @@ class ExamDTO implements \JsonSerializable
         $ret->time = $this->getTime();
         $ret->title = $this->getTitle();
         $ret->candidates = $this->getCandidates();   
-        $ret->startDate = $this->getStartDate(); 
+        $ret->startDate = $this->getStartDate()->format(\Config\AppConstant::DateTimeFormat); 
           
         return $ret;
     }

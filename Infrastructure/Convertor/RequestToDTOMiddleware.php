@@ -37,22 +37,29 @@ class RequestToDTOMiddleware implements MiddlewareInterface
             $rotuer = $request->getAttribute(RouteResult::class);
             $routerName = $rotuer->getMatchedRouteName();        
             if ($routerName) {
-                $appConfig = $this->container->get(\Config\AppConstant::AppConfig);
-                $routertoDTO = $appConfig['requestToDTO'];
-                if (isset($routertoDTO[$routerName])) {
-                    $dtoName = $routertoDTO[$routerName];
-
-                    $request = $request->withAttribute(AppConstant::RequestDTOName, $dtoName);
-                    
-                    $validator = $this->container->get(ValidatorRequestInterface::class);
+                $validator = $this->container->get(ValidatorRequestInterface::class);
+                if ($validator) {
                     $messageResponse = new JsonResponse([]);                
                     $isValid = $validator->valid($request, $messageResponse);
                     if (!$isValid) {
                         return $messageResponse;
                     }
-                    
-                    $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
+                }
+                
+
+                $appConfig = $this->container->get(\Config\AppConstant::AppConfig);
+                $routertoDTO = $appConfig['requestToDTO'];
+                if (isset($routertoDTO[$routerName])) {
+                    $dtoName = $routertoDTO[$routerName];
                     $jsonData = $request->getParsedBody();
+
+                    $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
+                    if ($convertorToDTO === null) {
+                        $translator = $this->container->get(\Config\AppConstant::Translator);
+                        $messages[] = $translator->translate('There is not convertor, Please check it again');
+                        return \Infrastructure\CommonFunction::buildResponseFormat(false, $messages);
+                    }
+                     
                     $dto = $convertorToDTO->convertToDTO($jsonData, $dtoName);
                     
                     return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $dto));

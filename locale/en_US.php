@@ -20,4 +20,9 @@ return array(
     'Question content can not empty' => 'Question content can not empty at line %lineNumber%',
     'Content content can not empty' => 'Content content can not empty at line %lineNumber%',
     'There is error with format data, Please check it again' => 'There is error with format data, Please check it again',
+    'There is not convertor, Please check it again' => 'There is not convertor, Please check it again',
+    'Your exam have been created successfull!' => 'Your exam have been created successfull!',
+    'Pin cannot empty.' => 'Pin cannot empty.',
+    'There isnot exist candidate with pin' => 'There isnot exist candidate with pin %pin%',
+    'Field \'%field%\' cannot correct format, Please check it again.' => 'Field \'%field%\' cannot correct format, Please check it again.',
 );

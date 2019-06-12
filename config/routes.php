@@ -55,6 +55,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     //Exam
     $app->get('/coordinator/exam/candidates', Test\Handlers\GetCandidateHandler::class, 'exam.candidates');
     $app->post('/coordinator/exam/create', Test\Handlers\CreateExamHandler::class, 'exam.create');
+    $app->post('/coordinator/exam/enterPin', Test\Handlers\EnterPinHandler::class, 'exam.enterPin');
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 
     $app->get('/test/search-section', Test\Handlers\SearchSectionHandler::class, 'search');

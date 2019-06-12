@@ -61,10 +61,12 @@ class CandidateService implements CandidateServiceInterface, HandlerInterface
         
         foreach ($data as $candidate) {
             $candidateDTO = new \Test\DTOs\Exam\CandidateDTO();
+            $candidateDTO->setId('');
             $candidateDTO->setObjectId($candidate->id);
             $candidateDTO->setEmail($candidate->email);
             $candidateDTO->setType($candidate->type);
             $candidateDTO->setName($candidate->name);
+            $candidateDTO->setPin('');
 
             $candidates[] = $candidateDTO;
         }

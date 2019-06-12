@@ -33,6 +33,8 @@ return [
         \Test\Convertor\Adapter\DTOs\Test\ToQuestionDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToExamHasSectionTestDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToCandidateDTOAdapter::class,  
+        \Test\Convertor\Adapter\DTOs\Exam\ToPinDTOAdapter::class,  
+        \Test\Convertor\Adapter\DTOs\Exam\ToPinInfoDTOAdapter::class,  
     ],
 
     'convertorDocumentToDTOAdapters' => [
@@ -53,9 +55,8 @@ return [
     ],
 
     'validatorRequestAdapters' => [
-        \Test\Validator\CreateReadingSectionValidatorAdapter::class,
-        \Test\Validator\CreateSectionValidatorAdapter::class,
-        \App\Validator\VerifyValidatorAdapter::class,
+        \Test\Validator\CreateReadingSectionValidatorAdapter::class,        
         \Test\Validator\CreateTestWithSectionValidatorAdapter::class,
+        \Test\Validator\EnterPinValidatorAdapter::class,
     ],
 ];

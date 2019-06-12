@@ -32,7 +32,14 @@ class ToExamHasSectionTestDTOAdapter extends ToDTOAdapter {
         $dtoObject = new \Test\DTOs\Exam\ExamHasSectionTestDTO();
         $dtoObject->setTitle($jsonObject->title);
         $dtoObject->setTime($jsonObject->time);
-        $dtoObject->setStartDate($jsonObject->startDate);
+        
+        $date = \Infrastructure\CommonFunction::convertToDateTimeFormat($jsonObject->startDate);
+        if ($date === false) {
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $message = $translator->translate("Field '%field%' cannot correct format, Please check it again.", ['%field%'=> 'startDate']);
+            throw new \Infrastructure\Exception\ConvertException($message);            
+        }        
+        $dtoObject->setStartDate($date);
         
         $candidateDTOs = [];
         foreach ($jsonObject->candidates as $jsonCandiate) {

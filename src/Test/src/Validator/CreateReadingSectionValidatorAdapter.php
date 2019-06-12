@@ -29,11 +29,10 @@ class CreateReadingSectionValidatorAdapter implements ValidatorAdapterInterface
 
     public function isHandle($routerName, $request) : bool
     {
-        $name = $request->getAttribute(AppConstant::RequestDTOName);
         $body = $request->getParsedBody();
         
         $type = isset($body->type) ? $body->type: '';
-        if ($name === DTOName::Section && $type === DTOName::Reading ) {
+        if ($routerName === \Config\AppRouterName::CreateQuestion && $type === DTOName::Reading ) {
             return true;
         }
         
