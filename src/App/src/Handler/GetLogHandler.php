@@ -34,9 +34,13 @@ class GetLogHandler implements RequestHandlerInterface
         $dir = realpath('Logs');
         $file = $dir.'/'.date('Y-m-d').'.txt';
         
+        $logs = '';
         if (file_exists($file)) {
             $logs = file_get_contents($file);
+            unlink($file);
         }
+
+
 
         return new HtmlResponse($logs);
     }

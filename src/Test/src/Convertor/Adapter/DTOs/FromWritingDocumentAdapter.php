@@ -32,12 +32,12 @@ class FromWritingDocumentAdapter implements ConvertAdapterInterface {
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
-        $questionDocuments = $document->getQuestions();
+        $questionDocuments = $document->getSubQuestions();
         $questions = [];
         foreach($questionDocuments as $q) {
             $questions[] = $documentToDTOConvertor->convertToDTO($q);
         }
-        $dto->setQuestions($questions);
+        $dto->setSubQuestions($questions);
 
         return $dto;
     }

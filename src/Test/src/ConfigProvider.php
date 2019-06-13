@@ -69,6 +69,12 @@ class ConfigProvider
 
                 Services\ExamServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\ExamService::class => \Infrastructure\Factory\BaseFactory::class,
+
+                Services\DoExamServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\DoExamService::class => \Infrastructure\Factory\BaseFactory::class,
+
+                Services\QuestionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\QuestionService::class => \Infrastructure\Factory\BaseFactory::class,
             ],
 
             'aliases' => [

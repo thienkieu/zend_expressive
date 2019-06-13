@@ -29,6 +29,13 @@ abstract class AppConstant
     const Listening = 'Listening';
 
     /**
+     * Generate type
+     */
+    const Pickup = 'pickup';
+    const Random = 'random';
+
+
+    /**
      * DTO key name
      */
     const RequestDTOName = 'dto_name';

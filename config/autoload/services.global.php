@@ -26,6 +26,12 @@ return [
         ],
         \Test\Services\ExamServiceInterface::class => [
             \Test\Services\ExamService::class,
+        ],
+        \Test\Services\DoExamServiceInterface::class => [
+            \Test\Services\DoExamService::class,
+        ],
+        \Test\Services\QuestionServiceInterface::class => [
+            \Test\Services\QuestionService::class,
         ]
     ],
 ];

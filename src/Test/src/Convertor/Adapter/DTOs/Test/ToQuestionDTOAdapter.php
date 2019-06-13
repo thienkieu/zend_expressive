@@ -29,11 +29,11 @@ class ToQuestionDTOAdapter extends ToDTOAdapter {
         $dto = new \Test\DTOs\Test\QuestionDTO();
         $dto->setGenerateFrom($jsonObject->generateFrom);
         switch($jsonObject->generateFrom) {
-            case 'pickup': 
+            case \Config\AppConstant::Pickup: 
                 $question = $this->getPickupQuestion($jsonObject);
                 $dto->setQuestionInfo($question);
             break;
-            case 'random':
+            case \Config\AppConstant::Random:
                 $question = $this->getRandomQuestion($jsonObject);
                 $dto->setQuestionInfo($question);
             break;

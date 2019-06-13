@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document
+ * @ODM\Document(repositoryClass="\Test\Repositories\ListeningQuestionRepository")
  */
 
 class ListeningQuestionDocument extends QuestionDocument

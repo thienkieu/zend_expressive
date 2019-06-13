@@ -27,10 +27,10 @@ class DoExamHandler implements RequestHandlerInterface
         $messages = [];
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         $examService = $this->container->get(DoExamServiceInterface::class);
-        $exam = $examService->doExam($dto, $resultDTO, $messages);
+        $ok = $examService->doExam($dto, $resultDTO, $messages);
         
         return new JsonResponse([
-            'isSuccess' => $ret,      
+            'isSuccess' => $ok,      
             'messages'  => $messages,
             'exam' => $resultDTO
         ]);

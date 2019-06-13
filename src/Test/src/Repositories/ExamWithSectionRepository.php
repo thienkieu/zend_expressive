@@ -18,13 +18,7 @@ use date;
 class ExamWithSectionRepository extends DocumentRepository
 {
     public function getExamInfo($pin) {
-        
-        $expr = new Expr();
-        $equalPin = $expr->field('candidate.pin')->equals($pin);
-
-        //$timeBefore5MinutesAgo  = new \DateTime(date('Y-m-d H:i:s',\time() - 36000 * 60));
-        //$mongoDateBefore5MinutesAgo = new \MongoDate($timeBefore5MinutesAgo->getTimestamp());
-
+       
         $now  = new \DateTime(date('Y-m-d H:i:s',\time()));
         $builder = $this->createAggregationBuilder();
         $command = $builder
@@ -33,9 +27,9 @@ class ExamWithSectionRepository extends DocumentRepository
                     ->field('candidates.pin')->equals($pin)
                     ->field('startDate')->gte($now)                
                 ->project()   
-                    ->includeFields(['title', 'startDate'])                
-                    ->field('candidates')
-                    ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
+                    ->includeFields(['title', 'startDate', 'test', 'time'])                
+                    //->excludeFields(['candidates'])
+                    //->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
                     
                 ->execute();
         //echo '<pre>'.print_r($command, true).'</pre>'; die;

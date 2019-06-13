@@ -193,11 +193,17 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         return true;
     }
 
-    protected function buidGeneralQuestion($data, &$question) {
+    protected function buidGeneralQuestion($data, &$question, $lineNumber) {
         $question->setContent($data[$this->content]);
         $question->setType($data[$this->type]);
         $question->setSource($data[$this->source]);
         $question->setSubType($data[$this->subType]);
+
+        $source = trim($data[$this->source], ' ');
+        if (empty($source)) {
+            $error = $this->translator->translate('Source cannot empty.', ['%$lineNumber%'=> $lineNumber]);
+            throw new ImportQuestionException($error);
+        }
 
         $isExistSource = $this->sourceService->isExistSourceName($data[$this->source], $messages);
         if (!$isExistSource) {
@@ -208,7 +214,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
     protected function buildReadingQuestion($data, $lineNumber){
         $readingQuestion = new \Test\Documents\Question\ReadingQuestionDocument();
-        $this->buidGeneralQuestion($data, $readingQuestion);
+        $this->buidGeneralQuestion($data, $readingQuestion, $lineNumber);
 
         $content = $readingQuestion->getContent();
         if (empty($content)) {
@@ -259,7 +265,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         $listeningQuestion->setRepeat($data[$this->repeatTime]);
         $listeningQuestion->setPath($this->imageFiles.'/'.$data[$this->fileName]);
 
-        $this->buidGeneralQuestion($data, $listeningQuestion);
+        $this->buidGeneralQuestion($data, $listeningQuestion, $lineNumber);
         return $listeningQuestion;
     }
 
