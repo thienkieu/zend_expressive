@@ -7,26 +7,33 @@ namespace Test\Handlers;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Container\ContainerInterface;
 use Zend\Diactoros\Response\JsonResponse;
+use Psr\Container\ContainerInterface;
 
-use Test\Services\TestServiceInterface;
+use Test\Services\DoExamServiceInterface;
 
-class CreateTestHandler implements RequestHandlerInterface
-{
+
+class DoExamHandler implements RequestHandlerInterface
+{    
     /** @var Psr\Container\ContainerInterface */
     private $container;
     
     public function __construct(ContainerInterface $container) {
-        $this->container = $container;        
+        $this->container = $container;
     }
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
-    { 
+    {
+        $messages = [];
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        $testService = $this->container->get(TestServiceInterface::class);
-        $ok = $testService->createTest($dto, $resultDTO, $messages);
-
-        return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages);
+        $examService = $this->container->get(DoExamServiceInterface::class);
+        $exam = $examService->doExam($dto, $resultDTO, $messages);
+        
+        return new JsonResponse([
+            'isSuccess' => $ret,      
+            'messages'  => $messages,
+            'exam' => $resultDTO
+        ]);
+        
     }
 }

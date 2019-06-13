@@ -31,9 +31,13 @@ class GetLogHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
-        $dir = realpath('src');
-        echo file_get_contents( $dir.'/../Logs/'.date('Y-m-d').'.txt');
-        die;
+        $dir = realpath('Logs');
+        $file = $dir.'/'.date('Y-m-d').'.txt';
         
+        if (file_exists($file)) {
+            $logs = file_get_contents($file);
+        }
+
+        return new HtmlResponse($logs);
     }
 }
