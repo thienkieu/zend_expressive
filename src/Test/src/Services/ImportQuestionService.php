@@ -271,7 +271,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
     protected function buildWritingQuestion($data, $lineNumber){
         $writingQuestion = new \Test\Documents\Question\WritingQuestionDocument();
-        $this->buidGeneralQuestion($data, $writingQuestion);
+        $this->buidGeneralQuestion($data, $writingQuestion, $lineNumber);
         $content = $writingQuestion->getContent();
         if (empty($content)) {
             $translatorParams = [

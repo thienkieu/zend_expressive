@@ -23,6 +23,7 @@ class UploadFileMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
+       
         $files = $request->getUploadedFiles();
         if (count($files) > 0) { 
             $config = $this->container->get('config');
@@ -61,7 +62,7 @@ class UploadFileMiddleware implements MiddlewareInterface
                 $file->moveTo($uploadToFolder.'/'.$file->getclientFilename()) ;        
                 $body->$key = $uploadToFolder.'/'.$file->getclientFilename();
             }
-
+            
             return $handler->handle($request->withParsedBody($body));
         }
 
