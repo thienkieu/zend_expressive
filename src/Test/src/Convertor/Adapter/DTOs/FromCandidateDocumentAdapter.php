@@ -35,8 +35,6 @@ class FromCandidateDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
         $dto->setType($document->getType());
         $dto->setPin($document->getPin());
         $dto->setObjectId($document->getObjectId());
-        $dto->setIsPinValid($document->getIsPinValid());
-        
         return $dto;
     }
     
