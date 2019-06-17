@@ -121,8 +121,7 @@ class CandidateDTO implements \JsonSerializable
         $ret->name = $this->getName();
         $ret->email = $this->getEmail();  
         $ret->pin = $this->getPin();   
-        $ret->objectId = $this->getObjectId();
-        $ret->isPinValid = $this->getIsPinValid();   
+        $ret->objectId = $this->getObjectId();          
         return $ret;
     }
 
