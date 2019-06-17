@@ -31,7 +31,7 @@ class ValidatorRequest implements ValidatorRequestInterface{
         if ($routerName) {
             foreach($this->adapters as $adapter) {
                 $adapterInstance = new $adapter($this->container);
-                if ($adapterInstance->isHandle($routerName, $request)) {
+                if ($adapterInstance->isHandleValid($routerName, $request)) {
                     return $adapterInstance->valid($request, $messageResponse);
                 }
             }

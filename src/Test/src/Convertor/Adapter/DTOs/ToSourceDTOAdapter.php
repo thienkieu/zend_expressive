@@ -8,9 +8,9 @@ use Infrastructure\Convertor\ToDTOAdapter;
 use Test\Enum\DTOName;
 
 class ToSourceDTOAdapter extends ToDTOAdapter {
-    public function isHandle($dtoObject, $name) : bool
+    public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($name === DTOName::SourceDTO) {
+        if ($options === DTOName::SourceDTO) {
             return true;
         }
 

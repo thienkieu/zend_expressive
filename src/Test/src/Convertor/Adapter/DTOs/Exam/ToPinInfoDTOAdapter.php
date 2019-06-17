@@ -11,9 +11,9 @@ use Test\Enum\DTOName;
 use Config\AppConstant;
 
 class ToPinInfoDTOAdapter extends ToDTOAdapter {
-    public function isHandle($dtoObject, $name) : bool
+    public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {         
-        if ($name === DTOName::PinInfoDTO) {
+        if ($options === DTOName::PinInfoDTO) {
             return true;
         }
         

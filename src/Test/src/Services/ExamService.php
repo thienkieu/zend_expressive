@@ -22,7 +22,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $this->dm = $this->container->get('documentManager');        
     }
 
-    public function isHandler($dto){
+    public function isHandler($dto, $options = []){
         return true;
     }
 

@@ -24,6 +24,14 @@ class ExamDocument
   /** @ODM\Field(type="timestamp") */
   protected $startDate;
   
+  /** @ODM\EmbedMany(targetDocument="CandidateDocument") */
+  private $candidates;
+  
+  public function __construct()
+  {
+    $this->candidates = new ArrayCollection();
+  }
+
   /**
    * Get the value of id
    */ 
@@ -44,6 +52,38 @@ class ExamDocument
     return $this;
   }
 
+  /**
+   * Get the value of candidates
+   */ 
+  public function getCandidates()
+  {
+    return $this->candidates;
+  }
+
+  /**
+   * Set the value of candidates
+   *
+   * @return  self
+   */ 
+  public function setCandidates($candidates)
+  {
+    $this->candidates = $candidates;
+
+    return $this;
+  }
+
+  /**
+   * Add the value of candidates
+   *
+   * @return  self
+   */ 
+  public function addCandidate($candidate)
+  {
+    $this->candidates->add($candidate);
+
+    return $this;
+  }
+  
   /**
    * Get the value of time
    */ 

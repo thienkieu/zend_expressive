@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Test\Convertor\Adapter\DTOs\Test;
 
-use Infrastructure\Convertor\ConvertAdapterInterface;
+use Infrastructure\Convertor\ConvertDocumentToDTOAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromRandomQuestionDocumentAdapter implements ConvertAdapterInterface {
+class FromRandomQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     
     private $container;
     /**
@@ -18,7 +18,7 @@ class FromRandomQuestionDocumentAdapter implements ConvertAdapterInterface {
         $this->container = $container;
     }
 
-    public function isHandle($document) : bool
+    public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
         if ($document instanceof \Test\Documents\Test\RandomQuestionDocument) {
             return true;

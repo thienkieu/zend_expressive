@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Test\Convertor\Adapter\DTOs;
 
-use Infrastructure\Convertor\ConvertAdapterInterface;
+use Infrastructure\Convertor\ConvertDocumentToDTOAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromReadingDocumentAdapter implements ConvertAdapterInterface {
+class FromReadingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     private $container;
     /**
      * Class constructor.
@@ -17,7 +17,7 @@ class FromReadingDocumentAdapter implements ConvertAdapterInterface {
         $this->container = $container;
     }
 
-    public function isHandle($document) : bool
+    public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
         if ($document instanceof \Test\Documents\Question\ReadingQuestionDocument) {
             return true;
@@ -28,8 +28,7 @@ class FromReadingDocumentAdapter implements ConvertAdapterInterface {
 
     public function convert($document) {
         $dto = new \Test\DTOs\Question\ReadingQuestionDTO();
-        $dto->setContent(json_decode($document->getContent()));
-        
+        $dto->setContent($document->getContent());
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
         $questionDocuments = $document->getSubQuestions();
@@ -37,8 +36,8 @@ class FromReadingDocumentAdapter implements ConvertAdapterInterface {
         foreach($questionDocuments as $q) {
             $questions[] = $documentToDTOConvertor->convertToDTO($q);
         }
-        $dto->setSubQuestions($questions);
-
+        $dto->setSubQuestions($questions);       
+        
         return $dto;
     }
     

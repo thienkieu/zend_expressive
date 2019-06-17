@@ -7,5 +7,5 @@ namespace Test\Services;
 
 interface QuestionServiceInterface
 {
-    public function generateQuestion($citerial, $notInSource, & $messages);
+    public function generateQuestion($citerial, $notInSource);
 }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Test\Convertor\Adapter\DTOs;
 
-use Infrastructure\Convertor\ConvertAdapterInterface;
+use Infrastructure\Convertor\ConvertDocumentToDTOAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromExamHasSectionTestDocumentAdapter implements ConvertAdapterInterface {
+class FromExamHasSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     
     private $container;
     /**
@@ -18,7 +18,7 @@ class FromExamHasSectionTestDocumentAdapter implements ConvertAdapterInterface {
         $this->container = $container;
     }
 
-    public function isHandle($document) : bool
+    public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
         if ($document instanceof \Test\Documents\Exam\ExamHasSectionTestDocument) {
             return true;

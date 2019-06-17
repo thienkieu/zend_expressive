@@ -24,56 +24,75 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
         $this->translator = $this->container->get(\Config\AppConstant::Translator);    
     }
 
-    public function isHandler($dto){
+    public function isHandler($dto, $options = []){
         return true;
     }
-
+    
     public function doExam($dto, & $results, & $messages) {
-        $testRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
-        $document = $testDocuments = $testRepository->getExamInfo($dto->pin);
-        if (!$document) {
-            $messages[] = $translator->translate('There isnot exist candidate with pin', ['%pin%' => $dto->pin]);
-            return false;
-        }
-        
-        $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
-        $sectionsForDoExam = [];
-        $questionService = $this->container->get(QuestionServiceInterface::class);
-
-        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-        $examDTO = $documentToDTOConvertor->convertToDTO($document);
-        $test  = $examDTO->getTest();
-        $sections = $test->getSections();
-        foreach ($sections as $section) {
-            $questionsForSection = [];
-            $questions = $section->getQuestions();
-            $sources = [];
-            foreach ($questions as $question) {
-                $q = $questionService->generateQuestion($question, $sources, $messages);
-                if ($q === false) {
-                    // TODO need to define here
-                    throw new \Test\Exceptions\GenerateQuestionException($messages[0]);
-                }
-
-                $sources[] = $q->getSource();
-                $questionsForSection[] = $q;
+        try {
+            $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
+            $document = $testDocuments = $examRepository->getExamInfo($dto->pin);
+            if (!$document) {
+                $messages[] = $this->translator->translate('There isnot exist candidate with pin', ['%pin%' => $dto->pin]);
+                return false;
             }
 
-            $sectionForDoExam = new \Test\DTOs\Test\SectionDTO();
-            $sectionForDoExam->setName($section->getName());
-            $sectionForDoExam->setDescription($section->getDescription());
-            $sectionForDoExam->setQuestions($questionsForSection);    
+            $candidates = $document->getCandidates();
+            if (!$candidates[0]->getIsPinValid()) {
+                $messages[] = $this->translator->translate('Your pin \'%pin%\' is used, Please notify to admin to get new pin', ['%pin%' => $dto->pin]);
+                return false;
+            }
             
-            $sectionsForDoExam[] = $sectionForDoExam;
+            $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
+            $sectionsForDoExam = [];
+            $questionService = $this->container->get(QuestionServiceInterface::class);
+
+            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+            $examDTO = $documentToDTOConvertor->convertToDTO($document);
+            $test  = $examDTO->getTest();
+            $sections = $test->getSections();
+            foreach ($sections as $section) {
+                $questionsForSection = [];
+                $questions = $section->getQuestions();
+                $sources = [];
+                foreach ($questions as $question) {
+                    
+                    $q = $questionService->generateQuestion($question, $sources);                    
+                    $sources[] = $q->getSource();
+
+                    $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
+                    $testQuestionDTO->setId($q->getId());
+                    $testQuestionDTO->setGenerateFrom($question->getGenerateFrom());
+                    $testQuestionDTO->setQuestionInfo($q);
+
+                    $questionsForSection[] = $testQuestionDTO;
+                }
+
+                $sectionForDoExam = new \Test\DTOs\Test\SectionDTO();
+                $sectionForDoExam->setName($section->getName());
+                $sectionForDoExam->setDescription($section->getDescription());
+                $sectionForDoExam->setQuestions($questionsForSection);    
+                
+                $sectionsForDoExam[] = $sectionForDoExam;
+            }
+
+            $testForDoExam->setSections($sectionsForDoExam);
+            $testForDoExam->setId($test->getId());
+            $testForDoExam->setTitle($test->getTitle());
+
+            $examDTO->setTest($testForDoExam);
+
+            $results = $examDTO;
+            $candidates = $examDTO->getCandidates();
+
+            $pinService = $this->container->get(PinServiceInterface::class);
+            $pinService->inValidPin($examDTO->getId(), $dto->pin);
+
+            return true;
+        }catch(\Test\Exceptions\GenerateQuestionException $e) {
+            $messages[] =  $e->getMessage();       
+            return false;   
         }
-
-        $testForDoExam->setSections($sectionsForDoExam);
-        $testForDoExam->setId($test->getId());
-        $testForDoExam->setTitle($test->getTitle());
-
-        $results = $testForDoExam;
-        
-        return true;
 
     }
 }

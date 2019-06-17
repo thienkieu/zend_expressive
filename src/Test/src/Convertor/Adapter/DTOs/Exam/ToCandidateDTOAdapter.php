@@ -11,9 +11,9 @@ use Test\Enum\DTOName;
 use Config\AppConstant;
 
 class ToCandidateDTOAdapter extends ToDTOAdapter {
-    public function isHandle($dtoObject, $name) : bool
+    public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {         
-        if ($name === DTOName::Candidate) {
+        if ($options === DTOName::Candidate) {
             return true;
         }
         

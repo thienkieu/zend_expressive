@@ -48,6 +48,7 @@ class ConfigProvider
                 Handlers\CreateExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\EnterPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\DoExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\RefreshPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
@@ -75,6 +76,9 @@ class ConfigProvider
 
                 Services\QuestionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\QuestionService::class => \Infrastructure\Factory\BaseFactory::class,
+
+                Services\PinServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\PinService::class => \Infrastructure\Factory\BaseFactory::class,
             ],
 
             'aliases' => [

@@ -11,10 +11,10 @@ use Test\Enum\DTOName;
 use Config\AppConstant;
 
 class ToTestWithSectionDTOAdapter extends ToDTOAdapter {
-    public function isHandle($dtoObject, $name) : bool
+    public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
         $type = isset($dtoObject->sections) ? $dtoObject->sections: '';
-        if ($name === DTOName::Test && !empty($type)) {
+        if ($options === DTOName::Test && !empty($type)) {
             return true;
         }
 

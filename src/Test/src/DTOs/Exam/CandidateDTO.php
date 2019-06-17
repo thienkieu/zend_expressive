@@ -12,6 +12,7 @@ class CandidateDTO implements \JsonSerializable
     protected $type; 
     protected $email;
     protected $pin; 
+    protected $isPinValid;
 
     /**
      * Get the value of email
@@ -120,7 +121,8 @@ class CandidateDTO implements \JsonSerializable
         $ret->name = $this->getName();
         $ret->email = $this->getEmail();  
         $ret->pin = $this->getPin();   
-        $ret->objectId = $this->getObjectId();   
+        $ret->objectId = $this->getObjectId();
+        $ret->isPinValid = $this->getIsPinValid();   
         return $ret;
     }
 
@@ -140,6 +142,26 @@ class CandidateDTO implements \JsonSerializable
     public function setPin($pin)
     {
         $this->pin = $pin;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isPinValid
+     */ 
+    public function getIsPinValid()
+    {
+        return $this->isPinValid;
+    }
+
+    /**
+     * Set the value of isPinValid
+     *
+     * @return  self
+     */ 
+    public function setIsPinValid($isPinValid)
+    {
+        $this->isPinValid = $isPinValid;
 
         return $this;
     }

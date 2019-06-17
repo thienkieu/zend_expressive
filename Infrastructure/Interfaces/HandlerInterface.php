@@ -7,5 +7,5 @@ namespace Infrastructure\Interfaces;
 
 interface HandlerInterface
 {
-    public function isHandler($param);
+    public function isHandler($param, $options = []);
 }

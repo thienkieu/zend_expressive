@@ -26,4 +26,6 @@ return array(
     'There isnot exist candidate with pin' => 'There isnot exist candidate with pin %pin%',
     'Field \'%field%\' cannot correct format, Please check it again.' => 'Field \'%field%\' cannot correct format, Please check it again.',
     'Source cannot empty.' => 'Source cannot empty at line %lineNumber%.', 
+    'There is problem with update pin \'%pin%\', Please refresh new pin.' => 'There is problem with update pin \'%pin%\', Please refresh new pin.',
+    'Your pin \'%pin%\' is used, Please notify to admin to get new pin' => 'Your pin \'%pin%\' is used, Please notify to admin to get new pin',
 );

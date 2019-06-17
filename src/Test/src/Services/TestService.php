@@ -22,7 +22,7 @@ class TestService implements TestServiceInterface, HandlerInterface
         $this->dm = $this->container->get('documentManager');        
     }
 
-    public function isHandler($dto){
+    public function isHandler($dto, $options = []){
         return true;
     }
 

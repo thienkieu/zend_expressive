@@ -32,6 +32,9 @@ return [
         ],
         \Test\Services\QuestionServiceInterface::class => [
             \Test\Services\QuestionService::class,
+        ],
+        \Test\Services\PinServiceInterface::class => [
+            \Test\Services\PinService::class,
         ]
     ],
 ];

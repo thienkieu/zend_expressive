@@ -13,7 +13,7 @@ use Infrastructure\Validator\ValidatorAdapterInterface;
 
 class CreateTestWithSectionValidatorAdapter implements ValidatorAdapterInterface
 {
-    public function isHandle($routerName, $request) : bool
+    public function isHandleValid($routerName, $request) : bool
     {
         if ($routerName === \Config\AppRouterName::CreateTest) {
             return true;

@@ -9,10 +9,10 @@ use Test\Enum\DTOName;
 use Config\AppConstant;
 
 class ToWritingDTOAdapter extends ToDTOAdapter {
-    public function isHandle($dtoObject, $name) : bool
+    public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
         $type = isset($dtoObject->type) ? $dtoObject->type: '';
-        if ($name === DTOName::QuestionDTO && $type === DTOName::Writing ) {
+        if ($options === DTOName::QuestionDTO && $type === DTOName::Writing ) {
             return true;
         }
 

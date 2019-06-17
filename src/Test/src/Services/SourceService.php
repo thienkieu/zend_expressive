@@ -23,7 +23,7 @@ class SourceService implements SourceServiceInterface, HandlerInterface
         $this->dm = $this->container->get('documentManager');
     }
 
-    public function isHandler($param){
+    public function isHandler($param, $options = []){
         return true;
     }
 

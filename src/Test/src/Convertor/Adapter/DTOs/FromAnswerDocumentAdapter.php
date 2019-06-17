@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Test\Convertor\Adapter\DTOs;
 
-use Infrastructure\Convertor\ConvertAdapterInterface;
+use Infrastructure\Convertor\ConvertDocumentToDTOAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromAnswerDocumentAdapter implements ConvertAdapterInterface {
-    public function isHandle($document) : bool
+class FromAnswerDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
+    public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
         if ($document instanceof \Test\Documents\Question\AnswerDocument) {
             return true;

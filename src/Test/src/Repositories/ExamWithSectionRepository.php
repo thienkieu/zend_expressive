@@ -17,9 +17,43 @@ use date;
 
 class ExamWithSectionRepository extends DocumentRepository
 {
+    private $canAccessExamBefore = (1 * 24 * 60 * 60);
+    
+    public function refreshPin($examId, $candidateId, $newPin) {
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+                    ->updateOne()
+                    
+                    ->field('id')->equals($examId)
+                    ->field('candidates.id')->equals($candidateId)
+                    
+                    ->field('candidates.$.pin')->set($newPin)
+                    ->getQuery()
+                    ->execute();
+        
+        return $result;
+
+    }
+
+    public function inValidPin($examId, $pin) {
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+                    ->updateOne()
+                    
+                    ->field('id')->equals($examId)
+                    ->field('candidates.pin')->equals($pin)
+                    
+                    ->field('candidates.$.isPinValid')->set(false)
+                    ->getQuery()
+                    ->execute();
+        
+        return $result;
+
+    }
+
     public function getExamInfo($pin) {
        
-        $now  = new \DateTime(date('Y-m-d H:i:s',\time()));
+        $now  = new \DateTime(date('Y-m-d H:i:s',\time() - $this->canAccessExamBefore));
         $builder = $this->createAggregationBuilder();
         $command = $builder
                 ->hydrate(\Test\Documents\Exam\ExamHasSectionTestDocument::class)
@@ -28,8 +62,8 @@ class ExamWithSectionRepository extends DocumentRepository
                     ->field('startDate')->gte($now)                
                 ->project()   
                     ->includeFields(['title', 'startDate', 'test', 'time'])                
-                    //->excludeFields(['candidates'])
-                    //->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
+                    ->excludeFields(['candidates'])
+                    ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
                     
                 ->execute();
         //echo '<pre>'.print_r($command, true).'</pre>'; die;
@@ -99,7 +133,7 @@ class ExamWithSectionRepository extends DocumentRepository
         //$timeBefore5MinutesAgo  = new \DateTime(date('Y-m-d H:i:s',\time() - 36000 * 60));
         //$mongoDateBefore5MinutesAgo = new \MongoDate($timeBefore5MinutesAgo->getTimestamp());
 
-        $now  = new \DateTime(date('Y-m-d H:i:s',\time()));
+        $now  = new \DateTime(date('Y-m-d H:i:s',\time() - $this->canAccessExamBefore));
         $builder = $this->createAggregationBuilder();
         $command = $builder
                 ->hydrate(\Test\Documents\Exam\ExamHasSectionTestDocument::class)

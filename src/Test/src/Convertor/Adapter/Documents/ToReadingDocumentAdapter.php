@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Test\Convertor\Adapter\Documents;
 
-use Infrastructure\Convertor\ConvertAdapterInterface;
+use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 
-class ToReadingDocumentAdapter implements ConvertAdapterInterface {
+class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
     protected $convertor;
 
@@ -19,7 +19,7 @@ class ToReadingDocumentAdapter implements ConvertAdapterInterface {
         $this->convertor = $convertor;
     }
     
-    public function isHandle($dtoObject) : bool
+    public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
         if ($dtoObject instanceof \Test\DTOs\Question\ReadingQuestionDTO) {
             return true;

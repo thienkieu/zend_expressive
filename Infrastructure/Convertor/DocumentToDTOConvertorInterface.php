@@ -7,5 +7,5 @@ namespace Infrastructure\Convertor;
 use Zend\Hydrator\ReflectionHydrator;
 
 interface DocumentToDTOConvertorInterface {    
-    public function convertToDTO($document);
+    public function convertToDTO($document, $options = []);
 }

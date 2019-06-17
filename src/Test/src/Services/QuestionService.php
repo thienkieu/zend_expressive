@@ -24,38 +24,50 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $this->translator = $this->container->get(\Config\AppConstant::Translator);
     }
 
-    public function isHandler($param){
+    public function isHandler($param, $options = []){
         return true;
     }
     
-    protected function getRepositoryByType($type) {
+    protected function getClassName($type) {
         switch($type) {
             case \Config\AppConstant::Reading:
-                return $this->dm->getRepository(\Test\Documents\Question\ReadingQuestionDocument::class);
+                return \Test\Documents\Question\ReadingQuestionDocument::class;
             break;
             case \Config\AppConstant::Listening:
-                return $this->dm->getRepository(\Test\Documents\Question\ListeningQuestionDocument::class);
+                return \Test\Documents\Question\ListeningQuestionDocument::class;
             break;
             case \Config\AppConstant::Writing:
-                return $this->dm->getRepository(\Test\Documents\Question\WritingQuestionDocument::class);
+                return \Test\Documents\Question\WritingQuestionDocument::class;
             break;
         }
-        return null;
+        return \Test\Documents\Question\QuestionDocument::class;;
     }
 
-    public function generateQuestion($citerial, $notInsources, & $messages) {
+    protected function limitSubQuestion($questionDTO, $numberSubQuestion) {
+        $subQuestions = $questionDTO->getSubQuestions();        
+        $maxRand = count($subQuestions) - 1;
+        $ret = [];
+
+        for ($i=0; $i < $numberSubQuestion ; $i++) {
+            $index = mt_rand(0, $maxRand);
+            $q = array_splice($subQuestions, $index, 1);
+            $ret[] = $q[0];
+            $maxRand = $maxRand - 1;
+        }
+      
+        return $ret;
+    }
+
+    public function generateQuestion($citerial, $notInsources) {
         if ($citerial->getGenerateFrom() !== \Config\AppConstant::Random) {
             return $citerial;
         }
-        
-        $questionDTO = $citerial->getQuestionInfo();
-        $questionRepository = $this->getRepositoryByType($questionDTO->getType());
-        if ($questionRepository === null) {
-            $messages[] = $this->translator->translate('Cannot find repository with type %type%', ['%type%' => $questionDTO->getType()]);
-            return false;
-        }
 
-        $question = $questionRepository->generateRandomQuestion($questionDTO->getType(), $questionDTO->getSubType(), $questionDTO->getNumberSubQuestion(), $notInsources);
+        $questionDTO = $citerial->getQuestionInfo();
+        $toClass = $this->getClassName($questionDTO->getType());
+        $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
+        
+        $question = $questionRepository->generateRandomQuestion($questionDTO->getType(), $questionDTO->getSubType(), $questionDTO->getNumberSubQuestion(), $notInsources, $toClass);
         if (!$question) {
             $generateQuestionCiterial = [
                 '%type%' => $questionDTO->getType(),
@@ -64,13 +76,13 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
                 '%sources%' => implode(',', $notInsources)
             ];
 
-            $messages[] = $this->translator->translate('Cannot generate question with citerials: [type => %type%, subType => %subType%, numberSubQuestion => %numberSubQuestion%, sources=>%sources%]', $generateQuestionCiterial);
-            return false;
+            throw new \Test\Exceptions\GenerateQuestionException($this->translator->translate('Cannot generate question with citerials: [type => %type%, subType => %subType%, numberSubQuestion => %numberSubQuestion%, sources=>%sources%]', $generateQuestionCiterial));
         }
 
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-        $questionDTO = $documentToDTOConvertor->convertToDTO($question);
-
-        return $questionDTO;
+        $ret = $documentToDTOConvertor->convertToDTO($question);
+        $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion());
+        $ret->setSubQuestions($subQuestions);
+        return $ret;
     }
 }

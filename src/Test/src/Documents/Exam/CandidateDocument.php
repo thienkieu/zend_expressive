@@ -27,6 +27,9 @@ class CandidateDocument
   /** @ODM\Field(type="string") */
   protected $pin;
 
+  /** @ODM\Field(type="boolean") */
+  protected $isPinValid = true;
+
 
   /**
    * Get the value of id
@@ -144,6 +147,26 @@ class CandidateDocument
   public function setPin($pin)
   {
     $this->pin = $pin;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isPinValid
+   */ 
+  public function getIsPinValid()
+  {
+    return $this->isPinValid;
+  }
+
+  /**
+   * Set the value of isPinValid
+   *
+   * @return  self
+   */ 
+  public function setIsPinValid($isPinValid)
+  {
+    $this->isPinValid = $isPinValid;
 
     return $this;
   }

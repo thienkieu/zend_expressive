@@ -11,10 +11,10 @@ use Test\Enum\DTOName;
 use Config\AppConstant;
 
 class ToListeningDTOAdapter extends ToDTOAdapter {
-    public function isHandle($dtoObject, $name) : bool
+    public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
         $type = isset($dtoObject->type) ? $dtoObject->type: '';
-        if ($name === DTOName::QuestionDTO && $type === DTOName::Listening ) {
+        if ($options === DTOName::QuestionDTO && $type === DTOName::Listening ) {
             return true;
         }
 

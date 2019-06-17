@@ -23,7 +23,7 @@ class EnterPinValidatorAdapter implements ValidatorAdapterInterface
     {
         $this->container = $container;
     }
-    public function isHandle($routerName, $request) : bool
+    public function isHandleValid($routerName, $request) : bool
     {
         if ($routerName === \Config\AppRouterName::EnterPin) {
             return true;

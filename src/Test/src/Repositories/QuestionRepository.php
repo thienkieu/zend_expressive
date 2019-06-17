@@ -17,15 +17,18 @@ use date;
 
 class QuestionRepository extends DocumentRepository
 {
-    public function generateRandomQuestion($type, $subType, $numberSubQuestion, $sources) {
-        $builder = $this->createQueryBuilder();
-        $question = $builder
-                    ->selectSlice('subQuestions', $numberSubQuestion) 
-                    ->field('type')->equals($type)
-                    ->field('subType')->equals($subType)
-                    ->field('source')->notIn($sources)
-                    ->getQuery()
-                    ->getSingleResult();
+    public function generateRandomQuestion($type, $subType, $numberSubQuestion, $sources, $toClass) {
+        $aggregationBuilder = $this->createAggregationBuilder();
+        $question = $aggregationBuilder
+                        ->hydrate($toClass)
+                        ->match()
+                            ->field('type')->equals($type)
+                            ->field('subType')->equals($subType)
+                            ->field('source')->notIn($sources)
+                            ->field('numberSubQuestion')->gte($numberSubQuestion)
+                        ->sample(1)
+                        ->execute()
+                        ->getSingleResult();
         
         return $question;
     }

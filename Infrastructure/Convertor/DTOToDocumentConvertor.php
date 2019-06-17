@@ -9,7 +9,7 @@ use Zend\Hydrator\ReflectionHydrator;
 class DTOToDocumentConvertor implements DTOToDocumentConvertorInterface{
     
     /**
-     * @var $adapters ConvertAdapterInterface[]
+     * @var $adapters ConvertDTOToDocumentAdapterInterface[]
      */
     private  $adapters;
     protected $container;
@@ -24,7 +24,7 @@ class DTOToDocumentConvertor implements DTOToDocumentConvertorInterface{
     public function convertToDocument($dto) {
         foreach($this->adapters as $adapter) {
             $adapterInstance = new $adapter($this->container, $this);
-            if ($adapterInstance->isHandle($dto)) {
+            if ($adapterInstance->isHandleConvertDTOToDocument($dto)) {
                 return $adapterInstance->convert($dto);
             }
         }

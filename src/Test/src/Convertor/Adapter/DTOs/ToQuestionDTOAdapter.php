@@ -8,9 +8,9 @@ use Infrastructure\Convertor\ToDTOAdapter;
 use Test\Enum\DTOName;
 
 class ToQuestionDTOAdapter extends ToDTOAdapter {
-    public function isHandle($dtoObject, $name) : bool
+    public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($name === DTOName::QuestionDTO) {
+        if ($options === DTOName::QuestionDTO) {
             return true;
         }
 

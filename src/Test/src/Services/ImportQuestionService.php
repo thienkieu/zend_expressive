@@ -41,7 +41,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         $this->sourceService = $this->container->get(SourceServiceInterface::class);        
     }
 
-    public function isHandler($dto) {
+    public function isHandler($dto, $options = []) {
         return true;
     }
 

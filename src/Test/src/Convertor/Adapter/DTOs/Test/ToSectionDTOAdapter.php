@@ -11,9 +11,9 @@ use Test\Enum\DTOName;
 use Config\AppConstant;
 
 class ToSectionDTOAdapter extends ToDTOAdapter {
-    public function isHandle($dtoObject, $name) : bool
+    public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($name === DTOName::Section) {
+        if ($options === DTOName::Section) {
             return true;
         }
 

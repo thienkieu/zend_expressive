@@ -10,7 +10,7 @@ class RequestToDTOConvertor implements RequestToDTOConvertorInterface {
     protected $container;
     
     /**
-     * @var $adapters ConvertAdapterInterface[]
+     * @var $adapters ConvertToDTOAdapterInterface[]
      */
     private  $adapters;
 
@@ -24,7 +24,7 @@ class RequestToDTOConvertor implements RequestToDTOConvertorInterface {
     public function convertToDTO($jsonData, $toDTOName) {
         foreach($this->adapters as $adapter) {
             $adapterInstance = new $adapter($this->container, $this);
-            if ($adapterInstance->isHandle($jsonData, $toDTOName)) {
+            if ($adapterInstance->isHandleConvertToDTO($jsonData, $toDTOName)) {
                 return $adapterInstance->convert($jsonData);
             }
         }
