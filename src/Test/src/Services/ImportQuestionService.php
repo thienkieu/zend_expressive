@@ -201,7 +201,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
         $source = trim($data[$this->source], ' ');
         if (empty($source)) {
-            $error = $this->translator->translate('Source cannot empty.', ['%$lineNumber%'=> $lineNumber]);
+            $error = $this->translator->translate('Source cannot empty.', ['%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
 

@@ -16,6 +16,20 @@ use date;
 
 class WritingQuestionRepository extends QuestionRepository
 {
+    public function generateRandomQuestion($type, $subType, $numberSubQuestion, $sources, $toClass) {
+        $aggregationBuilder = $this->createAggregationBuilder();
+        $question = $aggregationBuilder
+                        ->hydrate($toClass)
+                        ->match()
+                            ->field('type')->equals($type)
+                            ->field('subType')->equals($subType)                            
+                        ->sample(1)
+                        ->execute()
+                        ->getSingleResult();
+        
+        return $question;
+    }
+    
     public function getExamInfo($pin) {
        
         $now  = new \DateTime(date('Y-m-d H:i:s',\time()));

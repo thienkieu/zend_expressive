@@ -65,7 +65,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
         $questionDTO = $citerial->getQuestionInfo();
         $toClass = $this->getClassName($questionDTO->getType());
-        $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
+        $questionRepository = $this->dm->getRepository($toClass);
         
         $question = $questionRepository->generateRandomQuestion($questionDTO->getType(), $questionDTO->getSubType(), $questionDTO->getNumberSubQuestion(), $notInsources, $toClass);
         if (!$question) {
@@ -81,8 +81,11 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         $ret = $documentToDTOConvertor->convertToDTO($question);
-        $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion());
-        $ret->setSubQuestions($subQuestions);
+        if (!($ret instanceof \Test\DTOs\Question\WritingQuestionDTO)) {
+            $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion());
+            $ret->setSubQuestions($subQuestions);
+        }
+        
         return $ret;
     }
 }
