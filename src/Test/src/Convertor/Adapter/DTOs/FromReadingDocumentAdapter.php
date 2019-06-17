@@ -29,6 +29,7 @@ class FromReadingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
     public function convert($document) {
         $dto = new \Test\DTOs\Question\ReadingQuestionDTO();
         $dto->setContent($document->getContent());
+        $dto->setId($document->getId());
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
         $questionDocuments = $document->getSubQuestions();

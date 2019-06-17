@@ -64,7 +64,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                     $testQuestionDTO->setId($q->getId());
                     $testQuestionDTO->setGenerateFrom($question->getGenerateFrom());
                     $testQuestionDTO->setQuestionInfo($q);
-
+                   
                     $questionsForSection[] = $testQuestionDTO;
                 }
 

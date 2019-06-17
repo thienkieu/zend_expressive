@@ -28,8 +28,11 @@ class FromWritingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
 
     public function convert($document) {
         $dto = new \Test\DTOs\Question\WritingQuestionDTO();
-        $dto->setContent(json_decode($document->getContent()));
-        
+        $dto->setContent($document->getContent());
+        $dto->setId($document->getId());
+        $dto->setType($document->getType());
+        $dto->setSubType($document->getSubType());
+
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
         $questionDocuments = $document->getSubQuestions();
