@@ -107,8 +107,9 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $examResult->setExamId($examDTO->getId());
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $document = $dtoToDocumentConvertor->convertToDocument($examResult);
-            $this->dm->persist($document);
+            $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult);
+        
+            $this->dm->persist($examResultDocument);
             $this->dm->flush();
 
             return true;

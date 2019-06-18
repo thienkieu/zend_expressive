@@ -21,7 +21,7 @@ class ToTestDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Test\TestWithSectionDTO) {
+        if ($dtoObject instanceof \Test\DTOs\Test\TestWithSectionDTO && !isset($options['toClass'])) {
             return true;
         }
         

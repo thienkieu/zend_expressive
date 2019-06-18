@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ExamResultHasSectionTestDocument extends ExamResultDocument
 {
-  /** @ODM\EmbedOne(targetDocument="\Test\Documents\Test\TestWithSectionDocument") */
+  /** @ODM\EmbedOne(targetDocument="TestWithSectionDocument") */
   private $test;
 
   /**

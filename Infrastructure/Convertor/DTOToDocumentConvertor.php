@@ -21,11 +21,11 @@ class DTOToDocumentConvertor implements DTOToDocumentConvertorInterface{
     }
 
     
-    public function convertToDocument($dto) {
+    public function convertToDocument($dto, $options = []) {
         foreach($this->adapters as $adapter) {
             $adapterInstance = new $adapter($this->container, $this);
-            if ($adapterInstance->isHandleConvertDTOToDocument($dto)) {
-                return $adapterInstance->convert($dto);
+            if ($adapterInstance->isHandleConvertDTOToDocument($dto, $options)) {
+                return $adapterInstance->convert($dto, $options);
             }
         }
 

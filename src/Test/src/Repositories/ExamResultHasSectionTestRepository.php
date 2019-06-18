@@ -17,7 +17,7 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
 {
     public function updateAnwser($examId, $candiateId, $questionId, $subQuestionId, $answerId) {
         $queryBuilder = $this->createQueryBuilder();
-        $result = $queryBuilder
+       /* $result = $queryBuilder
                     ->updateOne()
                     
                     ->field('examId')->equals($examId)
@@ -30,20 +30,25 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
                     ->execute();
         
         return $result;
-       
+       */
+
         $queryBuilder = $this->createQueryBuilder();
+       
         $result = $queryBuilder
                     ->updateOne()
                     
                     ->field('examId')->equals($examId)
                     ->field('candidate.id')->equals($candiateId)
                     ->field('test.sections.questions.id')->equals($questionId)                   
-                    ->field('test.sections.questions.questionInfo.subQuestions.answers.id')->equals($answerId)
+                    //->field('test.sections.questions.questionInfo.subQuestions.answers.id')->equals($answerId)
                     
-                    ->field('test.sections.questions.questionInfo.subQuestions.answers.$.isUserChoose')->set(true)
+                    ->field('test.sections.$.abc')->set(true)
                     ->getQuery()
                     ->execute();
+
+                    echo '<pre>'.print_r($result, true).'</pre>'; die;
         
+
         return $result;
 
     }
