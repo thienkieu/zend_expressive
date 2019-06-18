@@ -49,6 +49,7 @@ class ConfigProvider
                 Handlers\EnterPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\DoExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\RefreshPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateAnswerHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,

@@ -21,6 +21,7 @@ return [
 
         \Test\Convertor\Adapter\Documents\ToExamDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToCandidateDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToExamResultDocumentAdapter::class,
     ],
 
     'convertorDTOAdapters' => [

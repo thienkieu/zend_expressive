@@ -28,6 +28,19 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
         return true;
     }
     
+    public function updateAnswer($dto, & $messages) {
+
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $results = $testDocuments = $examResultRepository->updateAnwser($dto->examId, $dto->candidateId, $dto->questionId, $dto->subQuestionId, $dto->answerId);
+        if ($results['ok'] != 1) {
+            $messages[] = $this->translator->translate('There isnot exist candidate with pin', ['%pin%' => $dto->pin]);
+            return false;
+        }
+        
+        return $results;
+        
+    }
+
     public function doExam($dto, & $results, & $messages) {
         try {
             $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
@@ -85,8 +98,18 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $results = $examDTO;
             $candidates = $examDTO->getCandidates();
 
-            $pinService = $this->container->get(PinServiceInterface::class);
-            $pinService->inValidPin($examDTO->getId(), $dto->pin);
+            //$pinService = $this->container->get(PinServiceInterface::class);
+            //$pinService->inValidPin($examDTO->getId(), $dto->pin);
+
+            $examResult = new \Test\DTOs\ExamResult\ExamResultHasSectionTestDTO();
+            $examResult->setTest($testForDoExam);
+            $examResult->setCandidate($candidates[0]);
+            $examResult->setExamId($examDTO->getId());
+
+            $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
+            $document = $dtoToDocumentConvertor->convertToDocument($examResult);
+            $this->dm->persist($document);
+            $this->dm->flush();
 
             return true;
         }catch(\Test\Exceptions\GenerateQuestionException $e) {

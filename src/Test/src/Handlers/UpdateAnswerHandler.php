@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 
 use Test\Services\DoExamServiceInterface;
 
-class CandidateUpdateAnswerHandler implements RequestHandlerInterface
+class UpdateAnswerHandler implements RequestHandlerInterface
 {    
     /** @var Psr\Container\ContainerInterface */
     private $container;
@@ -26,12 +26,12 @@ class CandidateUpdateAnswerHandler implements RequestHandlerInterface
         $messages = [];
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         $pinService = $this->container->get(DoExamServiceInterface::class);
-        $ret = $pinService->updateAnswer($dto->examId, $dto->candidateId, $newPin,  $messages);
+        $ret = $pinService->updateAnswer($dto, $messages);
 
         return new JsonResponse([
             'isSuccess' => $ret,      
             'messages'  => $messages,
-            'pin' => $newPin
+            'pin' => $ret
         ]);
         
     }

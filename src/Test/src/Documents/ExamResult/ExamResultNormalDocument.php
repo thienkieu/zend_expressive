@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @ODM\Document
  */
 
-class ExamNormalDocument extends ExamResultDocument
+class ExamResultNormalDocument extends ExamResultDocument
 {
   /** @ODM\EmbedOne(targetDocument="\Test\Documents\Test\TestWithSectionDocument") */
   private $test;

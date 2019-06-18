@@ -36,11 +36,11 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         $document->setType($dto->getType());
         $document->setSubType($dto->getSubType());
         
-        $questions = $dto->getQuestions();
+        $questions = $dto->getSubQuestions();
 
         foreach($questions as $question) {
             $questionDocument = $this->convertor->convertToDocument($question);
-            $document->addQuestion($questionDocument);            
+            $document->addSubQuestion($questionDocument);            
         }
         
         return $document;

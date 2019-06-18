@@ -7,16 +7,20 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @ODM\Document(collection="exam_result")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField("type")
- * @ODM\DiscriminatorMap({"testWithSection"="ExamHasSectionTestDocument", "normal"="ExamNormalDocument"})
+ * @ODM\DiscriminatorMap({"testWithSection"="ExamResultHasSectionTestDocument", "normal"="ExamResultNormalDocument"})
  */
 
 class ExamResultDocument
 {
+
   /** @ODM\Id */
   protected $id;
 
+  /** @ODM\EmbedOne(targetDocument="\Test\Documents\Exam\CandidateDocument") */
+  private $candidate;
+
   /** @ODM\Field(type="string") */
-  protected $candidateId;
+  protected $examId;
 
   /**
    * Get the value of id
@@ -38,22 +42,43 @@ class ExamResultDocument
     return $this;
   }
 
+
   /**
-   * Get the value of candidateId
+   * Get the value of candidate
    */ 
-  public function getCandidateId()
+  public function getCandidate()
   {
-    return $this->candidateId;
+    return $this->candidate;
   }
 
   /**
-   * Set the value of candidateId
+   * Set the value of candidate
    *
    * @return  self
    */ 
-  public function setCandidateId($candidateId)
+  public function setCandidate($candidate)
   {
-    $this->candidateId = $candidateId;
+    $this->candidate = $candidate;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of examId
+   */ 
+  public function getExamId()
+  {
+    return $this->examId;
+  }
+
+  /**
+   * Set the value of examId
+   *
+   * @return  self
+   */ 
+  public function setExamId($examId)
+  {
+    $this->examId = $examId;
 
     return $this;
   }
