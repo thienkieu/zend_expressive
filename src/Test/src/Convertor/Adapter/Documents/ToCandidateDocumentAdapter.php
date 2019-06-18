@@ -28,7 +28,7 @@ class ToCandidateDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
         return false;
     }
     
-    public function convert($dto) 
+    public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Exam\CandidateDocument();
         $document->setName($dto->getName());

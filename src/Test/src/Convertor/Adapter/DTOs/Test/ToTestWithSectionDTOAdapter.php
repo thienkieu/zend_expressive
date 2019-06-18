@@ -25,7 +25,7 @@ class ToTestWithSectionDTOAdapter extends ToDTOAdapter {
         return \Test\DTOs\Test\TestWithSectionDTO::class;
     }
 
-    public function convert($jsonObject) 
+    public function convert($jsonObject, $options = []) 
     {
         $dtoObject = new \Test\DTOs\Test\TestWithSectionDTO();
         $dtoObject->setTitle($jsonObject->title);

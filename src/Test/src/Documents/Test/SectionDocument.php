@@ -18,7 +18,7 @@ class SectionDocument
   /** @ODM\Field(type="string") */
   private $description;
 
-  /** @ODM\EmbedMany(targetDocument="QuestionDocument") */
+  /** @ODM\EmbedMany(targetDocument="QuestionInfoDocument") */
   private $questions;
 
   public function __construct()

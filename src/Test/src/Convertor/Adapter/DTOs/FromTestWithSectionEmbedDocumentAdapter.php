@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Test\Convertor\Adapter\DTOs\Test;
+namespace Test\Convertor\Adapter\DTOs;
 
 use Infrastructure\Convertor\ConvertDocumentToDTOAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
+class FromTestWithSectionEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     
     private $container;
     private $convertor;
@@ -22,7 +22,7 @@ class FromSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInter
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
-        if ($document instanceof \Test\Documents\Test\SectionDocument) {
+        if ($document instanceof \Test\Documents\ExamResult\TestWithSectionDocument) {
             return true;
         }
 
@@ -30,16 +30,16 @@ class FromSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInter
     }
 
     public function convert($document, $options = []) {
-        $dto = new \Test\DTOs\Test\SectionDTO();
-        $dto->setName($document->getName());
-        $dto->setDescription($document->getDescription());
+        $dto = new \Test\DTOs\Test\TestWithSectionDTO();
+        $dto->setTitle($document->getTitle());
+        $dto->setId($document->getId());
         
-        $questionDocuments = $document->getQuestions();
-        $questionDTOs = [];
-        foreach($questionDocuments as $question) {
-            $questionDTOs[] = $this->convertor->convertToDTO($question, $options);
+        $sections = $document->getSections();
+        $sectionDTO = [];
+        foreach($sections as $section) {
+            $sectionDTO[] = $this->convertor->convertToDTO($section, $options);
         }
-        $dto->setQuestions($questionDTOs);
+        $dto->setSections($sectionDTO);
 
         return $dto;
     }

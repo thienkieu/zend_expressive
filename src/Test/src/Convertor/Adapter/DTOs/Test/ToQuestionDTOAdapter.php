@@ -24,7 +24,7 @@ class ToQuestionDTOAdapter extends ToDTOAdapter {
         return \Test\DTOs\Test\QuestionDTO::class;
     }
 
-    public function convert($jsonObject) 
+    public function convert($jsonObject, $options = []) 
     {  
         $dto = new \Test\DTOs\Test\QuestionDTO();
         $dto->setGenerateFrom($jsonObject->generateFrom);

@@ -6,5 +6,5 @@ namespace Infrastructure\Convertor;
 
 interface ConvertDTOAToDocumentAdapterInterface {
     public function isHandleConvertDTOToDocument($object, $options = []) : bool;
-    public function convert($dtoObject);
+    public function convert($dtoObject, $options = []);
 }

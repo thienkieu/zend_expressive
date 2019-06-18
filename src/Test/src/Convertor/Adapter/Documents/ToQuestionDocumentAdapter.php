@@ -28,7 +28,7 @@ class ToQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface
         return false;
     }
     
-    public function convert($dtoObject) 
+    public function convert($dtoObject, $options = []) 
     {
         $document = new \Test\Documents\Question\SubQuestionDocument();        
         $document->setContent(json_encode($dtoObject->getContent()));

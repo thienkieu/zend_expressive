@@ -24,7 +24,7 @@ class ToNonSectionTestDTOAdapter extends ToDTOAdapter {
         return \Test\DTOs\Test\NonSectionTestDTO::class;
     }
 
-    public function convert($request) 
+    public function convert($request, $options = []) 
     {  
         $dtoClass = $this->getDTOClass();
        

@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents\Test;
+namespace Test\Documents\ExamResult;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,7 +28,7 @@ class QuestionDocument
   /** @ODM\Field(type="int") */
   private $numberSubQuestion;
   
-  /** @ODM\EmbedMany(targetDocument="\Test\Documents\Question\SubQuestionDocument") */
+  /** @ODM\EmbedMany(targetDocument="\Test\Documents\ExamResult\SubQuestionDocument") */
   private $subQuestions;
   
   public function __construct()

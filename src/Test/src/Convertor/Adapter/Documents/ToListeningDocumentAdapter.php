@@ -21,14 +21,14 @@ class ToListeningDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Question\ListeningQuestionDTO) {
+        if ($dtoObject instanceof \Test\DTOs\Question\ListeningQuestionDTO && !isset($options[\Config\AppConstant::ToDocumentClass])) {
             return true;
         }
         
         return false;
     }
     
-    public function convert($dto) 
+    public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Question\ListeningQuestionDocument();
         $document->setContent(json_encode($dto->getContent()));
@@ -41,7 +41,7 @@ class ToListeningDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
         $questions = $dto->getSubQuestions();
 
         foreach($questions as $question) {
-            $questionDocument = $this->convertor->convertToDocument($question);
+            $questionDocument = $this->convertor->convertToDocument($question, $options);
             $document->addSubQuestion($questionDocument);            
         }
         

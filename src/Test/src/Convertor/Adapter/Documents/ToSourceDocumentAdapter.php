@@ -28,7 +28,7 @@ class ToSourceDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
         return false;
     }
     
-    public function convert($dtoObject) 
+    public function convert($dtoObject, $options = []) 
     {
         $document = new \Test\Documents\Question\SourceDocument();
         $document->setName($dtoObject->getName());

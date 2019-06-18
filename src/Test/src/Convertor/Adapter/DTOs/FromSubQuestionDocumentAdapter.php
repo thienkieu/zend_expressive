@@ -27,7 +27,7 @@ class FromSubQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInter
         return false;
     }
 
-    public function convert($document) {
+    public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\SubQuestionDTO();
         $dto->setId($document->getId());
         $dto->setContent($document->getContent());
@@ -38,7 +38,7 @@ class FromSubQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInter
         $answersDocuments = $document->getAnswers();
         $answers = [];
         foreach($answersDocuments as $a) {
-            $answers[] = $documentToDTOConvertor->convertToDTO($a);
+            $answers[] = $documentToDTOConvertor->convertToDTO($a, $options);
         }
         $dto->setAnswers($answers);
 

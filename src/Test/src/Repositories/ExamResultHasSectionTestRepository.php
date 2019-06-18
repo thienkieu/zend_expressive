@@ -42,7 +42,7 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
                     ->field('test.sections.questions.id')->equals($questionId)                   
                     //->field('test.sections.questions.questionInfo.subQuestions.answers.id')->equals($answerId)
                     
-                    ->field('test.sections.$.abc')->set(true)
+                    ->field('test.sections.questions.questionInfo.$.abc')->set(true)
                     ->getQuery()
                     ->execute();
 

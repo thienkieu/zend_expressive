@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ExamHasSectionTestDocument extends ExamDocument
 {
-  /** @ODM\EmbedOne(targetDocument="\Test\Documents\Test\TestWithSectionDocument") */
+  /** @ODM\EmbedOne(targetDocument="\Test\Documents\ExamResult\TestWithSectionDocument") */
   private $test;
 
   /** @ODM\EmbedMany(targetDocument="CandidateDocument") */

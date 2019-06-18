@@ -10,12 +10,14 @@ use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 class FromTestWithSectionDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     
     private $container;
+    private $convertor;
     /**
      * Class constructor.
      */
-    public function __construct($container)
+    public function __construct($container, $convertor)
     {
         $this->container = $container;
+        $this->convertor = $convertor;
     }
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
@@ -27,16 +29,15 @@ class FromTestWithSectionDocumentAdapter implements ConvertDocumentToDTOAdapterI
         return false;
     }
 
-    public function convert($document) {
+    public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Test\TestWithSectionDTO();
         $dto->setTitle($document->getTitle());
         $dto->setId($document->getId());
 
-        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         $sectionDocuments = $document->getSections();
         $sectionDTO = [];
         foreach($sectionDocuments as $section) {
-            $sectionDTO[] = $documentToDTOConvertor->convertToDTO($section);
+            $sectionDTO[] = $this->convertor->convertToDTO($section, $options);
         }
         $dto->setSections($sectionDTO);
 

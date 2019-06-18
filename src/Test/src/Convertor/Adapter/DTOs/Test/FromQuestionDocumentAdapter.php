@@ -20,21 +20,21 @@ class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
-        if ($document instanceof \Test\Documents\Test\QuestionDocument) {
+        if ($document instanceof \Test\Documents\Test\QuestionInfoDocument) {
             return true;
         }
 
         return false;
     }
 
-    public function convert($document) {
+    public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Test\QuestionDTO();
         $dto->setId($document->getId());
         $dto->setGenerateFrom($document->getGenerateFrom());
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
         $questionInfoDocument = $document->getQuestionInfo();        
-        $questionDTO = $documentToDTOConvertor->convertToDTO($questionInfoDocument);
+        $questionDTO = $documentToDTOConvertor->convertToDTO($questionInfoDocument, $options);
 
         
         $dto->setQuestionInfo($questionDTO);        

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Test\Convertor\Adapter\Documents\Test;
-
+namespace Test\Convertor\Adapter\Documents;
 
 use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 
-class ToRandomQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
+class ToWritingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
     protected $convertor;
 
@@ -22,20 +21,27 @@ class ToRandomQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Test\RandomQuestionDTO) {
+        if ($dtoObject instanceof \Test\DTOs\Question\WritingQuestonDTO && isset($options[\Config\AppConstant::ToDocumentClass])) {
             return true;
         }
-        
+
         return false;
     }
     
     public function convert($dto, $options = []) 
     {  
-        $document = new \Test\Documents\Test\RandomQuestionDocument();
+        $document = new \Test\Documents\Test\WritingQuestionDocument();
+        $document->setContent(json_encode($dto->getContent()));
+        $document->setSource($dto->getSource());
         $document->setType($dto->getType());
         $document->setSubType($dto->getSubType());
-        $document->setIsDifferentSource($dto->getIsDifferentSource());
-        $document->setNumberSubQuestion($dto->getNumberSubQuestion());
+        
+        $questions = $dto->getQuestions();
+
+        foreach($questions as $question) {
+            $questionDocument = $this->convertor->convertToDocument($question, $options);
+            $document->addQuestion($questionDocument);            
+        }
         
         return $document;
             

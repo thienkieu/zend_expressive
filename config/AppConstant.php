@@ -76,4 +76,6 @@ abstract class AppConstant
 
     const DateTimeFormat = 'm/d/Y';
 
+    const ToDocumentClass = 'toDocumentClass';
+
 }

@@ -26,7 +26,7 @@ class FromWritingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         return false;
     }
 
-    public function convert($document) {
+    public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\WritingQuestionDTO();
         $dto->setContent($document->getContent());
         $dto->setId($document->getId());
@@ -38,7 +38,7 @@ class FromWritingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         $questionDocuments = $document->getSubQuestions();
         $questions = [];
         foreach($questionDocuments as $q) {
-            $questions[] = $documentToDTOConvertor->convertToDTO($q);
+            $questions[] = $documentToDTOConvertor->convertToDTO($q, $options);
         }
         $dto->setSubQuestions($questions);
 

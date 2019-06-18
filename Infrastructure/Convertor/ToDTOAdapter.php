@@ -18,7 +18,7 @@ abstract class ToDTOAdapter implements ConvertToDTOAdapterInterface {
         $this->convertor = $convertor;
     }
 
-    public function convert($jsonObject) 
+    public function convert($jsonObject, $options = []) 
     {  
         $dtoClass = $this->getDTOClass();
        

@@ -28,7 +28,7 @@ class ToSectionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         return false;
     }
     
-    public function convert($dto) 
+    public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Test\SectionDocument();
         $document->setName($dto->getName());
@@ -36,7 +36,7 @@ class ToSectionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
                 
         $questions = $dto->getQuestions();
         foreach($questions as $question) {
-            $questionDocument = $this->convertor->convertToDocument($question);
+            $questionDocument = $this->convertor->convertToDocument($question, $options);
             $document->addQuestion($questionDocument);          
         }
         

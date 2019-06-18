@@ -21,14 +21,14 @@ class ToTestDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Test\TestWithSectionDTO && !isset($options['toClass'])) {
+        if ($dtoObject instanceof \Test\DTOs\Test\TestWithSectionDTO && !isset($options[\Config\AppConstant::ToDocumentClass])) {
             return true;
         }
         
         return false;
     }
     
-    public function convert($dto) 
+    public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Test\TestWithSectionDocument();
         $document->setTitle($dto->getTitle());
@@ -36,7 +36,7 @@ class ToTestDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
         $sections = $dto->getSections();
 
         foreach($sections as $section) {
-            $sectionDocument = $this->convertor->convertToDocument($section);
+            $sectionDocument = $this->convertor->convertToDocument($section, $options);
             $document->addSection($sectionDocument);            
         }
         

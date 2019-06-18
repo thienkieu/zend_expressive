@@ -21,14 +21,14 @@ class ToWritingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Question\WritingQuestonDTO) {
+        if ($dtoObject instanceof \Test\DTOs\Question\WritingQuestonDTO && !isset($options[\Config\AppConstant::ToDocumentClass])) {
             return true;
         }
 
         return false;
     }
     
-    public function convert($dto) 
+    public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Question\WritingQuestionDocument();
         $document->setContent(json_encode($dto->getContent()));
@@ -39,7 +39,7 @@ class ToWritingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         $questions = $dto->getQuestions();
 
         foreach($questions as $question) {
-            $questionDocument = $this->convertor->convertToDocument($question);
+            $questionDocument = $this->convertor->convertToDocument($question, $options);
             $document->addQuestion($questionDocument);            
         }
         

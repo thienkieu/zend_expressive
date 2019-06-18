@@ -26,7 +26,7 @@ class FromListeningDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
         return false;
     }
 
-    public function convert($document) {
+    public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\ListeningQuestionDTO();
         $dto->setContent(json_decode($document->getContent()));
         $dto->setRepeat($document->getRepeat());
@@ -42,7 +42,7 @@ class FromListeningDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
        
         $questions = [];
         foreach($questionDocuments as $q) {
-            $questions[] = $documentToDTOConvertor->convertToDTO($q);
+            $questions[] = $documentToDTOConvertor->convertToDTO($q, $options);
         }
         $dto->setSubQuestions($questions);
 

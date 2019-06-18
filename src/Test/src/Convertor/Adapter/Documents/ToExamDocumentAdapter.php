@@ -28,7 +28,7 @@ class ToExamDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
         return false;
     }
     
-    public function convert($dto) 
+    public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Exam\ExamHasSectionTestDocument();
         $document->setTitle($dto->getTitle());
@@ -37,11 +37,11 @@ class ToExamDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
                 
         $candidates = $dto->getCandidates();
         foreach($candidates as $candidate) {
-            $candidateDocument = $this->convertor->convertToDocument($candidate);
+            $candidateDocument = $this->convertor->convertToDocument($candidate, $options);
             $document->addCandidate($candidateDocument);            
         }
 
-        $test = $this->convertor->convertToDocument($dto->getTest());
+        $test = $this->convertor->convertToDocument($dto->getTest(), $options);
         $document->setTest($test);
         
         return $document;

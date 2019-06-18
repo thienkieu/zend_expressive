@@ -17,7 +17,7 @@ class FromAnswerDocumentAdapter implements ConvertDocumentToDTOAdapterInterface 
         return false;
     }
 
-    public function convert($document) {
+    public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\AnswerDTO();
         $dto->setContent($document->getContent());
         $dto->setIsCorrect($document->getIsCorrect());

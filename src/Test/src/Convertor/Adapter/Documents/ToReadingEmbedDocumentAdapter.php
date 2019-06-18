@@ -6,7 +6,7 @@ namespace Test\Convertor\Adapter\Documents;
 
 use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 
-class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
+class ToReadingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
     protected $convertor;
 
@@ -21,7 +21,7 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Question\ReadingQuestionDTO && !isset($options[\Config\AppConstant::ToDocumentClass])) {
+        if ($dtoObject instanceof \Test\DTOs\Question\ReadingQuestionDTO && isset($options[\Config\AppConstant::ToDocumentClass])) {
             return true;
         }
 
@@ -30,7 +30,7 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
     
     public function convert($dto, $options = []) 
     {  
-        $document = new \Test\Documents\Question\ReadingQuestionDocument();
+        $document = new \Test\Documents\Test\ReadingQuestionDocument();
         $document->setContent(json_encode($dto->getContent()));
         $document->setSource($dto->getSource());
         $document->setType($dto->getType());

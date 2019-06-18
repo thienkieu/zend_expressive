@@ -26,7 +26,7 @@ class FromReadingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         return false;
     }
 
-    public function convert($document) {
+    public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\ReadingQuestionDTO();
         $dto->setContent($document->getContent());
         $dto->setSubType($document->getSubType());
@@ -37,7 +37,7 @@ class FromReadingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         $questionDocuments = $document->getSubQuestions();
         $questions = [];
         foreach($questionDocuments as $q) {
-            $questions[] = $documentToDTOConvertor->convertToDTO($q);
+            $questions[] = $documentToDTOConvertor->convertToDTO($q, $options);
         }
         $dto->setSubQuestions($questions);       
         

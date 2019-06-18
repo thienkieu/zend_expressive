@@ -27,7 +27,7 @@ class ToExamHasSectionTestDTOAdapter extends ToDTOAdapter {
         return \Test\DTOs\Exam\ExamHasSectionTestDTO::class;
     }
 
-    public function convert($jsonObject) 
+    public function convert($jsonObject, $options = []) 
     {
         $dtoObject = new \Test\DTOs\Exam\ExamHasSectionTestDTO();
         $dtoObject->setTitle($jsonObject->title);

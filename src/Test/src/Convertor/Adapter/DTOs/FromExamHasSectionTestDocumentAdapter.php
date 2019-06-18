@@ -10,12 +10,14 @@ use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 class FromExamHasSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     
     private $container;
+    private $convertor;
     /**
      * Class constructor.
      */
-    public function __construct($container)
+    public function __construct($container, $convertor)
     {
         $this->container = $container;
+        $this->convertor = $convertor;
     }
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
@@ -27,22 +29,21 @@ class FromExamHasSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapt
         return false;
     }
 
-    public function convert($document) {
+    public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Exam\ExamHasSectionTestDTO();
         $dto->setTitle($document->getTitle());
         $dto->setId($document->getId());
         $dto->setTime($document->getTime());
         $dto->setStartDate($document->getStartDate());
         
-        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         $candiateDocuments = $document->getCandidates();
         $candiateDTOs = [];
         foreach($candiateDocuments as $candiate) {
-            $candiateDTOs[] = $documentToDTOConvertor->convertToDTO($candiate);
+            $candiateDTOs[] = $this->convertor->convertToDTO($candiate, $options);
         }
         $dto->setCandidates($candiateDTOs);
 
-        $test = $documentToDTOConvertor->convertToDTO($document->getTest());
+        $test = $this->convertor->convertToDTO($document->getTest(), $options);
         $dto->setTest($test);
         
         return $dto;

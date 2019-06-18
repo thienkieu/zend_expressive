@@ -28,15 +28,15 @@ class ToExamResultDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfa
         return false;
     }
     
-    public function convert($dto) 
+    public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\ExamResult\ExamResultHasSectionTestDocument();
         $document->setExamId($dto->getExamId());
   
-        $candidateDocument = $this->convertor->convertToDocument($dto->getCandidate());
+        $candidateDocument = $this->convertor->convertToDocument($dto->getCandidate(), $options);
         $document->setCandidate($candidateDocument); 
 
-        $test = $this->convertor->convertToDocument($dto->getTest(), ['toClass'=>\Test\Documents\ExamResult\TestWithSectionDocument::class]);
+        $test = $this->convertor->convertToDocument($dto->getTest(), $options);
         $document->setTest($test);
         
         return $document;

@@ -21,11 +21,11 @@ class RequestToDTOConvertor implements RequestToDTOConvertorInterface {
     }
 
     
-    public function convertToDTO($jsonData, $toDTOName) {
+    public function convertToDTO($jsonData, $options = []) {
         foreach($this->adapters as $adapter) {
             $adapterInstance = new $adapter($this->container, $this);
-            if ($adapterInstance->isHandleConvertToDTO($jsonData, $toDTOName)) {
-                return $adapterInstance->convert($jsonData);
+            if ($adapterInstance->isHandleConvertToDTO($jsonData, $options)) {
+                return $adapterInstance->convert($jsonData, $options);
             }
         }
 

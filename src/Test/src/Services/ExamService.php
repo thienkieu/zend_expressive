@@ -26,7 +26,6 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         return true;
     }
 
-
     protected function assignPin(&$document) {
         $candidates = $document->getCandidates();
         $pins = \Infrastructure\CommonFunction::generateUniquePin(count($candidates));
@@ -44,7 +43,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         try{
             //TODO verify number of source to make sure able to generate test random.
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $document = $dtoToDocumentConvertor->convertToDocument($examDTO);
+            $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
             $this->assignPin($document);
             $this->dm->persist($document);
             $this->dm->flush();

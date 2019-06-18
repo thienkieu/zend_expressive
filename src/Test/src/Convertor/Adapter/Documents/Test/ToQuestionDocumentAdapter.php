@@ -33,12 +33,12 @@ class ToQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface
         return false;
     }
     
-    public function convert($dto) 
+    public function convert($dto, $options = []) 
     {
-        $document = new \Test\Documents\Test\QuestionDocument();
+        $document = new \Test\Documents\Test\QuestionInfoDocument();
         $document->setGenerateFrom($dto->getGenerateFrom());
        
-        $questionInfo = $this->convertor->convertToDocument($dto->getQuestionInfo());                
+        $questionInfo = $this->convertor->convertToDocument($dto->getQuestionInfo(), $options);                
         $document->setQuestionInfo($questionInfo);
        
         return $document;            

@@ -27,7 +27,7 @@ class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
         return false;
     }
 
-    public function convert($document) {
+    public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\QuestionDTO();
         $dto->setContent(json_decode($document->getContent()));
         $dto->setOrder($document->getOrder());
@@ -37,7 +37,7 @@ class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
         $answersDocuments = $document->getAnswers();
         $answers = [];
         foreach($answersDocuments as $a) {
-            $answers[] = $documentToDTOConvertor->convertToDTO($a);
+            $answers[] = $documentToDTOConvertor->convertToDTO($a, $options);
         }
         $dto->setAnswers($answers);
 
