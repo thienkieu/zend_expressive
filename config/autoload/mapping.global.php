@@ -8,7 +8,7 @@ return [
         'test.create'   => \Test\DTOs\Test\BaseTestDTO::class,
         'question.source.create'   => \Test\DTOs\Question\SourceDTO::class,
         'exam.create' => \Test\DTOs\Exam\ExamDTO::class,
-        'exam.updateAnswer' => \Test\DTOs\ExamResult\UserChoiceDTO::class,
+        'exam.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,
     ],
     'validator' => [
         'test.create' => [  

@@ -28,7 +28,7 @@ class ExamResultDocument
   /** @ODM\Field(type="string") */
   protected $title;
 
-  /** @ODM\Field(type="timestamp") */
+   /** @ODM\Field(type="date") */
   protected $startDate;
   
   /**

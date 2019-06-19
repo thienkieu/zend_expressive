@@ -107,6 +107,9 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $examResult->setTest($testForDoExam);
             $examResult->setCandidate($candidates[0]);
             $examResult->setExamId($examDTO->getId());
+            $examResult->setTime($examDTO->getTime());
+            $examResult->setTitle($examDTO->getTitle());
+            $examResult->setStartDate($examDTO->getStartDate());
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);

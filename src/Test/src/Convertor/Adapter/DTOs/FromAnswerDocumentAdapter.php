@@ -20,6 +20,13 @@ class FromAnswerDocumentAdapter implements ConvertDocumentToDTOAdapterInterface 
     public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\AnswerDTO();
         $dto->setContent($document->getContent());
+        
+        if (isset($options[\Config\AppConstant::ShowCorrectAnswer]) && $options[\Config\AppConstant::ShowCorrectAnswer] === true) {
+            $dto->setIsCorrect($document->getIsCorrect());
+        } else {
+            $dto->setIsCorrect(false);
+        }
+
         $dto->setIsCorrect($document->getIsCorrect());
         $dto->setOrder($document->getOrder());
         $dto->setId($document->getId());

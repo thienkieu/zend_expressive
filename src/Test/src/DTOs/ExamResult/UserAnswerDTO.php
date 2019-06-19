@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Test\DTOs\ExamResult;
 
-class UserChoiceDTO implements \JsonSerializable
+class UserAnswerDTO implements \JsonSerializable
 {
     protected $examId;
     protected $candidateId;
@@ -13,11 +13,6 @@ class UserChoiceDTO implements \JsonSerializable
     protected $questionInfoId; 
     protected $subQuestionId;
 
-    /**
-     * @var AnswerDTO[]
-     */
-    protected $answers;
-
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->examId = $this->getExamId();
@@ -25,35 +20,9 @@ class UserChoiceDTO implements \JsonSerializable
         $ret->sectionId = $this->getSectionId();
         $ret->questionId = $this->getQuestionId();
         $ret->questionInfoId = $this->getQuestionInfoId();   
-        $ret->subQuestionId = $this->getSubQuestionId();   
-        $ret->answers = $this->getAnswers();   
+        $ret->subQuestionId = $this->getSubQuestionId(); 
           
         return $ret;
-    }
-
-
-    /**
-     * Get the value of answers
-     *
-     * @return  AnswerDTO[]
-     */ 
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
-
-    /**
-     * Set the value of answers
-     *
-     * @param  AnswerDTO[]  $answers
-     *
-     * @return  self
-     */ 
-    public function setAnswers($answers)
-    {
-        $this->answers = $answers;
-
-        return $this;
     }
 
     /**

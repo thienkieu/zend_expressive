@@ -35,7 +35,7 @@ class ToExamResultDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfa
         $document->setTitle($dto->getTitle());
         $document->setStartDate($dto->getStartDate());
         $document->setTime($dto->getTime());
-
+        
         $candidateDocument = $this->convertor->convertToDocument($dto->getCandidate(), $options);
         $document->setCandidate($candidateDocument); 
 

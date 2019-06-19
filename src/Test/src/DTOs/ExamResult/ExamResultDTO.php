@@ -19,8 +19,7 @@ class ExamResultDTO implements \JsonSerializable
         $ret->candidate = $this->getCandidate();
         $ret->title = $this->getTitle();
         $ret->time = $this->getTime();
-        $ret->startDate = $this->getStartDate();   
-          
+        $ret->startDate = $this->getStartDate()->format(\Config\AppConstant::DateTimeFormat);   
         return $ret;
     }
 

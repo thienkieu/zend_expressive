@@ -23,11 +23,8 @@ class ExamResultHasSectionTestDTO extends ExamResultDTO implements \JsonSerializ
     }
 
     public function jsonSerialize() {
-        $ret = new \stdClass();
-        $ret->id = $this->getId();
-        $ret->examId = $this->getExamId();
-        $ret->candidate = $this->getCandidate();
-        $ret->test = $this->getTest();   
+        $ret =  parent::jsonSerialize();
+        $ret->test = $this->getTest(); 
           
         return $ret;
     }

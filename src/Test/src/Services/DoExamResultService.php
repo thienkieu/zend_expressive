@@ -27,7 +27,49 @@ class DoExamResultService implements DoExamResultServiceInterface, HandlerInterf
     public function isHandler($dto, $options = []){
         return true;
     }
-    
+
+    public function updateRepeatTimes($dto, & $messages) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $document = $testDocuments = $examResultRepository->updateAnwser($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId(), $dto->getQuestionInfoId(), $dto->getSubQuestionId(), $dto->getAnswers());
+        
+    }
+
+    protected function reduceRepeatTimes(& $examResult, $sectionId, $questionId,  $questionInfoId, $subQuestionId, $userChoiceAnswers) {
+        $sections = $examResult->getTest()->getSections();
+        foreach ($sections as $section) {
+            if ($section->getId() == $sectionId) {
+                $questions = $section->getQuestions();
+                foreach ($questions as $question) {
+                    if ($question->getId() == $questionId) {
+                        $questionInfo = $question->getQuestionInfo();
+                        $subQuestions = $question->getQuestionInfo()->getSubQuestions();
+
+                        foreach ($subQuestions as $subQuestion) {
+                            if ($subQuestion->getId() == $subQuestionId) {
+                                $answers = $subQuestion->getAnswers();
+                                foreach ($answers as $answer) {
+                                    $answer->setIsUserChoice($this->getAnswerStatus($answer->getId(), $userChoiceAnswers));
+                                }
+                                break;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
+        
+        return $examResult;
+    }
+
+
+    public function updateWritingAnswer($dto, & $messages) {
+
+    }
+
     public function updateAnswer($dto, & $messages) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $document = $testDocuments = $examResultRepository->updateAnwser($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId(), $dto->getQuestionInfoId(), $dto->getSubQuestionId(), $dto->getAnswers());

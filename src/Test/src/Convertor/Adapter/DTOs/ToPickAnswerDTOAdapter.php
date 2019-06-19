@@ -7,10 +7,10 @@ namespace Test\Convertor\Adapter\DTOs;
 use Infrastructure\Convertor\ToDTOAdapter;
 use Test\Enum\DTOName;
 
-class ToUserChoiceDTOAdapter extends ToDTOAdapter {
+class ToPickAnswerDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($options === DTOName::UserChoiceDTO) {
+        if ($options === DTOName::UserAnswerDTO && isset($dtoObject['answers'])) {
             return true;
         }
 
@@ -18,6 +18,6 @@ class ToUserChoiceDTOAdapter extends ToDTOAdapter {
     }
     
     public function getDTOClass() {
-        return \Test\DTOs\ExamResult\UserChoiceDTO::class;
+        return \Test\DTOs\ExamResult\PickAnswerDTO::class;
     }
 }
