@@ -40,6 +40,7 @@ return [
         \Test\Convertor\Adapter\DTOs\Exam\ToCandidateDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToPinDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToPinInfoDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToUserChoiceDTOAdapter::class,
     ],
 
     'convertorDocumentToDTOAdapters' => [
@@ -51,13 +52,19 @@ return [
         
         \Test\Convertor\Adapter\DTOs\FromQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromAnswerDocumentAdapter::class,
+        
         \Test\Convertor\Adapter\DTOs\Test\FromQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromSectionTestDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromTestWithSectionDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\Test\FromReadingEmbedDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\Test\FromListeningEmbedDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\Test\FromWritingEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromRandomQuestionDocumentAdapter::class,
+        
         \Test\Convertor\Adapter\DTOs\FromCandidateDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromExamHasSectionTestDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromTestWithSectionEmbedDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromExamResultHasSectionTestDocumentAdapter::class,
     ],
 
     'validatorRequestAdapters' => [

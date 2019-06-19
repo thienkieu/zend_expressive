@@ -15,41 +15,21 @@ use Doctrine\ODM\Tools\Pagination\Paginator;
 
 class ExamResultHasSectionTestRepository extends DocumentRepository
 {
-    public function updateAnwser($examId, $candiateId, $questionId, $subQuestionId, $answerId) {
-        $queryBuilder = $this->createQueryBuilder();
-       /* $result = $queryBuilder
-                    ->updateOne()
-                    
-                    ->field('examId')->equals($examId)
-                    ->field('candidate.id')->equals($candiateId)  
-                    ->field('test.sections.questions.id')->equals($questionId)  
-                    ->field('test.sections.questions.questionInfo.id')->equals('5d075b32ce10c915bc006d9c')                    
-     
-                    ->field('test.sections.questions.questionInfo.isUserChoose')->set(true)
-                    ->getQuery()
-                    ->execute();
-        
-        return $result;
-       */
-
-        $queryBuilder = $this->createQueryBuilder();
-       
-        $result = $queryBuilder
-                    ->updateOne()
-                    
+    public function updateAnwser($examId, $candiateId, $questionId, $questionInfoId, $subQuestionId, $answerId) {
+        $queryBuilder = $this->createQueryBuilder();       
+        $document = $queryBuilder
                     ->field('examId')->equals($examId)
                     ->field('candidate.id')->equals($candiateId)
-                    ->field('test.sections.questions.id')->equals($questionId)                   
-                    //->field('test.sections.questions.questionInfo.subQuestions.answers.id')->equals($answerId)
-                    
-                    ->field('test.sections.questions.questionInfo.$.abc')->set(true)
+                    //->field('test.sections.questions.id')->equals($questionId)
+                    //->field('test.sections.questions.questionInfo.id')->equals($questionInfoId)
+                    //->field('test.sections.questions.questionInfo.subQuestions.id')->equals($subQuestionId)
+                    //->field('test.sections.questions.questionInfo.subQuestions.id')->equals('5d09aec2ce10c911f4005cb7')
+                    //->field('test.sections.questions.questionInfo.subQuestions.anwsers.id')->equals($answerId)
+
                     ->getQuery()
-                    ->execute();
-
-                    echo '<pre>'.print_r($result, true).'</pre>'; die;
-        
-
-        return $result;
+                    ->getSingleResult();
+            
+        return $document;
 
     }
 

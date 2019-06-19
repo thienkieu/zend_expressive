@@ -21,7 +21,7 @@ class ToWritingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInter
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Question\WritingQuestonDTO && isset($options[\Config\AppConstant::ToDocumentClass])) {
+        if ($dtoObject instanceof \Test\DTOs\Question\WritingQuestionDTO ) {
             return true;
         }
 
@@ -35,14 +35,7 @@ class ToWritingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInter
         $document->setSource($dto->getSource());
         $document->setType($dto->getType());
         $document->setSubType($dto->getSubType());
-        
-        $questions = $dto->getQuestions();
-
-        foreach($questions as $question) {
-            $questionDocument = $this->convertor->convertToDocument($question, $options);
-            $document->addQuestion($questionDocument);            
-        }
-        
+                
         return $document;
             
     }

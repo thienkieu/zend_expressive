@@ -33,6 +33,7 @@ class FromSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInter
         $dto = new \Test\DTOs\Test\SectionDTO();
         $dto->setName($document->getName());
         $dto->setDescription($document->getDescription());
+        $dto->setId($document->getId());
         
         $questionDocuments = $document->getQuestions();
         $questionDTOs = [];
@@ -40,7 +41,6 @@ class FromSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInter
             $questionDTOs[] = $this->convertor->convertToDTO($question, $options);
         }
         $dto->setQuestions($questionDTOs);
-
         return $dto;
     }
     

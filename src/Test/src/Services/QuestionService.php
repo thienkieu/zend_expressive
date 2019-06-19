@@ -63,7 +63,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             return $citerial;
         }
 
-        $questionDTO = $citerial->getQuestionInfo();
+        $questionDTO = $citerial->getQuestionInfo();        
         $toClass = $this->getClassName($questionDTO->getType());
         $questionRepository = $this->dm->getRepository($toClass);
         

@@ -10,7 +10,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Psr\Container\ContainerInterface;
 
-use Test\Services\DoExamServiceInterface;
+use Test\Services\DoExamResultServiceInterface;
 
 class UpdateAnswerHandler implements RequestHandlerInterface
 {    
@@ -25,7 +25,7 @@ class UpdateAnswerHandler implements RequestHandlerInterface
     {
         $messages = [];
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        $pinService = $this->container->get(DoExamServiceInterface::class);
+        $pinService = $this->container->get(DoExamResultServiceInterface::class);
         $ret = $pinService->updateAnswer($dto, $messages);
 
         return new JsonResponse([

@@ -22,6 +22,15 @@ class ExamResultDocument
   /** @ODM\Field(type="string") */
   protected $examId;
 
+  /** @ODM\Field(type="int") */
+  protected $time;
+
+  /** @ODM\Field(type="string") */
+  protected $title;
+
+  /** @ODM\Field(type="timestamp") */
+  protected $startDate;
+  
   /**
    * Get the value of id
    */ 
@@ -79,6 +88,66 @@ class ExamResultDocument
   public function setExamId($examId)
   {
     $this->examId = $examId;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of time
+   */ 
+  public function getTime()
+  {
+    return $this->time;
+  }
+
+  /**
+   * Set the value of time
+   *
+   * @return  self
+   */ 
+  public function setTime($time)
+  {
+    $this->time = $time;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of title
+   */ 
+  public function getTitle()
+  {
+    return $this->title;
+  }
+
+  /**
+   * Set the value of title
+   *
+   * @return  self
+   */ 
+  public function setTitle($title)
+  {
+    $this->title = $title;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of startDate
+   */ 
+  public function getStartDate()
+  {
+    return $this->startDate;
+  }
+
+  /**
+   * Set the value of startDate
+   *
+   * @return  self
+   */ 
+  public function setStartDate($startDate)
+  {
+    $this->startDate = $startDate;
 
     return $this;
   }

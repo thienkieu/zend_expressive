@@ -14,4 +14,5 @@ abstract class DTOName
     const SourceDTO = \Test\DTOs\Question\SourceDTO::class;
     const PinDTO = \Test\DTOs\Exam\PinDTO::class;
     const PinInfoDTO = \Test\DTOs\Exam\PinInfoDTO::class;
+    const UserChoiceDTO = \Test\DTOs\ExamResult\UserChoiceDTO::class;
 }

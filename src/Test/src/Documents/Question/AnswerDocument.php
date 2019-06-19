@@ -21,7 +21,8 @@ class AnswerDocument
   /** @ODM\Field(type="int") */
   private $order;
 
-  
+  /** @ODM\Field(type="boolean") */
+  private $isUserChoice;
 
   /**
    * Get the value of isCorrect
@@ -99,6 +100,26 @@ class AnswerDocument
   public function setOrder($order)
   {
     $this->order = $order;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isUserChoice
+   */ 
+  public function getIsUserChoice()
+  {
+    return $this->isUserChoice;
+  }
+
+  /**
+   * Set the value of isUserChoice
+   *
+   * @return  self
+   */ 
+  public function setIsUserChoice($isUserChoice)
+  {
+    $this->isUserChoice = $isUserChoice;
 
     return $this;
   }

@@ -57,6 +57,7 @@ class AnswerDTO implements \JsonSerializable
         $ret->content = $this->getContent();
         $ret->isCorrect = $this->getIsCorrect();
         $ret->order = $this->getOrder();
+        $ret->id = $this->getId();
         return $ret;
     }
 

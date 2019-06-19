@@ -80,6 +80,9 @@ class ConfigProvider
 
                 Services\PinServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\PinService::class => \Infrastructure\Factory\BaseFactory::class,
+
+                Services\DoExamResultServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\DoExamResultService::class => \Infrastructure\Factory\BaseFactory::class,
             ],
 
             'aliases' => [

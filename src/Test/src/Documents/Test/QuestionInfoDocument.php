@@ -2,6 +2,7 @@
 namespace Test\Documents\Test;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
  * @ODM\EmbeddedDocument
@@ -13,7 +14,7 @@ class QuestionInfoDocument
 
   /** @ODM\Field(type="string") */
   private $generateFrom;
-  
+
   /** @ODM\EmbedOne(discriminatorMap={
    *     "reading"="ReadingQuestionDocument",
    *     "writing"="WritingQuestionDocument",
@@ -74,4 +75,5 @@ class QuestionInfoDocument
 
     return $this;
   }
+
 }

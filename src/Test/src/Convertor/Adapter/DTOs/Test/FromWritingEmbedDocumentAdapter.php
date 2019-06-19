@@ -7,8 +7,7 @@ namespace Test\Convertor\Adapter\DTOs\Test;
 use Infrastructure\Convertor\ConvertDocumentToDTOAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
-    
+class FromWritingEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     private $container;
     /**
      * Class constructor.
@@ -20,7 +19,7 @@ class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
-        if ($document instanceof \Test\Documents\Test\QuestionInfoDocument) {
+        if ($document instanceof \Test\Documents\Test\WritingQuestionDocument) {
             return true;
         }
 
@@ -28,17 +27,21 @@ class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
     }
 
     public function convert($document, $options = []) {
-        $dto = new \Test\DTOs\Test\QuestionDTO();
+        $dto = new \Test\DTOs\Question\WritingQuestionDTO();
+        $dto->setContent($document->getContent());
         $dto->setId($document->getId());
-        $dto->setGenerateFrom($document->getGenerateFrom());
+        $dto->setType($document->getType());
+        $dto->setSubType($document->getSubType());
+
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
-        $questionInfoDocument = $document->getQuestionInfo();        
-        $questionDTO = $documentToDTOConvertor->convertToDTO($questionInfoDocument, $options);
+        $questionDocuments = $document->getSubQuestions();
+        $questions = [];
+        foreach($questionDocuments as $q) {
+            $questions[] = $documentToDTOConvertor->convertToDTO($q, $options);
+        }
+        $dto->setSubQuestions($questions);
 
-        
-        $dto->setQuestionInfo($questionDTO);
-       
         return $dto;
     }
     

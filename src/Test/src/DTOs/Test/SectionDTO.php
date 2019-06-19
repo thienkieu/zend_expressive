@@ -8,6 +8,7 @@ class SectionDTO implements \JsonSerializable
 {
     protected $name;
     protected $description; 
+    protected $id;
     
     /**
      * @var QuestionDTO[]
@@ -101,10 +102,11 @@ class SectionDTO implements \JsonSerializable
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->name = $this->getName();
-        $ret->description = $this->getDescription();    
+        $ret->description = $this->getDescription(); 
+        $ret->id = $this->getId();   
         $questions = $this->getQuestions();
         $dtoQuestions = [];
-        foreach ($questions as $question) {          
+        foreach ($questions as $question) {  
             $info = json_decode(json_encode($question->getQuestionInfo()));
             $info->generateFrom = $question->getGenerateFrom();
             $info->id = $question->getId();
@@ -114,5 +116,25 @@ class SectionDTO implements \JsonSerializable
         $ret->questions = $dtoQuestions;
         
         return $ret;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }
