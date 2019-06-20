@@ -22,6 +22,11 @@ class DoExamResultService extends DoBaseExamResultService
   
     protected function updateSubQuestionAnswer(& $examResult, $dto) {
         $questionInfo = $this->getQuestion($examResult, $dto);
+        if (!$questionInfo) {
+            $message = $this->translator->translate('cannot found your question');
+            throw new \Test\Exceptions\UpdateAnswerException($message);
+        }
+
         $subQuestions = $questionInfo->getSubQuestions();
 
         foreach ($subQuestions as $subQuestion) {

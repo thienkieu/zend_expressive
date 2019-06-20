@@ -31,4 +31,5 @@ return array(
     'There isnot exist question with pin' => 'There isnot exist question with pin \'%questionId%\.',
     'This is not writing question' => 'This is not writing question',
     'This is not listening question' => 'This is not listening question',
+    'cannot found your question' => 'cannot found your question',
 );
