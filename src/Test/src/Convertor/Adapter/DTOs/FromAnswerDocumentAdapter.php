@@ -27,7 +27,7 @@ class FromAnswerDocumentAdapter implements ConvertDocumentToDTOAdapterInterface 
             $dto->setIsCorrect(false);
         }
 
-        $dto->setIsCorrect($document->getIsCorrect());
+        $dto->setIsUserChoice($document->getIsUserChoice());
         $dto->setOrder($document->getOrder());
         $dto->setId($document->getId());
 

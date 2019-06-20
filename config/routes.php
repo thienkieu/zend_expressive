@@ -59,7 +59,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/coordinator/exam/doExam', Test\Handlers\DoExamHandler::class, 'exam.doExam');
     $app->post('/coordinator/pin/refresh', Test\Handlers\RefreshPinHandler::class, 'pin.refresh');
     $app->post('/coordinator/exam/updateAnswer', Test\Handlers\UpdateAnswerHandler::class, 'exam.updateAnswer');
-    $app->post('/coordinator/exam/updateRepeatTimes', Test\Handlers\UpdateRepeatTimesHandler::class, 'exam.updateRepeatTimes');
+    $app->post('/coordinator/exam/synchronyTime', Test\Handlers\SynchronyTimeHandler::class, 'exam.synchronyTime');
+    
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 
     $app->get('/test/search-section', Test\Handlers\SearchSectionHandler::class, 'search');

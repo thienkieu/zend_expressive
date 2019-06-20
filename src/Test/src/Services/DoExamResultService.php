@@ -16,7 +16,7 @@ class DoExamResultService extends DoBaseExamResultService
         if ($dto instanceof \Test\DTOs\ExamResult\PickupAnswerDTO) {
             return true;
         }
-
+        
         return false;
     }
   

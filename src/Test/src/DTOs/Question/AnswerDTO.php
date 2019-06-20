@@ -10,6 +10,7 @@ class AnswerDTO implements \JsonSerializable
     protected $content;
     protected $isCorrect;
     protected $order;
+    protected $isUserChoice;
     
 
     /**
@@ -57,6 +58,7 @@ class AnswerDTO implements \JsonSerializable
         $ret->content = $this->getContent();
         $ret->isCorrect = $this->getIsCorrect();
         $ret->order = $this->getOrder();
+        $ret->isUserChoice = $this->getIsUserChoice() ? $this->getIsUserChoice(): false;
         $ret->id = $this->getId();
         return $ret;
     }
@@ -97,6 +99,27 @@ class AnswerDTO implements \JsonSerializable
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isUserChoice
+     */ 
+    public function getIsUserChoice()
+    {
+        return $this->isUserChoice;
+    }
+
+    /**
+     * Set the value of isUserChoice
+     * @var bool
+     * 
+     * @return  self
+     */ 
+    public function setIsUserChoice($isUserChoice)
+    {
+        $this->isUserChoice = $isUserChoice;
 
         return $this;
     }

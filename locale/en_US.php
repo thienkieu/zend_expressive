@@ -31,5 +31,7 @@ return array(
     'There isnot exist question with pin' => 'There isnot exist question with pin \'%questionId%\.',
     'This is not writing question' => 'This is not writing question',
     'This is not listening question' => 'This is not listening question',
-    'cannot found your question' => 'cannot found your question',
+    'cannot found your question' => 'Cannot found your question',
+    'Exam not found' => 'Exam not found',
+    'Your test have been finished!' => 'Your test have been finished!',
 );

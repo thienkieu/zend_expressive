@@ -25,14 +25,46 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
     }
 
     public function isHandler($dto, $options = []){
+        if (!empty($dto->remainTime)) {
+            return true;
+        }
+
         return false;
+    }
+
+    public function synchronyTime($dto, & $outRemainTime, & $messages) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $document = $testDocuments = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
+        if ($document) {
+            $remaintTime = $document->getRemainTime();
+            if ($dto->remainTime < $remaintTime) {
+                $document->setRemainTime($dto->remainTime);
+                $outRemainTime = $dto->remainTime;
+            } else {
+                $r = $remaintTime - \Config\AppConstant::ReduceTimeSpan;
+                $document->setRemainTime($r);
+                $outRemainTime = $r;
+            }
+            
+            $this->dm->flush();
+            return true;
+        }
+
+        $messages[] = $this->translator->translate('Exam not found');
+        return false;
+        
     }
 
     public function updateAnswer($dto, & $messages) {
         try {
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
             $document = $testDocuments = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId());
-            
+            $remaintTime = $document->getRemainTime();
+            if ($remaintTime <= 0) {
+                $messages[] = $this->translator->translate('Your test have been finished!');
+                return false; 
+            }
+
             if (!$document) {
                 $messages[] = $this->translator->translate('There isnot exist question with', ['%questionId%' => $dto->getQuestionId()]);
                 return false;

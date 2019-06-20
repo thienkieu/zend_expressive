@@ -40,6 +40,7 @@ return [
             \Test\Services\DoExamResultService::class,
             \Test\Services\DoExamResultWritingService::class,
             \Test\Services\DoExamResultRepeatTimesService::class,
+            \Test\Services\DoBaseExamResultService::class,
         ]
     ],
 ];

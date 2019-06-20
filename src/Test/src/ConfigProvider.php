@@ -50,6 +50,7 @@ class ConfigProvider
                 Handlers\DoExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\RefreshPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateAnswerHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\SynchronyTimeHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
@@ -85,6 +86,7 @@ class ConfigProvider
                 Services\DoExamResultService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoExamResultWritingService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoExamResultRepeatTimesService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\DoBaseExamResultService::class => \Infrastructure\Factory\BaseFactory::class,
             ],
 
             'aliases' => [

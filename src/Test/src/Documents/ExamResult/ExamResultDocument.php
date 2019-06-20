@@ -2,6 +2,7 @@
 namespace Test\Documents\ExamResult;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use time;
 
 /** 
  * @ODM\Document(collection="exam_result")
@@ -30,6 +31,9 @@ class ExamResultDocument
 
    /** @ODM\Field(type="date") */
   protected $startDate;
+
+  /** @ODM\Field(type="int") */
+  protected $remainTime;
   
   /**
    * Get the value of id
@@ -148,6 +152,26 @@ class ExamResultDocument
   public function setStartDate($startDate)
   {
     $this->startDate = $startDate;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of remainTime
+   */ 
+  public function getRemainTime()
+  {
+    return $this->remainTime;
+  }
+
+  /**
+   * Set the value of remainTime
+   *
+   * @return  self
+   */ 
+  public function setRemainTime($remainTime)
+  {
+    $this->remainTime = $remainTime;
 
     return $this;
   }

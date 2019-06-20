@@ -113,7 +113,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
-        
+            $examResultDocument->setRemainTime($examDTO->getTime() * 60);
             $this->dm->persist($examResultDocument);
             $this->dm->flush();
 
