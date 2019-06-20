@@ -53,9 +53,17 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             }
 
             $candidates = $document->getCandidates();
-            if (!$candidates[0]->getIsPinValid()) {
+            $candidate = $candidates[0];
+            if (!$candidate->getIsPinValid()) {
                 $messages[] = $this->translator->translate('Your pin \'%pin%\' is used, Please notify to admin to get new pin', ['%pin%' => $dto->pin]);
                 return false;
+            }
+
+            $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+            $existingExamResult = $testDocuments = $examResultRepository->getExamResult($document->getId(), $candidate->getId(), '');
+            if ($existingExamResult) {
+                $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
+                return;
             }
             
             $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
