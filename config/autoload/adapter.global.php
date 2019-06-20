@@ -40,7 +40,9 @@ return [
         \Test\Convertor\Adapter\DTOs\Exam\ToCandidateDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToPinDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToPinInfoDTOAdapter::class,
-        \Test\Convertor\Adapter\DTOs\ToPickAnswerDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToPickupAnswerDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToUpdateRepeatTimesDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToUpdateWritingAnswerDTOAdapter::class,
     ],
 
     'convertorDocumentToDTOAdapters' => [

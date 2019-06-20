@@ -7,10 +7,10 @@ namespace Test\Convertor\Adapter\DTOs;
 use Infrastructure\Convertor\ToDTOAdapter;
 use Test\Enum\DTOName;
 
-class ToPickAnswerDTOAdapter extends ToDTOAdapter {
+class ToUpdateRepeatTimesDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($options === DTOName::UserAnswerDTO && !empty($dtoObject->answers)) {
+        if ($options === DTOName::UserAnswerDTO && !empty($dtoObject->repeatTimesRemain)) {
             return true;
         }
 
@@ -18,6 +18,6 @@ class ToPickAnswerDTOAdapter extends ToDTOAdapter {
     }
     
     public function getDTOClass() {
-        return \Test\DTOs\ExamResult\PickAnswerDTO::class;
+        return \Test\DTOs\ExamResult\UpdateRepeatTimesDTO::class;
     }
 }

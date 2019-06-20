@@ -83,6 +83,8 @@ class ConfigProvider
 
                 Services\DoExamResultServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\DoExamResultService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\DoExamResultWritingService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\DoExamResultRepeatTimesService::class => \Infrastructure\Factory\BaseFactory::class,
             ],
 
             'aliases' => [

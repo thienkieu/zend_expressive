@@ -38,6 +38,8 @@ return [
         ],
         \Test\Services\DoExamResultServiceInterface::class => [
             \Test\Services\DoExamResultService::class,
+            \Test\Services\DoExamResultWritingService::class,
+            \Test\Services\DoExamResultRepeatTimesService::class,
         ]
     ],
 ];

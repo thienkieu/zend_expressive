@@ -16,6 +16,7 @@ class ExamResultDTO implements \JsonSerializable
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->id = $this->getId();
+        $ret->examId = $this->getExamId();
         $ret->candidate = $this->getCandidate();
         $ret->title = $this->getTitle();
         $ret->time = $this->getTime();

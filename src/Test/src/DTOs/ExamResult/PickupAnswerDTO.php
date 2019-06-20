@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Test\DTOs\ExamResult;
 
-class PickAnswerDTO extends UserAnswerDTO implements \JsonSerializable
+class PickupAnswerDTO extends UserAnswerDTO implements \JsonSerializable
 {
     /**
      * @var AnswerDTO[]

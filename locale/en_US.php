@@ -28,4 +28,7 @@ return array(
     'Source cannot empty.' => 'Source cannot empty at line %lineNumber%.', 
     'There is problem with update pin \'%pin%\', Please refresh new pin.' => 'There is problem with update pin \'%pin%\', Please refresh new pin.',
     'Your pin \'%pin%\' is used, Please notify to admin to get new pin' => 'Your pin \'%pin%\' is used, Please notify to admin to get new pin',
+    'There isnot exist question with pin' => 'There isnot exist question with pin \'%questionId%\.',
+    'This is not writing question' => 'This is not writing question',
+    'This is not listening question' => 'This is not listening question',
 );

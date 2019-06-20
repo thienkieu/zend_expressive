@@ -25,8 +25,8 @@ class UpdateAnswerHandler implements RequestHandlerInterface
     {
         $messages = [];
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        $pinService = $this->container->get(DoExamResultServiceInterface::class);
-        $ret = $pinService->updateAnswer($dto, $messages);
+        $exExamResultService = $this->container->build(DoExamResultServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
+        $ret = $exExamResultService->updateAnswer($dto, $messages);
 
         return \Infrastructure\CommonFunction::buildResponseFormat($ret, $messages);
     }
