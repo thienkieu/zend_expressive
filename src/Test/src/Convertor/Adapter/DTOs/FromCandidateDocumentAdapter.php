@@ -20,7 +20,7 @@ class FromCandidateDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
-        if ($document instanceof \Test\Documents\Exam\CandidateDocument) {
+        if ($document instanceof \Test\Documents\Exam\CandidateDocument || $document instanceof \Test\Documents\ExamResult\CandidateDocument) {
             return true;
         }
 

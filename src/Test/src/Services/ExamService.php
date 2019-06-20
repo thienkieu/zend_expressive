@@ -43,7 +43,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         try{
             //TODO verify number of source to make sure able to generate test random.
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
+            $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Exam\ExamHasSectionTestDocument::class]);
             $this->assignPin($document);
             $this->dm->persist($document);
             $this->dm->flush();

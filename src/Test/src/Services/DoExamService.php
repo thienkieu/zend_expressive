@@ -59,10 +59,11 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 return false;
             }
 
+            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
             $existingExamResult = $testDocuments = $examResultRepository->getExamResult($document->getId(), $candidate->getId(), '');
             if ($existingExamResult) {
-                $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
+                $results = $documentToDTOConvertor->convertToDTO($existingExamResult);
                 return;
             }
             
@@ -70,7 +71,6 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $sectionsForDoExam = [];
             $questionService = $this->container->get(QuestionServiceInterface::class);
 
-            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $examDTO = $documentToDTOConvertor->convertToDTO($document);
             $test  = $examDTO->getTest();
             $sections = $test->getSections();
@@ -120,7 +120,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $examResult->setStartDate($examDTO->getStartDate());
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
+            $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class]);
             $examResultDocument->setRemainTime($examDTO->getTime() * 60);
             $this->dm->persist($examResultDocument);
             $this->dm->flush();
@@ -132,7 +132,6 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             //         '<pre>'.var_dump($question->getQuestionInfo(), true).'</pre>'; die;
             //     }
             // }
-            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
 
             return true;

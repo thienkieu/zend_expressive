@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents\Exam;
+namespace Test\Documents\ExamResult;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
@@ -9,11 +9,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 class CandidateDocument
 {
-  /** @ODM\Id */
+  /** @ODM\Id(strategy="NONE", type="string") */
   protected $id;
-
-  /** @ODM\Field(type="string") */
-  protected $examCandidateId;
 
   /** @ODM\Field(type="string") */
   protected $objectId;

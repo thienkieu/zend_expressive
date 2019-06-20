@@ -26,6 +26,7 @@ return [
         \Test\Convertor\Adapter\Documents\ToListeningEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToWritingEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToReadingEmbedDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ExamResult\ToExamResultCandidateDocumentAdapter::class,
     ],
 
     'convertorDTOAdapters' => [

@@ -17,7 +17,7 @@ class ExamResultDocument
   /** @ODM\Id */
   protected $id;
 
-  /** @ODM\EmbedOne(targetDocument="\Test\Documents\Exam\CandidateDocument") */
+  /** @ODM\EmbedOne(targetDocument="CandidateDocument") */
   private $candidate;
 
   /** @ODM\Field(type="string") */
