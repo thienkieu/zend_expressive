@@ -10,7 +10,7 @@ use Test\Enum\DTOName;
 class ToPickAnswerDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($options === DTOName::UserAnswerDTO && isset($dtoObject['answers'])) {
+        if ($options === DTOName::UserAnswerDTO && !empty($dtoObject->answers)) {
             return true;
         }
 

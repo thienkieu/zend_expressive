@@ -30,7 +30,7 @@ class DoExamResultService implements DoExamResultServiceInterface, HandlerInterf
 
     public function updateRepeatTimes($dto, & $messages) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-        $document = $testDocuments = $examResultRepository->updateAnwser($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId(), $dto->getQuestionInfoId(), $dto->getSubQuestionId(), $dto->getAnswers());
+        $document = $testDocuments = $examResultRepository->updateAnwser($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId(), $dto->getSubQuestionId(), $dto->getAnswers());
         
     }
 
@@ -72,8 +72,8 @@ class DoExamResultService implements DoExamResultServiceInterface, HandlerInterf
 
     public function updateAnswer($dto, & $messages) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-        $document = $testDocuments = $examResultRepository->updateAnwser($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId(), $dto->getQuestionInfoId(), $dto->getSubQuestionId(), $dto->getAnswers());
-        $this->updateSubQuestionAnswer($document, $dto->getSectionId(), $dto->getQuestionId(), $dto->getQuestionInfoId(), $dto->getSubQuestionId(), $dto->getAnswers());
+        $document = $testDocuments = $examResultRepository->updateAnwser($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId(), $dto->getSubQuestionId(), $dto->getAnswers());
+        $this->updateSubQuestionAnswer($document, $dto->getSectionId(), $dto->getQuestionId(), $dto->getSubQuestionId(), $dto->getAnswers());
         $this->dm->flush();
         if (!$document) {
             $messages[] = $this->translator->translate('There isnot exist candidate with pin', ['%pin%' => $dto->pin]);
@@ -83,7 +83,7 @@ class DoExamResultService implements DoExamResultServiceInterface, HandlerInterf
         return true;
     }
 
-    protected function updateSubQuestionAnswer(& $examResult, $sectionId, $questionId,  $questionInfoId, $subQuestionId, $userChoiceAnswers) {
+    protected function updateSubQuestionAnswer(& $examResult, $sectionId, $questionId, $subQuestionId, $userChoiceAnswers) {
         $sections = $examResult->getTest()->getSections();
         foreach ($sections as $section) {
             if ($section->getId() == $sectionId) {

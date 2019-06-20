@@ -28,11 +28,6 @@ class UpdateAnswerHandler implements RequestHandlerInterface
         $pinService = $this->container->get(DoExamResultServiceInterface::class);
         $ret = $pinService->updateAnswer($dto, $messages);
 
-        return new JsonResponse([
-            'isSuccess' => $ret,      
-            'messages'  => $messages,
-            'pin' => $ret
-        ]);
-        
+        return \Infrastructure\CommonFunction::buildResponseFormat($ret, $messages);
     }
 }

@@ -10,7 +10,6 @@ class UserAnswerDTO implements \JsonSerializable
     protected $candidateId;
     protected $sectionId; 
     protected $questionId;
-    protected $questionInfoId; 
     protected $subQuestionId;
 
     public function jsonSerialize() {
@@ -19,7 +18,6 @@ class UserAnswerDTO implements \JsonSerializable
         $ret->candidateId = $this->getCandidateId();
         $ret->sectionId = $this->getSectionId();
         $ret->questionId = $this->getQuestionId();
-        $ret->questionInfoId = $this->getQuestionInfoId();   
         $ret->subQuestionId = $this->getSubQuestionId(); 
           
         return $ret;
@@ -41,26 +39,6 @@ class UserAnswerDTO implements \JsonSerializable
     public function setSubQuestionId($subQuestionId)
     {
         $this->subQuestionId = $subQuestionId;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of questionInfoId
-     */ 
-    public function getQuestionInfoId()
-    {
-        return $this->questionInfoId;
-    }
-
-    /**
-     * Set the value of questionInfoId
-     *
-     * @return  self
-     */ 
-    public function setQuestionInfoId($questionInfoId)
-    {
-        $this->questionInfoId = $questionInfoId;
 
         return $this;
     }

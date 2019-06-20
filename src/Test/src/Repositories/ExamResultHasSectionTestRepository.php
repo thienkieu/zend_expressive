@@ -15,7 +15,7 @@ use Doctrine\ODM\Tools\Pagination\Paginator;
 
 class ExamResultHasSectionTestRepository extends DocumentRepository
 {
-    public function updateAnwser($examId, $candiateId, $questionId, $questionInfoId, $subQuestionId, $answerId) {
+    public function updateAnwser($examId, $candiateId, $questionId, $subQuestionId, $answerId) {
         $queryBuilder = $this->createQueryBuilder();       
         $document = $queryBuilder
                     ->field('examId')->equals($examId)
