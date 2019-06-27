@@ -240,9 +240,9 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             throw new ImportQuestionException($error);
         }
 
-        $isExistSubType = $this->typeService->isExistSubTypeName($subType);
+        $isExistSubType = $this->typeService->isExistSubTypeName($type, $subType);
         if (empty($isExistSubType)) {
-            $error = $this->translator->translate('SubType cannot empty.', ['%lineNumber%'=> $lineNumber]);
+            $error = $this->translator->translate('SubType is not exist.', ['%subType%'=> $subType]);
             throw new ImportQuestionException($error);
         }
 

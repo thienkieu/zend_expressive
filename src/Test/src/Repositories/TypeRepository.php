@@ -20,7 +20,7 @@ class TypeRepository extends DocumentRepository
     public function getType($typeName) {
        
         $builder = $this->createQueryBuilder();
-        $command = $builder
+        $document = $builder
                     ->field('name')->equals($typeName)
                     ->getQuery()
                     ->getSingleResult();

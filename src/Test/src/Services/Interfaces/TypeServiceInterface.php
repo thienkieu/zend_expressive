@@ -11,9 +11,9 @@ interface TypeServiceInterface
 
     public function createType($dto, & $returnDTO, & $messages);
 
-    public function getAllTypes(& $ret, & $messages);
+    public function getAllTypes(& $ret);
 
-    public function isExistTypeName($name, & $messages);
+    public function isExistTypeName($name);
 
-    public function isExistSubTypeName($type, $subTypeName, &$messages);
+    public function isExistSubTypeName($type, $subTypeName);
 }

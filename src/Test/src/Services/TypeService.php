@@ -31,10 +31,10 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         return preg_replace('/\s\s+/', ' ', trim(strtoupper($typeName), ' '));
     }
 
-    public function isExistTypeName($typeName, &$messages) {
+    public function isExistTypeName($typeName) {
         if (!$this->types) {
             $typeData = [];
-            $ok = $this->getAllTypes($typeData, $messages);
+            $ok = $this->getAllTypes($typeData);
             if ($ok) {
                 $this->types = [];
                 foreach ($typeData as $type) {
@@ -50,14 +50,16 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         return in_array($needToCheckValue, $values);
     }
     
-    public function isExistSubTypeName($typeName, $subTypeName, &$messages) {
+    public function isExistSubTypeName($typeName, $subTypeName) {
         $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
         $type = $typeRepository->getType($typeName);
-        if (!$type) return false;
+        if (!$type) {
+            return false;
+        }
         
         $subTypes = $type->getSubTypes();
         foreach ($subTypes as $subType) {
-           if ($subType->getName() === $$subTypeName) {
+           if ($subType->getName() === $subTypeName) {
                return true;
            }
         }
@@ -65,7 +67,7 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         return false;
     }
     
-    public function getAllTypes(& $ret, & $messages) {
+    public function getAllTypes(& $ret) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
         $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
