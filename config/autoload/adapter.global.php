@@ -14,6 +14,8 @@ return [
         \Test\Convertor\Adapter\Documents\ToTestDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToSubQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToSourceDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToSubTypeDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToTypeDocumentAdapter::class,
         
         \Test\Convertor\Adapter\Documents\ToSectionDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\Test\ToRandomQuestionDocumentAdapter::class,
@@ -34,6 +36,9 @@ return [
         \Test\Convertor\Adapter\DTOs\ToReadingDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToWritingDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToSourceDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToTypeDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToSubTypeDTOAdapter::class,
+        
         \Test\Convertor\Adapter\DTOs\Test\ToTestWithSectionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\ToSectionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\ToQuestionDTOAdapter::class,  
@@ -53,6 +58,8 @@ return [
         \Test\Convertor\Adapter\DTOs\FromWritingDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromSubQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromSourceDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromTypeDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromSubTypeDocumentAdapter::class,
         
         \Test\Convertor\Adapter\DTOs\FromQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromAnswerDocumentAdapter::class,

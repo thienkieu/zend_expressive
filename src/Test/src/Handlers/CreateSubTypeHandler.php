@@ -10,9 +10,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Container\ContainerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
-use Test\Services\Interfaces\TestServiceInterface;
+use Test\Services\Interfaces\TypeServiceInterface;
 
-class CreateTestHandler implements RequestHandlerInterface
+class CreateSubTypeHandler implements RequestHandlerInterface
 {
     /** @var Psr\Container\ContainerInterface */
     private $container;
@@ -23,11 +23,14 @@ class CreateTestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
-        $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        
-        $testService = $this->container->get(TestServiceInterface::class);
-        $ok = $testService->createTest($dto, $messages);
-   
-        return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages);
+        $dtoObject = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
+        $sourceService = $this->container->get(TypeServiceInterface::class);
+        $ok = $sourceService->createSubType($dtoObject, $returnDTO, $messages);
+
+        return new JsonResponse([
+            'data' => $returnDTO,
+            'isSuccess' => $ok,    
+            'messages' => $messages,   
+        ]);
     }
 }

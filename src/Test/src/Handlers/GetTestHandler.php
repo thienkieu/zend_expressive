@@ -10,7 +10,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Container\ContainerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
-use Test\Services\TestServiceInterface;
+use Test\Services\Interfaces\TestServiceInterface;
 
 class GetTestHandler implements RequestHandlerInterface
 {

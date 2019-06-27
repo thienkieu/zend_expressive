@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Services;
-
+namespace Test\Services\Interfaces;
 
 interface TestServiceInterface
 {

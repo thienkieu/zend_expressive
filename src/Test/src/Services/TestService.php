@@ -10,7 +10,7 @@ use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
 
-class TestService implements TestServiceInterface, HandlerInterface
+class TestService implements Interfaces\TestServiceInterface, HandlerInterface
 {
     private $container;
     private $dm;

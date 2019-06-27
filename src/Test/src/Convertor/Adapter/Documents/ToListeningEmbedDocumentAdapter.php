@@ -32,7 +32,10 @@ class ToListeningEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
     {  
         $document = new \Test\Documents\Test\ListeningQuestionDocument();
         $document->setContent(json_encode($dto->getContent()));
-        $document->setPath($dto->getPath());
+        
+        $path = $this->replaceHost($dto->getPath());
+        $document->setPath($path);
+        
         $document->setRepeat($dto->getRepeat());
         $document->setSource($dto->getSource());
         $document->setType($dto->getType());
@@ -48,5 +51,12 @@ class ToListeningEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
         
         return $document;
             
+    }
+
+    protected function replaceHost($content, $options = []) {
+        $host = \Infrastructure\CommonFunction::getServerHost();
+
+        $content = str_replace($host, '', $content);
+        return $content;
     }
 }

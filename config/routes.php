@@ -47,8 +47,12 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     //Source
     $app->post('/coordinator/question/source/create', Test\Handlers\CreateSourceHandler::class, 'question.source.create');
     $app->get('/coordinator/question/sources', Test\Handlers\GetSourceHandler::class, 'question.sources');
-    $app->post('/coordinator/question/questions', Test\Handlers\GetQuestionHandler::class, 'question.questions');
-
+    
+    //Type
+    $app->post('/coordinator/question/type/create', Test\Handlers\CreateTypeHandler::class, 'question.type.create');
+    $app->get('/coordinator/question/types', Test\Handlers\GetTypesHandler::class, 'question.types');
+    $app->post('/coordinator/question/subType/create', Test\Handlers\CreateSubTypeHandler::class, 'question.subType.create');
+    
     
     //Test
     $app->post('/coordinator/test/create', Test\Handlers\CreateTestHandler::class, 'test.create');
@@ -87,7 +91,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // Question
     $app->post('/coordinator/questions/create', Test\Handlers\CreateSectionHandler::class, 'questions.create');
     $app->post('/coordinator/questions/import', Test\Handlers\ImportQuestionHandler::class, 'questions.import');
-
+    $app->post('/coordinator/question/questions', Test\Handlers\GetQuestionHandler::class, 'question.questions');
 
     //odm auth
     $app->get('/odmauth/setup', ODMAuth\Handler\SetupSampleDataHandler::class, 'odmauth.setup');

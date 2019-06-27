@@ -82,4 +82,6 @@ abstract class AppConstant
     const ReduceTimeSpan = 10;
     const DefaultSubQuestionMark = 2;
 
+    const HOST_REPLACE = '%HOST%';
+
 }

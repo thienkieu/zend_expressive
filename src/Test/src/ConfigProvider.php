@@ -55,15 +55,14 @@ class ConfigProvider
                 Handlers\UpdateQuestionMarkHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ViewExamResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\CreateTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
-                Services\SectionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\TestService::class => \Infrastructure\Factory\BaseFactory::class,
                 
                 Services\AdvanceTestService::class => \Infrastructure\Factory\BaseFactory::class,
-                Services\SectionService::class => \Infrastructure\Factory\BaseFactory::class,
-                Services\TestServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\Interfaces\TestServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 
                 Services\ImportQuestionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\ImportQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
@@ -71,8 +70,14 @@ class ConfigProvider
                 Services\CandidateServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\CandidateService::class => \Infrastructure\Factory\BaseFactory::class,
 
-                Services\SourceServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\Interfaces\SourceServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\SourceService::class => \Infrastructure\Factory\BaseFactory::class,
+
+                Services\Interfaces\TypeServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\TypeService::class => \Infrastructure\Factory\BaseFactory::class,
+
+
+
 
                 Services\ExamServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\ExamService::class => \Infrastructure\Factory\BaseFactory::class,

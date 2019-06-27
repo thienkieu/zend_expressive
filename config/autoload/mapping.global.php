@@ -10,6 +10,7 @@ return [
         'exam.create' => \Test\DTOs\Exam\ExamDTO::class,
         'exam.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,
         'exam.updateQuestionMark' => \Test\DTOs\ExamResult\UpdateQuestionMarkDTO::class,
+        'question.type.create'  => \Test\DTOs\Question\TypeDTO::class,
 
     ],
     'validator' => [

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Services;
+namespace Test\Services\Inferfaces;
 
 
 interface SourceServiceInterface

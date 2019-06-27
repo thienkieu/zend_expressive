@@ -8,21 +8,21 @@ $dir = realpath('src');
 
 return [
     'resolveService' => [
-        \Test\Services\TestServiceInterface::class => [
+        \Test\Services\Interfaces\TestServiceInterface::class => [
             \Test\Services\TestService::class,
             \Test\Services\AdvanceTestService::class,        
-        ],
-        \Test\Services\SectionServiceInterface::class => [
-            \Test\Services\SectionService::class,
-        ],
+        ],        
         \Test\Services\ImportQuestionServiceInterface::class => [
             \Test\Services\ImportQuestionService::class,
         ],
         \Test\Services\CandidateServiceInterface::class => [
             \Test\Services\CandidateService::class,
         ],
-        \Test\Services\SourceServiceInterface::class => [
+        \Test\Services\Interfaces\SourceServiceInterface::class => [
             \Test\Services\SourceService::class,
+        ],
+        \Test\Services\Interfaces\TypeServiceInterface::class => [
+            \Test\Services\TypeService::class,
         ],
         \Test\Services\ExamServiceInterface::class => [
             \Test\Services\ExamService::class,

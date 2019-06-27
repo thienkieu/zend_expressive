@@ -30,7 +30,7 @@ class FromListeningEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterIn
         $dto = new \Test\DTOs\Question\ListeningQuestionDTO();
         $dto->setContent(json_decode($document->getContent()));
         $dto->setRepeat($document->getRepeat());
-        $dto->setPath($document->getPath());
+        $dto->setPath($this->appendHost($document->getPath()));
         $dto->setType($document->getType());
         $dto->setSubType($document->getSubType());
         $dto->setSource($document->getSource());
@@ -50,6 +50,13 @@ class FromListeningEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterIn
         $dto->setSubQuestions($questions);
         
         return $dto;
+    }
+
+    protected function appendHost($content, $options = []) {
+        $host = \Infrastructure\CommonFunction::getServerHost();
+
+        $content = $host.$content;
+        return $content;
     }
     
 }

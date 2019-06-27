@@ -9,6 +9,15 @@ use Zend\Log\Logger;
 
 class CommonFunction
 {
+    public static function getServerHost() {
+        $protocal = 'http://';
+        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
+            $protocal = 'https://';
+        }
+
+        return $protocal.$_SERVER['SERVER_NAME'];
+    }
+    
     public static function buildResponseFormat($status, $messages=[], $data = null) {
         if ($data === null) $data = new \stdClass();
         
@@ -63,10 +72,9 @@ class CommonFunction
         return true;
     }
 
-
     public static function generateUniquePin($numberPin, $length = \Config\AppConstant::PinLength) {
         $ret = [];
-        for($i = 0; $i < $length ; $i++) {
+        for($i = 0; $i < $numberPin ; $i++) {
             $unique = uniqid();
             $ret[] = substr(uniqid(), strlen($unique) - $length, $length);
         }
@@ -82,5 +90,4 @@ class CommonFunction
         
         return \DateTime::createFromFormat($format, $date);
     }
-
 }

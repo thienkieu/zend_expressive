@@ -32,7 +32,10 @@ class ToListeningDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
     {  
         $document = new \Test\Documents\Question\ListeningQuestionDocument();
         $document->setContent(json_encode($dto->getContent()));
-        $document->setPath($dto->getPath());
+        
+        $path = $this->replaceHost($dto->getPath());
+        $document->setPath($path);
+
         $document->setRepeat($dto->getRepeat());
         $document->setSource($dto->getSource());
         $document->setType($dto->getType());
@@ -47,5 +50,12 @@ class ToListeningDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
         
         return $document;
             
+    }
+
+    protected function replaceHost($content, $options = []) {
+        $host = \Infrastructure\CommonFunction::getServerHost();
+
+        $content = str_replace($host, '', $content);
+        return $content;
     }
 }

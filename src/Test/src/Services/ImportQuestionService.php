@@ -6,7 +6,8 @@ namespace Test\Services;
 
 use Infrastructure\Interfaces\HandlerInterface;
 use Test\Exceptions\ImportQuestionException;
-use Test\Services\SourceServiceInterface;
+use Test\Services\Interfaces\SourceServiceInterface;
+use Test\Services\Interfaces\TypeServiceInterface;
 
 class ImportQuestionService implements ImportQuestionServiceInterface, HandlerInterface
 {
@@ -30,6 +31,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     private $container;
     private $translator;
     private $sourceService;
+    private $typService;
 
     /**
      * Class constructor.
@@ -38,7 +40,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     {
         $this->container = $container;
         $this->translator = $this->container->get(\Config\AppConstant::Translator);
-        $this->sourceService = $this->container->get(SourceServiceInterface::class);        
+        $this->sourceService = $this->container->get(SourceServiceInterface::class);  
+        $this->typeService = $this->container->get(TypeServiceInterface::class);       
     }
 
     public function isHandler($dto, $options = []) {
@@ -194,22 +197,55 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     }
 
     protected function buidGeneralQuestion($data, &$question, $lineNumber) {
+        $this->validSource($data[$this->source], $question, $lineNumber);
+        $this->validType($data[$this->type], $data[$this->subType], $question, $lineNumber);
+
         $question->setContent($data[$this->content]);
         $question->setType($data[$this->type]);
         $question->setSource($data[$this->source]);
         $question->setSubType($data[$this->subType]);
 
-        $source = trim($data[$this->source], ' ');
+    }
+
+    protected function validSource($source, &$question, $lineNumber) {
+        $source = trim($source, ' ');
         if (empty($source)) {
             $error = $this->translator->translate('Source cannot empty.', ['%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
 
-        $isExistSource = $this->sourceService->isExistSourceName($data[$this->source], $messages);
+        $isExistSource = $this->sourceService->isExistSourceName($source, $messages);
         if (!$isExistSource) {
-            $error = $this->translator->translate('Source is not exist.', ['%sourceName%'=> $data[$this->source]]);
+            $error = $this->translator->translate('Source is not exist.', ['%sourceName%'=> $source]);
             throw new ImportQuestionException($error);
         }
+    }
+
+    protected function validType($type, $subType, &$question, $lineNumber) {
+        $type = trim($type, ' ');
+        if (empty($type)) {
+            $error = $this->translator->translate('Type cannot empty.', ['%lineNumber%'=> $lineNumber]);
+            throw new ImportQuestionException($error);
+        }
+
+        $isExistType = $this->typeService->isExistTypeName($type);
+        if (!$isExistType) {
+            $error = $this->translator->translate('Type is not exist.', ['%typeName%'=> $type]);
+            throw new ImportQuestionException($error);
+        }
+
+        $subType = trim($subType, ' ');
+        if (empty($type)) {
+            $error = $this->translator->translate('SubType cannot empty.', ['%lineNumber%'=> $lineNumber]);
+            throw new ImportQuestionException($error);
+        }
+
+        $isExistSubType = $this->typeService->isExistSubTypeName($subType);
+        if (empty($isExistSubType)) {
+            $error = $this->translator->translate('SubType cannot empty.', ['%lineNumber%'=> $lineNumber]);
+            throw new ImportQuestionException($error);
+        }
+
     }
 
     protected function buildReadingQuestion($data, $lineNumber){
@@ -237,7 +273,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                     throw new ImportQuestionException($error);
                 }
 
-                $content = str_replace('['.trim($image,' ').']', '<img src="'.$this->imageFiles.'/'.$image.'"/>', $content);
+                $content = str_replace('['.trim($image,' ').']', '<img src="'.\Config\AppConstant::HOST_REPLACE.'/'.$this->imageFiles.'/'.$image.'"/>', $content);
             }
             
         }
@@ -263,7 +299,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         
         $listeningQuestion = new \Test\Documents\Question\ListeningQuestionDocument();
         $listeningQuestion->setRepeat($data[$this->repeatTime]);
-        $listeningQuestion->setPath($this->imageFiles.'/'.$data[$this->fileName]);
+        $listeningQuestion->setPath('/'.$this->imageFiles.'/'.$data[$this->fileName]);
 
         $this->buidGeneralQuestion($data, $listeningQuestion, $lineNumber);
         return $listeningQuestion;
