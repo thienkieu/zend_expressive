@@ -30,8 +30,11 @@ return [
         \Test\Services\DoExamServiceInterface::class => [
             \Test\Services\DoExamService::class,
         ],
-        \Test\Services\QuestionServiceInterface::class => [
-            \Test\Services\QuestionService::class,
+        \Test\Services\Question\QuestionServiceInterface::class => [
+            \Test\Services\Question\QuestionService::class,
+            \Test\Services\Question\ReadingQuestionService::class,
+            \Test\Services\Question\WritingQuestionService::class,
+            \Test\Services\Question\ListeningQuestionService::class,
         ],
         \Test\Services\PinServiceInterface::class => [
             \Test\Services\PinService::class,

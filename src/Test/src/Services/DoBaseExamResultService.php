@@ -10,6 +10,8 @@ use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
 
+use Test\Services\Question\QuestionServiceInterface;
+
 class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerInterface
 {
     protected $container;
@@ -25,23 +27,105 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
     }
 
     public function isHandler($dto, $options = []){
-        if (!empty($dto->remainTime)) {
+        if (empty($dto->writingContent) && empty($dto->answers)) {
             return true;
         }
 
         return false;
     }
 
+    public function getExamResult($dto, & $messages, & $examResultDTO) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $examResult = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
+        if (!$examResult) {
+            $messages[] = $this->translator->translate('Exam not found');
+            return false;
+        }
+
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class, [\Config\AppConstant::ShowCorrectAnswer => true]);
+        $examResultDTO = $documentToDTOConvertor->convertToDTO($examResult);
+        return true;
+    }
+
+    public function updateQuestionMark($dto, & $messages) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $examResult = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), '');
+        if (!$examResult) {
+            $messages[] = $this->translator->translate('Exam not found');
+            return false;
+        }
+
+        $questionDocument = $this->getQuestion($examResult, $dto);
+        if (!$questionDocument) {
+            $messages[] = $this->translator->translate('Exam not found');
+            return false;
+        }
+
+        $questionDocument->setComment($dto->getComment());
+        $questionDocument->setCandidateMark($dto->getMark());
+
+        $this->dm->flush();
+        return true;
+    }
+
+
+    public function finish($dto, & $messages) {
+        $outRemainTime = 0;
+        $dto->remainTime = 0;
+
+        $ret = $this->synchronyTime($dto, $outRemainTime, $messages);
+        $ret = $this->calculatorExamMark($dto, $messages);
+        $ret = $this->inValidPin($dto, $messages);
+        
+        return $ret;
+    }
+    
+    protected function inValidPin($dto, & $messages) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $document = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
+        if (!$document) {
+            $messages[] = $this->translator->translate('Exam not found');
+            return false;
+        }
+
+        $pinService = $this->container->get(PinServiceInterface::class);
+        $pinService->inValidPin($dto->examId, $dto->candidateId);
+        $examResultRepository->inValidPinByCandidateId($dto->examId, $dto->candidateId);
+
+        return true;
+    }
+    protected function calculatorExamMark($dto, & $messages){
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $document = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
+        if (!$document) {
+            $messages[] = $this->translator->translate('Exam not found');
+            return false;
+        }
+
+        $sections = $document->getTest()->getSections();
+        foreach ($sections as $section) {
+            $questions = $section->getQuestions();
+            foreach ($questions as $question) {
+                $questionInfo = $question->getQuestionInfo();
+                $questionService = $this->container->get(QuestionServiceInterface::class, $questionInfo);
+                $questionService->caculateMark($questionInfo);
+            }
+        }
+
+        $this->dm->flush();
+        return true;
+    }
+
     public function synchronyTime($dto, & $outRemainTime, & $messages) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-        $document = $testDocuments = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
+        $document = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
         if ($document) {
-            $remaintTime = $document->getRemainTime();
-            if ($dto->remainTime < $remaintTime) {
+            $remainTime = $document->getRemainTime();
+            if ($dto->remainTime < $remainTime) {
                 $document->setRemainTime($dto->remainTime);
                 $outRemainTime = $dto->remainTime;
             } else {
-                $r = $remaintTime - \Config\AppConstant::ReduceTimeSpan;
+                $r = $remainTime - \Config\AppConstant::ReduceTimeSpan;
                 $document->setRemainTime($r);
                 $outRemainTime = $r;
             }
@@ -58,7 +142,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
     public function updateAnswer($dto, & $messages) {
         try {
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-            $document = $testDocuments = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId());
+            $document = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId());
             $remaintTime = $document->getRemainTime();
             if ($remaintTime <= 0) {
                 $messages[] = $this->translator->translate('Your test have been finished!');
@@ -81,6 +165,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
     }
 
     protected function updateSubQuestionAnswer(& $examResult, $dto) {        
+    
     }
 
     protected function getQuestion(& $examResult, $dto) {

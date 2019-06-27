@@ -15,6 +15,9 @@ class ExamDocument
   /** @ODM\Id */
   protected $id;
 
+  /** @ODM\Field(type="string") */
+  protected $referId;
+
   /** @ODM\Field(type="int") */
   protected $time;
 
@@ -140,6 +143,26 @@ class ExamDocument
   public function setTitle($title)
   {
     $this->title = $title;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of referId
+   */ 
+  public function getReferId()
+  {
+    return $this->referId;
+  }
+
+  /**
+   * Set the value of referId
+   *
+   * @return  self
+   */ 
+  public function setReferId($referId)
+  {
+    $this->referId = $referId;
 
     return $this;
   }

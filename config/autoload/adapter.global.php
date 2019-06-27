@@ -12,7 +12,7 @@ return [
         \Test\Convertor\Adapter\Documents\ToReadingDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToWritingDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToTestDocumentAdapter::class,
-        \Test\Convertor\Adapter\Documents\ToQuestionDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToSubQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToSourceDocumentAdapter::class,
         
         \Test\Convertor\Adapter\Documents\ToSectionDocumentAdapter::class,
@@ -44,6 +44,7 @@ return [
         \Test\Convertor\Adapter\DTOs\ToPickupAnswerDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToUpdateRepeatTimesDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToUpdateWritingAnswerDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\UpdateQuestionMarkDTOAdapter::class,
     ],
 
     'convertorDocumentToDTOAdapters' => [

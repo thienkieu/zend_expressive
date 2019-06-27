@@ -65,6 +65,13 @@ class RequestToDTOMiddleware implements MiddlewareInterface
                     return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $dto));
                 } else {
                     $body =  $request->getParsedBody();
+                    if (empty($body)) $body = new \stdClass();
+                    
+                    $queryData = $request->getQueryParams();
+                    foreach ($queryData as $key => $value) {
+                        $body->{$key} = $value;
+                    }
+                    
                     return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $body));
                 }
             }

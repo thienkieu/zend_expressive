@@ -12,6 +12,9 @@ class QuestionDocument
 {
   /** @ODM\Id */
   protected $id;
+ 
+  /** @ODM\Field(type="string") */
+  protected $referId;
 
   /** @ODM\Field(type="string") */
   private $content;
@@ -27,6 +30,18 @@ class QuestionDocument
 
   /** @ODM\Field(type="int") */
   private $numberSubQuestion;
+
+  /** @ODM\Field(type="int") */
+  private $numberCorrectSubQuestion;
+
+  /** @ODM\Field(type="float") */
+  private $mark;
+
+  /** @ODM\Field(type="float") */
+  private $candidateMark;
+  
+  /** @ODM\Field(type="string") */
+  private $comment;
   
   /** @ODM\EmbedMany(targetDocument="\Test\Documents\Question\SubQuestionDocument") */
   private $subQuestions;
@@ -182,5 +197,105 @@ class QuestionDocument
   public function getNumberSubQuestion()
   {
     return $this->numberSubQuestion;
+  }
+
+  /**
+   * Get the value of comment
+   */ 
+  public function getComment()
+  {
+    return $this->comment;
+  }
+
+  /**
+   * Set the value of comment
+   *
+   * @return  self
+   */ 
+  public function setComment($comment)
+  {
+    $this->comment = $comment;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of mark
+   */ 
+  public function getMark()
+  {
+    return $this->mark;
+  }
+
+  /**
+   * Set the value of mark
+   *
+   * @return  self
+   */ 
+  public function setMark($mark)
+  {
+    $this->mark = $mark;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of numberCorrectSubQuestion
+   */ 
+  public function getNumberCorrectSubQuestion()
+  {
+    return $this->numberCorrectSubQuestion;
+  }
+
+  /**
+   * Set the value of numberCorrectSubQuestion
+   *
+   * @return  self
+   */ 
+  public function setNumberCorrectSubQuestion($numberCorrectSubQuestion)
+  {
+    $this->numberCorrectSubQuestion = $numberCorrectSubQuestion;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of candidateMark
+   */ 
+  public function getCandidateMark()
+  {
+    return $this->candidateMark;
+  }
+
+  /**
+   * Set the value of candidateMark
+   *
+   * @return  self
+   */ 
+  public function setCandidateMark($candidateMark)
+  {
+    $this->candidateMark = $candidateMark;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of referId
+   */ 
+  public function getReferId()
+  {
+    return $this->referId;
+  }
+
+  /**
+   * Set the value of referId
+   *
+   * @return  self
+   */ 
+  public function setReferId($referId)
+  {
+    $this->referId = $referId;
+
+    return $this;
   }
 }

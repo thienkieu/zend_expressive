@@ -11,7 +11,24 @@ class QuestionDTO
     protected $content;
     protected $subType;
     protected $source;
+    protected $mark;
+    protected $candidateMark;
+    protected $comment;
     
+    public function jsonSerialize() {
+        $ret = new \stdClass();
+        $ret->content = $this->getContent();
+        $ret->type = $this->getType();
+        $ret->subType = $this->getSubType();
+        $ret->id = $this->getId();
+        $ret->source = $this->getSource() ? $this->getSource(): '';
+        $ret->mark = $this->getMark() ? $this->getMark() : 0;
+        $ret->candidateMark = $this->getCandidateMark() ? $this->getCandidateMark() : 0;
+        $ret->comment = $this->getComment() ? $this->getComment(): '';
+
+        return $ret;
+    }
+
     /**
      * @var SubQuestionDTO[]
      */
@@ -157,6 +174,66 @@ class QuestionDTO
     public function addSubQuestion($subQuestion)
     {
         $this->subQuestions[] = $subQuestions;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of candidateMark
+     */ 
+    public function getCandidateMark()
+    {
+        return $this->candidateMark;
+    }
+
+    /**
+     * Set the value of candidateMark
+     *
+     * @return  self
+     */ 
+    public function setCandidateMark($candidateMark)
+    {
+        $this->candidateMark = $candidateMark;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mark
+     */ 
+    public function getMark()
+    {
+        return $this->mark;
+    }
+
+    /**
+     * Set the value of mark
+     *
+     * @return  self
+     */ 
+    public function setMark($mark)
+    {
+        $this->mark = $mark;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of comment
+     */ 
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set the value of comment
+     *
+     * @return  self
+     */ 
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
 
         return $this;
     }

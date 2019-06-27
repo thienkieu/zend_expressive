@@ -29,6 +29,8 @@ class ToTestWithSectionDTOAdapter extends ToDTOAdapter {
     {
         $dtoObject = new \Test\DTOs\Test\TestWithSectionDTO();
         $dtoObject->setTitle($jsonObject->title);
+        $testId = isset($jsonObject->id) ? $jsonObject->id: '';
+        $dtoObject->setId($testId);
         
         $sectionDTOs = [];
         foreach ($jsonObject->sections as $jsonSection) {
@@ -37,7 +39,6 @@ class ToTestWithSectionDTOAdapter extends ToDTOAdapter {
         }
 
         $dtoObject->setSections($sectionDTOs);
-        
         return $dtoObject;            
     }
 }

@@ -51,6 +51,10 @@ class ConfigProvider
                 Handlers\RefreshPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateAnswerHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\SynchronyTimeHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\FinishExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateQuestionMarkHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\GetQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\ViewExamResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
@@ -76,8 +80,8 @@ class ConfigProvider
                 Services\DoExamServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\DoExamService::class => \Infrastructure\Factory\BaseFactory::class,
 
-                Services\QuestionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
-                Services\QuestionService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\Question\QuestionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\Question\QuestionService::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Services\PinServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\PinService::class => \Infrastructure\Factory\BaseFactory::class,

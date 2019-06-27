@@ -9,5 +9,5 @@ interface PinServiceInterface
 {
     public function refreshPin($examId, $candiateId, & $outNewPin, & $messages);
     public function showPinInfo($dto, & $results, & $messages);
-    public function inValidPin($examId, $pin);
+    public function inValidPin($examId, $candidateId);
 }

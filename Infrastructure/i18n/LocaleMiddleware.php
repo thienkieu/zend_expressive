@@ -32,7 +32,6 @@ class LocaleMiddleware implements MiddlewareInterface
         $path = $uri->getPath();
 
         if (preg_match(self::REGEX_LOCALE, $path, $matches)) {
-            echo 1;
             $locale = $matches['locale'];
             Locale::setDefault(Locale::canonicalize($locale));
             $this->helper->setBasePath($locale);

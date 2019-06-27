@@ -37,6 +37,7 @@ class ToListeningEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
         $document->setSource($dto->getSource());
         $document->setType($dto->getType());
         $document->setSubType($dto->getSubType());
+        $document->setReferId($dto->getId());
 
         $questions = $dto->getSubQuestions();
 

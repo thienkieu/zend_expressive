@@ -33,7 +33,6 @@ class AdvanceTestService implements TestServiceInterface, HandlerInterface
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($sectionDTO);
 
-            //echo '<pre>'.print_r($document, true).'</pre>'; die;
             $this->dm->persist($document);
             $this->dm->flush();
             

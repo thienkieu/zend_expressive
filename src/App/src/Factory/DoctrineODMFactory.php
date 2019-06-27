@@ -17,7 +17,11 @@ class DoctrineODMFactory
     public function __invoke(ContainerInterface $container) : DocumentManager
     {
         $appConfig = $container->get('config');
+        $environment = $appConfig['environment'];
         $dbConfig = $appConfig['nonsqldb'];
+        if (isset($appConfig['nonsqldb_'.$environment])) {
+            $dbConfig = $appConfig['nonsqldb_'.$environment];
+        }
 
         $client = new Client($dbConfig['mongodb-connection'], [], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
         $connection = new Connection($client);

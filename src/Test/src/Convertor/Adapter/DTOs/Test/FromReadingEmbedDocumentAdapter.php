@@ -32,6 +32,10 @@ class FromReadingEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInte
         $dto->setSubType($document->getSubType());
         $dto->setType($document->getType());
         $dto->setId($document->getId());
+        $dto->setCandidateMark($document->getCandidateMark());
+        $dto->setMark($document->getMark());
+        $dto->setNumberCorrectSubQuestion($document->getNumberCorrectSubQuestion());
+        
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
         $questionDocuments = $document->getSubQuestions();

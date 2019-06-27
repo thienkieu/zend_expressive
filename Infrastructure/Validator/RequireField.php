@@ -50,7 +50,7 @@ class RequireField extends AbstractValidator {
     }
 
     protected function checkRequiredProperty($object, $fields) {
-        if (empty($fields)) return true;
+        if (empty($fields) ) return true;
         $field = array_shift($fields);
        
         $values = null;        
@@ -59,7 +59,7 @@ class RequireField extends AbstractValidator {
         }
         
         $isSuccess = true;
-        if (empty($values)) {
+        if (empty($values) && $values !== false) {
             $this->error($field);
             $isSuccess = false;
         }

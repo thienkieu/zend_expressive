@@ -10,6 +10,8 @@ use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
 
+use Test\Services\Question\QuestionServiceInterface;
+
 class DoExamService implements DoExamServiceInterface, HandlerInterface
 {
     private $container;
@@ -55,86 +57,21 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $candidates = $document->getCandidates();
             $candidate = $candidates[0];
             if (!$candidate->getIsPinValid()) {
-                $messages[] = $this->translator->translate('Your pin \'%pin%\' is used, Please notify to admin to get new pin', ['%pin%' => $dto->pin]);
+                $messages[] = $this->translator->translate('Your pin \'%pin%\' is not valid, Please notify to admin to get new pin', ['%pin%' => $dto->pin]);
                 return false;
             }
 
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
             $existingExamResult = $testDocuments = $examResultRepository->getExamResult($document->getId(), $candidate->getId(), '');
-            if ($existingExamResult) {
-                $results = $documentToDTOConvertor->convertToDTO($existingExamResult);
-                return true;
-            }
-            
-            $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
-            $sectionsForDoExam = [];
-            $questionService = $this->container->get(QuestionServiceInterface::class);
-
-            $examDTO = $documentToDTOConvertor->convertToDTO($document);
-            $test  = $examDTO->getTest();
-            $sections = $test->getSections();
-            foreach ($sections as $section) {
-                $questionsForSection = [];
-                $questions = $section->getQuestions();
-                $sources = [];
-                foreach ($questions as $question) {
-                    
-                    $q = $questionService->generateQuestion($question, $sources);                    
-                    $sources[] = $q->getSource();
-
-                    $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
-                    $testQuestionDTO->setId($q->getId());
-                    $testQuestionDTO->setGenerateFrom(\Config\AppConstant::Pickup);
-                    $testQuestionDTO->setQuestionInfo($q);
-                   
-                    $questionsForSection[] = $testQuestionDTO;
-                }
-
-                $sectionForDoExam = new \Test\DTOs\Test\SectionDTO();
-                $sectionForDoExam->setName($section->getName());
-                $sectionForDoExam->setDescription($section->getDescription());
-                $sectionForDoExam->setQuestions($questionsForSection);    
-                
-                $sectionsForDoExam[] = $sectionForDoExam;
+            if (!$existingExamResult) {
+                $messages[] = $this->translator->translate('Cannot found your exam with pin, Please check with admin.', ['%pin%' => $dto->pin]);
+                return false;
             }
 
-            $testForDoExam->setSections($sectionsForDoExam);
-            $testForDoExam->setId($test->getId());
-            $testForDoExam->setTitle($test->getTitle());
-
-            $examDTO->setTest($testForDoExam);
-           
-            
-            $candidates = $examDTO->getCandidates();
-
-            //$pinService = $this->container->get(PinServiceInterface::class);
-            //$pinService->inValidPin($examDTO->getId(), $dto->pin);
-
-            $examResult = new \Test\DTOs\ExamResult\ExamResultHasSectionTestDTO();
-            $examResult->setTest($testForDoExam);
-            $examResult->setCandidate($candidates[0]);
-            $examResult->setExamId($examDTO->getId());
-            $examResult->setTime($examDTO->getTime());
-            $examResult->setTitle($examDTO->getTitle());
-            $examResult->setStartDate($examDTO->getStartDate());
-
-            $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class]);
-            $examResultDocument->setRemainTime($examDTO->getTime() * 60);
-            $this->dm->persist($examResultDocument);
-            $this->dm->flush();
-
-            //$sections = $examResultDocument->getTest()->getSections();
-            // foreach ($sections as $key => $value) {
-            //     $questions = $value->getQuestions();
-            //     foreach ($questions as $question) {
-            //         '<pre>'.var_dump($question->getQuestionInfo(), true).'</pre>'; die;
-            //     }
-            // }
-            $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
-
+            $results = $documentToDTOConvertor->convertToDTO($existingExamResult);
             return true;
+            
         }catch(\Test\Exceptions\GenerateQuestionException $e) {
             $messages[] =  $e->getMessage();       
             return false;   

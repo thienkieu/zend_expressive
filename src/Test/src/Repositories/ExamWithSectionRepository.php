@@ -35,6 +35,22 @@ class ExamWithSectionRepository extends DocumentRepository
 
     }
 
+    public function inValidPinByCandidateId($examId, $candidateId) {
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+                    ->updateOne()
+                    
+                    ->field('id')->equals($examId)
+                    ->field('candidates.id')->equals($candidateId)
+                    
+                    ->field('candidates.$.isPinValid')->set(false)
+                    ->getQuery()
+                    ->execute();
+        
+        return $result;
+
+    }
+
     public function inValidPin($examId, $pin) {
         $queryBuilder = $this->createQueryBuilder();
         $result = $queryBuilder

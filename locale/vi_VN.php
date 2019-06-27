@@ -27,5 +27,13 @@ return array(
     'Field \'%field%\' cannot correct format, Please check it again.' => 'Field \'%field%\' cannot correct format, Please check it again.',
     'Source cannot empty.' => 'Source cannot empty at line %lineNumber%.', 
     'There is problem with update pin \'%pin%\', Please refresh new pin.' => 'There is problem with update pin \'%pin%\', Please refresh new pin.',
-    'Your pin \'%pin%\' is used, Please notify to admin to get new pin' => 'Your pin \'%pin%\' is used, Please notify to admin to get new pin',
+    'Your pin \'%pin%\' is not valid, Please notify to admin to get new pin' => 'Your pin \'%pin%\' is not valid, Please notify to admin to get new pin',
+    'There isnot exist question with pin' => 'There isnot exist question with pin \'%questionId%\.',
+    'This is not writing question' => 'This is not writing question',
+    'This is not listening question' => 'This is not listening question',
+    'cannot found your question' => 'Cannot found your question',
+    'Exam not found' => 'Exam not found',
+    'Your test have been finished!' => 'Your test have been finished!',
+    'Cannot found your exam with pin, Please check with admin.' => 'Cannot found your exam with pin: %pin%, Please check with admin.'
 );
+

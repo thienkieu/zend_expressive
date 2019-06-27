@@ -79,5 +79,7 @@ abstract class AppConstant
     const ToDocumentClass = 'toDocumentClass';
     const ShowCorrectAnswer= 'showCorrectAnswer';
 
-    const ReduceTimeSpan = 60;
+    const ReduceTimeSpan = 10;
+    const DefaultSubQuestionMark = 2;
+
 }

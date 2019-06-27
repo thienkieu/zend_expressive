@@ -40,9 +40,9 @@ class PinService implements PinServiceInterface, HandlerInterface
         return false;
     }
 
-    public function inValidPin($examId, $pin) {
+    public function inValidPin($examId, $candidateId) {
         $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
-        $result =  $examRepository->inValidPin($examId, $pin);
+        $result =  $examRepository->inValidPinByCandidateId($examId, $candidateId);
         if ($result['ok'] != 1) {
             $message = $this->translator->translate('There is problem with update pin \'%pin%\', Please refresh new pin.', ['%pin%' => $pin]);
             throw new \Test\Exceptions\GenerateQuestionException($message); 

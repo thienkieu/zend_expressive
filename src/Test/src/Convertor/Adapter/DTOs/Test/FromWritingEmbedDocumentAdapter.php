@@ -33,7 +33,10 @@ class FromWritingEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInte
         $dto->setType($document->getType());
         $dto->setSubType($document->getSubType());
         $dto->setAnswer($document->getAnswer());
-
+        $dto->setCandidateMark($document->getCandidateMark());
+        $dto->setMark($document->getMark());
+        $dto->setComment($document->getComment());
+        
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
         $questionDocuments = $document->getSubQuestions();

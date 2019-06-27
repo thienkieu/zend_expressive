@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Services;
+namespace Test\Services\Question;
 
 use Zend\Log\Logger;
 
@@ -47,14 +47,14 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $subQuestions = $questionDTO->getSubQuestions();        
         $maxRand = count($subQuestions) - 1;
         $ret = [];
-
+        
         for ($i=0; $i < $numberSubQuestion ; $i++) {
             $index = mt_rand(0, $maxRand);
             $q = array_splice($subQuestions, $index, 1);
             $ret[] = $q[0];
             $maxRand = $maxRand - 1;
         }
-      
+        
         return $ret;
     }
 
@@ -75,7 +75,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
                 '%numberSubQuestion%' => $questionDTO->getNumberSubQuestion(),
                 '%sources%' => implode(',', $notInsources)
             ];
-
+            
             throw new \Test\Exceptions\GenerateQuestionException($this->translator->translate('Cannot generate question with citerials: [type => %type%, subType => %subType%, numberSubQuestion => %numberSubQuestion%, sources=>%sources%]', $generateQuestionCiterial));
         }
 
@@ -88,4 +88,72 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         
         return $ret;
     }
+
+    public function getQuestions($dto, $pageNumber, $itemPerPage) {
+        $builder = $this->dm->createQueryBuilder([
+            \Test\Documents\Question\ReadingQuestionDocument::class, 
+            \Test\Documents\Question\ListeningQuestionDocument::class,
+            \Test\Documents\Question\WritingQuestionDocument::class
+        ]);
+
+       
+        $builder = $builder->field('content')->equals(new \MongoRegex('/.*'.$dto->content.'.*/i'))
+                           ->field('type')->equals(new \MongoRegex('/.*'.$dto->type.'.*/i'));
+        $totalDocument = $builder->getQuery()->execute()->count();
+        
+        $data = $builder->limit($itemPerPage)
+                        ->skip($itemPerPage*($pageNumber-1))
+                        ->getQuery()
+                        ->execute();
+        
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+        $dtos = [];
+        foreach($data as $document) {
+            $dtoObject = $documentToDTOConvertor->convertToDTO($document);
+            $dtos[] = $dtoObject;
+        }
+       
+        return [
+            'totalDocument' => $totalDocument,
+            'questions' => $dtos 
+        ];
+    }
+
+    public function caculateMark(&$questionDocument) {
+        $candidateMark = 0;
+        $numberCorrectSubQuestion = $this->getNumberCorrectSubQuestion($questionDocument, $candidateMark);
+        $questionDocument->setNumberCorrectSubQuestion($numberCorrectSubQuestion);
+        $questionDocument->setCandidateMark($candidateMark);
+    }
+
+    protected function getNumberCorrectSubQuestion($questionDocument, & $candidateMark) {
+        $numberCorrectSubQuestion = 0;
+
+        $subQuestionDocuments = $questionDocument->getSubQuestions();
+        foreach ($subQuestionDocuments as $subQuestion) {
+            $answers = $subQuestion->getAnswers();
+            $isCorrect = true;
+            foreach ($answers as $answer) {
+                $isCorrectValue = $answer->getIsCorrect();
+                $isUserChoice = $answer->getIsUserChoice();
+                if ( 
+                    (!empty($isCorrectValue) && empty($isUserChoice)) || 
+                    (empty($isCorrectValue) && !empty($isUserChoice))
+                ) {
+                    $isCorrect = false;
+                    break;
+                }
+
+            }
+            
+            if ($isCorrect) {
+                $numberCorrectSubQuestion += 1;
+                $candidateMark += $subQuestion->getMark();
+            }
+        }
+
+        return $numberCorrectSubQuestion;
+    }
+    
+
 }

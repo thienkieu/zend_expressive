@@ -9,6 +9,7 @@ use Zend\Log\Logger;
 use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
+use Test\Services\Question\QuestionServiceInterface;
 
 class ExamService implements ExamServiceInterface, HandlerInterface
 {
@@ -40,28 +41,91 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
         
-        try{
+        try {
             //TODO verify number of source to make sure able to generate test random.
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Exam\ExamHasSectionTestDocument::class]);
             $this->assignPin($document);
             $this->dm->persist($document);
-            $this->dm->flush();
             
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $dto = $documentToDTOConvertor->convertToDTO($document);
+
+            $candidates = $dto->getCandidates();
+            foreach ($candidates as $candiate) {
+                $examResultDocument = $this->generateExamResult($dto, $candiate);
+                $this->dm->persist($examResultDocument);
+            }
+
+            $this->dm->flush();
             
             $messages[] = $translator->translate('Your exam have been created successfull!');
             return true;
+        } catch(\Test\Exceptions\GenerateQuestionException $e) {
+            $messages[] =  $e->getMessage(); 
+            $dto = null;      
+            return false; 
         } catch(\Exception $e){
             $messages[] = $translator->translate('There is error with create section, Please check admin site');
-           
+            $dto = null;
             $logger = $this->container->get(Logger::class);
             $logger->info($e);
             
             return false;
         }        
     }
+
+    protected function generateExamResult($examDTO, $candiateDTO) {
+        $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
+        $sectionsForDoExam = [];
+        $questionService = $this->container->get(QuestionServiceInterface::class);
+
+        $test  = $examDTO->getTest();
+        $sections = $test->getSections();
+        foreach ($sections as $section) {
+            $questionsForSection = [];
+            $questions = $section->getQuestions();
+            $sources = [];
+            foreach ($questions as $question) {
+                
+                $q = $questionService->generateQuestion($question, $sources);                    
+                $sources[] = $q->getSource();
+
+                $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
+                $testQuestionDTO->setId($q->getId());
+                $testQuestionDTO->setGenerateFrom(\Config\AppConstant::Pickup);
+                $testQuestionDTO->setQuestionInfo($q);
+                
+                $questionsForSection[] = $testQuestionDTO;
+            }
+
+            $sectionForDoExam = new \Test\DTOs\Test\SectionDTO();
+            $sectionForDoExam->setName($section->getName());
+            $sectionForDoExam->setDescription($section->getDescription());
+            $sectionForDoExam->setQuestions($questionsForSection);    
+            
+            $sectionsForDoExam[] = $sectionForDoExam;
+        }
+
+        $testForDoExam->setSections($sectionsForDoExam);
+        $testForDoExam->setId($test->getId());
+        $testForDoExam->setTitle($test->getTitle());
+        
+        $examResult = new \Test\DTOs\ExamResult\ExamResultHasSectionTestDTO();
+        $examResult->setTest($testForDoExam);
+        $examResult->setCandidate($candiateDTO);
+        $examResult->setExamId($examDTO->getId());
+        $examResult->setTime($examDTO->getTime());
+        $examResult->setTitle($examDTO->getTitle());
+        $examResult->setStartDate($examDTO->getStartDate());
+
+        $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
+        $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class]);
+        $examResultDocument->setRemainTime($examDTO->getTime() * 60);
+        
+        return $examResultDocument;
+    }
+    
 
     public function enterPin($dto, & $results, & $messages) {
         $testRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);

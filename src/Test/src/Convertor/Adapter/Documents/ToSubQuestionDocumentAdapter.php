@@ -6,7 +6,7 @@ namespace Test\Convertor\Adapter\Documents;
 
 use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 
-class ToQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
+class ToSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
     protected $convertor;
 
@@ -33,6 +33,7 @@ class ToQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface
         $document = new \Test\Documents\Question\SubQuestionDocument();        
         $document->setContent(json_encode($dtoObject->getContent()));
         $document->setOrder($dtoObject->getOrder());
+        $document->setMark($dtoObject->getMark());
         
         $answers = $dtoObject->getAnswers();
         foreach($answers as $answer){

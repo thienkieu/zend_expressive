@@ -23,6 +23,9 @@ class SubQuestionDocument
   /** @ODM\Field(type="int") */
   private $selectedAnswer;
 
+  /** @ODM\Field(type="float") */
+  private $mark;
+
   /** @ODM\EmbedMany(targetDocument="AnswerDocument") */
   private $answers;
 
@@ -132,6 +135,26 @@ class SubQuestionDocument
   public function setSelectedAnswer($selectedAnswer)
   {
     $this->selectedAnswer = $selectedAnswer;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of mark
+   */ 
+  public function getMark()
+  {
+    return $this->mark;
+  }
+
+  /**
+   * Set the value of mark
+   *
+   * @return  self
+   */ 
+  public function setMark($mark)
+  {
+    $this->mark = $mark;
 
     return $this;
   }

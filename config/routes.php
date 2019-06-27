@@ -41,11 +41,13 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     //$app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->get('/api/ping', App\Handler\PingHandler::class, 'api.ping');
     $app->post('/token', OAuth2\TokenEndpointHandler::class, 'api.token');
+    //$app->post('/token', App\Handler\HomePageHandler::class, 'api.token');
     $app->get('/publickey', App\Handler\GetPublicKeyHandler::class, 'api.publickey');
 
     //Source
     $app->post('/coordinator/question/source/create', Test\Handlers\CreateSourceHandler::class, 'question.source.create');
     $app->get('/coordinator/question/sources', Test\Handlers\GetSourceHandler::class, 'question.sources');
+    $app->post('/coordinator/question/questions', Test\Handlers\GetQuestionHandler::class, 'question.questions');
 
     
     //Test
@@ -60,6 +62,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/coordinator/pin/refresh', Test\Handlers\RefreshPinHandler::class, 'pin.refresh');
     $app->post('/coordinator/exam/updateAnswer', Test\Handlers\UpdateAnswerHandler::class, 'exam.updateAnswer');
     $app->post('/coordinator/exam/synchronyTime', Test\Handlers\SynchronyTimeHandler::class, 'exam.synchronyTime');
+    $app->post('/coordinator/exam/finish', Test\Handlers\FinishExamHandler::class, 'exam.finish');
+    $app->post('/coordinator/exam/updateQuestionMark', Test\Handlers\UpdateQuestionMarkHandler::class, 'exam.updateQuestionMark');
+    $app->get('/coordinator/exam/viewExamResult', Test\Handlers\ViewExamResultHandler::class, 'exam.viewExamResult');
     
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 

@@ -15,6 +15,22 @@ use Doctrine\ODM\Tools\Pagination\Paginator;
 
 class ExamResultHasSectionTestRepository extends DocumentRepository
 {
+    public function inValidPinByCandidateId($examId, $candidateId) {
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+                    ->updateOne()
+                    
+                    ->field('examId')->equals($examId)
+                    ->field('candidate.id')->equals($candidateId)
+                    
+                    ->field('candidate.isPinValid')->set(false)
+                    ->getQuery()
+                    ->execute();
+        
+        return $result;
+
+    }
+
     public function getExamResult($examId, $candiateId, $questionId) {
         $queryBuilder = $this->createQueryBuilder();       
         $document = $queryBuilder
@@ -28,6 +44,40 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
 
                     ->getQuery()
                     ->getSingleResult();
+        return $document;
+
+    }
+
+
+    public function updateQuestionMark($examId, $candiateId, $questionId, $mark, $comment) {
+        $queryBuilder = $this->createQueryBuilder();       
+        $document = $queryBuilder
+                    ->updateOne()
+
+                    ->field('examId')->equals($examId)
+                    ->field('candidate.id')->equals($candiateId)
+                    ->field('test.sections.questions.id')->equals($questionId)
+                    ->field('test.sections.id')->equals("5d1037e1ce10c90500007d87")
+                    ->field('test.sections.questions.$[element].comment')->set($comment)
+                    
+                    //->field('test.sections.questions.$.comment')->expr()->operator('$arrayFilters','{}')
+                    //->field('$test.sections.questions', "question", $builder->expr()->eq('$$question.id', $questionId))
+                    //->field('test.sections.questions.$.mark')->set($mark)
+                    ->setNewObj(
+                        [
+                            '$set' => [
+                                'test.sections.questions.$[element].comment' => 'this is comment for you'
+                            ],
+                            'arrayFilters' => [ 
+                                '{ "element": { $gte: 100 } }' 
+                            ]
+                        ]
+                            
+                    )
+
+                    ->getQuery()
+                    ->execute();
+                echo '<pre>'.print_r($document, true).'</pre>'; die;
         return $document;
 
     }

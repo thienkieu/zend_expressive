@@ -9,7 +9,15 @@ class SubQuestionDTO implements \JsonSerializable
     protected $id;
     protected $content;
     protected $order;
+    protected $mark;
 
+    /**
+     * Class constructor.
+     */
+    public function __construct()
+    {
+        $this->mark = \Config\AppConstant::DefaultSubQuestionMark;
+    }
     /**
      * @var AnswerDTO[]
      */
@@ -63,8 +71,9 @@ class SubQuestionDTO implements \JsonSerializable
         $ret = new \stdClass();
         $ret->content = $this->getContent();
         $ret->answers = $this->getAnswers();
-        $ret->order = $this->getOrder();
+        $ret->order = $this->getOrder() ? $this->getOrder(): 0;
         $ret->id = $this->getId();
+        $ret->mark = $this->getMark() ? $this->getMark(): 0;
         return $ret;
     }
 
@@ -104,6 +113,26 @@ class SubQuestionDTO implements \JsonSerializable
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mark
+     */ 
+    public function getMark()
+    {
+        return $this->mark;
+    }
+
+    /**
+     * Set the value of mark
+     *
+     * @return  self
+     */ 
+    public function setMark($mark)
+    {
+        $this->mark = $mark;
 
         return $this;
     }

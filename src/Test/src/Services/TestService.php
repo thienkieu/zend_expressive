@@ -26,7 +26,7 @@ class TestService implements TestServiceInterface, HandlerInterface
         return true;
     }
 
-    public function createTest(\Test\DTOs\Test\BaseTestDTO $testDTO, & $dto, & $messages) {
+    public function createTest(\Test\DTOs\Test\BaseTestDTO $testDTO, & $messages) {
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
         

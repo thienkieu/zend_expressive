@@ -9,6 +9,8 @@ return [
         'question.source.create'   => \Test\DTOs\Question\SourceDTO::class,
         'exam.create' => \Test\DTOs\Exam\ExamDTO::class,
         'exam.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,
+        'exam.updateQuestionMark' => \Test\DTOs\ExamResult\UpdateQuestionMarkDTO::class,
+
     ],
     'validator' => [
         'test.create' => [  

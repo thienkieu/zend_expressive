@@ -12,7 +12,7 @@ class ServiceFactory implements FactoryInterface
         $appConfig = $container->get(\Config\AppConstant::AppConfig);
         $serviceResolveConfig = $appConfig[\Config\AppConstant::ResolveService];
         $testServiceSupport = $serviceResolveConfig[$requestedName]; 
-         
+        
         foreach ($testServiceSupport as $serviceClass) {
             $service = $container->get($serviceClass);
             if ($service->isHandler($dtoObject)) return $service;

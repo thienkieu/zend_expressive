@@ -91,6 +91,7 @@ class CreateTestWithSectionValidatorAdapter implements ValidatorAdapterInterface
         $validators[] = $validatorChain;
 
         $randomQuestions = $this->getRandomQuestion($validData);
+        
         foreach ($randomQuestions as $value) {
             $v = new RandomQuestionValidator(
                 $this->container->get(\Config\AppConstant::Translator),
@@ -99,7 +100,7 @@ class CreateTestWithSectionValidatorAdapter implements ValidatorAdapterInterface
             );
 
             $v->isValid($value);
-            $validators[] = $v;
+            $validators[] = $v;            
         }
                 
         return $this->showErrorMessage($validators, $messageResponse);

@@ -32,4 +32,21 @@ class QuestionRepository extends DocumentRepository
         
         return $question;
     }
+
+
+    public function getQuestionWithPagination($filterData, $itemPerPage, $pageNumber) {
+        $filterQuery = $this->getFilterQuery($filterData);
+        $totalDocument = $filterQuery->getQuery()->execute()->count();        
+        $data = $filterQuery->limit($itemPerPage)
+                                    ->skip($itemPerPage*($pageNumber-1))
+                                    ->getQuery()
+                                    ->execute();
+        return [
+            'totalDocument' => $totalDocument,
+            'questions' => $data 
+        ];
+    }
+
+   
+
 }
