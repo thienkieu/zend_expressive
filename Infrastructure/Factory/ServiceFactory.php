@@ -15,7 +15,7 @@ class ServiceFactory implements FactoryInterface
         
         foreach ($testServiceSupport as $serviceClass) {
             $service = $container->get($serviceClass);
-            if ($service->isHandler($dtoObject)) return $service;
+            if ($service->isHandler($dtoObject, $options)) return $service;
         }
         
         return new $requestedName($container, $options);

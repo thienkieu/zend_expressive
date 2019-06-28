@@ -36,6 +36,11 @@ return [
             Infrastructure\Convertor\RequestToDTOMiddleware::class => Infrastructure\Factory\BaseFactory::class,
             Infrastructure\Validator\ValidatorRequestInterface::class => Infrastructure\Validator\ValidatorRequestFactory::class,
             Infrastructure\Middleware\UploadFileMiddleware::class => Infrastructure\Factory\BaseFactory::class,
+
+            Infrastructure\DataParser\DataParserInterface::class => Infrastructure\Factory\ServiceFactory::class,
+            Infrastructure\DataParser\ExcelParserService::class => Infrastructure\Factory\BaseFactory::class,
+            Infrastructure\DataParser\WordParserService::class => Infrastructure\Factory\BaseFactory::class,
+            Infrastructure\DataParser\HtmlFormatAdapter::class => Infrastructure\Factory\BaseFactory::class,
             
 
             Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class => Infrastructure\Factory\BodyParamsMiddlewareFactory::class,

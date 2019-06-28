@@ -8,6 +8,11 @@ $dir = realpath('src');
 
 return [
     'resolveService' => [
+        \Infrastructure\DataParser\DataParserInterface::class => [
+            \Infrastructure\DataParser\ExcelParserService::class,
+            \Infrastructure\DataParser\WordParserService::class,      
+        ],
+
         \Test\Services\Interfaces\TestServiceInterface::class => [
             \Test\Services\TestService::class,
             \Test\Services\AdvanceTestService::class,        
@@ -44,6 +49,6 @@ return [
             \Test\Services\DoExamResultWritingService::class,
             \Test\Services\DoExamResultRepeatTimesService::class,
             \Test\Services\DoBaseExamResultService::class,
-        ]
+        ],
     ],
 ];

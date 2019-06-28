@@ -28,7 +28,7 @@ class FromListeningEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterIn
 
     public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\ListeningQuestionDTO();
-        $dto->setContent(json_decode($document->getContent()));
+        $dto->setContent($document->getContent());
         $dto->setRepeat($document->getRepeat());
         $dto->setPath($this->appendHost($document->getPath()));
         $dto->setType($document->getType());

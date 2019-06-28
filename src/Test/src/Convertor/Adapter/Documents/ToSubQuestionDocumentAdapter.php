@@ -31,7 +31,7 @@ class ToSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterf
     public function convert($dtoObject, $options = []) 
     {
         $document = new \Test\Documents\Question\SubQuestionDocument();        
-        $document->setContent(json_encode($dtoObject->getContent()));
+        $document->setContent($dtoObject->getContent());
         $document->setOrder($dtoObject->getOrder());
         $document->setMark($dtoObject->getMark());
         

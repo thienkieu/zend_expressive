@@ -31,7 +31,7 @@ class ToWritingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInter
     public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Test\WritingQuestionDocument();
-        $document->setContent(json_encode($dto->getContent()));
+        $document->setContent($dto->getContent());
         $document->setSource($dto->getSource());
         $document->setType($dto->getType());
         $document->setSubType($dto->getSubType());

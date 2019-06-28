@@ -31,7 +31,7 @@ class ToListeningDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
     public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Question\ListeningQuestionDocument();
-        $document->setContent(json_encode($dto->getContent()));
+        $document->setContent($dto->getContent());
         
         $path = $this->replaceHost($dto->getPath());
         $document->setPath($path);

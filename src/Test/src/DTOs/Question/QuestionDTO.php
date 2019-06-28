@@ -17,7 +17,7 @@ class QuestionDTO
     
     public function jsonSerialize() {
         $ret = new \stdClass();
-        $ret->content = $this->getContent();
+        $ret->content = $this->getContent() ? $this->getContent() : '';
         $ret->type = $this->getType();
         $ret->subType = $this->getSubType();
         $ret->id = $this->getId();

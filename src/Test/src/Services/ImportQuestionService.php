@@ -8,6 +8,7 @@ use Infrastructure\Interfaces\HandlerInterface;
 use Test\Exceptions\ImportQuestionException;
 use Test\Services\Interfaces\SourceServiceInterface;
 use Test\Services\Interfaces\TypeServiceInterface;
+use Infrastructure\DataParser\DataParserInterface;
 
 class ImportQuestionService implements ImportQuestionServiceInterface, HandlerInterface
 {
@@ -22,7 +23,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     private $correctAnswers = 9;
     private $answer = 10;
     private $rowDataIndex = 5;
-
+    
     private $readingType = \Config\AppConstant::Reading;
     private $listeningType = \Config\AppConstant::Listening;
     private $writingType = \Config\AppConstant::Writing;
@@ -32,6 +33,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     private $translator;
     private $sourceService;
     private $typService;
+    private $dataParser;
+    private $rowIndex = 0;
 
     /**
      * Class constructor.
@@ -42,10 +45,26 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         $this->translator = $this->container->get(\Config\AppConstant::Translator);
         $this->sourceService = $this->container->get(SourceServiceInterface::class);  
         $this->typeService = $this->container->get(TypeServiceInterface::class);       
+        $this->dataParser = $this->container->build(DataParserInterface::class, [DataParserInterface::FileTypeKey => 'excel']);
     }
 
     public function isHandler($dto, $options = []) {
         return true;
+    }
+
+    protected function processContent($data) {
+
+    }
+
+    private function getNextRow() {
+        $row = null;
+        $this->rowIndex += 1;
+        $this->dataParser->next();
+        if ($this->dataParser->valid()){
+            $row = $this->dataParser->current();
+        }
+
+        return $row;
     }
 
     public function importQuestion($dtoObject, & $dto, & $messages) {
@@ -64,111 +83,69 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                 }
             }
             
-            /*$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-            $reader->setReadDataOnly(false);
-            $spreadsheet = $reader->load($dtoObject->file);
-            $rowItertor = $spreadsheet->getActiveSheet()->getRowIterator();
-            $indexA = 0;
-            while($rowItertor->valid()) {
-                $rowData = $rowItertor->current();
-                if ($indexA === 4) {
-                    $cellIterator = $rowData->getCellIterator();
-                    echo '<pre>'.print_r( $cellIterator->current()->getValue()).'</pre>'; die;
-                }
-                $rowItertor->next();
-                $indexA++;
+            $this->dataParser->parseData($dtoObject, ['rowIndexStart' => $this->rowDataIndex]);
+            
+    
+            $lstQuestions = [];
+            $this->rowIndex = $this->rowDataIndex;
+            $dm = $this->container->get(\Config\AppConstant::DocumentManager);                
+            while($this->dataParser->valid()) {
+                $row = $this->dataParser->current();
+                $previousId = $row[$this->id];
                 
-            }
-            echo '<pre>'.print_r($spreadsheet->getActiveSheet()->getRowIterator(), true).'</pre>'; die;
-            */
-            if ( $xls = \SimpleXLSX::parse($dtoObject->file) ) {
-                $rows = $xls->rows();
-                $numberRows = count($rows);
-                if ($numberRows <= $this->rowDataIndex || !$this->isCorrectColumns($rows[$this->rowDataIndex - 1])) {
-                    $messages[] = $this->translator->translate('File is not correct format.', ['%file%' => basename($dtoObject->file)]);
-                    return false;
-                }
-
-
-                $lstQuestions = [];
-                $rowIndex = $this->rowDataIndex;
-                $dm = $this->container->get(\Config\AppConstant::DocumentManager);
-                
-                while($rowIndex < $numberRows) {
-                    $row = $rows[$rowIndex];
-                    if (!isset($row[$this->id])) {
-                        $rowIndex += 1;
-                        continue;
-                    }
-
-                    $previousId = $row[$this->id];
-                    
-                    switch($row[$this->type]) {
-                        case $this->readingType:        
-                            $question = $this->buildReadingQuestion($row, $rowIndex + 1);
-                            if ($question )                        
-                            while(true){
-                                $subQuestion = $this->buildSubQuestion($row, $rowIndex + 1);
-                                $question->addSubQuestion($subQuestion);
-
-                                $rowIndex += 1;
-                                $row = $rows[$rowIndex];
-                                if($row[$this->id] !== $previousId) {
-                                    break;
-                                }
-                            }
+                switch($row[$this->type]) {
+                    case $this->readingType:        
+                        $question = $this->buildReadingQuestion($row, $this->rowIndex + 1);
+                        if ($question )                        
+                        while(true){
+                            $subQuestion = $this->buildSubQuestion($row, $this->rowIndex + 1);
+                            $question->addSubQuestion($subQuestion);
                             
-                            $dm->persist($question);
-                            continue;                        
-                        break;
-
-                        case $this->listeningType: 
-                            $question = $this->buildListeningQuestion($row, $rowIndex + 1);                        
-                            while(true){
-                                $subQuestion = $this->buildSubQuestion($row, $rowIndex + 1);
-                                $question->addSubQuestion($subQuestion);
-
-                                $rowIndex += 1;
-                                $row = $rows[$rowIndex];
-                                if($row[$this->id] !== $previousId) {
-                                    break;
-                                }
+                            $row = $this->getNextRow();                            
+                            if(!$row || $row[$this->id] !== $previousId) {
+                                break;
                             }
-                            $dm->persist($question);
-                            continue;   
-                        break;
+                        }
+                        
+                        $dm->persist($question);
+                        continue;                        
+                    break;
 
-                        case $this->writingType: 
-                            $question = $this->buildWritingQuestion($row, $rowIndex + 1);                        
-                            while(true){
-                                //$subQuestion = $this->buildSubQuestion($row, $rowIndex + 1);
-                                //$question->addSubQuestion($subQuestion);
+                    case $this->listeningType: 
+                        $question = $this->buildListeningQuestion($row, $this->rowIndex + 1);                        
+                        while(true){
+                            $subQuestion = $this->buildSubQuestion($row, $this->rowIndex + 1);
+                            $question->addSubQuestion($subQuestion);
 
-                                $rowIndex += 1;
-                                $row = $rows[$rowIndex];
-                                if($row[$this->id] !== $previousId) {
-                                    break;
-                                }
+                            $row = $this->getNextRow();                            
+                            if(!$row || $row[$this->id] !== $previousId) {
+                                break;
                             }
-                            $dm->persist($question);
-                            continue;   
-                        break;
+                        }
+                        $dm->persist($question);
+                        continue;   
+                    break;
 
-                        default:
-                            $rowIndex += 1;
-                        break;
-                    }
-                    
+                    case $this->writingType: 
+                        $question = $this->buildWritingQuestion($row, $this->rowIndex + 1);                        
+                        $row = $this->getNextRow(); 
+                        
+                        $dm->persist($question);
+                        continue;   
+                    break;
+
+                    default:
+                        $row = $this->getNextRow(); 
+                    break;
                 }
-                $dm->flush();
-
-                $messages[] = $this->translator->translate('Questions have been upload successfull.!');
                 
-                return true;
-            } else {
-                $messages[] = \SimpleXLSX::parseError();       
-                return false;
             }
+            $dm->flush();
+
+            $messages[] = $this->translator->translate('Questions have been upload successfull.!');
+            
+            return true;
+            
         } catch(ImportQuestionException $e) {
             $messages[] =  $e->getMessage();       
             return false;                        

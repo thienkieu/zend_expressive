@@ -10,7 +10,7 @@ class WritingQuestionDTO extends QuestionDTO implements \JsonSerializable
     
     public function jsonSerialize() {
         $ret = parent::jsonSerialize(); 
-        $ret->answer = $this->getAnswer();
+        $ret->answer = $this->getAnswer() ? $this->getAnswer() : '';
         
         return $ret;
     }
