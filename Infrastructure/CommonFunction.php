@@ -15,7 +15,12 @@ class CommonFunction
             $protocal = 'https://';
         }
 
-        return $protocal.$_SERVER['SERVER_NAME'];
+        $port = '';
+        if (!in_array($_SERVER['SERVER_PORT'], [80, 443])) {
+            $port = ":$_SERVER[SERVER_PORT]";
+        }
+
+        return $protocal.$_SERVER['SERVER_NAME']. $port;
     }
     
     public static function buildResponseFormat($status, $messages=[], $data = null) {
