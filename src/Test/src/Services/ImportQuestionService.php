@@ -250,7 +250,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                     throw new ImportQuestionException($error);
                 }
 
-                $content = str_replace('['.trim($image,' ').']', '<img src="'.\Config\AppConstant::HOST_REPLACE.'/'.$this->imageFiles.'/'.$image.'"/>', $content);
+                $content = str_replace('['.trim($image,' ').']', '<div class="online-test-question-image"><img src="'.\Config\AppConstant::HOST_REPLACE.'/'.$this->imageFiles.'/'.$image.'"/></div>', $content);
             }
             
         }
