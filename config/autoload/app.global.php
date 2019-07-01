@@ -102,12 +102,25 @@ return [
             'application/x-zip-compressed',
             'application/octet-stream',
         ],
+        'extensions' => [
+            'image' =>
+                [
+                    'png',
+                    'gif',
+                    'jpg',
+                    'jpeg'
+                ],
+            'radio' => [
+                'mp3',
+                'avi'
+            ]
+        ],
         'uploadFolder' => $dir.'/../Uploads',
         'maxUploadSizeAllow' => 10024,
     ],
 
     'CORS' => [
-        'headers.allow' => ['Content-Type']
+        'headers.allow' => ['Content-Type','Accept-Language']
     ],
 
     'CRM' => [

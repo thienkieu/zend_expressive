@@ -34,6 +34,9 @@ return array(
     'cannot found your question' => 'Cannot found your question',
     'Exam not found' => 'Exam not found',
     'Your test have been finished!' => 'Your test have been finished!',
-    'Cannot found your exam with pin, Please check with admin.' => 'Cannot found your exam with pin: %pin%, Please check with admin.'
+    'Cannot found your exam with pin, Please check with admin.' => 'Cannot found your exam with pin: %pin%, Please check with admin.',
+    'the Repeate time must be number' => 'the Repeate time must be number at line %lineNumber%.',
+    'the Repeate time must be larger %larger% and smaller %smaller%' => 'the Repeate time must be larger %larger% and smaller %smaller% at line %lineNumber%.',
+    'File type %fileName% is not support.' => 'File type %fileName% is not support.'
 );
 

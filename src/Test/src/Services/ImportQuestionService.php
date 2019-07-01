@@ -268,18 +268,49 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             throw new ImportQuestionException($error);
         }
 
+        $repeatTime = 0;
+        if (!is_numeric($data[$this->repeatTime])) {
+            $error = $this->translator->translate('the Repeate time must be number', $translatorParams);
+            throw new ImportQuestionException($error);
+        }else {
+            $repeatTime = (int)$data[$this->repeatTime];
+        }
+
+
+        if ($repeatTime < 1) {
+            $translatorParams['%smaller%'] = \Config\AppConstant::MaximunRepeateTime;
+            $translatorParams['%larger%'] = \Config\AppConstant::MinimunRepeateTime;
+            $translatorParams['%lineNumber%'] =$lineNumber;
+
+            $error = $this->translator->translate('the Repeate time must be larger %larger% and smaller %smaller%', $translatorParams);
+            throw new ImportQuestionException($error);
+        }
+
         $realPath = realpath($this->imageFiles);
         if (!file_exists($realPath.'/'.$data[$this->fileName])) {
             $error = $this->translator->translate('File name is not exist.', ['%fileName%'=> $data[$this->fileName]]);
             throw new ImportQuestionException($error);
         }
+        $fileExtension = explode('.', $data[$this->fileName]);
+        $isSupportFileType = $this->isSupportMediaFile($fileExtension[count($fileExtension) -1], \Config\AppConstant::RadioExtensions);
         
+        if (!$isSupportFileType) {
+            $error = $this->translator->translate('File type %fileName% is not support.', ['%fileName%'=> $fileExtension[count($fileExtension) -1]]);
+            throw new ImportQuestionException($error);
+        }
         $listeningQuestion = new \Test\Documents\Question\ListeningQuestionDocument();
         $listeningQuestion->setRepeat($data[$this->repeatTime]);
         $listeningQuestion->setPath('/'.$this->imageFiles.'/'.$data[$this->fileName]);
 
         $this->buidGeneralQuestion($data, $listeningQuestion, $lineNumber);
         return $listeningQuestion;
+    }
+
+    protected function isSupportMediaFile($fileType, $type){
+        $config = $this->container->get(\Config\AppConstant::AppConfig);
+        $uploadConfig = $config[\Config\AppConstant::UploadConfigName];
+        $extensions = $uploadConfig[\Config\AppConstant::UploadExtensions];
+        return \in_array($fileType, $extensions[$type]);
     }
 
     protected function buildWritingQuestion($data, $lineNumber){

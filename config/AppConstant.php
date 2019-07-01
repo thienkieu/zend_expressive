@@ -50,7 +50,12 @@ abstract class AppConstant
     const UploadConfigFileTypes = 'fileTypes';
     const UploadFolder = 'uploadFolder';
     const UploadSizeAllow = 'maxUploadSizeAllow';
+    const UploadExtensions = 'extensions';
 
+    const ImageExtension = 'image';
+    const RadioExtensions = 'radio';
+
+    
     /**
      * Test Service
      */
@@ -84,4 +89,6 @@ abstract class AppConstant
 
     const HOST_REPLACE = '%HOST%';
 
+    const MaximunRepeateTime = 3;
+    const MinimunRepeateTime = 0;
 }
