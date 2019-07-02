@@ -185,12 +185,13 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     }
 
     protected function validSource($source, &$question, $lineNumber) {
-        $source = trim($source, ' ');
-        if (empty($source)) {
+        
+        if (!$source || empty($source) || !trim($source, ' ')) {
             $error = $this->translator->translate('Source cannot empty.', ['%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
 
+        $source = trim($source, ' ');
         $isExistSource = $this->sourceService->isExistSourceName($source, $messages);
         if (!$isExistSource) {
             $error = $this->translator->translate('Source is not exist.', ['%sourceName%'=> $source]);
@@ -199,24 +200,24 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     }
 
     protected function validType($type, $subType, &$question, $lineNumber) {
-        $type = trim($type, ' ');
-        if (empty($type)) {
+        if (!$type || empty($type) || !trim($type, ' ')) {
             $error = $this->translator->translate('Type cannot empty.', ['%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
-
+        
+        $type = trim($type, ' ');
         $isExistType = $this->typeService->isExistTypeName($type);
         if (!$isExistType) {
             $error = $this->translator->translate('Type is not exist.', ['%typeName%'=> $type, '%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
 
-        $subType = trim($subType, ' ');
-        if (empty($subType)) {
+        if (!$subType || empty($subType) || !trim($subType, ' ')) {
             $error = $this->translator->translate('SubType cannot empty.', ['%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
-
+        
+        $subType = trim($subType, ' ');
         $isExistSubType = $this->typeService->isExistSubTypeName($type, $subType);
         if (empty($isExistSubType)) {
             $error = $this->translator->translate('SubType is not exist.', ['%subType%'=> $subType, '%lineNumber%'=> $lineNumber]);
