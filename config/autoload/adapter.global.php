@@ -81,6 +81,7 @@ return [
     'validatorRequestAdapters' => [
         \Test\Validator\CreateReadingSectionValidatorAdapter::class,        
         \Test\Validator\CreateTestWithSectionValidatorAdapter::class,
+        \Test\Validator\CreateExamWithSectionValidatorAdapter::class,
         \Test\Validator\EnterPinValidatorAdapter::class,
     ],
 ];

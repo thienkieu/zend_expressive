@@ -11,6 +11,7 @@ use Zend\Validator\ValidatorChain;
 use Zend\Diactoros\Response\JsonResponse;
 use Infrastructure\Validator\ValidatorAdapterInterface;
 use Infrastructure\Validator\RequireField;
+use Infrastructure\Validator\ObjectField;
 
 class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
 {
@@ -63,28 +64,35 @@ class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
     public function valid(ServerRequestInterface $request, ResponseInterface & $messageResponse): bool
     {
         $validData = $request->getParsedBody();
-        $messageFormat = 'Field \'%field%\' can not empty';
-        $messageKey = '%field%';
-
-        $testValidator = new RequireField(
+        
+        $validator = new StringLength(['min' => 8, 'max' => 12]);
+        $sectionTestValidator = new SectionTestValidator(
+            $this->container->get(\Config\AppConstant::Translator)
+        );
+        $objectFieldValidator = new ObjectField(
             $this->container->get(\Config\AppConstant::Translator),
-            $messageKey,
-            $messageFormat,
+            false,
             [
-                'title' => 'title', 
-                'sections' => 'sections',
+                'title' => [
+                    new \Zend\Validator\NotEmpty(),
+                ],
+                'test.sections.name1' => [
+                    new \Zend\Validator\NotEmpty(),
+                ]
             ]
         );
 
-        $sectionTestValidator = new SectionTestValidator(
+        $testValidator = new RequireField(
             $this->container->get(\Config\AppConstant::Translator),
-            $messageKey,
-            $messageFormat
+            [
+               // 'sections=>sections' => 'test=>sections',
+            ]
         );
 
+
         $validatorChain = new ValidatorChain();
+        $validatorChain->attach($objectFieldValidator);
         $validatorChain->attach($testValidator);
-        $validatorChain->attach($sectionTestValidator);
         $validatorChain->isValid($validData);        
 
         $validators = [];
@@ -93,9 +101,7 @@ class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
         $randomQuestions = $this->getRandomQuestion($validData);
         foreach ($randomQuestions as $value) {
             $v = new RandomQuestionValidator(
-                $this->container->get(\Config\AppConstant::Translator),
-                $messageKey,
-                $messageFormat
+                $this->container->get(\Config\AppConstant::Translator)
             );
 
             $v->isValid($value);

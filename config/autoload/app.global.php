@@ -62,8 +62,7 @@ return [
             ]
         ] 
     ],
-
-    
+ 
     'authentication' => [
         'private_key'    => __DIR__ . '/../../data/oauth/private.key',
         'public_key'     => __DIR__ . '/../../data/oauth/public.key',

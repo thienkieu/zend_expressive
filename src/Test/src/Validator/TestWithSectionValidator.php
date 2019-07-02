@@ -25,8 +25,6 @@ class TestWithSectionValidator extends AbstractValidator {
             'questions'=>'questions',
         ]);
 
-        $requireField->setMessageFormat('Field \'%field%\' can not empty');
-        $requireField->setMessageKey('%field%');
         $requireField->setTranslateObject($this->container->get(\Config\AppConstant::Translator));
         
     }

@@ -11,11 +11,5 @@ return [
         'exam.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,
         'exam.updateQuestionMark' => \Test\DTOs\ExamResult\UpdateQuestionMarkDTO::class,
         'question.type.create'  => \Test\DTOs\Question\TypeDTO::class,
-
-    ],
-    'validator' => [
-        'test.create' => [  
-            \Test\Validator\CreateTestWithSectionValidatorAdapter::class,         
-        ]
     ]
 ];

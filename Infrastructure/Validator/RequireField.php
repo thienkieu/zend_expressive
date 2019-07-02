@@ -9,20 +9,17 @@ use Zend\Validator\AbstractValidator;
 class RequireField extends AbstractValidator {
     protected $options = [];
 
-    protected $messageFormat;
+    protected $emptyMessage = 'Field \'%field%\' can not empty';
     protected $messageKey;
     protected $translateObject;
 
     /**
      * Class constructor.
      */
-    public function __construct($translate, $fieldKey, $messageFormat, $options = [])
+    public function __construct($translate, $options = [])
     {   
-        $this->messageFormat = $messageFormat;
-        $this->messageKey = $fieldKey;
-        $this->translateObject = $translate;
-
         parent::__construct($options);
+        $this->translateObject = $translate;  
     }
 
     /**
@@ -45,7 +42,7 @@ class RequireField extends AbstractValidator {
     }
 
     protected function error($key, $value = null) {
-        $message = $this->translateObject->translate($this->messageFormat, [$this->messageKey => $key]) ;;
+        $message = $this->translateObject->translate($this->emptyMessage, ['%field%' => $key]) ;;
         $this->abstractOptions['messages'][$key] = $message;
     }
 

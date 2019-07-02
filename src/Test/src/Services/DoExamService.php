@@ -48,7 +48,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
     public function doExam($dto, & $results, & $messages) {
         try {
             $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
-            $document = $testDocuments = $examRepository->getExamInfo($dto->pin);
+            $document = $examRepository->getExamInfo($dto->pin);
             if (!$document) {
                 $messages[] = $this->translator->translate('There isnot exist candidate with pin', ['%pin%' => $dto->pin]);
                 return false;
@@ -63,7 +63,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
 
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-            $existingExamResult = $testDocuments = $examResultRepository->getExamResult($document->getId(), $candidate->getId(), '');
+            $existingExamResult = $examResultRepository->getExamResult($document->getId(), $candidate->getId(), '');
             if (!$existingExamResult) {
                 $messages[] = $this->translator->translate('Cannot found your exam with pin, Please check with admin.', ['%pin%' => $dto->pin]);
                 return false;

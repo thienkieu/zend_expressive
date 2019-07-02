@@ -207,7 +207,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
         $isExistType = $this->typeService->isExistTypeName($type);
         if (!$isExistType) {
-            $error = $this->translator->translate('Type is not exist.', ['%typeName%'=> $type]);
+            $error = $this->translator->translate('Type is not exist.', ['%typeName%'=> $type, '%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
 
@@ -219,7 +219,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
         $isExistSubType = $this->typeService->isExistSubTypeName($type, $subType);
         if (empty($isExistSubType)) {
-            $error = $this->translator->translate('SubType is not exist.', ['%subType%'=> $subType]);
+            $error = $this->translator->translate('SubType is not exist.', ['%subType%'=> $subType, '%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
 
@@ -247,6 +247,14 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
                 if (!file_exists($realPath.'/'.$image)) {
                     $error = $this->translator->translate('File name is not exist.', ['%fileName%'=> $image]);
+                    throw new ImportQuestionException($error);
+                }
+
+                $fileExtension = explode('.', $image);
+                $isSupportFileType = $this->isSupportMediaFile($fileExtension[count($fileExtension) -1], \Config\AppConstant::ImageExtension);
+                
+                if (!$isSupportFileType) {
+                    $error = $this->translator->translate('File type %fileName% is not support.', ['%fileName%'=> $fileExtension[count($fileExtension) -1]]);
                     throw new ImportQuestionException($error);
                 }
 

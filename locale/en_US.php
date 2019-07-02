@@ -36,9 +36,9 @@ return array(
     'Your test have been finished!' => 'Your test have been finished!',
     'Cannot found your exam with pin, Please check with admin.' => 'Cannot found your exam with pin: %pin%, Please check with admin.',
     'Type cannot empty.' => 'Type cannot empty at line %lineNumber%.', 
-    'Type is not exist.' => '%typeName% is not exist, Please check spelling or creating type first!',
+    'Type is not exist.' => '%typeName% is not exist at line %lineNumber%, Please check spelling or creating type first!',
     'SubType cannot empty.' => 'Sub Type cannot empty at line %lineNumber%.', 
-    'SubType is not exist.' => '%subType% is not exist, Please check spelling or creating sub type first!',
+    'SubType is not exist.' => '%subType% is not exist at line %lineNumber%, Please check spelling or creating sub type first!',
     'the Repeate time must be number' => 'the Repeate time must be number at line %lineNumber%.',
     'the Repeate time must be larger %larger% and smaller %smaller%' => 'the Repeate time must be larger %larger% and smaller %smaller% at line %lineNumber%.',
     'File type %fileName% is not support.' => 'File type %fileName% is not support.'
