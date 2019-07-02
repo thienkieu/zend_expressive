@@ -84,8 +84,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             }
             
             $this->dataParser->parseData($dtoObject, ['rowIndexStart' => $this->rowDataIndex]);
-            
-    
+
             $lstQuestions = [];
             $this->rowIndex = $this->rowDataIndex;
             $dm = $this->container->get(\Config\AppConstant::DocumentManager);                
@@ -135,6 +134,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                     break;
 
                     default:
+                        $error = $this->translator->translate('Type is not valid at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
+                        throw new ImportQuestionException($error);
                         $row = $this->getNextRow(); 
                     break;
                 }
@@ -176,7 +177,6 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     protected function buidGeneralQuestion($data, &$question, $lineNumber) {
         $this->validSource($data[$this->source], $question, $lineNumber);
         $this->validType($data[$this->type], $data[$this->subType], $question, $lineNumber);
-
         $question->setContent($data[$this->content]);
         $question->setType($data[$this->type]);
         $question->setSource($data[$this->source]);
@@ -212,7 +212,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         }
 
         $subType = trim($subType, ' ');
-        if (empty($type)) {
+        if (empty($subType)) {
             $error = $this->translator->translate('SubType cannot empty.', ['%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }

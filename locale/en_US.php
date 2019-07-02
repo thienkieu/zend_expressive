@@ -41,6 +41,6 @@ return array(
     'SubType is not exist.' => '%subType% is not exist at line %lineNumber%, Please check spelling or creating sub type first!',
     'the Repeate time must be number' => 'the Repeate time must be number at line %lineNumber%.',
     'the Repeate time must be larger %larger% and smaller %smaller%' => 'the Repeate time must be larger %larger% and smaller %smaller% at line %lineNumber%.',
-    'File type %fileName% is not support.' => 'File type %fileName% is not support.'
-
+    'File type %fileName% is not support.' => 'File type %fileName% is not support.',
+    'Type is not valid at line %lineNumber%.' => 'Type is not valid at line %lineNumber%.'
 );
