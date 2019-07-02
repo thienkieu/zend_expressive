@@ -76,7 +76,7 @@ class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
                 'title' => [
                     new \Zend\Validator\NotEmpty(),
                 ],
-                'test.sections.name1' => [
+                'test.sections.name' => [
                     new \Zend\Validator\NotEmpty(),
                 ]
             ]
