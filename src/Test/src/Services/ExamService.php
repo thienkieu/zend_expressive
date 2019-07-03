@@ -88,9 +88,9 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             $sources = [];
             foreach ($questions as $question) {
                 
-                $q = $questionService->generateQuestion($question, $sources);                    
+                $q = $questionService->generateQuestion($question, $sources);
                 $sources[] = $q->getSource();
-
+                
                 $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
                 $testQuestionDTO->setId($q->getId());
                 $testQuestionDTO->setGenerateFrom(\Config\AppConstant::Pickup);

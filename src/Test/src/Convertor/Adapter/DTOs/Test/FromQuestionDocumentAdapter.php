@@ -31,6 +31,7 @@ class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
         $dto = new \Test\DTOs\Test\QuestionDTO();
         $dto->setId($document->getId());
         $dto->setGenerateFrom($document->getGenerateFrom());
+        
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
         $questionInfoDocument = $document->getQuestionInfo();        
