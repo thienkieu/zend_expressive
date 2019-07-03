@@ -7,4 +7,5 @@ abstract class FormatType
     const Underline = 'underline';
     const Italic = 'italic';
     const Strike = 'strike';
+    const LineBreak = 'linkBreak';
 }

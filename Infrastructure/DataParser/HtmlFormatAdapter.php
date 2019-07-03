@@ -19,6 +19,9 @@ class HtmlFormatAdapter implements FormatAdapterInterface
                 
             case FormatType::Strike :
                 return $this->buildStrikeFormat($data, $options);
+            
+            case FormatType::LineBreak :
+                return $this->buildLinkBreakFormat($data, $options);
             default:
                 return $data;
         }
@@ -38,5 +41,9 @@ class HtmlFormatAdapter implements FormatAdapterInterface
 
     protected function buildStrikeFormat($data, $options = []) {
         return sprintf('<span style="text-decoration:line-through;">%s</span>', $data);
+    }
+
+    protected function buildLinkBreakFormat($data, $options = []) {
+        return str_replace(array("\n", "\r"), '<br>', $data);
     }
 }
