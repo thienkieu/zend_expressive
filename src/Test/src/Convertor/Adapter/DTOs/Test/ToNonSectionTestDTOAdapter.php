@@ -13,7 +13,7 @@ use Config\AppConstant;
 class ToNonSectionTestDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($options === \Test\DTOs\Test\NonSectionTestDTO::class) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === \Test\DTOs\Test\NonSectionTestDTO::class) {
             return true;
         }
 

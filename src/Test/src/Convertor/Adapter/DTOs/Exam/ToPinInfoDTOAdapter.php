@@ -13,7 +13,7 @@ use Config\AppConstant;
 class ToPinInfoDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {         
-        if ($options === DTOName::PinInfoDTO) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::PinInfoDTO) {
             return true;
         }
         

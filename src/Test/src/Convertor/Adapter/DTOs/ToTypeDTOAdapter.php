@@ -10,7 +10,7 @@ use Test\Enum\DTOName;
 class ToTypeDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($options === DTOName::TypeDTO) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::TypeDTO) {
             return true;
         }
 

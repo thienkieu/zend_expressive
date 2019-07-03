@@ -10,7 +10,7 @@ use Test\Enum\DTOName;
 class ToUpdateRepeatTimesDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($options === DTOName::UserAnswerDTO && isset($dtoObject->repeatTimesRemain)) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::UserAnswerDTO && isset($dtoObject->repeatTimesRemain)) {
             return true;
         }
 

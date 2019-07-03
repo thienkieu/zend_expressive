@@ -13,7 +13,7 @@ use Config\AppConstant;
 class ToSectionDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($options === DTOName::Section) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::Section) {
             return true;
         }
 
@@ -32,7 +32,7 @@ class ToSectionDTOAdapter extends ToDTOAdapter {
         
         $questionDTOs = [];
         foreach ($jsonObject->questions as $jsonQuestion) {
-            $question = $this->convertor->convertToDTO($jsonQuestion, \Test\DTOs\Test\QuestionDTO::class);
+            $question = $this->convertor->convertToDTO($jsonQuestion, [\Config\AppConstant::DTOKey => \Test\DTOs\Test\QuestionDTO::class]);
             $questionDTOs[] = $question;
         }
 

@@ -15,7 +15,7 @@ class ToExamHasSectionTestDTOAdapter extends ToDTOAdapter {
     {   
         if (isset($dtoObject->test)) {
             $sections = $dtoObject->test->sections;        
-            if ($options === DTOName::Exam && !empty($sections)) {
+            if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::Exam && !empty($sections)) {
                 return true;
             }
         }
@@ -43,14 +43,14 @@ class ToExamHasSectionTestDTOAdapter extends ToDTOAdapter {
         
         $candidateDTOs = [];
         foreach ($jsonObject->candidates as $jsonCandiate) {
-            $candidate = $this->convertor->convertToDTO($jsonCandiate, \Test\DTOs\Exam\CandidateDTO::class);
+            $candidate = $this->convertor->convertToDTO($jsonCandiate, [\Config\AppConstant::DTOKey => \Test\DTOs\Exam\CandidateDTO::class]);
             $candidateDTOs[] = $candidate;
         }
 
         $dtoObject->setCandidates($candidateDTOs);
         
         $jsonTest = $jsonObject->test;
-        $test = $this->convertor->convertToDTO($jsonTest, \Test\DTOs\Test\BaseTestDTO::class);
+        $test = $this->convertor->convertToDTO($jsonTest, [\Config\AppConstant::DTOKey => \Test\DTOs\Test\BaseTestDTO::class]);
         $dtoObject->setTest($test);
 
         return $dtoObject;            

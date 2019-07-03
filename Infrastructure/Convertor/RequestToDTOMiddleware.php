@@ -60,8 +60,7 @@ class RequestToDTOMiddleware implements MiddlewareInterface
                         return \Infrastructure\CommonFunction::buildResponseFormat(false, $messages);
                     }
                      
-                    $dto = $convertorToDTO->convertToDTO($jsonData, $dtoName);
-                    
+                    $dto = $convertorToDTO->convertToDTO($jsonData, [\Config\AppConstant::DTOKey => $dtoName]);
                     return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $dto));
                 } else {
                     $body =  $request->getParsedBody();

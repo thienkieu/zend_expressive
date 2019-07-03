@@ -10,7 +10,7 @@ use Test\Enum\DTOName;
 class UpdateQuestionMarkDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($options === DTOName::UpdateQuestionMark) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::UpdateQuestionMark) {
             return true;
         }
 

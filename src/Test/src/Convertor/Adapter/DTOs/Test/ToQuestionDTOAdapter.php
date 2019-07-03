@@ -13,7 +13,7 @@ use Config\AppConstant;
 class ToQuestionDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if ($options ===  \Test\DTOs\Test\QuestionDTO::class) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] ===  \Test\DTOs\Test\QuestionDTO::class) {
             return true;
         }
 
@@ -46,7 +46,7 @@ class ToQuestionDTOAdapter extends ToDTOAdapter {
     }
 
     protected function getPickupQuestion($jsonObject) {
-        return $questionInfo = $question = $this->convertor->convertToDTO($jsonObject, \Test\DTOs\Question\QuestionDTO::class);
+        return $questionInfo = $question = $this->convertor->convertToDTO($jsonObject, [\Config\AppConstant::DTOKey => \Test\DTOs\Question\QuestionDTO::class]);
     }
 
     protected function getRandomQuestion($jsonObject) {

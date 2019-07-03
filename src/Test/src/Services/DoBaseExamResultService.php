@@ -143,6 +143,11 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         try {
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
             $document = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId());
+            if (!$document) {
+                $messages[] = $this->translator->translate('Exam not found');
+                return false;
+            }
+            
             $remaintTime = $document->getRemainTime();
             if ($remaintTime <= 0) {
                 $messages[] = $this->translator->translate('Your test have been finished!');

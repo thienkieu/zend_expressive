@@ -13,7 +13,7 @@ use Config\AppConstant;
 class ToCandidateDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {         
-        if ($options === DTOName::Candidate) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::Candidate) {
             return true;
         }
         
