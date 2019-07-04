@@ -91,4 +91,6 @@ abstract class AppConstant
 
     const MaximunRepeateTime = 3;
     const MinimunRepeateTime = 0;
+
+    const AuthenticationExcludeUrl = 'authenticationExcludeUrl';
 }

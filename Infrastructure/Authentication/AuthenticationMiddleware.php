@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Zend\Expressive\Authentication;
+namespace Infrastructure\Authentication;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,6 +15,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
 use Zend\Expressive\Authentication\UserInterface;
+use Zend\Expressive\Router\RouteResult;
 
 class AuthenticationMiddleware extends \Zend\Expressive\Authentication\AuthenticationMiddleware
 {
@@ -23,9 +24,12 @@ class AuthenticationMiddleware extends \Zend\Expressive\Authentication\Authentic
      */
     protected $auth;
 
-    public function __construct(AuthenticationInterface $auth)
+    protected $container;
+
+    public function __construct(AuthenticationInterface $auth, $container)
     {
         $this->auth = $auth;
+        $this->container = $container;
     }
 
     /**
@@ -33,11 +37,18 @@ class AuthenticationMiddleware extends \Zend\Expressive\Authentication\Authentic
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
-        
-        $user = $this->auth->authenticate($request);
-        if (null !== $user) {
-            return $handler->handle($request->withAttribute(UserInterface::class, $user));
+        $config = $this->container->get(\Config\AppConstant::AppConfig);
+        $authenticationExcludeUrl = $config[\Config\AppConstant::AuthenticationExcludeUrl];
+        $rotuer = $request->getAttribute(RouteResult::class);
+        $routerName = $rotuer->getMatchedRouteName(); 
+        if ($routerName && !in_array($routerName, $authenticationExcludeUrl)) { 
+            $user = $this->auth->authenticate($request);
+            if (null !== $user) {
+                return $handler->handle($request->withAttribute(UserInterface::class, $user));
+            }
+            return $this->auth->unauthorizedResponse($request);
         }
-        return $this->auth->unauthorizedResponse($request);
+
+        return $handler->handle($request);
     }
 }

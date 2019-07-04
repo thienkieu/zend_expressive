@@ -20,6 +20,7 @@ use Tuupola\Middleware\CorsMiddleware;
 use Infrastructure\i18n\LocaleMiddleware;
 use Infrastructure\Convertor\RequestToDTOMiddleware;
 use Infrastructure\Middleware\UploadFileMiddleware;
+use Infrastructure\Authentication\AuthenticationMiddleware;
 
 /**
  * Setup middleware pipeline:
@@ -60,6 +61,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // after the Implicit*Middleware.
     //$app->pipe(ImplicitHeadMiddleware::class);
     //$app->pipe(ImplicitOptionsMiddleware::class);
+    $app->pipe(AuthenticationMiddleware::class);
     $app->pipe(LocaleMiddleware::class);
     $app->pipe(CorsMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);    

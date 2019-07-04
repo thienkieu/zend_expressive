@@ -124,6 +124,16 @@ return [
 
     'CRM' => [
         'candidates' => 'http://192.168.190.92:8089/Portal/ExcuteByCommand/GetCandiates'
-    ]
+    ],
     
+    'authenticationExcludeUrl' => [
+        'exam.doExam',
+        'api.publickey',
+        'home',
+        'api.token',
+        'exam.enterPin',
+        'exam.updateAnswer',
+        'exam.synchronyTime',
+        'exam.finish'
+    ]
 ];
