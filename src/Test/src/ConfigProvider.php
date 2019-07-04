@@ -56,6 +56,8 @@ class ConfigProvider
                 Handlers\GetQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ViewExamResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\CreateTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\ViewSampleExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,

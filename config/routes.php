@@ -57,10 +57,12 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     //Test
     $app->post('/coordinator/test/create', Test\Handlers\CreateTestHandler::class, 'test.create');
     $app->get('/coordinator/test/tests', Test\Handlers\GetTestHandler::class, 'test.tests');
+    $app->post('/coordinator/test/viewSampleExam', Test\Handlers\ViewSampleExamHandler::class, 'test.viewSampleExam');
 
     //Exam
     $app->get('/coordinator/exam/candidates', Test\Handlers\GetCandidateHandler::class, 'exam.candidates');
     $app->post('/coordinator/exam/create', Test\Handlers\CreateExamHandler::class, 'exam.create');
+    $app->post('/coordinator/exam/update', Test\Handlers\UpdateExamHandler::class, 'exam.update');
     $app->post('/coordinator/exam/enterPin', Test\Handlers\EnterPinHandler::class, 'exam.enterPin');
     $app->post('/coordinator/exam/doExam', Test\Handlers\DoExamHandler::class, 'exam.doExam');
     $app->post('/coordinator/pin/refresh', Test\Handlers\RefreshPinHandler::class, 'pin.refresh');

@@ -12,7 +12,7 @@ use Zend\Diactoros\Response\JsonResponse;
 
 use Test\Services\ExamServiceInterface;
 
-class CreateExamHandler implements RequestHandlerInterface
+class UpdateExamHandler implements RequestHandlerInterface
 {
     /** @var Psr\Container\ContainerInterface */
     private $container;
@@ -24,10 +24,10 @@ class CreateExamHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        $testService = $this->container->get(ExamServiceInterface::class);
-        $ok = $testService->createOrUpdateExam($dto, $resultDTO, $messages);
+        $examService = $this->container->get(ExamServiceInterface::class);
+        $ok = $examService->createOrUpdateExam($dto, $resultDTO, $messages);
         return new JsonResponse([
-            'welcome' => 'Create Exam Handler.',
+            'welcome' => 'Update Exam Handler.',
             'success' => $ok,
             'messages' => $messages,
             'data' => $resultDTO

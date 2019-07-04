@@ -7,7 +7,7 @@ use League\OAuth2\Server\Grant;
 $dir = realpath('src');
 
 return [
-    'environment' => 'dev',
+    'environment' => '',
     'sqldb' => [
         'db' => [
             'driver'   => 'pdo_mysql',
@@ -119,7 +119,7 @@ return [
     ],
 
     'CORS' => [
-        'headers.allow' => ['Content-Type','Accept-Language']
+        'headers.allow' => ['Content-Type','Accept-Language','Authorization']
     ],
 
     'CRM' => [

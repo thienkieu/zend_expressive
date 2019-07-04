@@ -46,7 +46,6 @@ class MultipartJsonStrategy implements StrategyInterface
                 ->withParsedBody(new \stdClass());
         }
 
-
         $parsedBody = json_decode((string)$rawBody[\Config\AppConstant::RequestDataFieldName], false);
 
         if (json_last_error() !== JSON_ERROR_NONE) {

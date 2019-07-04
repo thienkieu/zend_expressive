@@ -37,11 +37,17 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         }
     }
 
-    public function createExam(\Test\DTOs\Exam\ExamDTO $examDTO, & $dto, & $messages) {
+    public function createOrUpdateExam(\Test\DTOs\Exam\ExamDTO $examDTO, & $dto, & $messages) {
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
         
         try {
+            $existExamId = $examDTO->getId();
+            if (!empty($existExamId)) {
+                $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamHasSectionTestDocument::class, $existExamId);
+                $this->dm->remove($existExamObj);
+            }
+            
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Exam\ExamHasSectionTestDocument::class]);
             $this->assignPin($document);
@@ -58,6 +64,33 @@ class ExamService implements ExamServiceInterface, HandlerInterface
 
             $this->dm->flush();
             
+            $messages[] = $translator->translate('Your exam have been created successfull!');
+            return true;
+        } catch(\Test\Exceptions\GenerateQuestionException $e) {
+            $messages[] =  $e->getMessage(); 
+            $dto = null;      
+            return false; 
+        } catch(\Exception $e){
+            $messages[] = $translator->translate('There is error with create section, Please check admin site');
+            $dto = null;
+            $logger = $this->container->get(Logger::class);
+            $logger->info($e);
+            
+            return false;
+        }        
+    }
+
+    public function createExamSample(\Test\DTOs\Test\TestWithSectionDTO $testDTO, & $dto, & $messages) {
+        $messages = [];
+        $translator = $this->container->get(\Config\AppConstant::Translator);
+        
+        try {
+            $examDTO = new \Test\DTOs\Exam\ExamDTO();
+            $examDTO->setTest($testDTO);
+            $examResultDocument = $this->generateExamResult($examDTO, null);
+            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+            $dto = $documentToDTOConvertor->convertToDTO($examResultDocument);
+
             $messages[] = $translator->translate('Your exam have been created successfull!');
             return true;
         } catch(\Test\Exceptions\GenerateQuestionException $e) {

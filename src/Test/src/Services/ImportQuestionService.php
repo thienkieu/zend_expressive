@@ -279,14 +279,14 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
         $repeatTime = 0;
         if (!is_numeric($data[$this->repeatTime])) {
-            $error = $this->translator->translate('the Repeate time must be number', $translatorParams);
+            $error = $this->translator->translate('the Repeate time must be number', ['%lineNumber%' => $lineNumber]);
             throw new ImportQuestionException($error);
         }else {
             $repeatTime = (int)$data[$this->repeatTime];
         }
 
 
-        if ($repeatTime < 1) {
+        if ($repeatTime <= \Config\AppConstant::MinimunRepeateTime || $repeatTime >= \Config\AppConstant::MaximunRepeateTime) {
             $translatorParams['%smaller%'] = \Config\AppConstant::MaximunRepeateTime;
             $translatorParams['%larger%'] = \Config\AppConstant::MinimunRepeateTime;
             $translatorParams['%lineNumber%'] =$lineNumber;
