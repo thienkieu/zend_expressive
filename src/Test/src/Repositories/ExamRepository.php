@@ -121,7 +121,7 @@ class ExamRepository extends DocumentRepository
     }
 
     public function getExamWithPagination($filterCriterial, $itemPerPage, $pageNumber) {
-        $filterQuery = $this->getFilterQuery($filterData);
+        $filterQuery = $this->getFilterQuery($filterCriterial);
         $totalDocument = $filterQuery->getQuery()->execute()->count();        
         $data = $filterQuery->limit($itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1))
@@ -135,15 +135,10 @@ class ExamRepository extends DocumentRepository
 
     protected function getFilterQuery($filterData) {
         $queryBuilder = $this->createQueryBuilder();
-        $queryBuilder
-            ->field('title')->equals(new \MongoRegex('/.*'.$filterData->getTitle().'*/i'))
-            ->field('candidates.objectId')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'))
-            ->field('candidates.email')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'))
-            ->field('candidates.name')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'));
-    
+       
 
         $fromDate = $filterData->getFromDate();
-        $toDate = $filterCriterial->getToDate();
+        $toDate = $filterData->getToDate();
 
         if (!empty($fromDate) && !empty($toDate)) {
             $queryBuilder

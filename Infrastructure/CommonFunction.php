@@ -56,7 +56,10 @@ class CommonFunction
             return isset($data[$fieldName]) ? $data[$fieldName] : $defaultValue;
         }
 
-        if (property_exists($data, $fieldName)) return $data->{$fieldName};
+        if (property_exists($data, $fieldName)) {
+            $functionName = 'get'.ucfirst($fieldName);
+            return $data->$functionName();
+        } 
 
         return $defaultValue;
     }

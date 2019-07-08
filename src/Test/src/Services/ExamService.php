@@ -126,10 +126,8 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $translator = $this->container->get(\Config\AppConstant::Translator);
         
         try {
-            $examDTO = new \Test\DTOs\Exam\ExamDTO();
-            $examDTO->setTest($testDTO);
-            $$dto = $this->generateExamTest($examDTO, $messages);
-            if (!$$dto) {
+            $dto = $this->generateExamTest($testDTO, $messages);
+            if (!$dto) {
                 return false;
             }
             
@@ -216,9 +214,11 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
         $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
-        $examDocuments = $examRepository->getExamWithPagination($filterCriterial, $pageNumber = 1, $itemPerPage = 25);
+        $results = $examRepository->getExamWithPagination($filterCriterial, $itemPerPage = 25, $pageNumber = 1);
         
         $exams = [];
+        $examDocuments = $results['exams'];
+        
         foreach ($examDocuments as $exam) {
             $dto = $documentToDTOConvertor->convertToDTO($exam);
             $exams[] = $dto;
@@ -226,7 +226,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
 
         $ret = new \stdClass();
         $ret->exams = $exams;
-        $totalItems = count($exams);
+        $totalItems = $results['totalDocument'];
         $ret->itemPerPage = $itemPerPage;
         $ret->pageNumber = $pageNumber;
         $ret->totalPage = $totalItems % $itemPerPage > 0 ? (int)($totalItems / $itemPerPage) + 1 : $totalItems / $itemPerPage;

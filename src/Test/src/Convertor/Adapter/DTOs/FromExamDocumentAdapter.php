@@ -30,6 +30,7 @@ class FromExamDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     }
 
     public function convert($document, $options = []) {
+        
         $dto = new \Test\DTOs\Exam\ExamHasSectionTestDTO();
         $dto->setTitle($document->getTitle());
         $dto->setId($document->getId());

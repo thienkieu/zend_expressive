@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="exam", repositoryClass="\Test\Repositories\ExamWithSectionRepository")
+ * @ODM\Document(collection="exam", repositoryClass="\Test\Repositories\ExamRepository")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  */
 

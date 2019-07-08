@@ -29,7 +29,7 @@ class ViewListExamHandler implements RequestHandlerInterface
         $itemPerPage = \Infrastructure\CommonFunction::getValue($dto, 'itemPerPage', 15);
 
         $examService = $this->container->get(ExamServiceInterface::class);
-        $ret = $examService = $examService->getExams($filterCriterial, $outDTO, $messages, $pageNumber, $itemPerPage);
+        $ret = $examService = $examService->getExams($dto, $outDTO, $messages, $pageNumber, $itemPerPage);
 
         return \Infrastructure\CommonFunction::buildResponseFormat($ret, $messages, $outDTO);
 
