@@ -30,11 +30,10 @@ class ToExamDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     
     public function convert($dto, $options = []) 
     {  
-        $document = new \Test\Documents\Exam\ExamHasSectionTestDocument();
+        $document = new \Test\Documents\Exam\ExamDocument();
         $document->setTitle($dto->getTitle());
         $document->setTime($dto->getTime());
         $document->setStartDate($dto->getStartDate());
-        $document->setReferId($dto->getTest()->getId());
 
         $candidates = $dto->getCandidates();
         foreach($candidates as $candidate) {

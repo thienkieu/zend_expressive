@@ -2,12 +2,11 @@
 namespace Test\Documents\Exam;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="exam")
+ * @ODM\Document(collection="exam", repositoryClass="\Test\Repositories\ExamWithSectionRepository")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
- * @ODM\DiscriminatorField("type")
- * @ODM\DiscriminatorMap({"testWithSection"="ExamHasSectionTestDocument", "normal"="ExamNormalDocument"})
  */
 
 class ExamDocument
@@ -15,21 +14,25 @@ class ExamDocument
   /** @ODM\Id */
   protected $id;
 
-  /** @ODM\Field(type="string") */
-  protected $referId;
-
   /** @ODM\Field(type="int") */
   protected $time;
 
   /** @ODM\Field(type="string") */
   protected $title;
 
-  /** @ODM\Field(type="timestamp") */
+  /** @ODM\Field(type="date") */
   protected $startDate;
   
   /** @ODM\EmbedMany(targetDocument="CandidateDocument") */
   private $candidates;
   
+  /** @ODM\EmbedOne(discriminatorMap={
+   *     "withSection"="\Test\Documents\ExamResult\TestWithSectionDocument",
+   *     "normal"="\Test\Documents\ExamResult\BaseTestDocument",
+   * }) 
+   */
+  private $test;
+
   public function __construct()
   {
     $this->candidates = new ArrayCollection();
@@ -148,21 +151,21 @@ class ExamDocument
   }
 
   /**
-   * Get the value of referId
+   * Get "withSection"="\Test\Documents\ExamResult\TestWithSectionDocument",
    */ 
-  public function getReferId()
+  public function getTest()
   {
-    return $this->referId;
+    return $this->test;
   }
 
   /**
-   * Set the value of referId
+   * Set "withSection"="\Test\Documents\ExamResult\TestWithSectionDocument",
    *
    * @return  self
    */ 
-  public function setReferId($referId)
+  public function setTest($test)
   {
-    $this->referId = $referId;
+    $this->test = $test;
 
     return $this;
   }

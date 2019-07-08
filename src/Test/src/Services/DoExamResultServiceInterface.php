@@ -11,4 +11,5 @@ interface DoExamResultServiceInterface
     public function synchronyTime($dto, & $outRemainTime, & $messages);
     public function finish($dto, & $messages);
     public function getExamResult($dto, & $messages, & $examResultDTO);
+    public function isExistResultOfExam($examId);
 }

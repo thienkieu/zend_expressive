@@ -27,7 +27,7 @@ class PinService implements PinServiceInterface, HandlerInterface
     }
 
     public function showPinInfo($dto, & $results, & $messages) {
-        $testRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
+        $testRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
         $document = $testDocuments = $testRepository->getCandidateInfo($dto->pin);
         if ($document) {
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
@@ -41,7 +41,7 @@ class PinService implements PinServiceInterface, HandlerInterface
     }
 
     public function inValidPin($examId, $candidateId) {
-        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
         $result =  $examRepository->inValidPinByCandidateId($examId, $candidateId);
         if ($result['ok'] != 1) {
             $message = $this->translator->translate('There is problem with update pin \'%pin%\', Please refresh new pin.', ['%pin%' => $pin]);
@@ -51,7 +51,7 @@ class PinService implements PinServiceInterface, HandlerInterface
     }
 
     public function refreshPin($examId, $candiateId, & $outNewPin, & $messages) {
-        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
         $newPin = \Infrastructure\CommonFunction::generateUniquePin(1);
         $result =  $examRepository->refreshPin($examId, $candiateId, $newPin[0]);
         if ($result['ok'] != 1) {

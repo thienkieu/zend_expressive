@@ -45,7 +45,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
 
     public function doExam($dto, & $results, & $messages) {
         try {
-            $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
+            $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
             $examDocument = $examRepository->getExamInfo($dto->pin);
             if (!$examDocument) {
                 $messages[] = $this->translator->translate('There isnot exist candidate with pin', ['%pin%' => $dto->pin]);

@@ -15,7 +15,7 @@ use Doctrine\ODM\Tools\Pagination\Paginator;
 use  Doctrine\MongoDB\Query\Expr;
 use date;
 
-class ExamWithSectionRepository extends DocumentRepository
+class ExamRepository extends DocumentRepository
 {
     private $canAccessExamBefore = (1 * 24 * 60 * 60);
     
@@ -87,6 +87,7 @@ class ExamWithSectionRepository extends DocumentRepository
         $candidateDocument = null;
         $document = $command->getSingleResult();
         
+       
         return $document;
     }
 
@@ -117,5 +118,69 @@ class ExamWithSectionRepository extends DocumentRepository
         $document = $command->getSingleResult();
         
         return $document;
+    }
+
+
+    public function filterExam($filterCriterial, $itemPerPage, $pageNumber) {
+        
+
+        //$timeBefore5MinutesAgo  = new \DateTime(date('Y-m-d H:i:s',\time() - 36000 * 60));
+        //$mongoDateBefore5MinutesAgo = new \MongoDate($timeBefore5MinutesAgo->getTimestamp());
+
+        $now  = new \DateTime(date('Y-m-d H:i:s',\time() - $this->canAccessExamBefore));
+        $builder = $this->createAggregationBuilder();
+        $command = $builder
+                ->hydrate(\Test\Documents\Exam\ExamDocument::class)
+                ->match()
+                    ->field('candidates.pin')->equals($pin)
+                    ->field('startDate')->gte($now)                
+                ->project()   
+                    ->includeFields(['title', 'startDate'])                
+                    ->field('candidates')
+                    ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
+                    
+                ->execute();
+        //echo '<pre>'.print_r($command, true).'</pre>'; die;
+
+        $candidateDocument = null;
+        $document = $command->getSingleResult();
+        
+        return $document;
+    }
+
+
+    public function getExamWithPagination($filterData, $itemPerPage, $pageNumber) {
+        $filterQuery = $this->getFilterQuery($filterData);
+        $totalDocument = $filterQuery->getQuery()->execute()->count();        
+        $data = $filterQuery->limit($itemPerPage)
+                                    ->skip($itemPerPage*($pageNumber-1))
+                                    ->getQuery()
+                                    ->execute();
+        return [
+            'totalDocument' => $totalDocument,
+            'exams' => $data 
+        ];
+    }
+
+    protected function getFilterQuery($filterData) {
+        $queryBuilder = $this->createQueryBuilder();
+        $queryBuilder
+            ->field('title')->equals(new \MongoRegex('/.*'.$filterData->getTitle().'*/i'))
+            ->field('title.candidates.objectId')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'))
+            ->field('title.candidates.email')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'))
+            ->field('title.candidates.name')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'));
+    
+
+        $fromDate = $filterData->getFromDate();
+        $toDate = $filterCriterial->getToDate();
+
+        if (!empty($fromDate) && !empty($toDate)) {
+            $queryBuilder
+                ->field('startDate')->gte($fromDate)
+                ->field('startDate')->lte($toDate);
+        }
+
+
+        return $queryBuilder;
     }
 }

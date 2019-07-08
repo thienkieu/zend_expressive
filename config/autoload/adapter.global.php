@@ -74,7 +74,7 @@ return [
         \Test\Convertor\Adapter\DTOs\Test\FromRandomQuestionDocumentAdapter::class,
         
         \Test\Convertor\Adapter\DTOs\FromCandidateDocumentAdapter::class,
-        \Test\Convertor\Adapter\DTOs\FromExamHasSectionTestDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromExamDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromTestWithSectionEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromExamResultHasSectionTestDocumentAdapter::class,
     ],

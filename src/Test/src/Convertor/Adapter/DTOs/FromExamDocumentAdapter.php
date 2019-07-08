@@ -7,7 +7,7 @@ namespace Test\Convertor\Adapter\DTOs;
 use Infrastructure\Convertor\ConvertDocumentToDTOAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromExamHasSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
+class FromExamDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     
     private $container;
     private $convertor;
@@ -22,7 +22,7 @@ class FromExamHasSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapt
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
-        if ($document instanceof \Test\Documents\Exam\ExamHasSectionTestDocument) {
+        if ($document instanceof \Test\Documents\Exam\ExamDocument) {
             return true;
         }
 

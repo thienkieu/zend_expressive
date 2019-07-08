@@ -21,7 +21,7 @@ class ToCandidateDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Exam\CandidateDTO && isset($options[\Config\AppConstant::ToDocumentClass]) && $options[\Config\AppConstant::ToDocumentClass] === \Test\Documents\Exam\ExamHasSectionTestDocument::class) {
+        if ($dtoObject instanceof \Test\DTOs\Exam\CandidateDTO && isset($options[\Config\AppConstant::ToDocumentClass]) && $options[\Config\AppConstant::ToDocumentClass] === \Test\Documents\Exam\ExamDocument::class) {
             return true;
         }
         

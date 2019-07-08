@@ -46,7 +46,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             return false;
         }
             
-        $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamHasSectionTestDocument::class, $existExamId);
+        $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamDocument::class, $existExamId);
         if (!$existExamObj) {
             $messages[] = $this->translator->translate('The exam doesnot exist, Please check it again.');
             return false;
@@ -74,11 +74,19 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         try {
             $existExamId = $examDTO->getId();
             if (!empty($existExamId)) {
-                $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamHasSectionTestDocument::class, $existExamId);
+                $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamDocument::class, $existExamId);
                 if (!$existExamObj) {
                     $messages[] = $translator->translate('The exam doesnot exist, Please check it again.');
                     return false;
                 }
+
+                $examResultService  = $this->container->get(DoExamResultServiceInterface::class);
+                $existedExamResult = $examResultService->isExistResultOfExam($existExamId);
+                if ($existedExamResult) {
+                    $messages[] = $translator->translate('Cannot edit this exam because this exam have been used.');
+                    return false;
+                }
+
                 $this->dm->remove($existExamObj);
             }
             
@@ -88,7 +96,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             }
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Exam\ExamHasSectionTestDocument::class]);
+            $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Exam\ExamDocument::class]);
             $this->assignPin($document);
             $this->dm->persist($document);
             
@@ -187,7 +195,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
     }
     
     public function enterPin($dto, & $results, & $messages) {
-        $testRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
+        $testRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
         $document = $testDocuments = $testRepository->getCandidateInfo($dto->pin);
         if ($document) {
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
@@ -200,11 +208,11 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         return false;
     }
 
-    public function getExams(& $ret, & $messages, $pageNumber = 1, $itemPerPage = 25) {
+    public function getExams($filterCriterial, & $ret, & $messages, $pageNumber = 1, $itemPerPage = 25) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
-        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
-        $examDocuments = $examRepository->findAll();
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $examDocuments = $examRepository->filterExams($filterCriterial, $pageNumber = 1, $itemPerPage = 25);
         
         $exams = [];
         foreach ($examDocuments as $exam) {

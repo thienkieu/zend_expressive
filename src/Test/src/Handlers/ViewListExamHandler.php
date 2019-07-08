@@ -23,12 +23,13 @@ class ViewListExamHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
-        $queryData = $request->getQueryParams();
-        $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
-        $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
+        $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
+        
+        $pageNumber = \Infrastructure\CommonFunction::getValue($dto, 'pageNumber', 1);
+        $itemPerPage = \Infrastructure\CommonFunction::getValue($dto, 'itemPerPage', 15);
 
         $examService = $this->container->get(ExamServiceInterface::class);
-        $ret = $examService = $examService->getExams($outDTO, $messages, $pageNumber, $itemPerPage);
+        $ret = $examService = $examService->getExams($filterCriterial, $outDTO, $messages, $pageNumber, $itemPerPage);
 
         return \Infrastructure\CommonFunction::buildResponseFormat($ret, $messages, $outDTO);
 

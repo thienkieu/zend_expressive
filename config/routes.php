@@ -72,7 +72,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/coordinator/exam/finish', Test\Handlers\FinishExamHandler::class, 'exam.finish');
     $app->post('/coordinator/exam/updateQuestionMark', Test\Handlers\UpdateQuestionMarkHandler::class, 'exam.updateQuestionMark');
     $app->get('/coordinator/exam/viewExamResult', Test\Handlers\ViewExamResultHandler::class, 'exam.viewExamResult');
-    $app->get('/coordinator/exam/exams', Test\Handlers\ViewListExamHandler::class, 'exam.exams');
+    $app->post('/coordinator/exam/exams', Test\Handlers\ViewListExamHandler::class, 'exam.exams');
     
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 

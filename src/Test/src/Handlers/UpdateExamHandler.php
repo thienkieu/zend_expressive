@@ -27,7 +27,6 @@ class UpdateExamHandler implements RequestHandlerInterface
         $examService = $this->container->get(ExamServiceInterface::class);
         $ok = $examService->createOrUpdateExam($dto, $resultDTO, $messages);
         return new JsonResponse([
-            'welcome' => 'Update Exam Handler.',
             'success' => $ok,
             'messages' => $messages,
             'data' => $resultDTO

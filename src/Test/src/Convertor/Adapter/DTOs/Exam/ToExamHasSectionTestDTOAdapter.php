@@ -32,7 +32,7 @@ class ToExamHasSectionTestDTOAdapter extends ToDTOAdapter {
         $dtoObject = new \Test\DTOs\Exam\ExamHasSectionTestDTO();
         $dtoObject->setTitle($jsonObject->title);
         $dtoObject->setTime($jsonObject->time); 
-        if (isset($dtoObject->id)) {
+        if (isset($jsonObject->id)) {
             $dtoObject->setId($jsonObject->id);    
         }  
         

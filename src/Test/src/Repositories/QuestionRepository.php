@@ -48,6 +48,4 @@ class QuestionRepository extends DocumentRepository
         ];
     }
 
-   
-
 }

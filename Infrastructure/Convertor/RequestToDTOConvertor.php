@@ -29,6 +29,15 @@ class RequestToDTOConvertor implements RequestToDTOConvertorInterface {
             }
         }
 
+        if (isset($options[\Config\AppConstant::DTOKey])) {
+            $dtoClass = $options[\Config\AppConstant::DTOKey];
+       
+            $mapper = new \JsonMapper();
+            $mapper->bStrictNullTypes = false;
+            $dto = $mapper->map($jsonData, new $dtoClass());
+            return $dto; 
+        }
+
         return null;
     }
 }

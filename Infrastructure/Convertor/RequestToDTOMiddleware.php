@@ -59,7 +59,6 @@ class RequestToDTOMiddleware implements MiddlewareInterface
                         $messages[] = $translator->translate('There is not convertor, Please check it again');
                         return \Infrastructure\CommonFunction::buildResponseFormat(false, $messages);
                     }
-                     
                     $dto = $convertorToDTO->convertToDTO($jsonData, [\Config\AppConstant::DTOKey => $dtoName]);
                     return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $dto));
                 } else {

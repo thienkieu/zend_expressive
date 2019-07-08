@@ -37,7 +37,7 @@ class WritingQuestionRepository extends QuestionRepository
         $now  = new \DateTime(date('Y-m-d H:i:s',\time()));
         $builder = $this->createAggregationBuilder();
         $command = $builder
-                ->hydrate(\Test\Documents\Exam\ExamHasSectionTestDocument::class)
+                ->hydrate(\Test\Documents\Exam\ExamDocument::class)
                 ->match()
                     ->field('candidates.pin')->equals($pin)
                     ->field('startDate')->gte($now)                
@@ -52,57 +52,6 @@ class WritingQuestionRepository extends QuestionRepository
         $candidateDocument = null;
         $document = $command->getSingleResult();
         
-        /*echo '<pre>'.print_r($data, true).'</pre>'; die;
-        $exam = null;
-        if ($data) {
-            $exam = new \Test\Documents\Exam\ExamHasSectionTestDocument();
-            $exam->setTitle($data['title']);
-            $exam->setId($data['_id']->__toString());
-            $exam->setStartDate($data['startDate']);
-
-            $candidates = $data['candidates'];
-            if (count($candidates) > 0) {
-            
-                foreach($candidates as $candidate) {
-                    $candidateDocument = new \Test\Documents\Exam\CandidateDocument();
-                    $candidateDocument->setId($candidate['_id']->__toString()) ;
-                    $candidateDocument->setObjectId($candidate['objectId']);
-                    $candidateDocument->setType($candidate['type']);
-                    $candidateDocument->setName($candidate['name']);
-                    $candidateDocument->setEmail($candidate['email']);
-                    $candidateDocument->setPin($candidate['pin']);
-
-                    $exam->addCandidate($candidateDocument);
-                }
-            }
-
-        }*/
-        
-        /*
-        $queryBuilder = $this->createQueryBuilder();
-        $expr = new Expr();
-        $equalPin = $expr->field('pin')->equals($pin);
-        //echo '<pre>'.print_r($equalPin, true).'</pre>'; die;
-
-        $exam = $queryBuilder
-                ->select(['candidates.pin'])
-                ->field('id')->equals($id)
-                ->field('candidates.pin')->equals($pin)
-                ->field('candidates')->elemMatch($equalPin)                
-                ->getQuery()
-                ->getSingleResult();
-
-        if ($exam) {
-            $candidates = $exam->getCandidates();
-            foreach ($candidates as $key => $value) {
-                echo $value->getId().'<br/>';
-                echo $value->getEmail().'<br/>';
-                echo $value->getPin().'<br/>';
-            }
-            die;
-        }
-        echo '<pre>'.print_r($exam, true).'</pre>'; die;*/
-
         return $document;
     }
 
@@ -117,7 +66,7 @@ class WritingQuestionRepository extends QuestionRepository
         $now  = new \DateTime(date('Y-m-d H:i:s',\time()));
         $builder = $this->createAggregationBuilder();
         $command = $builder
-                ->hydrate(\Test\Documents\Exam\ExamHasSectionTestDocument::class)
+                ->hydrate(\Test\Documents\Exam\ExamDocument::class)
                 ->match()
                     ->field('candidates.pin')->equals($pin)
                     ->field('startDate')->gte($now)                
@@ -132,57 +81,6 @@ class WritingQuestionRepository extends QuestionRepository
         $candidateDocument = null;
         $document = $command->getSingleResult();
         
-        /*echo '<pre>'.print_r($data, true).'</pre>'; die;
-        $exam = null;
-        if ($data) {
-            $exam = new \Test\Documents\Exam\ExamHasSectionTestDocument();
-            $exam->setTitle($data['title']);
-            $exam->setId($data['_id']->__toString());
-            $exam->setStartDate($data['startDate']);
-
-            $candidates = $data['candidates'];
-            if (count($candidates) > 0) {
-            
-                foreach($candidates as $candidate) {
-                    $candidateDocument = new \Test\Documents\Exam\CandidateDocument();
-                    $candidateDocument->setId($candidate['_id']->__toString()) ;
-                    $candidateDocument->setObjectId($candidate['objectId']);
-                    $candidateDocument->setType($candidate['type']);
-                    $candidateDocument->setName($candidate['name']);
-                    $candidateDocument->setEmail($candidate['email']);
-                    $candidateDocument->setPin($candidate['pin']);
-
-                    $exam->addCandidate($candidateDocument);
-                }
-            }
-
-        }*/
-        
-        /*
-        $queryBuilder = $this->createQueryBuilder();
-        $expr = new Expr();
-        $equalPin = $expr->field('pin')->equals($pin);
-        //echo '<pre>'.print_r($equalPin, true).'</pre>'; die;
-
-        $exam = $queryBuilder
-                ->select(['candidates.pin'])
-                ->field('id')->equals($id)
-                ->field('candidates.pin')->equals($pin)
-                ->field('candidates')->elemMatch($equalPin)                
-                ->getQuery()
-                ->getSingleResult();
-
-        if ($exam) {
-            $candidates = $exam->getCandidates();
-            foreach ($candidates as $key => $value) {
-                echo $value->getId().'<br/>';
-                echo $value->getEmail().'<br/>';
-                echo $value->getPin().'<br/>';
-            }
-            die;
-        }
-        echo '<pre>'.print_r($exam, true).'</pre>'; die;*/
-
         return $document;
     }
 }
