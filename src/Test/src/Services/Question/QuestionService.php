@@ -58,7 +58,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $ret;
     }
 
-    public function generateQuestion($citerial, $notInsources) {
+    public function generateQuestion($citerial, $notInsources, $notInQuestions) {
         if ($citerial->getGenerateFrom() !== \Config\AppConstant::Random) {
             return $citerial;
         }
@@ -67,7 +67,11 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $toClass = $this->getClassName($questionDTO->getType());
         $questionRepository = $this->dm->getRepository($toClass);
         
-        $question = $questionRepository->generateRandomQuestion($questionDTO->getType(), $questionDTO->getSubType(), $questionDTO->getNumberSubQuestion(), $notInsources, $toClass);
+        if (!$citerial->getQuestionInfo()->getIsDifferentSource()) {
+            $notInsources = [];
+        }
+        
+        $question = $questionRepository->generateRandomQuestion($questionDTO->getType(), $questionDTO->getSubType(), $questionDTO->getNumberSubQuestion(), $notInsources, $notInQuestions, $toClass);
         if (!$question) {
             $generateQuestionCiterial = [
                 '%type%' => $questionDTO->getType(),

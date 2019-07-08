@@ -63,6 +63,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/coordinator/exam/candidates', Test\Handlers\GetCandidateHandler::class, 'exam.candidates');
     $app->post('/coordinator/exam/create', Test\Handlers\CreateExamHandler::class, 'exam.create');
     $app->post('/coordinator/exam/update', Test\Handlers\UpdateExamHandler::class, 'exam.update');
+    $app->post('/coordinator/exam/updateTest', Test\Handlers\UpdateTestOfExamHandler::class, 'exam.updateTest');
     $app->post('/coordinator/exam/enterPin', Test\Handlers\EnterPinHandler::class, 'exam.enterPin');
     $app->post('/coordinator/exam/doExam', Test\Handlers\DoExamHandler::class, 'exam.doExam');
     $app->post('/coordinator/pin/refresh', Test\Handlers\RefreshPinHandler::class, 'pin.refresh');
@@ -71,6 +72,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/coordinator/exam/finish', Test\Handlers\FinishExamHandler::class, 'exam.finish');
     $app->post('/coordinator/exam/updateQuestionMark', Test\Handlers\UpdateQuestionMarkHandler::class, 'exam.updateQuestionMark');
     $app->get('/coordinator/exam/viewExamResult', Test\Handlers\ViewExamResultHandler::class, 'exam.viewExamResult');
+    $app->get('/coordinator/exam/exams', Test\Handlers\ViewListExamHandler::class, 'exam.exams');
     
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 
@@ -84,7 +86,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     $app->get('/viewLog', App\Handler\GetLogHandler::class, 'log');
 
-
     /*$app->post('/test/create-section/{name}', [        
         Test\Handlers\CreateSectionHandler::class
     ], 'section.create');
@@ -97,8 +98,4 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     //odm auth
     $app->get('/odmauth/setup', ODMAuth\Handler\SetupSampleDataHandler::class, 'odmauth.setup');
-
-    
-
-    
 };

@@ -26,7 +26,7 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
         return true;
     }
 
-    public function createTest(\Test\DTOs\Test\BaseTestDTO $testDTO, & $messages) {
+    public function createTest(\Test\DTOs\Test\BaseTestDTO $testDTO, & $messages, & $outDTO) {
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
         
@@ -34,11 +34,18 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($testDTO);
             
+            $examService = $this->container->get(ExamServiceInterface::class);
+            $examDTO = $examService->generateExamTest($testDTO, $messages);
+            if (!$examDTO) {
+                return false;
+            }
+
             $this->dm->persist($document);
             $this->dm->flush();
             
-            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-            $dto = $documentToDTOConvertor->convertToDTO($document);
+            // $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+            // $dto = $documentToDTOConvertor->convertToDTO($document);
+            $outDTO = $examDTO;
 
             $messages[] = $translator->translate('Your test have been created successfull!');
             return true;

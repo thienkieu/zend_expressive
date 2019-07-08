@@ -12,7 +12,7 @@ use Zend\Diactoros\Response\JsonResponse;
 
 use Test\Services\ExamServiceInterface;
 
-class CreateExamHandler implements RequestHandlerInterface
+class ViewListExamHandler implements RequestHandlerInterface
 {
     /** @var Psr\Container\ContainerInterface */
     private $container;
@@ -23,13 +23,14 @@ class CreateExamHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
-        $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        $testService = $this->container->get(ExamServiceInterface::class);
-        $ok = $testService->createOrUpdateExam($dto, $resultDTO, $messages);
-        return new JsonResponse([
-            'success' => $ok,
-            'messages' => $messages,
-            'data' => $resultDTO
-        ]);
+        $queryData = $request->getQueryParams();
+        $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
+        $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
+
+        $examService = $this->container->get(ExamServiceInterface::class);
+        $ret = $examService = $examService->getExams($outDTO, $messages, $pageNumber, $itemPerPage);
+
+        return \Infrastructure\CommonFunction::buildResponseFormat($ret, $messages, $outDTO);
+
     }
 }

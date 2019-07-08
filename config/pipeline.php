@@ -61,9 +61,10 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // after the Implicit*Middleware.
     //$app->pipe(ImplicitHeadMiddleware::class);
     //$app->pipe(ImplicitOptionsMiddleware::class);
-    $app->pipe(AuthenticationMiddleware::class);
+    
     $app->pipe(LocaleMiddleware::class);
     $app->pipe(CorsMiddleware::class);
+    //$app->pipe(AuthenticationMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);    
     $app->pipe(BodyParamsMiddleware::class);
     $app->pipe(UploadFileMiddleware::class);

@@ -44,6 +44,7 @@ return [
         \Test\Convertor\Adapter\DTOs\Test\ToQuestionDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToExamHasSectionTestDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToCandidateDTOAdapter::class,  
+        \Test\Convertor\Adapter\DTOs\Exam\ToEditTestOfExamDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToPinDTOAdapter::class,  
         \Test\Convertor\Adapter\DTOs\Exam\ToPinInfoDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToPickupAnswerDTOAdapter::class,

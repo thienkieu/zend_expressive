@@ -17,7 +17,7 @@ use date;
 
 class QuestionRepository extends DocumentRepository
 {
-    public function generateRandomQuestion($type, $subType, $numberSubQuestion, $sources, $toClass) {
+    public function generateRandomQuestion($type, $subType, $numberSubQuestion, $sources, $notInQuestions, $toClass) {
         $aggregationBuilder = $this->createAggregationBuilder();
         $question = $aggregationBuilder
                         ->hydrate($toClass)
@@ -25,6 +25,7 @@ class QuestionRepository extends DocumentRepository
                             ->field('type')->equals($type)
                             ->field('subType')->equals($subType)
                             ->field('source')->notIn($sources)
+                            ->field('id')->notIn($notInQuestions)
                             ->field('numberSubQuestion')->gte($numberSubQuestion)
                         ->sample(1)
                         ->execute()

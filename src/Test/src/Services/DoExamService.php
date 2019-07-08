@@ -10,8 +10,6 @@ use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
 
-use Test\Services\Question\QuestionServiceInterface;
-
 class DoExamService implements DoExamServiceInterface, HandlerInterface
 {
     private $container;
@@ -48,13 +46,13 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
     public function doExam($dto, & $results, & $messages) {
         try {
             $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
-            $document = $examRepository->getExamInfo($dto->pin);
-            if (!$document) {
+            $examDocument = $examRepository->getExamInfo($dto->pin);
+            if (!$examDocument) {
                 $messages[] = $this->translator->translate('There isnot exist candidate with pin', ['%pin%' => $dto->pin]);
                 return false;
             }
-
-            $candidates = $document->getCandidates();
+            
+            $candidates = $examDocument->getCandidates();
             $candidate = $candidates[0];
             if (!$candidate->getIsPinValid()) {
                 $messages[] = $this->translator->translate('Your pin \'%pin%\' is not valid, Please notify to admin to get new pin', ['%pin%' => $dto->pin]);
@@ -63,13 +61,37 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
 
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-            $existingExamResult = $examResultRepository->getExamResult($document->getId(), $candidate->getId(), '');
-            if (!$existingExamResult) {
-                $messages[] = $this->translator->translate('Cannot found your exam with pin, Please check with admin.', ['%pin%' => $dto->pin]);
+            $examResultDocument = $examResultRepository->getExamResult($examDocument->getId(), $candidate->getId(), '');
+            if ($examResultDocument) {
+                $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
+                return true;
+            }
+
+            $examDTO = $documentToDTOConvertor->convertToDTO($examDocument);
+            $examService = $this->container->get(ExamServiceInterface::class);            
+           
+            $examTest = $examService->generateExamTest($examDTO->getTest(), $messages);
+            if (!$examTest) {
                 return false;
             }
 
-            $results = $documentToDTOConvertor->convertToDTO($existingExamResult);
+            $examResult = new \Test\DTOs\ExamResult\ExamResultHasSectionTestDTO();
+            $examResult->setTest($examTest);
+
+            $candidateDTO = $documentToDTOConvertor->convertToDTO($candidate);
+            $examResult->setCandidate($candidateDTO);
+            $examResult->setExamId($examDTO->getId());
+            $examResult->setTime($examDTO->getTime());
+            $examResult->setTitle($examDTO->getTitle());
+            $examResult->setStartDate($examDTO->getStartDate());
+
+            $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
+            $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class]);
+            $examResultDocument->setRemainTime($examDTO->getTime() * 60);
+            $this->dm->persist($examResultDocument);
+            $this->dm->flush();
+
+            $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
             return true;
             
         }catch(\Test\Exceptions\GenerateQuestionException $e) {

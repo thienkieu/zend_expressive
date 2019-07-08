@@ -42,5 +42,8 @@ return array(
     'the Repeate time must be number' => 'the Repeate time must be number at line %lineNumber%.',
     'the Repeate time must be larger %larger% and smaller %smaller%' => 'the Repeate time must be larger %larger% and smaller %smaller% at line %lineNumber%.',
     'File type %fileName% is not support.' => 'File type %fileName% is not support.',
-    'Type is not valid at line %lineNumber%.' => 'Type is not valid at line %lineNumber%.'
+    'Type is not valid at line %lineNumber%.' => 'Type is not valid at line %lineNumber%.',
+    'The exam doesnot exist, Please check it again.' => 'The exam doesnot exist, Please check it again.',
+    'Exam id cannot empty, Please check it again' => 'Exam id cannot empty, Please check it again',
+    'Your test of exam have been update successfull!' => 'Your test of exam have been update successfull!'
 );

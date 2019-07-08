@@ -58,6 +58,8 @@ class ConfigProvider
                 Handlers\CreateTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ViewSampleExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateTestOfExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\ViewListExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,

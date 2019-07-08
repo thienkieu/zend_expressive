@@ -16,11 +16,13 @@ class ExamService implements ExamServiceInterface, HandlerInterface
     private $container;
     private $dm;
     private $options;
+    protected $translator = null;
 
     public function __construct($container, $options) {
         $this->container = $container;
         $this->options = $options;
-        $this->dm = $this->container->get('documentManager');        
+        $this->dm = $this->container->get('documentManager');   
+        $this->translator = $this->container->get(\Config\AppConstant::Translator);     
     }
 
     public function isHandler($dto, $options = []){
@@ -37,17 +39,54 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         }
     }
 
+    public function updateTestOfExam(\Test\DTOs\Exam\EditTestOfExamDTO $editTestOfExamDTO,  & $outDTO, & $messages) {
+        $existExamId = $editTestOfExamDTO->getId();
+        if (empty($existExamId)) {
+            $messages[] = $this->translator->translate('Exam id cannot empty, Please check it again');
+            return false;
+        }
+            
+        $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamHasSectionTestDocument::class, $existExamId);
+        if (!$existExamObj) {
+            $messages[] = $this->translator->translate('The exam doesnot exist, Please check it again.');
+            return false;
+        }
+        
+        $test = $editTestOfExamDTO->getTest();
+        $examTest = $this->generateExamTest($test, $messages);
+        if (!$examTest) {
+            return false;
+        }
+
+        $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
+        $document = $dtoToDocumentConvertor->convertToDocument($examTest, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
+        
+        $existExamObj->setTest($document);
+        $this->dm->flush();
+            
+        $messages[] = $this->translator->translate('Your test of exam have been update successfull!');
+        return true;
+    }
+
     public function createOrUpdateExam(\Test\DTOs\Exam\ExamDTO $examDTO, & $dto, & $messages) {
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
-        
         try {
             $existExamId = $examDTO->getId();
             if (!empty($existExamId)) {
                 $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamHasSectionTestDocument::class, $existExamId);
+                if (!$existExamObj) {
+                    $messages[] = $translator->translate('The exam doesnot exist, Please check it again.');
+                    return false;
+                }
                 $this->dm->remove($existExamObj);
             }
             
+            $examTest = $this->generateExamTest($examDTO->getTest(), $messages);
+            if (!$examTest) {
+                return false;
+            }
+
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Exam\ExamHasSectionTestDocument::class]);
             $this->assignPin($document);
@@ -55,12 +94,6 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $dto = $documentToDTOConvertor->convertToDTO($document);
-
-            $candidates = $dto->getCandidates();
-            foreach ($candidates as $candiate) {
-                $examResultDocument = $this->generateExamResult($dto, $candiate);
-                $this->dm->persist($examResultDocument);
-            }
 
             $this->dm->flush();
             
@@ -87,10 +120,11 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         try {
             $examDTO = new \Test\DTOs\Exam\ExamDTO();
             $examDTO->setTest($testDTO);
-            $examResultDocument = $this->generateExamResult($examDTO, null);
-            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-            $dto = $documentToDTOConvertor->convertToDTO($examResultDocument);
-
+            $$dto = $this->generateExamTest($examDTO, $messages);
+            if (!$$dto) {
+                return false;
+            }
+            
             $messages[] = $translator->translate('Your exam have been created successfull!');
             return true;
         } catch(\Test\Exceptions\GenerateQuestionException $e) {
@@ -107,58 +141,51 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         }        
     }
 
-    protected function generateExamResult($examDTO, $candiateDTO) {
-        $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
-        $sectionsForDoExam = [];
-        $questionService = $this->container->get(QuestionServiceInterface::class);
-
-        $test  = $examDTO->getTest();
-        $sections = $test->getSections();
-        foreach ($sections as $section) {
-            $questionsForSection = [];
-            $questions = $section->getQuestions();
+    public function generateExamTest($test, & $messages) {
+        try {
+            $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
+            $sectionsForDoExam = [];
+            $questionService = $this->container->get(QuestionServiceInterface::class);
+        
+            $sections = $test->getSections();
             $sources = [];
-            foreach ($questions as $question) {
+            $questionIds = [];
+            foreach ($sections as $section) {
+                $questionsForSection = [];
+                $questions = $section->getQuestions();                
+                foreach ($questions as $question) {
+                    
+                    $q = $questionService->generateQuestion($question, $sources, $questionIds);
+                    $sources[] = $q->getSource();
+                    $questionIds[] = $q->getId();
+
+                    $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
+                    $testQuestionDTO->setId($q->getId());
+                    $testQuestionDTO->setGenerateFrom(\Config\AppConstant::Pickup);
+                    $testQuestionDTO->setQuestionInfo($q);
+                    
+                    $questionsForSection[] = $testQuestionDTO;
+                }
+
+                $sectionForDoExam = new \Test\DTOs\Test\SectionDTO();
+                $sectionForDoExam->setName($section->getName());
+                $sectionForDoExam->setDescription($section->getDescription());
+                $sectionForDoExam->setQuestions($questionsForSection);    
                 
-                $q = $questionService->generateQuestion($question, $sources);
-                $sources[] = $q->getSource();
-                
-                $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
-                $testQuestionDTO->setId($q->getId());
-                $testQuestionDTO->setGenerateFrom(\Config\AppConstant::Pickup);
-                $testQuestionDTO->setQuestionInfo($q);
-                
-                $questionsForSection[] = $testQuestionDTO;
+                $sectionsForDoExam[] = $sectionForDoExam;
             }
 
-            $sectionForDoExam = new \Test\DTOs\Test\SectionDTO();
-            $sectionForDoExam->setName($section->getName());
-            $sectionForDoExam->setDescription($section->getDescription());
-            $sectionForDoExam->setQuestions($questionsForSection);    
-            
-            $sectionsForDoExam[] = $sectionForDoExam;
+            $testForDoExam->setSections($sectionsForDoExam);
+            $testForDoExam->setId($test->getId());
+            $testForDoExam->setTitle($test->getTitle());
+
+            return $testForDoExam;
+        } catch(\Test\Exceptions\GenerateQuestionException $e) {
+            $messages[] =  $e->getMessage();            
+            return false; 
         }
-
-        $testForDoExam->setSections($sectionsForDoExam);
-        $testForDoExam->setId($test->getId());
-        $testForDoExam->setTitle($test->getTitle());
-        
-        $examResult = new \Test\DTOs\ExamResult\ExamResultHasSectionTestDTO();
-        $examResult->setTest($testForDoExam);
-        $examResult->setCandidate($candiateDTO);
-        $examResult->setExamId($examDTO->getId());
-        $examResult->setTime($examDTO->getTime());
-        $examResult->setTitle($examDTO->getTitle());
-        $examResult->setStartDate($examDTO->getStartDate());
-
-        $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-        $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class]);
-        $examResultDocument->setRemainTime($examDTO->getTime() * 60);
-        
-        return $examResultDocument;
     }
     
-
     public function enterPin($dto, & $results, & $messages) {
         $testRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
         $document = $testDocuments = $testRepository->getCandidateInfo($dto->pin);
@@ -172,22 +199,22 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $messages[] = $translator->translate('There isnot exist candidate with pin', ['%pin%' => $dto->pin]);
         return false;
     }
-    public function getTests(& $ret, & $messages, $pageNumber = 1, $itemPerPage = 25) {
+
+    public function getExams(& $ret, & $messages, $pageNumber = 1, $itemPerPage = 25) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
-        $testRepository = $this->dm->getRepository(\Test\Documents\Test\BaseTestDocument::class);
-        $testDocuments = $testRepository->findAll();
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamHasSectionTestDocument::class);
+        $examDocuments = $examRepository->findAll();
         
-        //TODO need pagination
-        $tests = [];
-        foreach ($testDocuments as $test) {
-            $dto = $documentToDTOConvertor->convertToDTO($test);
-            $tests[] = $dto;
+        $exams = [];
+        foreach ($examDocuments as $exam) {
+            $dto = $documentToDTOConvertor->convertToDTO($exam);
+            $exams[] = $dto;
         }
 
         $ret = new \stdClass();
-        $ret->data = $tests;
-        $totalItems = count($tests);
+        $ret->exams = $exams;
+        $totalItems = count($exams);
         $ret->itemPerPage = $itemPerPage;
         $ret->pageNumber = $pageNumber;
         $ret->totalPage = $totalItems % $itemPerPage > 0 ? (int)($totalItems / $itemPerPage) + 1 : $totalItems / $itemPerPage;

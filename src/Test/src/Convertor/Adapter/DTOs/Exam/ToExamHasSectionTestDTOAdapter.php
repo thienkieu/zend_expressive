@@ -31,7 +31,10 @@ class ToExamHasSectionTestDTOAdapter extends ToDTOAdapter {
     {
         $dtoObject = new \Test\DTOs\Exam\ExamHasSectionTestDTO();
         $dtoObject->setTitle($jsonObject->title);
-        $dtoObject->setTime($jsonObject->time);        
+        $dtoObject->setTime($jsonObject->time); 
+        if (isset($dtoObject->id)) {
+            $dtoObject->setId($jsonObject->id);    
+        }  
         
         $date = \Infrastructure\CommonFunction::convertToDateTimeFormat($jsonObject->startDate);
         if ($date === false) {

@@ -16,13 +16,15 @@ use date;
 
 class WritingQuestionRepository extends QuestionRepository
 {
-    public function generateRandomQuestion($type, $subType, $numberSubQuestion, $sources, $toClass) {
+    public function generateRandomQuestion($type, $subType, $numberSubQuestion, $sources, $notInQuestions, $toClass) {
         $aggregationBuilder = $this->createAggregationBuilder();
         $question = $aggregationBuilder
                         ->hydrate($toClass)
                         ->match()
                             ->field('type')->equals($type)
-                            ->field('subType')->equals($subType)                            
+                            ->field('subType')->equals($subType)  
+                            ->field('id')->notIn($notInQuestions) 
+                            ->field('source')->notIn($sources)                         
                         ->sample(1)
                         ->execute()
                         ->getSingleResult();
