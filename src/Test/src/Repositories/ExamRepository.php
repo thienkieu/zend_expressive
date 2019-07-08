@@ -120,36 +120,7 @@ class ExamRepository extends DocumentRepository
         return $document;
     }
 
-
-    public function filterExam($filterCriterial, $itemPerPage, $pageNumber) {
-        
-
-        //$timeBefore5MinutesAgo  = new \DateTime(date('Y-m-d H:i:s',\time() - 36000 * 60));
-        //$mongoDateBefore5MinutesAgo = new \MongoDate($timeBefore5MinutesAgo->getTimestamp());
-
-        $now  = new \DateTime(date('Y-m-d H:i:s',\time() - $this->canAccessExamBefore));
-        $builder = $this->createAggregationBuilder();
-        $command = $builder
-                ->hydrate(\Test\Documents\Exam\ExamDocument::class)
-                ->match()
-                    ->field('candidates.pin')->equals($pin)
-                    ->field('startDate')->gte($now)                
-                ->project()   
-                    ->includeFields(['title', 'startDate'])                
-                    ->field('candidates')
-                    ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
-                    
-                ->execute();
-        //echo '<pre>'.print_r($command, true).'</pre>'; die;
-
-        $candidateDocument = null;
-        $document = $command->getSingleResult();
-        
-        return $document;
-    }
-
-
-    public function getExamWithPagination($filterData, $itemPerPage, $pageNumber) {
+    public function getExamWithPagination($filterCriterial, $itemPerPage, $pageNumber) {
         $filterQuery = $this->getFilterQuery($filterData);
         $totalDocument = $filterQuery->getQuery()->execute()->count();        
         $data = $filterQuery->limit($itemPerPage)
@@ -166,9 +137,9 @@ class ExamRepository extends DocumentRepository
         $queryBuilder = $this->createQueryBuilder();
         $queryBuilder
             ->field('title')->equals(new \MongoRegex('/.*'.$filterData->getTitle().'*/i'))
-            ->field('title.candidates.objectId')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'))
-            ->field('title.candidates.email')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'))
-            ->field('title.candidates.name')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'));
+            ->field('candidates.objectId')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'))
+            ->field('candidates.email')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'))
+            ->field('candidates.name')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i'));
     
 
         $fromDate = $filterData->getFromDate();

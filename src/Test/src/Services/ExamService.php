@@ -162,10 +162,14 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                 $questionsForSection = [];
                 $questions = $section->getQuestions();                
                 foreach ($questions as $question) {
+                    $questionInfo = $question->getQuestionInfo();
+                    if (!isset($sources[$questionInfo->getType()])) $sources[$questionInfo->getType()] = [];
                     
-                    $q = $questionService->generateQuestion($question, $sources, $questionIds);
-                    $sources[] = $q->getSource();
+                    $q = $questionService->generateQuestion($question, $sources[$questionInfo->getType()], $questionIds);
+                    $sources[$q->getType()][] = $q->getSource();
                     $questionIds[] = $q->getId();
+                
+                    
 
                     $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
                     $testQuestionDTO->setId($q->getId());
@@ -212,7 +216,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
         $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
-        $examDocuments = $examRepository->filterExams($filterCriterial, $pageNumber = 1, $itemPerPage = 25);
+        $examDocuments = $examRepository->getExamWithPagination($filterCriterial, $pageNumber = 1, $itemPerPage = 25);
         
         $exams = [];
         foreach ($examDocuments as $exam) {
