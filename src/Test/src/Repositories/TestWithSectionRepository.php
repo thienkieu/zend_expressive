@@ -21,6 +21,7 @@ class TestWithSectionRepository extends DocumentRepository
           
         $data = $filterQuery->limit($itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1))
+                                    ->sort('createDate', 'desc')
                                     ->getQuery()
                                     ->execute();
         return [

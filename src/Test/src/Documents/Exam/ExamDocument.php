@@ -22,6 +22,9 @@ class ExamDocument
 
   /** @ODM\Field(type="date") */
   protected $startDate;
+
+  /** @ODM\Field(type="date") */
+  protected $createDate;
   
   /** @ODM\EmbedMany(targetDocument="CandidateDocument") */
   private $candidates;
@@ -36,6 +39,7 @@ class ExamDocument
   public function __construct()
   {
     $this->candidates = new ArrayCollection();
+    $this->createDate = new \DateTime();
   }
 
   /**
@@ -170,4 +174,24 @@ class ExamDocument
     return $this;
   }
 
+
+  /**
+   * Get the value of createDate
+   */ 
+  public function getCreateDate()
+  {
+    return $this->createDate;
+  }
+
+  /**
+   * Set the value of createDate
+   *
+   * @return  self
+   */ 
+  public function setCreateDate($createDate)
+  {
+    $this->createDate = $createDate;
+
+    return $this;
+  }
 }

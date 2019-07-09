@@ -125,6 +125,7 @@ class ExamRepository extends DocumentRepository
         $totalDocument = $filterQuery->getQuery()->execute()->count();        
         $data = $filterQuery->limit($itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1))
+                                    ->sort('createDate', 'desc')
                                     ->getQuery()
                                     ->execute();
         return [

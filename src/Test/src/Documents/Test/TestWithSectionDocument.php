@@ -16,6 +16,7 @@ class TestWithSectionDocument extends BaseTestDocument
   public function __construct()
   {
     $this->sections = new ArrayCollection();
+    $this->createDate = new \DateTime();
   }
 
   /**
