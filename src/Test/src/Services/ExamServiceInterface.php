@@ -13,4 +13,5 @@ interface ExamServiceInterface
     public function createExamSample(\Test\DTOs\Test\TestWithSectionDTO $testDTO, & $dto, & $messages);
     public function getExams($filterCriterial, & $ret, & $messages, $pageNumber = 1, $itemPerPage = 25);
     public function enterPin($dto, & $results, & $messages);
+    public function deleteExam($id, & $messages);
 }

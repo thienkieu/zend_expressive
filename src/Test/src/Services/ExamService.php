@@ -248,4 +248,26 @@ class ExamService implements ExamServiceInterface, HandlerInterface
 
         return $document;
     }
+
+    public function deleteExam($id, &$messages) {
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $examDocument = $examRepository->find($id);
+        if (!$examDocument) {
+            $messages[] = $this->translator->translate('The exam doesnot exist, Please check it again.');
+            return false;
+        }
+
+        $examResultService  = $this->container->get(DoExamResultServiceInterface::class);
+        $existedExamResult = $examResultService->isExistResultOfExam($id);
+        if ($existedExamResult) {
+            $messages[] = $this->translator->translate('Cannot delete this exam because this exam have been used.');
+            return false;
+        }
+
+        $this->dm->remove($examDocument);
+        $this->dm->flush();
+
+        $messages[] = $this->translator->translate('The exam have been deleted successfully!');
+        return false;
+    }
 }

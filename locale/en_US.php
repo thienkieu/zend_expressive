@@ -49,6 +49,9 @@ return array(
     'Cannot edit this exam because this exam have been used.' => 'Cannot edit this exam because this exam have been used.',
     'Your exam have been updated successfull!' => 'Your exam have been updated successfull!',
     'The test is not found, Please check it again.' => 'The test is not found, Please check it again.',
-    'Your test have been deleted successfully!' => 'Your test have been deleted successfully!'
+    'Your test have been deleted successfully!' => 'Your test have been deleted successfully!',
+    'Cannot delete this exam because this exam have been used.' => 'Cannot delete this exam because this exam have been used.',
+    'The exam have been deleted successfully!' => 'The exam have been deleted successfully!'
+
 
 );
