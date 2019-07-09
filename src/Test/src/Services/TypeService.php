@@ -16,11 +16,13 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
     private $dm;
     private $options;
     private $types = null;
+    private $translator;
 
     public function __construct($container, $options) {
         $this->container = $container;
         $this->options = $options;
         $this->dm = $this->container->get('documentManager');
+        $this->translator = $this->container->get(\Config\AppConstant::Translator);;
     }
 
     public function isHandler($param, $options = []){
@@ -133,5 +135,4 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
             return false;
         }
     }
-    
 }

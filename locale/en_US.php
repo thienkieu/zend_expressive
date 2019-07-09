@@ -47,5 +47,8 @@ return array(
     'Exam id cannot empty, Please check it again' => 'Exam id cannot empty, Please check it again',
     'Your test of exam have been update successfull!' => 'Your test of exam have been update successfull!',
     'Cannot edit this exam because this exam have been used.' => 'Cannot edit this exam because this exam have been used.',
-    'Your exam have been updated successfull!' => 'Your exam have been updated successfull!'
+    'Your exam have been updated successfull!' => 'Your exam have been updated successfull!',
+    'The test is not found, Please check it again.' => 'The test is not found, Please check it again.',
+    'Your test have been deleted successfully!' => 'Your test have been deleted successfully!'
+
 );

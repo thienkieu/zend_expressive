@@ -60,6 +60,7 @@ class ConfigProvider
                 Handlers\UpdateExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateTestOfExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ViewListExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\DeleteTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,

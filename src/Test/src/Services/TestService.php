@@ -15,11 +15,13 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
     private $container;
     private $dm;
     private $options;
+    private $translator;
 
     public function __construct($container, $options) {
         $this->container = $container;
         $this->options = $options;
-        $this->dm = $this->container->get('documentManager');        
+        $this->dm = $this->container->get('documentManager');  
+        $this->translator = $this->container->get(\Config\AppConstant::Translator);      
     }
 
     public function isHandler($dto, $options = []){
@@ -92,5 +94,20 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
         $documents = $query->execute();
 
         return $document;
+    }
+
+    public function deleteTest($testId, & $messages) {
+        $testRepository = $this->dm->getRepository(\Test\Documents\Test\TestWithSectionDocument::class);  
+        $testDocument = $testRepository->find($testId);
+        if (!$testDocument) {
+            $messages[] = $this->translator->translate('The test is not found, Please check it again.');
+            return false;
+        }
+
+        $this->dm->remove($testDocument);
+        $this->dm->flush();
+
+        $messages[] = $this->translator->translate('Your test have been deleted successfully!');
+        return true;
     }
 }
