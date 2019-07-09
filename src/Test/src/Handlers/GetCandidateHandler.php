@@ -26,9 +26,11 @@ class GetCandidateHandler implements RequestHandlerInterface
         $queryData = $request->getQueryParams();
         $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
         $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
+        $nameOrEmail = isset($queryData['nameOrEmail']) ? $queryData['nameOrEmail'] : '';
+        $type = isset($queryData['type']) ? $queryData['type'] : '';
 
         $candidateService = $this->container->get(CandidateServiceInterface::class);
-        $ok = $candidateService->getCandidates($candidates, $messages, $pageNumber, $itemPerPage);
+        $ok = $candidateService->getCandidates($candidates, $messages, $nameOrEmail, $type, $pageNumber, $itemPerPage);
 
         return new JsonResponse([
             'data' => $candidates,

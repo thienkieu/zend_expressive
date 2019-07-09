@@ -12,6 +12,9 @@ class BaseTestDocument
   /** @ODM\Field(type="string") */
   protected $title;
 
+   /** @ODM\Field(type="string") */
+   protected $referId;
+
   /**
    * Get the value of title
    */ 
@@ -51,4 +54,24 @@ class BaseTestDocument
 
     return $this;
   }
+
+   /**
+    * Get the value of referId
+    */ 
+   public function getReferId()
+   {
+      return $this->referId;
+   }
+
+   /**
+    * Set the value of referId
+    *
+    * @return  self
+    */ 
+   public function setReferId($referId)
+   {
+      $this->referId = $referId;
+
+      return $this;
+   }
 }

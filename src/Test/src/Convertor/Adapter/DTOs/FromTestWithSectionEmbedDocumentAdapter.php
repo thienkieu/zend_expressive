@@ -33,6 +33,7 @@ class FromTestWithSectionEmbedDocumentAdapter implements ConvertDocumentToDTOAda
         $dto = new \Test\DTOs\Test\TestWithSectionDTO();
         $dto->setTitle($document->getTitle());
         $dto->setId($document->getId());
+        $dto->setReferId($document->getReferId());
         
         $sections = $document->getSections();
         $sectionDTO = [];

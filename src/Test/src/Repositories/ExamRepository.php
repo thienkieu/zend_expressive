@@ -135,17 +135,34 @@ class ExamRepository extends DocumentRepository
 
     protected function getFilterQuery($filterData) {
         $queryBuilder = $this->createQueryBuilder();
-       
+        if (!empty($filterData->getTitle())) {
+            $queryBuilder->addAnd(
+                $queryBuilder->expr()->field('id')->notEqual('dd')
+                ->addOr($queryBuilder->expr()->field('test.title')->equals(new \MongoRegex('/.*'.$filterData->getTitle().'*/i')))
+                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoRegex('/.*'.$filterData->getTitle().'*/i')))
+            );
+           
+        }
+
+        if (!empty($filterData->getCandidateIdOrNameOrEmail())) {
+            $queryBuilder->addAnd(
+                $queryBuilder->expr()->field('id')->notEqual('dd')
+                ->addOr($queryBuilder->expr()->field('candidates.objectId')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i')))
+                ->addOr($queryBuilder->expr()->field('candidates.email')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i')))
+                ->addOr($queryBuilder->expr()->field('candidates.name')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i')))
+            );
+        }
 
         $fromDate = $filterData->getFromDate();
         $toDate = $filterData->getToDate();
-
         if (!empty($fromDate) && !empty($toDate)) {
-            $queryBuilder
-                ->field('startDate')->gte($fromDate)
-                ->field('startDate')->lte($toDate);
+            $queryBuilder->addAnd(
+                $queryBuilder->expr()
+                    ->field('startDate')->gte($fromDate)
+                    ->field('startDate')->lte($toDate)
+            );
+                
         }
-
 
         return $queryBuilder;
     }

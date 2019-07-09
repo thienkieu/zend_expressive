@@ -52,7 +52,7 @@ class RandomQuestionDTO extends Question implements \JsonSerializable
      *
      * @return  self
      */ 
-    public function setNumberSubQuestion($numberQuestion)
+    public function setNumberSubQuestion(int $numberQuestion)
     {
         $this->numberSubQuestion = $numberQuestion;
 

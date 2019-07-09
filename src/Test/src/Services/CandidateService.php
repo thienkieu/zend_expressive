@@ -27,7 +27,7 @@ class CandidateService implements CandidateServiceInterface, HandlerInterface
         return true;
     }
     
-    public function getCandidates(& $candiates, & $messages, $pageNumber = 1, $itemPerPage = 25) {
+    public function getCandidates(& $candiates, & $messages, $nameOrEmail, $type, $pageNumber = 1, $itemPerPage = 25) {
         $appConfig = $this->container->get(\Config\AppConstant::AppConfig);
         $CRMConfig = $appConfig[\Config\AppConstant::CRM];
         $crmConfig = $CRMConfig[\Config\AppConstant::Candidate];
@@ -39,7 +39,14 @@ class CandidateService implements CandidateServiceInterface, HandlerInterface
 
         $request->setUri($crmConfig);
         $request->setMethod('POST');
-        $request->setPost(new Parameters(['pageNumber' => $pageNumber, 'itemPerPage'=> $itemPerPage]));
+        $request->setPost(new Parameters(
+            [
+                'pageNumber' => $pageNumber, 
+                'itemPerPage'=> $itemPerPage,
+                'nameOrEmail' => $nameOrEmail,
+                'type' => $type,
+            ]
+        ));
 
         $client = new Client();
         $response = $client->dispatch($request);

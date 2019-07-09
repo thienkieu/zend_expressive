@@ -105,7 +105,12 @@ class ExamService implements ExamServiceInterface, HandlerInterface
 
             $this->dm->flush();
             
-            $messages[] = $translator->translate('Your exam have been created successfull!');
+            if (empty($existExamId)) {
+                $messages[] = $translator->translate('Your exam have been created successfull!');
+            } else {
+                $messages[] = $translator->translate('Your exam have been updated successfull!');
+            }
+            
             return true;
         } catch(\Test\Exceptions\GenerateQuestionException $e) {
             $messages[] =  $e->getMessage(); 
@@ -167,8 +172,6 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                     $sources[$q->getType()][] = $q->getSource();
                     $questionIds[] = $q->getId();
                 
-                    
-
                     $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
                     $testQuestionDTO->setId($q->getId());
                     $testQuestionDTO->setGenerateFrom(\Config\AppConstant::Pickup);
@@ -214,7 +217,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
         $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
-        $results = $examRepository->getExamWithPagination($filterCriterial, $itemPerPage = 25, $pageNumber = 1);
+        $results = $examRepository->getExamWithPagination($filterCriterial, $itemPerPage, $pageNumber);
         
         $exams = [];
         $examDocuments = $results['exams'];

@@ -43,9 +43,9 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
             $this->dm->persist($document);
             $this->dm->flush();
             
-            // $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-            // $dto = $documentToDTOConvertor->convertToDTO($document);
-            $outDTO = $examDTO;
+            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+            $dto = $documentToDTOConvertor->convertToDTO($document);
+            $outDTO = $dto;
 
             $messages[] = $translator->translate('Your test have been created successfull!');
             return true;

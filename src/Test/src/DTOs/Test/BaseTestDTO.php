@@ -9,6 +9,8 @@ class BaseTestDTO
     protected $title;   
 
     protected $id;
+
+    protected $referId;
     
     /**
      * Get the value of title
@@ -46,6 +48,26 @@ class BaseTestDTO
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of referId
+     */ 
+    public function getReferId()
+    {
+        return $this->referId;
+    }
+
+    /**
+     * Set the value of referId
+     *
+     * @return  self
+     */ 
+    public function setReferId($referId)
+    {
+        $this->referId = $referId;
 
         return $this;
     }

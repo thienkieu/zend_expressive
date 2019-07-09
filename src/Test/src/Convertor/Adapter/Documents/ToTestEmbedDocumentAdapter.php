@@ -32,7 +32,16 @@ class ToTestEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
     {  
         $document = new \Test\Documents\ExamResult\TestWithSectionDocument();
         $document->setTitle($dto->getTitle());
-                
+        $document->setReferId('');
+
+        $referId = $dto->getReferId();
+        if (!empty($referId)) {
+            $document->setReferId($referId);
+        } else {
+            $testId = $dto->getId();
+            if (!empty($testId)) $document->setReferId($testId);
+        }
+        
         $sections = $dto->getSections();
 
         foreach($sections as $section) {
