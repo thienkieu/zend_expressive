@@ -17,7 +17,8 @@ class TestWithSectionRepository extends DocumentRepository
 {
     public function getTestWithPagination($filterData, $itemPerPage, $pageNumber) {
         $filterQuery = $this->getFilterQuery($filterData);
-        $totalDocument = $filterQuery->getQuery()->execute()->count();        
+        $totalDocument = $filterQuery->getQuery()->execute()->count();  
+          
         $data = $filterQuery->limit($itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1))
                                     ->getQuery()
@@ -30,6 +31,14 @@ class TestWithSectionRepository extends DocumentRepository
 
     protected function getFilterQuery($filterData) {
         $queryBuilder = $this->createQueryBuilder();
+        if (!empty($filterData->title)) {
+            $queryBuilder->addAnd(
+                $queryBuilder->expr()->field('id')->notEqual('dd')
+                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoRegex('/.*'.$filterData->title.'*/i')))
+                ->addOr($queryBuilder->expr()->field('sections.description')->equals(new \MongoRegex('/.*'.$filterData->title.'*/i')))            
+            );
+        }
+        
         return $queryBuilder;
     }
 

@@ -51,7 +51,7 @@ class CommonFunction
         return $itemPerPage;
     }
 
-    public static function getValue($data, $fieldName, $defaultValue) {
+    public static function getValue($data, $fieldName, $defaultValue = '') {
         if (is_array($data)) {
             return isset($data[$fieldName]) ? $data[$fieldName] : $defaultValue;
         }

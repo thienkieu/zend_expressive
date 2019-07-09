@@ -59,11 +59,11 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
         }        
     }
 
-    public function getTests(& $ret, & $messages, $pageNumber = \Config\AppConstant::PageNumber, $itemPerPage = \Config\AppConstant::ItemPerPage) {
+    public function getTests(& $ret, & $messages, $filterData, $pageNumber = \Config\AppConstant::PageNumber, $itemPerPage = \Config\AppConstant::ItemPerPage) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
         $testRepository = $this->dm->getRepository(\Test\Documents\Test\TestWithSectionDocument::class);
-        $testDocuments = $testRepository->getTestWithPagination('', $itemPerPage, $pageNumber);
+        $testDocuments = $testRepository->getTestWithPagination($filterData, $itemPerPage, $pageNumber);
         $documents = $testDocuments['tests'];
         
         $tests = [];
