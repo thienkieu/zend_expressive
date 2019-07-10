@@ -77,20 +77,22 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $questionService->setCandidateMark($questionDocument, $dto->getMark());
         
         $this->dm->flush();
-
         $hasQuestionNotScored = $examResultRepository->hasQuestionNotScored($examResult->getId());
         if (!$hasQuestionNotScored) {
             $examResult->setIsDone(true);
-            $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter(null, null);
-            $summaries = $adapter->convert($examResult);
-            $examService = $this->container->get(ExamServiceInterface::class);
-            $examService->updateExamResultSummary($examResult->getExamId(), $examResult->getCandidate()->getId(), $summaries);
         }
-        $this->dm->flush();
+        $this->updateResultSummary($examResult);
 
+        $this->dm->flush();
         return true;
     }
 
+    protected function updateResultSummary($examResult) {
+        $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter(null, null);
+        $summaries = $adapter->convert($examResult);
+        $examService = $this->container->get(ExamServiceInterface::class);
+        $examService->updateExamResultSummary($examResult->getExamId(), $examResult->getCandidate()->getId(), $summaries);
+    }
 
     public function finish($dto, & $messages) {
         $outRemainTime = 0;
@@ -99,7 +101,12 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $ret = $this->synchronyTime($dto, $outRemainTime, $messages);
         $ret = $this->calculatorExamMark($dto, $messages);
         $ret = $this->inValidPin($dto, $messages);
+
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $examResult = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
+        $ret = $this->updateResultSummary($examResult);
         
+        $this->dm->flush();
         return $ret;
     }
     
