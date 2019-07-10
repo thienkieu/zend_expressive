@@ -12,7 +12,7 @@ class ExamResultSummaryDTO implements \JsonSerializable
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->name = $this->getName();
-        $ret->email = $this->getMark(); 
+        $ret->mark = $this->getMark(); 
         return $ret;
     }
 
