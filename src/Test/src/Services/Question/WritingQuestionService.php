@@ -10,7 +10,7 @@ use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
 
-class WritingQuestionService implements QuestionServiceInterface, HandlerInterface
+class WritingQuestionService extends QuestionService
 {
     private $container;
     private $dm;
@@ -18,10 +18,13 @@ class WritingQuestionService implements QuestionServiceInterface, HandlerInterfa
     private $translator= null;
     
     public function isHandler($param, $options = []){
-        return true;
+        if ($options['document'] instanceof \Test\Documents\Test\WritingQuestionDocument){
+            return true;
+        }
+        return false;
     }
 
-    public function caculateMark(&$questionDocument, $markPerQuestion) {}
+    public function caculateMark(&$questionDocument) {}
     
 
 }

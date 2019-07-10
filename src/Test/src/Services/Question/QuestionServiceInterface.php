@@ -12,4 +12,5 @@ interface QuestionServiceInterface
     public function getQuestions($dto, $pageNumber, $itemPerPage);
 
     public function caculateMark(&$document);
+    public function setCandidateMark(&$document, $mark);
 }

@@ -127,7 +127,12 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $candidateMark = 0;
         $numberCorrectSubQuestion = $this->getNumberCorrectSubQuestion($questionDocument, $candidateMark);
         $questionDocument->setNumberCorrectSubQuestion($numberCorrectSubQuestion);
-        $questionDocument->setCandidateMark($candidateMark);
+        $this->setCandidateMark($questionDocument, $candidateMark);
+    }
+
+    public function setCandidateMark(&$questionDocument, $mark) {
+        $questionDocument->setCandidateMark($mark);
+        $questionDocument->setIsScored(true);
     }
 
     protected function getNumberCorrectSubQuestion($questionDocument, & $candidateMark) {

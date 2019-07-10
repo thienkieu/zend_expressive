@@ -18,7 +18,7 @@ class ListeningQuestionService extends QuestionService
     private $translator= null;
 
     public function isHandler($param, $options = []){
-        return true;
+        return false;
     }
 
 }

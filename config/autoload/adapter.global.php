@@ -72,6 +72,7 @@ return [
         \Test\Convertor\Adapter\DTOs\Test\FromListeningEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromWritingEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromRandomQuestionDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\FromExamResultSummaryDocumentAdapter::class,
         
         \Test\Convertor\Adapter\DTOs\FromCandidateDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromExamDocumentAdapter::class,

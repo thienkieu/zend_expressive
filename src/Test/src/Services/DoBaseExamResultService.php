@@ -72,9 +72,22 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         }
 
         $questionDocument->setComment($dto->getComment());
-        $questionDocument->setCandidateMark($dto->getMark());
 
+        $questionService  = $this->container->get(QuestionServiceInterface::class);
+        $questionService->setCandidateMark($questionDocument, $dto->getMark());
+        
         $this->dm->flush();
+
+        $hasQuestionNotScored = $examResultRepository->hasQuestionNotScored($examResult->getId());
+        if (!$hasQuestionNotScored) {
+            $examResult->setIsDone(true);
+            $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter(null, null);
+            $summaries = $adapter->convert($examResult);
+            $examService = $this->container->get(ExamServiceInterface::class);
+            $examService->updateExamResultSummary($examResult->getExamId(), $examResult->getCandidate()->getId(), $summaries);
+        }
+        $this->dm->flush();
+
         return true;
     }
 
@@ -117,7 +130,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
             $questions = $section->getQuestions();
             foreach ($questions as $question) {
                 $questionInfo = $question->getQuestionInfo();
-                $questionService = $this->container->get(QuestionServiceInterface::class, $questionInfo);
+                $questionService = $this->container->build(QuestionServiceInterface::class, ['document'=>$questionInfo]);
                 $questionService->caculateMark($questionInfo);
             }
         }

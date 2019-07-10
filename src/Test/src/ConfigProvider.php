@@ -93,6 +93,9 @@ class ConfigProvider
 
                 Services\Question\QuestionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\Question\QuestionService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\Question\WritingQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\Question\ReadingQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\Question\ListeningQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Services\PinServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\PinService::class => \Infrastructure\Factory\BaseFactory::class,

@@ -2,6 +2,7 @@
 namespace Test\Documents\Exam;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
  * @ODM\EmbeddedDocument
@@ -33,6 +34,13 @@ class CandidateDocument
   /** @ODM\Field(type="boolean") */
   protected $isPinValid = true;
 
+  /** @ODM\EmbedMany(targetDocument="\Test\Documents\Exam\ExamResultSummaryDocument") */
+  protected $resultSummary;
+
+  public function __construct()
+  {
+    $this->resultSummary = new ArrayCollection();
+  }
 
   /**
    * Get the value of id
@@ -190,6 +198,26 @@ class CandidateDocument
   public function setExamCandidateId($examCandidateId)
   {
     $this->examCandidateId = $examCandidateId;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of resultSummary
+   */ 
+  public function getResultSummary()
+  {
+    return $this->resultSummary;
+  }
+
+  /**
+   * Set the value of resultSummary
+   *
+   * @return  self
+   */ 
+  public function setResultSummary($resultSummary)
+  {
+    $this->resultSummary = $resultSummary;
 
     return $this;
   }

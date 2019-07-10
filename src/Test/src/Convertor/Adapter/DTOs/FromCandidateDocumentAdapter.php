@@ -10,12 +10,14 @@ use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 class FromCandidateDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     
     private $container;
+    private $convertor;
     /**
      * Class constructor.
      */
-    public function __construct($container)
+    public function __construct($container, $convertor)
     {
         $this->container = $container;
+        $this->convertor = $convertor;
     }
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
@@ -37,6 +39,13 @@ class FromCandidateDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
         $dto->setObjectId($document->getObjectId());
         $dto->setIsPinValid($document->getIsPinValid());
         
+        $resultSummaryDTO = [];
+        $resultSummary = $document->getResultSummary();
+        foreach($resultSummary as $summary) {
+            $resultSummaryDTO[] = $this->convertor->convertToDTO($summary, $options);
+        }
+        $dto->setResultSummary($resultSummaryDTO);
+
         return $dto;
     }
     

@@ -39,6 +39,17 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         }
     }
 
+    public function updateExamResultSummary($examId, $candidateId, $resultSummary) {
+        $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamDocument::class, $examId);
+        $candidateDocuments  = $existExamObj->getCandidates();
+        foreach($candidateDocuments as $candidate) {
+            if ($candidate->getId() === $candidateId) {
+                $candidate->setResultSummary($resultSummary);
+                break;
+            }
+        }        
+    }
+
     public function updateTestOfExam(\Test\DTOs\Exam\EditTestOfExamDTO $editTestOfExamDTO,  & $outDTO, & $messages) {
         $existExamId = $editTestOfExamDTO->getId();
         if (empty($existExamId)) {

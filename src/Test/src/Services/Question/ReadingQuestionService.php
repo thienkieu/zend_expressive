@@ -10,7 +10,7 @@ use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
 
-class ReadingQuestionService implements QuestionServiceInterface, HandlerInterface
+class ReadingQuestionService extends QuestionService
 {
     private $container;
     private $dm;
@@ -25,6 +25,6 @@ class ReadingQuestionService implements QuestionServiceInterface, HandlerInterfa
     }
 
     public function isHandler($param, $options = []){
-        return true;
+        return false;
     }
 }

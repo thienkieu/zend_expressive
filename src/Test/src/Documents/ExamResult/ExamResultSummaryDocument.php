@@ -3,18 +3,17 @@ namespace Test\Documents;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+
 /** 
- * @ODM\Document(collection="exam_result_summary")
- * @ODM\InheritanceType("SINGLE_COLLECTION")
- * @ODM\DiscriminatorField("type")
- * @ODM\DiscriminatorMap({"english"="EnglishExamResultSummaryDocument", "testarchitect"="TestArchitectExamResultSummaryDocument", "oldEnglish"="OldEnglishExamResultSummaryDocument"})
+ * @ODM\EmbeddedDocument
  */
 
 class ExamResultSummaryDocument
 {
-  /** @ODM\Id */
-  protected $id;
 
+  /** @ODM\EmbedOne(targetDocument="CandidateDocument") */
+  private $candidate;
+  
   /** @ODM\Field(type="string") */
   protected $examId;
 

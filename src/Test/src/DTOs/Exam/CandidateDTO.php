@@ -15,6 +15,11 @@ class CandidateDTO implements \JsonSerializable
     protected $isPinValid;
 
     /**
+     * @var ExamResultSummaryDTO[]
+     */
+    protected $resultSummary;
+    
+    /**
      * Get the value of email
      */ 
     public function getEmail()
@@ -123,6 +128,7 @@ class CandidateDTO implements \JsonSerializable
         $ret->pin = $this->getPin() ? $this->getPin() : '';   
         $ret->objectId = $this->getObjectId();  
         $ret->isPinValid = $this->getIsPinValid() ? $this->getIsPinValid() : '';      
+        $ret->resultSummary = $this->getResultSummary() ? $this->getResultSummary(): [];
         
         return $ret;
     }
@@ -163,6 +169,30 @@ class CandidateDTO implements \JsonSerializable
     public function setIsPinValid($isPinValid)
     {
         $this->isPinValid = $isPinValid;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of resultSummary
+     *
+     * @return  ExamResultSummaryDTO[]
+     */ 
+    public function getResultSummary()
+    {
+        return $this->resultSummary;
+    }
+
+    /**
+     * Set the value of resultSummary
+     *
+     * @param  ExamResultSummaryDTO[]  $resultSummary
+     *
+     * @return  self
+     */ 
+    public function setResultSummary($resultSummary)
+    {
+        $this->resultSummary = $resultSummary;
 
         return $this;
     }

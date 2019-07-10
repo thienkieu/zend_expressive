@@ -39,6 +39,9 @@ class QuestionDocument
 
   /** @ODM\Field(type="float") */
   private $candidateMark;
+
+  /** @ODM\Field(type="bool") */
+  private $isScored;
   
   /** @ODM\Field(type="string") */
   private $comment;
@@ -49,6 +52,7 @@ class QuestionDocument
   public function __construct()
   {
     $this->subQuestions = new ArrayCollection();
+    $this->isScored = false;
   }
 
   /**
@@ -295,6 +299,26 @@ class QuestionDocument
   public function setReferId($referId)
   {
     $this->referId = $referId;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isScored
+   */ 
+  public function getIsScored()
+  {
+    return $this->isScored;
+  }
+
+  /**
+   * Set the value of isScored
+   *
+   * @return  self
+   */ 
+  public function setIsScored($isScored)
+  {
+    $this->isScored = $isScored;
 
     return $this;
   }

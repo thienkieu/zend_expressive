@@ -45,9 +45,7 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
                     ->getQuery()
                     ->getSingleResult();
         return $document;
-
     }
-
 
     public function updateQuestionMark($examId, $candiateId, $questionId, $mark, $comment) {
         $queryBuilder = $this->createQueryBuilder();       
@@ -80,6 +78,17 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
                 echo '<pre>'.print_r($document, true).'</pre>'; die;
         return $document;
 
+    }
+
+    public function hasQuestionNotScored($id) {
+        $queryBuilder = $this->createAggregationBuilder();       
+        $count = $queryBuilder
+                    ->match()
+                        ->field('id')->equals($id)
+                        ->field('test.sections.questions.questionInfo.isScored')->equals(false)
+                    
+                    ->execute()->count();
+        return !!$count;
     }
 
 }
