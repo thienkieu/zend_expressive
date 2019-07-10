@@ -39,12 +39,15 @@ class FromCandidateDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
         $dto->setObjectId($document->getObjectId());
         $dto->setIsPinValid($document->getIsPinValid());
         
-        $resultSummaryDTO = [];
-        $resultSummary = $document->getResultSummary();
-        foreach($resultSummary as $summary) {
-            $resultSummaryDTO[] = $this->convertor->convertToDTO($summary, $options);
+        if ($document instanceof \Test\Documents\Exam\CandidateDocument){
+            $resultSummaryDTO = [];
+            $resultSummary = $document->getResultSummary();
+            foreach($resultSummary as $summary) {
+                $resultSummaryDTO[] = $this->convertor->convertToDTO($summary, $options);
+            }
+            $dto->setResultSummary($resultSummaryDTO);
         }
-        $dto->setResultSummary($resultSummaryDTO);
+        
 
         return $dto;
     }
