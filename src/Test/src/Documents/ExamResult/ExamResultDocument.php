@@ -26,6 +26,9 @@ class ExamResultDocument
   /** @ODM\Field(type="int") */
   protected $time;
 
+  /** @ODM\Field(type="bool") */
+  protected $isDone;
+
   /** @ODM\Field(type="string") */
   protected $title;
 
@@ -35,6 +38,14 @@ class ExamResultDocument
   /** @ODM\Field(type="int") */
   protected $remainTime;
   
+  /**
+   * Class constructor.
+   */
+  public function __construct()
+  {
+    $this->isDone = false;
+  }
+
   /**
    * Get the value of id
    */ 
@@ -172,6 +183,26 @@ class ExamResultDocument
   public function setRemainTime($remainTime)
   {
     $this->remainTime = $remainTime;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isDone
+   */ 
+  public function getIsDone()
+  {
+    return $this->isDone;
+  }
+
+  /**
+   * Set the value of isDone
+   *
+   * @return  self
+   */ 
+  public function setIsDone($isDone)
+  {
+    $this->isDone = $isDone;
 
     return $this;
   }

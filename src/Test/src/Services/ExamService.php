@@ -268,6 +268,6 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $this->dm->flush();
 
         $messages[] = $this->translator->translate('The exam have been deleted successfully!');
-        return false;
+        return true;
     }
 }

@@ -53,6 +53,10 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         return true;
     }
 
+    public function updateDoneExamResult($examResultId) {
+        
+    }
+
     public function updateQuestionMark($dto, & $messages) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $examResult = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), '');
