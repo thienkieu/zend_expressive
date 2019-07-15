@@ -92,5 +92,8 @@ abstract class AppConstant
     const MaximunRepeateTime = 3;
     const MinimunRepeateTime = 0;
 
+    const MarkInputTypeAuto = 'auto';
+    const MarkInputTypeManual = 'manual';
+    
     const AuthenticationExcludeUrl = 'authenticationExcludeUrl';    
 }

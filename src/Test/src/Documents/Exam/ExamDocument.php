@@ -25,6 +25,9 @@ class ExamDocument
 
   /** @ODM\Field(type="date") */
   protected $createDate;
+
+  /** @ODM\Field(type="bool") */
+  protected $isScored;
   
   /** @ODM\EmbedMany(targetDocument="CandidateDocument") */
   private $candidates;
@@ -191,6 +194,26 @@ class ExamDocument
   public function setCreateDate($createDate)
   {
     $this->createDate = $createDate;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isScored
+   */ 
+  public function getIsScored()
+  {
+    return $this->isScored;
+  }
+
+  /**
+   * Set the value of isScored
+   *
+   * @return  self
+   */ 
+  public function setIsScored($isScored)
+  {
+    $this->isScored = $isScored;
 
     return $this;
   }

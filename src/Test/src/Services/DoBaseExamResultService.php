@@ -82,7 +82,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
             $examResult->setIsDone(true);
         }
         $this->updateResultSummary($examResult);
-
+        
         $this->dm->flush();
         return true;
     }
@@ -92,6 +92,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $summaries = $adapter->convert($examResult);
         $examService = $this->container->get(ExamServiceInterface::class);
         $examService->updateExamResultSummary($examResult->getExamId(), $examResult->getCandidate()->getId(), $summaries);
+        $examService->updateExamStatus($examResult->getExamId());
     }
 
     public function finish($dto, & $messages) {

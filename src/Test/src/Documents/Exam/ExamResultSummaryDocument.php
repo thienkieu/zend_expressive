@@ -13,6 +13,12 @@ class ExamResultSummaryDocument
   /** @ODM\Field(type="string") */
   protected $name;
 
+  /** @ODM\Field(type="string") */
+  protected $type;
+
+   /** @ODM\Field(type="bool") */
+   protected $isScored;
+
   /** @ODM\Field(type="float") */
   protected $mark;
 
@@ -55,4 +61,44 @@ class ExamResultSummaryDocument
 
     return $this;
   }
+
+  /**
+   * Get the value of type
+   */ 
+  public function getType()
+  {
+    return $this->type;
+  }
+
+  /**
+   * Set the value of type
+   *
+   * @return  self
+   */ 
+  public function setType($type)
+  {
+    $this->type = $type;
+
+    return $this;
+  }
+
+   /**
+    * Get the value of isScored
+    */ 
+   public function getIsScored()
+   {
+      return $this->isScored;
+   }
+
+   /**
+    * Set the value of isScored
+    *
+    * @return  self
+    */ 
+   public function setIsScored($isScored)
+   {
+      $this->isScored = $isScored;
+
+      return $this;
+   }
 }

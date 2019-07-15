@@ -31,6 +31,7 @@ class FromExamResultSummaryDocumentAdapter implements ConvertDocumentToDTOAdapte
         $dto = new \Test\DTOs\Exam\ExamResultSummaryDTO();
         $dto->setName($document->getName());
         $dto->setMark($document->getMark());
+        $dto->setType($document->getType());
         
         return $dto;
     }

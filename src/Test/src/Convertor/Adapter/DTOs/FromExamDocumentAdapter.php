@@ -43,6 +43,7 @@ class FromExamDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
             $candiateDTOs[] = $this->convertor->convertToDTO($candiate, $options);
         }
         $dto->setCandidates($candiateDTOs);
+        $dto->setIsScored($document->getIsScored());
 
         $test = $this->convertor->convertToDTO($document->getTest(), $options);
         $dto->setTest($test);
