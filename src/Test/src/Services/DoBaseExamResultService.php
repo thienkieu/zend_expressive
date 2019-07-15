@@ -49,7 +49,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         }
 
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class, [\Config\AppConstant::ShowCorrectAnswer => true]);
-        $examResultDTO = $documentToDTOConvertor->convertToDTO($examResult);
+        $examResultDTO = $documentToDTOConvertor->convertToDTO($examResult, [\Config\AppConstant::ShowCorrectAnswer => true]);
         return true;
     }
 
