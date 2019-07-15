@@ -37,7 +37,39 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'Hello World !');
         
-        $writer = new Xlsx($spreadsheet);
+        $sheet->getStyle('A1:D1')
+            ->getBorders()
+            ->getBottom()
+            ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_DOUBLE);
+        
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ],
+            'borders' => [
+                'top' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'FFA0A0A0',
+                ],
+                'endColor' => [
+                    'argb' => 'FFFFFFFF',
+                ],
+            ],
+        ];
+
+        $sheet->getStyle('A1:D1')->applyFromArray($styleArray);
+            
+       
+            $writer = new Xlsx($spreadsheet);
  
         $filename = 'c:\\name-of-the-generated-file.xlsx';
         $writer->save($filename);;
