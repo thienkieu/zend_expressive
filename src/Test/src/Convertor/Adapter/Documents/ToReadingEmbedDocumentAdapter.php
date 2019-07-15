@@ -38,6 +38,7 @@ class ToReadingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInter
         $document->setType($dto->getType());
         $document->setSubType($dto->getSubType());
         $document->setReferId($dto->getId());
+        $document->setMark($dto->getMark());
         
         $questions = $dto->getSubQuestions();
 

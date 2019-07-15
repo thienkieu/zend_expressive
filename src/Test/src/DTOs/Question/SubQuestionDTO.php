@@ -71,9 +71,9 @@ class SubQuestionDTO implements \JsonSerializable
         $ret = new \stdClass();
         $ret->content = $this->getContent();
         $ret->answers = $this->getAnswers();
-        $ret->order = $this->getOrder() ? $this->getOrder(): 0;
+        $ret->order = $this->getOrder();
         $ret->id = $this->getId();
-        $ret->mark = $this->getMark() ? $this->getMark(): 0;
+        $ret->mark = $this->getMark();
         return $ret;
     }
 

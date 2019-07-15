@@ -39,7 +39,9 @@ class ToSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterf
         foreach($answers as $answer){
             $a = new \Test\Documents\Question\AnswerDocument();
             $a->setContent($answer->getContent());
-            $a->setOrder($answer->getOrder());
+            $a->setIsCorrect(!!$answer->getIsCorrect());
+            $a->setIsUserChoice(!!$answer->getIsUserChoice());
+            $a->setOrder($answer->getOrder());  
             $document->addAnswer($a);
         }
         

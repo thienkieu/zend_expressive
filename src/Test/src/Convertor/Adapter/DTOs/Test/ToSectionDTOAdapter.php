@@ -30,6 +30,10 @@ class ToSectionDTOAdapter extends ToDTOAdapter {
         $dtoObject->setName($jsonObject->name);
         $dtoObject->setDescription($jsonObject->description);
         
+        $mark = 0;
+        if (isset($jsonObject->mark)) $mark = $jsonObject->mark;
+        $dtoObject->setMark($mark);
+        
         $questionDTOs = [];
         foreach ($jsonObject->questions as $jsonQuestion) {
             $question = $this->convertor->convertToDTO($jsonQuestion, [\Config\AppConstant::DTOKey => \Test\DTOs\Test\QuestionDTO::class]);

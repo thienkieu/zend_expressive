@@ -25,7 +25,7 @@ class DocumentToDTOConvertor implements DocumentToDTOConvertorInterface{
         foreach($this->adapters as $adapter) {
             $adapterInstance = new $adapter($this->container, $this);
             if ($adapterInstance->isHandleConvertDocumentToDTO($document, $options)) {
-                return $adapterInstance->convert($document, $options = []);
+                return $adapterInstance->convert($document, $options);
             }
         }
 

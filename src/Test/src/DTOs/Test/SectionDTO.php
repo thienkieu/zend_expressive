@@ -9,6 +9,8 @@ class SectionDTO implements \JsonSerializable
     protected $name;
     protected $description; 
     protected $id;
+    protected $mark;
+    protected $candidateMark;
     
     /**
      * @var QuestionDTO[]
@@ -102,6 +104,8 @@ class SectionDTO implements \JsonSerializable
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->name = $this->getName();
+        $ret->mark = $this->getMark();
+        $ret->candidateMark = $this->getCandidateMark();
         $ret->description = $this->getDescription(); 
         $ret->id = $this->getId();   
         $questions = $this->getQuestions();
@@ -134,6 +138,46 @@ class SectionDTO implements \JsonSerializable
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mark
+     */ 
+    public function getMark()
+    {
+        return $this->mark;
+    }
+
+    /**
+     * Set the value of mark
+     *
+     * @return  self
+     */ 
+    public function setMark($mark)
+    {
+        $this->mark = $mark;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of candidateMark
+     */ 
+    public function getCandidateMark()
+    {
+        return $this->candidateMark;
+    }
+
+    /**
+     * Set the value of candidateMark
+     *
+     * @return  self
+     */ 
+    public function setCandidateMark($candidateMark)
+    {
+        $this->candidateMark = $candidateMark;
 
         return $this;
     }

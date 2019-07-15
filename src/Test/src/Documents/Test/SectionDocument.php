@@ -18,6 +18,12 @@ class SectionDocument
   /** @ODM\Field(type="string") */
   private $description;
 
+  /** @ODM\Field(type="float") */
+  private $mark;
+
+  /** @ODM\Field(type="float") */
+  private $candidateMark;
+
   /** @ODM\EmbedMany(targetDocument="QuestionInfoDocument") */
   private $questions;
 
@@ -120,4 +126,44 @@ class SectionDocument
     return $this;
   }
 
+
+  /**
+   * Get the value of mark
+   */ 
+  public function getMark()
+  {
+    return $this->mark;
+  }
+
+  /**
+   * Set the value of mark
+   *
+   * @return  self
+   */ 
+  public function setMark($mark)
+  {
+    $this->mark = $mark;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of candidateMark
+   */ 
+  public function getCandidateMark()
+  {
+    return $this->candidateMark;
+  }
+
+  /**
+   * Set the value of candidateMark
+   *
+   * @return  self
+   */ 
+  public function setCandidateMark($candidateMark)
+  {
+    $this->candidateMark = $candidateMark;
+
+    return $this;
+  }
 }

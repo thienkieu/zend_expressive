@@ -53,9 +53,12 @@ class ToQuestionDTOAdapter extends ToDTOAdapter {
         $dto = new \Test\DTOs\Test\RandomQuestionDTO();
         $dto->setNumberSubQuestion($jsonObject->numberSubQuestion);
         $dto->setType($jsonObject->type);
+        
+        if (isset($jsonObject->mark)) $dto->setMark($jsonObject->mark);
+        
         $dto->setSubType($jsonObject->subType);
         $dto->setIsDifferentSource($jsonObject->isDifferentSource);
-
+        
         return $dto;
     }
 }

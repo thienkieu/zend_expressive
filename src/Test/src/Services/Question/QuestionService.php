@@ -47,18 +47,36 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $subQuestions = $questionDTO->getSubQuestions();        
         $maxRand = count($subQuestions) - 1;
         $ret = [];
-        
+
+        $questionMark = $questionDTO->getMark();
+        $markOfSubQuestion = $this->getSubQuestionMark($questionMark, $numberSubQuestion);
+        $totalMarkOfSubQuestion = 0;
         for ($i=0; $i < $numberSubQuestion ; $i++) {
+            if ($i == $numberSubQuestion - 1 && !empty($questionMark)) {
+                $markOfSubQuestion = $questionMark - $totalMarkOfSubQuestion;
+            }
+
             $index = mt_rand(0, $maxRand);
-            $q = array_splice($subQuestions, $index, 1);
-            $ret[] = $q[0];
+            $qArray = array_splice($subQuestions, $index, 1);            
+            $q = $qArray[0];
+            $q->setMark($markOfSubQuestion);            
+            $ret[] = $q;
+
             $maxRand = $maxRand - 1;
+            $totalMarkOfSubQuestion += $markOfSubQuestion;
         }
         
         return $ret;
     }
 
-    public function generateQuestion($citerial, $notInsources, $notInQuestions) {
+    protected function getSubQuestionMark($questionMark, $numberSubQuestion) {
+        if (empty($questionMark)) return \Config\AppConstant::DefaultSubQuestionMark;
+        
+        //TODO điểm lẽ => tổng điểm thành phần sẽ lớn hơn điểm của câu hỏi
+        return round($questionMark / $numberSubQuestion, 2);
+    }
+
+    public function generateQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer = false) {
         if ($citerial->getGenerateFrom() !== \Config\AppConstant::Random) {
             return $citerial;
         }
@@ -70,7 +88,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         if (!$citerial->getQuestionInfo()->getIsDifferentSource()) {
             $notInsources = [];
         }
-        
+       
         $question = $questionRepository->generateRandomQuestion($questionDTO->getType(), $questionDTO->getSubType(), $questionDTO->getNumberSubQuestion(), $notInsources, $notInQuestions, $toClass);
         if (!$question) {
             $generateQuestionCiterial = [
@@ -82,9 +100,10 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             
             throw new \Test\Exceptions\GenerateQuestionException($this->translator->translate('Cannot generate question with citerials: [type => %type%, subType => %subType%, numberSubQuestion => %numberSubQuestion%, sources=>%sources%]', $generateQuestionCiterial));
         }
-
+        
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-        $ret = $documentToDTOConvertor->convertToDTO($question);
+        $ret = $documentToDTOConvertor->convertToDTO($question, [\Config\AppConstant::ShowCorrectAnswer => $keepCorrectAnswer]);
+        $ret->setMark($questionDTO->getMark());
         if (!($ret instanceof \Test\DTOs\Question\WritingQuestionDTO)) {
             $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion());
             $ret->setSubQuestions($subQuestions);

@@ -31,6 +31,9 @@ class QuestionDocument
   /** @ODM\Field(type="int") */
   private $numberSubQuestion;
   
+  /** @ODM\Field(type="float") */
+  private $mark;
+  
   /** @ODM\Field(type="date") */
   protected $createDate;
   
@@ -41,6 +44,7 @@ class QuestionDocument
   {
     $this->subQuestions = new ArrayCollection();
     $this->createDate = new \DateTime();
+    $this->mark = \Config\AppConstant::DefaultSubQuestionMark;
   }
 
   /**
@@ -207,6 +211,26 @@ class QuestionDocument
   public function setCreateDate($createDate)
   {
     $this->createDate = $createDate;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of mark
+   */ 
+  public function getMark()
+  {
+    return $this->mark;
+  }
+
+  /**
+   * Set the value of mark
+   *
+   * @return  self
+   */ 
+  public function setMark($mark)
+  {
+    $this->mark = $mark;
 
     return $this;
   }

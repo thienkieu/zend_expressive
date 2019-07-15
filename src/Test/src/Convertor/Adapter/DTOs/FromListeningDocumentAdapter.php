@@ -37,6 +37,7 @@ class FromListeningDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
         $dto->setSubType($document->getSubType());
         $dto->setSource($document->getSource());
         $dto->setId($document->getId());
+        $dto->setMark($document->getMark());
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         

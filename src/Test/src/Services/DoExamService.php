@@ -70,7 +70,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $examDTO = $documentToDTOConvertor->convertToDTO($examDocument);
             $examService = $this->container->get(ExamServiceInterface::class);            
            
-            $examTest = $examService->generateExamTest($examDTO->getTest(), $messages);
+            $examTest = $examService->generateExamTest($examDTO->getTest(), $messages, true);
             if (!$examTest) {
                 return false;
             }

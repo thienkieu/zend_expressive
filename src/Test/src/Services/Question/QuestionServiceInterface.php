@@ -7,7 +7,7 @@ namespace Test\Services\Question;
 
 interface QuestionServiceInterface
 {
-    public function generateQuestion($citerial, $notInSources, $notInQuestions);
+    public function generateQuestion($citerial, $notInSources, $notInQuestions, $keepCorrectAnswer = false);
 
     public function getQuestions($dto, $pageNumber, $itemPerPage);
 

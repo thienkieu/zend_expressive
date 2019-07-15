@@ -163,7 +163,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         }        
     }
 
-    public function generateExamTest($test, & $messages) {
+    public function generateExamTest($test, & $messages, $keepCorrectAnswer = false) {
         try {
             $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
             $sectionsForDoExam = [];
@@ -179,10 +179,11 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                     $questionInfo = $question->getQuestionInfo();
                     if (!isset($sources[$questionInfo->getType()])) $sources[$questionInfo->getType()] = [];
                     
-                    $q = $questionService->generateQuestion($question, $sources[$questionInfo->getType()], $questionIds);
+                    $q = $questionService->generateQuestion($question, $sources[$questionInfo->getType()], $questionIds, $keepCorrectAnswer);
                     $sources[$q->getType()][] = $q->getSource();
                     $questionIds[] = $q->getId();
                 
+
                     $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
                     $testQuestionDTO->setId($q->getId());
                     $testQuestionDTO->setGenerateFrom(\Config\AppConstant::Pickup);
@@ -202,7 +203,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             $testForDoExam->setSections($sectionsForDoExam);
             $testForDoExam->setId($test->getId());
             $testForDoExam->setTitle($test->getTitle());
-
+            
             return $testForDoExam;
         } catch(\Test\Exceptions\GenerateQuestionException $e) {
             $messages[] =  $e->getMessage();            

@@ -33,6 +33,7 @@ class ToSectionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         $document = new \Test\Documents\Test\SectionDocument();
         $document->setName($dto->getName());
         $document->setDescription($dto->getDescription());
+        $document->setMark($dto->getMark());
                 
         $questions = $dto->getQuestions();
         foreach($questions as $question) {

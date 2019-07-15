@@ -124,6 +124,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
         return true;
     }
+    
     protected function calculatorExamMark($dto, & $messages){
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $document = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');

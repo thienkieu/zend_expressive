@@ -32,6 +32,7 @@ class SubQuestionDocument
   public function __construct()
   {
     $this->answers = new ArrayCollection();
+    $this->mark = \Config\AppConstant::DefaultSubQuestionMark;
   }
 
   public function addAnswer($answer){
