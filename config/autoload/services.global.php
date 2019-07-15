@@ -35,6 +35,9 @@ return [
         \Test\Services\DoExamServiceInterface::class => [
             \Test\Services\DoExamService::class,
         ],
+        \Test\Services\Interfaces\ExportServiceInterface::class => [
+            \Test\Services\ExportService::class,
+        ],
         \Test\Services\Question\QuestionServiceInterface::class => [
             \Test\Services\Question\ReadingQuestionService::class,
             \Test\Services\Question\WritingQuestionService::class,

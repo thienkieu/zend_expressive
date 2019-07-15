@@ -2,6 +2,7 @@
 namespace Test\Documents\ExamResult;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Common\Collections\ArrayCollection;
 use time;
 
 /** 
@@ -38,12 +39,16 @@ class ExamResultDocument
   /** @ODM\Field(type="int") */
   protected $remainTime;
   
+  /** @ODM\EmbedMany(targetDocument="\Test\Documents\Exam\ExamResultSummaryDocument") */
+  protected $resultSummary;
+
   /**
    * Class constructor.
    */
   public function __construct()
   {
     $this->isDone = false;
+    $this->resultSummary = new ArrayCollection();
   }
 
   /**
@@ -203,6 +208,26 @@ class ExamResultDocument
   public function setIsDone($isDone)
   {
     $this->isDone = $isDone;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of resultSummary
+   */ 
+  public function getResultSummary()
+  {
+    return $this->resultSummary;
+  }
+
+  /**
+   * Set the value of resultSummary
+   *
+   * @return  self
+   */ 
+  public function setResultSummary($resultSummary)
+  {
+    $this->resultSummary = $resultSummary;
 
     return $this;
   }

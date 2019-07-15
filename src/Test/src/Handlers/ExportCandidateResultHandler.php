@@ -10,9 +10,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Container\ContainerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
-use Test\Services\ExamServiceInterface;
+use Test\Services\Interfaces\ExportServiceInterface;
 
-class SendMailToCandidateHandler implements RequestHandlerInterface
+class ExportCandidateResultHandler implements RequestHandlerInterface
 {
     /** @var Psr\Container\ContainerInterface */
     private $container;
@@ -24,12 +24,12 @@ class SendMailToCandidateHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        $examService = $this->container->get(ExamServiceInterface::class);
-        $ok = $examService->deleteExam($dto->id, $messages);
+        $examService = $this->container->get(ExportServiceInterface::class);
+        $ok = $examService->exportCandidateExamResult($dto, $messages, $outDTO);
         return new JsonResponse([
             'success' => $ok,
             'messages' => $messages,
-            'data' => ''
+            'data' => $outDTO
         ]);
     }
 }

@@ -93,6 +93,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $examService = $this->container->get(ExamServiceInterface::class);
         $examService->updateExamResultSummary($examResult->getExamId(), $examResult->getCandidate()->getId(), $summaries);
         $examService->updateExamStatus($examResult->getExamId());
+        $examResult->setResultSummary($summaries);
     }
 
     public function finish($dto, & $messages) {

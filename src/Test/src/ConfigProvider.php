@@ -62,6 +62,7 @@ class ConfigProvider
                 Handlers\ViewListExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\DeleteTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\DeleteExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\ExportCandidateResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
@@ -81,6 +82,9 @@ class ConfigProvider
 
                 Services\Interfaces\TypeServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\TypeService::class => \Infrastructure\Factory\BaseFactory::class,
+
+                Services\Interfaces\ExportServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\ExportService::class => \Infrastructure\Factory\BaseFactory::class,
 
 
 

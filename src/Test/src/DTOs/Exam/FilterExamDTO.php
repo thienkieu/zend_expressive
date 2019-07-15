@@ -17,9 +17,6 @@ class FilterExamDTO {
      */ 
     public function getToDate()
     {
-        if ($this->fromDate == $this->toDate) {
-            return null;
-        }
         return $this->toDate->add(new \DateInterval('P1D'));
     }
 
@@ -28,9 +25,11 @@ class FilterExamDTO {
      *
      * @return  self
      */ 
-    public function setToDate(\DateTime $toDate)
+    public function setToDate($toDate)
     {
-        $this->toDate = $toDate;
+        $date = \DateTime::createFromFormat('m/d/Y', $toDate);
+        $date->setTime(0, 0, 0);
+        $this->toDate = $date;
 
         return $this;
     }
@@ -40,9 +39,6 @@ class FilterExamDTO {
      */ 
     public function getFromDate()
     {
-        if ($this->fromDate == $this->toDate) {
-           return null;
-        }
         return $this->fromDate;
     }
 
@@ -51,9 +47,11 @@ class FilterExamDTO {
      *
      * @return  self
      */ 
-    public function setFromDate(\DateTime $fromDate)
+    public function setFromDate($fromDate)
     {
-        $this->fromDate = $fromDate;
+        $date = \DateTime::createFromFormat('m/d/Y', $fromDate);
+        $date->setTime(0, 0, 0);
+        $this->fromDate = $date;
        
         return $this;
     }

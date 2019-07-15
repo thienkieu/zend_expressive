@@ -165,6 +165,8 @@ class ExamRepository extends DocumentRepository
                 
         }
 
+        $array =  $queryBuilder->getQueryArray();
+        
         return $queryBuilder;
     }
 }

@@ -76,6 +76,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/coordinator/exam/exams', Test\Handlers\ViewListExamHandler::class, 'exam.exams');
     $app->delete('/coordinator/exam/delete', Test\Handlers\DeleteExamHandler::class, 'exam.delete');
     
+    $app->post('/coordinator/exam/exportCandidateResult', Test\Handlers\ExportCandidateResultHandler::class, 'exam.exportCandidateResult');
+    
    // $app->get('/test/create-section', Test\Handlers\CreateTestHandler::class, 'section.create');
 
     $app->get('/test/search-section', Test\Handlers\SearchSectionHandler::class, 'search');
