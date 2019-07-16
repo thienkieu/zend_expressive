@@ -13,6 +13,7 @@ class ExamResultDTO implements \JsonSerializable
     protected $time; 
     protected $startDate;
     protected $remainingTime;
+    protected $resultSummary;
 
     public function jsonSerialize() {
         $ret = new \stdClass();
@@ -23,6 +24,7 @@ class ExamResultDTO implements \JsonSerializable
         $ret->time = $this->getTime();
         $ret->startDate = $this->getStartDate() ? $this->getStartDate()->format(\Config\AppConstant::DateTimeFormat) : '';   
         $ret->remainingTime = $this->getRemainingTime();
+        $ret->resultSummary = $this->getResultSummary();
         return $ret;
     }
 
@@ -163,6 +165,26 @@ class ExamResultDTO implements \JsonSerializable
     public function setRemainingTime($remainingTime)
     {
         $this->remainingTime = $remainingTime;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of resultSummary
+     */ 
+    public function getResultSummary()
+    {
+        return $this->resultSummary;
+    }
+
+    /**
+     * Set the value of resultSummary
+     *
+     * @return  self
+     */ 
+    public function setResultSummary($resultSummary)
+    {
+        $this->resultSummary = $resultSummary;
 
         return $this;
     }

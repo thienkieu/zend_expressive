@@ -22,6 +22,9 @@ class ExamResultSummaryDocument
   /** @ODM\Field(type="float") */
   protected $mark;
 
+  /** @ODM\Field(type="float") */
+  protected $candidateMark;
+
   /**
    * Get the value of name
    */ 
@@ -101,4 +104,24 @@ class ExamResultSummaryDocument
 
       return $this;
    }
+
+  /**
+   * Get the value of candidateMark
+   */ 
+  public function getCandidateMark()
+  {
+    return $this->candidateMark;
+  }
+
+  /**
+   * Set the value of candidateMark
+   *
+   * @return  self
+   */ 
+  public function setCandidateMark($candidateMark)
+  {
+    $this->candidateMark = $candidateMark;
+
+    return $this;
+  }
 }

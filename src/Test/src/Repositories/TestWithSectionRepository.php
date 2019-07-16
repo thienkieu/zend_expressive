@@ -33,11 +33,10 @@ class TestWithSectionRepository extends DocumentRepository
     protected function getFilterQuery($filterData) {
         $queryBuilder = $this->createQueryBuilder();
         if (!empty($filterData->title)) {
-            $queryBuilder->addAnd(
-                $queryBuilder->expr()->field('id')->notEqual('dd')
+            $queryBuilder
                 ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoRegex('/.*'.$filterData->title.'*/i')))
-                ->addOr($queryBuilder->expr()->field('sections.description')->equals(new \MongoRegex('/.*'.$filterData->title.'*/i')))            
-            );
+                ->addOr($queryBuilder->expr()->field('sections.description')->equals(new \MongoRegex('/.*'.$filterData->title.'*/i')));
+            
         }
         
         return $queryBuilder;

@@ -9,12 +9,14 @@ class ExamResultSummaryDTO implements \JsonSerializable
     protected $name;
     protected $mark;
     protected $type;
+    protected $candidateMark;
 
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->name = $this->getName();
         $ret->mark = $this->getMark(); 
         $ret->type = $this->getType();
+        $ret->candidateMark = $this->getCandidateMark();
         return $ret;
     }
 
@@ -74,6 +76,26 @@ class ExamResultSummaryDTO implements \JsonSerializable
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of candidateMark
+     */ 
+    public function getCandidateMark()
+    {
+        return $this->candidateMark;
+    }
+
+    /**
+     * Set the value of candidateMark
+     *
+     * @return  self
+     */ 
+    public function setCandidateMark($candidateMark)
+    {
+        $this->candidateMark = $candidateMark;
 
         return $this;
     }
