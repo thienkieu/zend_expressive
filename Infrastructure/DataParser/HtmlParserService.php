@@ -3,7 +3,7 @@ namespace Infrastructure\DataParser;
 
 use Infrastructure\Interfaces\HandlerInterface;
 
-class ExcelParserService implements DataParserInterface, HandlerInterface, \Iterator 
+class HtmlParserService implements DataParserInterface, HandlerInterface, \Iterator 
 {
     protected $formatAdapter;
     protected $container;
@@ -11,16 +11,16 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
     protected $options;
     protected $translator;
     protected $rowItertor = null;
-    protected $excelFormatAdapter;
-    
+    protected $sourceFormat;
+
     public function __construct($container, $options) {
         $this->container = $container;
         $this->options = $options;
         $this->translator = $this->container->get(\Config\AppConstant::Translator);    
-        $this->excelFormatAdapter = new ExcelFormatAdapter();
+        $this->sourceFormat = new HtmlFormatAdapter();
 
         if (!isset($this->options['format'])) {
-            $this->formatAdapter = new HtmlFormatAdapter();
+            $this->formatAdapter = new ExcelFormatAdapter();
         } else {
             $this->formatAdapter = $this->options['format'];
         }
@@ -32,7 +32,7 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
     }
 
     public function isHandler($param, $options = []) {
-        if($options[DataParserInterface::FileTypeKey] === 'excel') {
+        if($options[DataParserInterface::FileTypeKey] === 'html') {
             return true;
         }
 
@@ -40,9 +40,9 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
     }
 
     public function toData($dataInFormat, $options = []) {
-        $this->excelFormatAdapter->fromOtherFormat($dataInFormat, $this->formatAdapter, $options);
+        $this->formatAdapter->fromOtherFormat($dataInFormat, $this->sourceFormat, $options);
     }
-
+    
     public function parseData($obj, $options = []) {
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $reader->setReadDataOnly(false);
@@ -79,16 +79,16 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
                     $font = $element->getFont(); 
                     if ($font) {
                         if ($font->getBold()) {
-                            $text = $this->formatAdapter->buildFormat($text, FormatType::Bold);
+                            $text = $this->formatAdapter->buildFormatFromRaw($text, FormatType::Bold);
                         }
                         if ($font->getItalic()) {
-                            $text = $this->formatAdapter->buildFormat($text, FormatType::Italic);
+                            $text = $this->formatAdapter->buildFormatFromRaw($text, FormatType::Italic);
                         }
                         if ($font->getUnderline() !== \PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_NONE) {
-                            $text = $this->formatAdapter->buildFormat($text, FormatType::Underline);
+                            $text = $this->formatAdapter->buildFormatFromRaw($text, FormatType::Underline);
                         }
                         if ($font->getStrikethrough()) {
-                            $text = $this->formatAdapter->buildFormat($text, FormatType::Strike);
+                            $text = $this->formatAdapter->buildFormatFromRaw($text, FormatType::Strike);
                         }
                     }
 
@@ -97,7 +97,7 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
                 $cellText = $elementText ;
             }
 
-            $cellText = $this->formatAdapter->buildFormat($cellText, FormatType::LineBreak);
+            $cellText = $this->formatAdapter->buildFormatFromRaw($cellText, FormatType::LineBreak);
             $ret[] = $cellText;
         }
 

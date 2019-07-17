@@ -18,12 +18,13 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
     private $dm;
     private $options;
     private $translator;
+    private $dataParser; 
 
     public function __construct($container, $options) {
         $this->container = $container;
         $this->options = $options;
         $this->dm = $this->container->get('documentManager');  
-        $this->translator = $this->container->get(\Config\AppConstant::Translator);      
+        $this->translator = $this->container->get(\Config\AppConstant::Translator);
     }
 
     public function isHandler($dto, $options = []){
@@ -219,7 +220,8 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
     }
 
     protected function exportListeningQuestion($sheet, $question, $questionIndex, $startRow) {
-        $this->exportComment($sheet, 'B'.$startRow, 'Path '.$questionIndex.': ', $question->getPath());
+        $this->exportComment($sheet, 'B'.$startRow, 'Path '.$questionIndex, '');
+        $sheet->getCell('B'.$startRow)->getHyperlink()->setUrl($question->getPath());
         $startRow +1;
         $startRow = $this->exportSubQuestion($sheet, $question->getSubQuestions(), $startRow+1);
 
@@ -258,7 +260,10 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText(); 
         $boldText = $richText->createTextRun($questionIndex.') ');
         $boldText->getFont()->setBold(true);
-        $richText->createText($questionInfo->getContent());
+        
+        $content = $this->toRichTextFromHTML($questionInfo->getContent());
+        $this->addRichTextToRichText($content, $richText);
+        
         $sheet->getCell('B'.$startRow)->setValue($richText);
 
         $styleArray = [
@@ -287,7 +292,10 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText(); 
             $boldText = $richText->createTextRun($subQuestionIndex.'. ');
             $boldText->getFont()->setBold(true);
-            $richText->createText($subQuestion->getContent());
+          
+            $content = $this->toRichTextFromHTML($subQuestion->getContent());
+            $this->addRichTextToRichText($content, $richText);
+
             $sheet->getCell('B'.$startRow)->setValue($richText);
 
             $startRow = $this->exportAnswer($sheet, $subQuestion->getAnswers(), $startRow+1);                    
@@ -321,7 +329,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText(); 
             $boldText = $richText->createTextRun(chr($answerIndex).'. ');
             $boldText->getFont()->setBold(true);
-            $richText->createText($answer->getContent());
+
+            $content = $this->toRichTextFromHTML($answer->getContent());
+            $this->addRichTextToRichText($content, $richText);
             $sheet->getCell('B'.$startRow)->setValue($richText);
            
             if ($answer->getIsUserChoice()) {
@@ -344,7 +354,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         return $startRow+1;
     }
 
-    public function exportCandidateExamResult($params, &$messages, &$outDTO) {
+    public function exportCandidateExamResult($params, &$messages, &$writer) {
         $doExamResultService = $this->container->get(DoExamResultServiceInterface::class);
         $ret = $doExamResultService->getExamResult($params, $messages, $outDTO);
         $spreadsheet = new Spreadsheet();
@@ -358,8 +368,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
 
         $writer = new Xlsx($spreadsheet);
-        $fileName = 'c:\\'.$outDTO->getCandidate()->getName().'.xlsx';
-        $writer->save($fileName);;
+        return true;
+        // $fileName = 'c:\\'.$outDTO->getCandidate()->getName().'.xlsx';
+        // $writer->save($fileName);;
     }
 
     protected function setCellStyle(&$sheet, $cells, $styles) {
@@ -372,5 +383,17 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         }
 
         $sheet->setCellValue($cells, $value);
+    }
+
+    protected function toRichTextFromHTML($html) {
+        $wizard = new \PhpOffice\PhpSpreadsheet\Helper\Html();
+        return $wizard->toRichTextObject($html);
+    }
+
+    protected function addRichTextToRichText($source, &$des) {
+        $iTextElements = $source->getRichTextElements();
+        foreach($iTextElements as $iTextElement) {
+            $des->addText($iTextElement);
+        }
     }
 }

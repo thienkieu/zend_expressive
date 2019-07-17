@@ -38,4 +38,8 @@ class WordParserService implements DataParserInterface, HandlerInterface
     public function parseData($obj, $options = []) {
 
     }
+
+    public function toData($obj, $options = []) {
+        
+    }
 }

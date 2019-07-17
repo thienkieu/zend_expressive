@@ -28,22 +28,23 @@ class HtmlFormatAdapter implements FormatAdapterInterface
     }
 
     protected function buildBoldFormat($data, $options = []) {
-        return sprintf('<span style="font-weight:bold;">%s</span>', $data);
+        return sprintf('<b>%s</b>', $data);
     }
 
     protected function buildUnderlineFormat($data, $options = []) {
-        return sprintf('<span style="text-decoration:underline;">%s</span>', $data);
+        return sprintf('<u>%s</u>', $data);
     }
 
     protected function buildItaclicFormat($data, $options = []) {
-        return sprintf('<span style="font-style:italic;">%s</span>', $data);
+        return sprintf('<i">%s</i>', $data);
     }
 
     protected function buildStrikeFormat($data, $options = []) {
-        return sprintf('<span style="text-decoration:line-through;">%s</span>', $data);
+        return sprintf('<del>%s</del>', $data);
     }
 
     protected function buildLinkBreakFormat($data, $options = []) {
         return str_replace(array("\n", "\r"), '<br>', $data);
     }
+
 }
