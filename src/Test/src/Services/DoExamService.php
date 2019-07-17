@@ -75,6 +75,8 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 return false;
             }
 
+            $examDocument->setIsStarted(true);
+            
             $examResult = new \Test\DTOs\ExamResult\ExamResultHasSectionTestDTO();
             $examResult->setTest($examTest);
 

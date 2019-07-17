@@ -224,6 +224,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             $testForDoExam->setSections($sectionsForDoExam);
             $testForDoExam->setId($test->getId());
             $testForDoExam->setTitle($test->getTitle());
+            $testForDoExam->setReferId($test->getReferId());
             
             return $testForDoExam;
         } catch(\Test\Exceptions\GenerateQuestionException $e) {
@@ -302,5 +303,10 @@ class ExamService implements ExamServiceInterface, HandlerInterface
 
         $messages[] = $this->translator->translate('The exam have been deleted successfully!');
         return true;
+    }
+
+    public function getExamNotStartedByTestId($testId) {
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        return $examRepository->getExamNotStartedByTestId($testId);
     }
 }

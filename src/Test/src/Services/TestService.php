@@ -27,6 +27,54 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
     public function isHandler($dto, $options = []){
         return true;
     }
+    
+    public function updateTest(\Test\DTOs\Test\BaseTestDTO $testDTO, & $messages, & $outDTO) {
+        $testId = $testDTO->getId();
+        if (empty($testId)) {
+            $messages[] = $this->translator->translate('Your test doesnot exist!');
+            return false;
+        }
+
+        try {
+            $testRepository = $this->dm->getRepository(\Test\Documents\Test\TestWithSectionDocument::class);
+            $testDocument = $testRepository->find($testDTO->getId());
+            if (!$testDocument) {
+                $messages[] = $this->translator->translate('Your test doesnot exist!');
+                return false;
+            }
+
+            $examService = $this->container->get(ExamServiceInterface::class);
+            $examDTO = $examService->generateExamTest($testDTO, $messages);
+            if (!$examDTO) {
+                return false;
+            }
+
+            $this->dm->remove($testDocument);
+            $this->dm->flush();
+            
+            $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
+            $newTestDocument = $dtoToDocumentConvertor->convertToDocument($testDTO);
+            $this->dm->persist($newTestDocument);
+
+            $newTestEmbedDocument = $dtoToDocumentConvertor->convertToDocument($testDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
+            $examNotStarteds = $examService->getExamNotStartedByTestId($testDTO->getId());
+            foreach($examNotStarteds as $examDocument) {
+                $examDocument->setTest($newTestEmbedDocument);
+            }
+
+            $this->dm->flush();
+            $messages[] = $this->translator->translate('The test have been updated successfully!');
+            return true;
+            
+        } catch(\Exception $e){
+            $messages[] = $this->translator->translate('There is error with update test, Please check admin site');
+           
+            $logger = $this->container->get(Logger::class);
+            $logger->info($e);
+            
+            return false;
+        } 
+    }
 
     public function createTest(\Test\DTOs\Test\BaseTestDTO $testDTO, & $messages, & $outDTO) {
         $messages = [];

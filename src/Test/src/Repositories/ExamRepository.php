@@ -167,4 +167,16 @@ class ExamRepository extends DocumentRepository
 
         return $queryBuilder;
     }
+
+    public function getExamNotStartedByTestId($testId) {
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+                    ->field('test.referId')->equals($testId)
+                    ->field('isStarted')->notEqual(true)
+                    ->getQuery()
+                    ->execute();
+                    
+        return $result;
+
+    }
 }

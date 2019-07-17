@@ -28,6 +28,10 @@ class ExamDocument
 
   /** @ODM\Field(type="bool") */
   protected $isScored;
+
+  /** @ODM\Field(type="bool") */
+  protected $isStarted;
+  
   
   /** @ODM\EmbedMany(targetDocument="CandidateDocument") */
   private $candidates;
@@ -214,6 +218,26 @@ class ExamDocument
   public function setIsScored($isScored)
   {
     $this->isScored = $isScored;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isStarted
+   */ 
+  public function getIsStarted()
+  {
+    return $this->isStarted;
+  }
+
+  /**
+   * Set the value of isStarted
+   *
+   * @return  self
+   */ 
+  public function setIsStarted($isStarted)
+  {
+    $this->isStarted = $isStarted;
 
     return $this;
   }

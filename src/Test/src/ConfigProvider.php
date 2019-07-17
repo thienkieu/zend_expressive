@@ -63,6 +63,7 @@ class ConfigProvider
                 Handlers\DeleteTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\DeleteExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ExportCandidateResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,

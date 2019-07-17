@@ -32,7 +32,12 @@ class ToTestDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     {  
         $document = new \Test\Documents\Test\TestWithSectionDocument();
         $document->setTitle($dto->getTitle());
-                
+        if (empty($dto->getId())) {
+            $document->setId(uniqid('test_',true));
+        } else {
+            $document->setId($dto->getId());
+        }
+        
         $sections = $dto->getSections();
 
         foreach($sections as $section) {
