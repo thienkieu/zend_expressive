@@ -182,6 +182,16 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
         return $numberCorrectSubQuestion;
     }
+
+    public function createQuestion($dto, &$messages) {
+        $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
+        $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto);
+        $this->dm->persist($questionDocument);
+        $this->dm->flush();
+
+        $messages[] = $this->translator->translate('The question have been created successfully!');
+        return true;
+    }
     
 
 }

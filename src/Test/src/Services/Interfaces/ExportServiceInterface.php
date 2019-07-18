@@ -6,5 +6,5 @@ namespace Test\Services\Interfaces;
 
 interface ExportServiceInterface
 {
-    public function exportCandidateExamResult($params, &$messages, &$writer);
+    public function exportCandidateExamResult($params, &$messages, &$writer, &$candidateName);
 }

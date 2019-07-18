@@ -354,9 +354,14 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         return $startRow+1;
     }
 
-    public function exportCandidateExamResult($params, &$messages, &$writer) {
+    public function exportCandidateExamResult($params, &$messages, &$writer, &$candidateName) {
         $doExamResultService = $this->container->get(DoExamResultServiceInterface::class);
-        $ret = $doExamResultService->getExamResult($params, $messages, $outDTO);
+        $ok = $doExamResultService->getExamResult($params, $messages, $outDTO);
+        if (!$ok) {
+            return false;
+        }
+
+        $candidateName = $outDTO->getCandidate()->getName();
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $this->exportSummary($sheet, $outDTO);

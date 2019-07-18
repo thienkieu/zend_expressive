@@ -53,7 +53,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/coordinator/question/types', Test\Handlers\GetTypesHandler::class, 'question.types');
     $app->post('/coordinator/question/subType/create', Test\Handlers\CreateSubTypeHandler::class, 'question.subType.create');
     
-    
+   
     //Test
     $app->post('/coordinator/test/create', Test\Handlers\CreateTestHandler::class, 'test.create');
     $app->post('/coordinator/test/update', Test\Handlers\UpdateTestHandler::class, 'test.update');
@@ -98,7 +98,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     */
     
     // Question
-    $app->post('/coordinator/questions/create', Test\Handlers\CreateSectionHandler::class, 'questions.create');
+    $app->post('/coordinator/questions/create', Test\Handlers\CreateQuestionHandler::class, 'questions.create');
+    $app->post('/coordinator/questions/update', Test\Handlers\UpdateQuestionHandler::class, 'questions.update');
+    $app->post('/coordinator/questions/delete', Test\Handlers\DeleteQuestionHandler::class, 'questions.delete');
     $app->post('/coordinator/questions/import', Test\Handlers\ImportQuestionHandler::class, 'questions.import');
     $app->post('/coordinator/question/questions', Test\Handlers\GetQuestionHandler::class, 'question.questions');
 

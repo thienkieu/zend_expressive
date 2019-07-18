@@ -54,7 +54,8 @@ return array(
     'The exam have been deleted successfully!' => 'The exam have been deleted successfully!',
     'Your test doesnot exist!' => 'Your test doesnot exist!',
     'There is error with update test, Please check admin site' => 'There is error with update test, Please check admin site',
-    'The test have been updated successfully!' => 'The test have been updated successfully!'
+    'The test have been updated successfully!' => 'The test have been updated successfully!',
+    'The question have been created successfully!' => 'The question have been created successfully!'
 
 
 );

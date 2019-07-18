@@ -16,5 +16,7 @@ return [
         'exam.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,
         'exam.updateQuestionMark' => \Test\DTOs\ExamResult\UpdateQuestionMarkDTO::class,
         'question.type.create'  => \Test\DTOs\Question\TypeDTO::class,
+        'questions.create'  => \Test\DTOs\Question\QuestionDTO::class,
+        'questions.update'  => \Test\DTOs\Question\QuestionDTO::class,
     ]
 ];

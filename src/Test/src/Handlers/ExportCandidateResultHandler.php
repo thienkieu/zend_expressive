@@ -25,10 +25,13 @@ class ExportCandidateResultHandler implements RequestHandlerInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         $examService = $this->container->get(ExportServiceInterface::class);
-        $ok = $examService->exportCandidateExamResult($dto, $messages, $writer);
-        
+        $ok = $examService->exportCandidateExamResult($dto, $messages, $writer, $candiateName);
+        if (!$ok) {
+            return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages);
+        }
+
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$dto->candidateId.'.xlsx"');
+        header('Content-Disposition: attachment;filename="'.$candiateName.'.xlsx"');
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');
