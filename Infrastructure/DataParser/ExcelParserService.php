@@ -69,8 +69,6 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
         $rowData = $this->rowItertor->current();
         $cellIterator = $rowData->getCellIterator();
         foreach ($cellIterator as $cell) {
-            
-           
             $cellValue = $cell->getValue();
             $cellText = $cellValue;
             if ($cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {

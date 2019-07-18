@@ -113,31 +113,19 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
     }
 
     public function getQuestions($dto, $pageNumber, $itemPerPage) {
-        $builder = $this->dm->createQueryBuilder([
-            \Test\Documents\Question\ReadingQuestionDocument::class, 
-            \Test\Documents\Question\ListeningQuestionDocument::class,
-            \Test\Documents\Question\WritingQuestionDocument::class
-        ]);
+        $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
+        $data = $questionRepository->getQuestionWithPagination($dto, $itemPerPage, $pageNumber);
+        $questions = $data['questions'];
 
-       
-        $builder = $builder->field('content')->equals(new \MongoRegex('/.*'.$dto->content.'.*/i'))
-                           ->field('type')->equals(new \MongoRegex('/.*'.$dto->type.'.*/i'));
-        $totalDocument = $builder->getQuery()->execute()->count();
-        
-        $data = $builder->limit($itemPerPage)
-                        ->skip($itemPerPage*($pageNumber-1))
-                        ->getQuery()
-                        ->execute();
-        
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         $dtos = [];
-        foreach($data as $document) {
+        foreach($questions as $document) {
             $dtoObject = $documentToDTOConvertor->convertToDTO($document);
             $dtos[] = $dtoObject;
         }
        
         return [
-            'totalDocument' => $totalDocument,
+            'totalDocument' => $data['totalDocument'],
             'questions' => $dtos 
         ];
     }

@@ -40,12 +40,23 @@ class QuestionRepository extends DocumentRepository
         $totalDocument = $filterQuery->getQuery()->execute()->count();        
         $data = $filterQuery->limit($itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1))
+                                    ->sort('createDate', 'desc')
                                     ->getQuery()
                                     ->execute();
         return [
             'totalDocument' => $totalDocument,
             'questions' => $data 
         ];
+    }
+
+    public function getFilterQuery($filterData) {
+        $builder = $this->createQueryBuilder();
+        $builder = $builder
+                        ->field('type')->equals(new \MongoRegex('/.*'.$filterData->type.'.*/i'))
+                        ->addOr($builder->expr()->field('content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
+                        ->addOr($builder->expr()->field('subQuestions.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
+                        ->addOr($builder->expr()->field('subQuestions.answers.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')));
+        return $builder;
     }
 
 }
