@@ -69,9 +69,11 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
         $rowData = $this->rowItertor->current();
         $cellIterator = $rowData->getCellIterator();
         foreach ($cellIterator as $cell) {
+            
+           
             $cellValue = $cell->getValue();
             $cellText = $cellValue;
-            if ($cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText || $cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\TextElement ) {
+            if ($cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
                 
                 $textElements = $cellValue->getRichTextElements();
                 $elementText = '';
@@ -79,30 +81,38 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
                     $text = $element->getText();
                     $font = $element->getFont(); 
                     if ($font) {
-                        if ($font->getBold()) {
-                            $text = $this->formatAdapter->buildFormat($text, FormatType::Bold);
-                        }
-                        if ($font->getItalic()) {
-                            $text = $this->formatAdapter->buildFormat($text, FormatType::Italic);
-                        }
-                        if ($font->getUnderline() !== \PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_NONE) {
-                            $text = $this->formatAdapter->buildFormat($text, FormatType::Underline);
-                        }
-                        if ($font->getStrikethrough()) {
-                            $text = $this->formatAdapter->buildFormat($text, FormatType::Strike);
-                        }
+                        $text = $this->builFormat($text, $font);
                     }
 
                     $elementText = sprintf('%s%s', $elementText, $text);
                 }
                 $cellText = $elementText ;
+            } else {
+                $font = $cell->getStyle()->getFont();
+                $cellText = $this->builFormat($cellText, $font);
             }
-
+            
             $cellText = $this->formatAdapter->buildFormat($cellText, FormatType::LineBreak);
             $ret[] = $cellText;
         }
-        
         return $ret;
+    }
+
+    protected function builFormat($value, $font) {
+        if ($font->getBold()) {
+            $value = $this->formatAdapter->buildFormat($value, FormatType::Bold);
+        }
+        if ($font->getItalic()) {
+            $value = $this->formatAdapter->buildFormat($value, FormatType::Italic);
+        }
+        if ($font->getUnderline() !== \PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_NONE) {
+            $value = $this->formatAdapter->buildFormat($value, FormatType::Underline);
+        }
+        if ($font->getStrikethrough()) {
+            $value = $this->formatAdapter->buildFormat($value, FormatType::Strike);
+        }
+        
+        return $value;
     }
 
     public function current() {
