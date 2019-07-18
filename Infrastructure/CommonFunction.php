@@ -9,6 +9,24 @@ use Zend\Log\Logger;
 
 class CommonFunction
 {
+    public static function replaceHost($content, $options = []) {
+        $host = \Infrastructure\CommonFunction::getServerHost();
+
+        $content = str_replace($host, \Config\AppConstant::HOST_REPLACE, $content);
+        return $content;
+    }
+
+    public static function revertToHost($content, $options = []) {
+        $host = \Infrastructure\CommonFunction::getServerHost();
+
+        $content = str_replace(\Config\AppConstant::HOST_REPLACE, $host, $content);
+        return $content;  
+    }
+
+    public static function moveFile($source, $destination) {
+        rename($source, $destination);
+    }
+
     public static function getServerHost() {
         $protocal = 'http://';
         if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {

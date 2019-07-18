@@ -52,7 +52,7 @@ class ListeningQuestionDTO extends QuestionDTO implements \JsonSerializable
 
     public function jsonSerialize() {
         $ret = parent::jsonSerialize();
-       
+        $ret->path = $this->getPath();
         $ret->repeat = $this->getRepeat();
         $ret->subQuestions = $this->getSubQuestions();
         $ret->numberCorrectSubQuestion = $this->getNumberCorrectSubQuestion() ? $this->getNumberCorrectSubQuestion() : 0;

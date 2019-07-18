@@ -28,7 +28,7 @@ class FromReadingEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInte
 
     public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\ReadingQuestionDTO();
-        $content = $this->replaceHost($document->getContent());
+        $content = \Infrastructure\CommonFunction::revertToHost($document->getContent());
         $dto->setContent($content);
 
         $dto->setSubType($document->getSubType());
@@ -49,12 +49,4 @@ class FromReadingEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInte
         
         return $dto;
     }
-
-    protected function replaceHost($content, $options = []) {
-        $host = \Infrastructure\CommonFunction::getServerHost();
-
-        $content = str_replace(\Config\AppConstant::HOST_REPLACE, $host, $content);
-        return $content;
-    }
-    
 }

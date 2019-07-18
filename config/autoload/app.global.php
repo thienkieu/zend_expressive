@@ -100,6 +100,7 @@ return [
             'application/zip',
             'application/x-zip-compressed',
             'application/octet-stream',
+            'audio/mp3'
         ],
         'extensions' => [
             'image' =>

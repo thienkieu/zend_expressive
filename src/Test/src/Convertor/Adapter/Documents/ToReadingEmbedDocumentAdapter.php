@@ -31,7 +31,7 @@ class ToReadingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInter
     public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Test\ReadingQuestionDocument();
-        $content = $this->replaceHost($dto->getContent());
+        $content =\Infrastructure\CommonFunction::replaceHost($dto->getContent());
         $document->setContent($content);
 
         $document->setSource($dto->getSource());
@@ -49,12 +49,5 @@ class ToReadingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInter
         
         return $document;
             
-    }
-
-    protected function replaceHost($content, $options = []) {
-        $host = \Infrastructure\CommonFunction::getServerHost();
-
-        $content = str_replace($host, \Config\AppConstant::HOST_REPLACE, $content);
-        return $content;
     }
 }

@@ -24,8 +24,7 @@ class CreateQuestionHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        
-        $questionService = $this->container->get(QuestionServiceInterface::class);
+        $questionService = $this->container->build(QuestionServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
         $ok = $questionService->createQuestion($dto, $messages);
    
         return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages);

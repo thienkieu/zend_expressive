@@ -71,7 +71,8 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
         foreach ($cellIterator as $cell) {
             $cellValue = $cell->getValue();
             $cellText = $cellValue;
-            if ($cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
+            if ($cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText || $cellValue instanceof \PhpOffice\PhpSpreadsheet\RichText\TextElement ) {
+                
                 $textElements = $cellValue->getRichTextElements();
                 $elementText = '';
                 foreach ($textElements as $element) {
@@ -100,7 +101,7 @@ class ExcelParserService implements DataParserInterface, HandlerInterface, \Iter
             $cellText = $this->formatAdapter->buildFormat($cellText, FormatType::LineBreak);
             $ret[] = $cellText;
         }
-
+        
         return $ret;
     }
 

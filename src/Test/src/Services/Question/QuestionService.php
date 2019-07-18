@@ -12,10 +12,10 @@ use Infrastructure\Interfaces\HandlerInterface;
 
 class QuestionService implements QuestionServiceInterface, HandlerInterface
 {
-    private $container;
-    private $dm;
-    private $options;
-    private $translator= null;
+    protected $container;
+    protected $dm;
+    protected $options;
+    protected $translator= null;
 
     public function __construct($container, $options) {
         $this->container = $container;
@@ -184,6 +184,9 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
     }
 
     public function createQuestion($dto, &$messages) {
+        $content = \Infrastructure\CommonFunction::replaceHost($dto->getContent());
+        $dto->setContent($content);
+
         $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
         $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto);
         $this->dm->persist($questionDocument);

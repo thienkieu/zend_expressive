@@ -12,19 +12,7 @@ use Infrastructure\Interfaces\HandlerInterface;
 
 class ReadingQuestionService extends QuestionService
 {
-    private $container;
-    private $dm;
-    private $options;
-    private $translator= null;
-
-    public function __construct($container, $options) {
-        $this->container = $container;
-        $this->options = $options;
-        $this->dm = $this->container->get('documentManager');
-        $this->translator = $this->container->get(\Config\AppConstant::Translator);
-    }
-
-    public function isHandler($param, $options = []){
+    public function isHandler($dto, $options = []){
         return false;
     }
 
