@@ -179,4 +179,17 @@ class ExamRepository extends DocumentRepository
         return $result;
 
     }
+
+    public function getExamNotStarted() {
+        $queryBuilder = $this->createQueryBuilder();
+        $results = $queryBuilder
+                    ->field('isStarted')->notEqual(true)
+                    ->getQuery()
+                    ->execute();
+                    
+        return $results;
+
+    }
+
+    
 }

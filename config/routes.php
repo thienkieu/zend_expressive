@@ -100,7 +100,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // Question
     $app->post('/coordinator/questions/create', Test\Handlers\CreateQuestionHandler::class, 'questions.create');
     $app->post('/coordinator/questions/update', Test\Handlers\UpdateQuestionHandler::class, 'questions.update');
-    $app->post('/coordinator/questions/delete', Test\Handlers\DeleteQuestionHandler::class, 'questions.delete');
+    $app->delete('/coordinator/questions/delete', Test\Handlers\DeleteQuestionHandler::class, 'questions.delete');
     $app->post('/coordinator/questions/import', Test\Handlers\ImportQuestionHandler::class, 'questions.import');
     $app->post('/coordinator/question/questions', Test\Handlers\GetQuestionHandler::class, 'question.questions');
 

@@ -183,6 +183,40 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $messages[] = $this->translator->translate('The question have been created successfully!');
         return true;
     }
-    
 
+    public function deleteQuestion($id, &$messages) {
+        $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
+        $questionDocument = $questionRepository->find($id);
+        if (!$questionDocument) {
+            $messages[] = $this->translator->translate('The question doesnot exist, Please check it again.');
+            return false;
+        }
+
+        $examService  = $this->container->get(\Test\Services\ExamServiceInterface::class);
+        $examDTONotStarted = $examService->getExamNotStarted();
+        $options = [
+            'questionId' => [$id]
+        ];
+
+        $isAbleGenerateExam = true;
+        foreach($examDTONotStarted as $exam) {
+            $test = $exam->getTest();
+            $isAbleGenerateExam = $examService->generateExamTest($exam->getTest(), $m, false, $options);
+            if ($isAbleGenerateExam === false) {
+                $messages[] = $this->translator->translate('Cannot generate a test for exam %examName%', ['%examName%'=> $exam->getTitle()]);
+                break;
+            }
+        }
+
+        if (!$isAbleGenerateExam) {
+            return false;
+        }
+
+        $this->dm->remove($questionDocument);
+        $this->dm->flush();
+
+        $messages[] = $this->translator->translate('The question has been deleted successfully!');
+        return true;
+    }
+    
 }

@@ -55,7 +55,8 @@ return array(
     'Your test doesnot exist!' => 'Your test doesnot exist!',
     'There is error with update test, Please check admin site' => 'There is error with update test, Please check admin site',
     'The test have been updated successfully!' => 'The test have been updated successfully!',
-    'The question have been created successfully!' => 'The question have been created successfully!'
-
-
+    'The question have been created successfully!' => 'The question have been created successfully!',
+    'The question doesnot exist, Please check it again.' => 'The question doesnot exist, Please check it again.',
+    'Cannot generate a test for exam %examName%' => 'Cannot generate a test for exam %examName%',
+    'The question has been deleted successfully!' => 'The question has been deleted successfully!'
 );

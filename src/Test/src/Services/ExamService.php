@@ -184,7 +184,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         }        
     }
 
-    public function generateExamTest($test, & $messages, $keepCorrectAnswer = false) {
+    public function generateExamTest($test, & $messages, $keepCorrectAnswer = false, $options = []) {
         try {
             $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
             $sectionsForDoExam = [];
@@ -193,6 +193,10 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             $sections = $test->getSections();
             $sources = [];
             $questionIds = [];
+            if (isset($options['questionId'])) {
+                $questionIds = $options['questionId'];
+            }
+
             foreach ($sections as $section) {
                 $questionsForSection = [];
                 $questions = $section->getQuestions();                
@@ -308,5 +312,18 @@ class ExamService implements ExamServiceInterface, HandlerInterface
     public function getExamNotStartedByTestId($testId) {
         $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
         return $examRepository->getExamNotStartedByTestId($testId);
+    }
+
+    public function getExamNotStarted() {
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $examDocuments = $examRepository->getExamNotStarted();
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+
+        $examDTOs = [];
+        foreach($examDocuments as $examDocument) {
+            $examDTOs[] = $documentToDTOConvertor->convertToDTO($examDocument);
+        }
+
+        return $examDTOs;
     }
 }
