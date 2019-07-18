@@ -10,7 +10,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Container\ContainerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
-use Test\Services\Interfaces\TestServiceInterface;
+use Test\Services\Question\QuestionServiceInterface;
 
 class UpdateQuestionHandler implements RequestHandlerInterface
 {
@@ -25,9 +25,9 @@ class UpdateQuestionHandler implements RequestHandlerInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         
-        $testService = $this->container->get(TestServiceInterface::class);
-        $ok = $testService->createTest($dto, $messages, $resultDTO);
+        $questionService = $this->container->build(QuestionServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
+        $ok = $questionService->editQuestion($dto, $messages);
    
-        return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages, $resultDTO);
+        return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages);
     }
 }

@@ -218,5 +218,56 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $messages[] = $this->translator->translate('The question has been deleted successfully!');
         return true;
     }
+
+    protected function hasEffectToGenerateExamTest($questionDocument, $updateQuestionDTO) {
+        if ($questionDocument->getType() != $updateQuestionDTO->getType() || 
+            $questionDocument->getSource() != $updateQuestionDTO->getSource() ||
+            $questionDocument->getSubType() != $updateQuestionDTO->getSubType() || 
+            $questionDocument->getNumberSubQuestion() > count($updateQuestionDTO->getSubQuestions())) {
+                return true;
+            }
+        return false;
+    }
+
+    public function editQuestion($dto, &$messages) {
+        $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
+        $questionDocument = $questionRepository->find($dto->getId());
+        if (!$questionDocument) {
+            $messages[] = $this->translator->translate('The question doesnot exist, Please check it again.');
+            return false;
+        }
+
+        $hasEffectToGenerateTestExam = $this->hasEffectToGenerateExamTest($questionDocument, $dto);
+        if ($hasEffectToGenerateTestExam) {
+            $examService  = $this->container->get(\Test\Services\ExamServiceInterface::class);
+            $examDTONotStarted = $examService->getExamNotStarted();
+            $options = [
+                'questionId' => [$dto->getId()]
+            ];
+
+            $isAbleGenerateExam = true;
+            foreach($examDTONotStarted as $exam) {
+                $test = $exam->getTest();
+                $isAbleGenerateExam = $examService->generateExamTest($exam->getTest(), $m, false, $options);
+                if ($isAbleGenerateExam === false) {
+                    $messages[] = $this->translator->translate('Cannot generate a test for exam %examName%', ['%examName%'=> $exam->getTitle()]);
+                    break;
+                }
+            }
+
+            if (!$isAbleGenerateExam) {
+                return false;
+            }
+
+        }
+
+        $this->dm->remove($questionDocument);
+        $ok = $this->createQuestion($dto, $messages);
+        if ($ok) {
+            $messages = [$this->translator->translate('The question has been update successfully!')];
+        }
+
+        return true;
+    }
     
 }

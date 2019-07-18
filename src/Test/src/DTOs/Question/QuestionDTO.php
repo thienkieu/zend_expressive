@@ -14,6 +14,10 @@ class QuestionDTO
     protected $mark;
     protected $comment;
     protected $candidateMark;
+     /**
+     * @var SubQuestionDTO[]
+     */
+    protected $subQuestions;
     
     public function jsonSerialize() {
         $ret = new \stdClass();
@@ -29,10 +33,7 @@ class QuestionDTO
         return $ret;
     }
 
-    /**
-     * @var SubQuestionDTO[]
-     */
-    protected $subQuestions;
+   
 
     public function __construct()
     {

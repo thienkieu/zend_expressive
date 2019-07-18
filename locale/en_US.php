@@ -58,5 +58,6 @@ return array(
     'The question have been created successfully!' => 'The question have been created successfully!',
     'The question doesnot exist, Please check it again.' => 'The question doesnot exist, Please check it again.',
     'Cannot generate a test for exam %examName%' => 'Cannot generate a test for exam %examName%',
-    'The question has been deleted successfully!' => 'The question has been deleted successfully!'
+    'The question has been deleted successfully!' => 'The question has been deleted successfully!',
+    'The question has been update successfully!' => 'The question has been update successfully!'
 );

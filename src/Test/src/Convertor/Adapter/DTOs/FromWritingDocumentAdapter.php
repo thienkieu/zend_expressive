@@ -31,6 +31,7 @@ class FromWritingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         $dto->setContent($document->getContent());
         $dto->setId($document->getId());
         $dto->setType($document->getType());
+        $dto->setSource($document->getSource());
         $dto->setSubType($document->getSubType());
         $dto->setMark($document->getMark());
         
