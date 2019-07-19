@@ -7,7 +7,7 @@ use League\OAuth2\Server\Grant;
 $dir = realpath('src');
 
 return [
-    'environment' => 'demo',
+    'environment' => '',
     'sqldb' => [
         'db' => [
             'driver'   => 'pdo_mysql',
@@ -39,7 +39,7 @@ return [
         ],
         'proxy-path' =>  $dir.'/Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
-        'dbname' => 'onlinetest_demo',
+        'dbname' => 'onlinetest_dev',
     ],
 
     'nonsqldb_demo' => [
@@ -72,30 +72,6 @@ return [
                 ]
             ]
         ] 
-    ],
- 
-    'authentication' => [
-        'private_key'    => __DIR__ . '/../../data/oauth/private.key',
-        'public_key'     => __DIR__ . '/../../data/oauth/public.key',
-        'encryption_key' => require __DIR__ . '/../../data/oauth/encryption.key',
-        'access_token_expire'  => 'P1D',
-        'refresh_token_expire' => 'P1M',
-        'auth_code_expire'     => 'PT10M',
-        'pdo' => [
-            'dsn'      => 'mysql:host=localhost;dbname=onlinetest',
-            'username' => 'root',
-            'password' => ''
-        ],
-        
-        'grants' => [
-            Grant\ClientCredentialsGrant::class => Grant\ClientCredentialsGrant::class,
-            Grant\PasswordGrant::class          => Grant\PasswordGrant::class,
-            Grant\AuthCodeGrant::class          => Grant\AuthCodeGrant::class,
-            Grant\ImplicitGrant::class          => Grant\ImplicitGrant::class,
-            Grant\RefreshTokenGrant::class      => Grant\RefreshTokenGrant::class,
-            ODMAuth\Grant\SSOGrant::class       => ODMAuth\Grant\SSOGrant::class,            
-        ],
-
     ],
 
     'i18n' => [
@@ -147,6 +123,7 @@ return [
         'exam.enterPin',
         'exam.updateAnswer',
         'exam.synchronyTime',
-        'exam.finish'
+        'exam.finish',
+        'log'
     ]
 ];

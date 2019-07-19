@@ -49,4 +49,6 @@ $aggregator = new ConfigAggregator([
     new PhpFileProvider(realpath(__DIR__) . '/development.config.php'),
 ], $cacheConfig['config_cache_path']);
 
-return $aggregator->getMergedConfig();
+$config = $aggregator->getMergedConfig();
+//echo '<pre>'.print_r($config, true).'</pre>'; die;
+return $config;
