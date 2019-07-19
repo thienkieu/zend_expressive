@@ -7,7 +7,7 @@ use League\OAuth2\Server\Grant;
 $dir = realpath('src');
 
 return [
-    'environment' => 'dev',
+    'environment' => 'demo',
     'sqldb' => [
         'db' => [
             'driver'   => 'pdo_mysql',
@@ -19,7 +19,6 @@ return [
             $dir.'/App/src/Entity'
         ],
     ],
-
     'nonsqldb' => [
         'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243963.mlab.com:43963/thienkieu',
         'document-path' => [
@@ -40,7 +39,19 @@ return [
         ],
         'proxy-path' =>  $dir.'/Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
-        'dbname' => 'onlinetest_dev',
+        'dbname' => 'onlinetest_demo',
+    ],
+
+    'nonsqldb_demo' => [
+        'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds253017.mlab.com:53017/onlinetest_demo',
+        'document-path' => [
+            $dir.'/App/src/Documents',
+            $dir.'/Test/src/Documents',
+            $dir.'/ODMAuth/src/Documents',
+        ],
+        'proxy-path' =>  $dir.'/Proxies',
+        'hydrators-path' =>  $dir.'/../Hydrators',
+        'dbname' => 'onlinetest_demo',
     ],
     
     'log' => [
