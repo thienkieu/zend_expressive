@@ -47,7 +47,7 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         
         $document->setSource($sourceDocument);
         
-        /*$typeService = $this->container->get(TypeServiceInterface::class);
+        $typeService = $this->container->get(TypeServiceInterface::class);
         $typeDocument = $typeService->getTypeByName($dto->getType(), $dto->getSubType());
         if (!$typeDocument) {
             $translator = $this->container->get(\Config\AppConstant::Translator);
@@ -55,7 +55,6 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
             throw new \Exception($message);
         }
         $document->setType($typeDocument);
-        */
         
         $questions = $dto->getSubQuestions();
 

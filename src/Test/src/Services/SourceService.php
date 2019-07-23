@@ -80,22 +80,22 @@ class SourceService implements Interfaces\SourceServiceInterface, HandlerInterfa
         return true;
     }
 
-    public function getSources(& $ret, & $messages, $pageNumber = 1, $itemPerPage = 25) {
+    public function getSources($content, & $messages, $pageNumber = 1, $itemPerPage = 25) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
         $sourceRepository = $this->dm->getRepository(\Test\Documents\Question\SourceDocument::class);  
-        $sourceDocuments = $sourceRepository->findAll();
+        $sourceDocuments = $sourceRepository->getSourceWithPagination($content, $itemPerPage, $pageNumber);
 
         $sources = [];
-        foreach ($sourceDocuments as $source) {
+        foreach ($sourceDocuments['sources'] as $source) {
             $dto = $documentToDTOConvertor->convertToDTO($source);
             $sources[] = $dto;
         }
 
-        $ret = new \stdClass();
-        $ret->data = $sources;
-        $ret->pageNumber = $pageNumber;
-        $ret->itemPerPage = $itemPerPage;
+        return [
+            'totalDocument' => $sourceDocuments['totalDocument'],
+            'sources' => $sources 
+        ];
 
         return true;
     }

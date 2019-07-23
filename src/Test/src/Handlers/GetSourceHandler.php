@@ -26,14 +26,17 @@ class GetSourceHandler implements RequestHandlerInterface
         $queryData = $request->getQueryParams();
         $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
         $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
+        $content = isset($queryData['content']) ? $queryData['content'] : '';
 
         $sourceService = $this->container->get(SourceServiceInterface::class);
-        $ok = $sourceService->getSources($sources, $messages, $pageNumber, $itemPerPage);
+        $data = $sourceService->getSources($content, $messages, $pageNumber, $itemPerPage);
 
-        return new JsonResponse([
-            'data' => $sources,
-            'isSuccess' => $ok,    
-            'messages' => $messages,   
-        ]);
+        $ret = new \stdClass();
+        $ret->sources = $data['sources'];
+        $ret->totalPage = $data['totalDocument'] % $itemPerPage > 0 ? (int) ($data['totalDocument'] / $itemPerPage) + 1: $data['totalDocument'] / $itemPerPage ;
+        $ret->pageNumber = $pageNumber;
+        $ret->itemPerPage = $itemPerPage;
+
+        return \Infrastructure\CommonFunction::buildResponseFormat(true, [], $ret);        
     }
 }
