@@ -58,24 +58,40 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         return true;
     }
 
-    public function getTypes(& $ret, & $messages, $pageNumber = 1, $itemPerPage = 25) {
+    public function getTypes($content, & $messages, $pageNumber = 1, $itemPerPage = 25) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
         $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
         $typeDocuments = $typeRepository->findAll();
 
         $types = [];
-        foreach ($typeDocuments as $type) {
-            $dto = $documentToDTOConvertor->convertToDTO($type);
-            $types[] = $dto;
+        foreach($typeDocuments as $parent) {
+            $t = new \stdClass();
+            $t->name = $parent->getName();
+            $t->id = $parent->getId();
+            $t->subType = [];
+
+            foreach($typeDocuments as $type) {
+                $parentType = $type->getParentType();
+                if ($parentType && $parentType->getId() === $parent->getId()) {
+                    $st = new \stdClass();
+                    $st->name = $type->getName();
+                    $st->id = $type->getId();
+                    $t->subType[] = $st;
+                }
+            }
+
+            if (!$parent->getParentType()){
+                $types[] = $t;
+            }
         }
 
         $ret = new \stdClass();
-        $ret->data = $types;
+        $ret->type = $types;
         $ret->pageNumber = $pageNumber;
         $ret->itemPerPage = $itemPerPage;
 
-        return true;
+        return $ret;
     }
 
     

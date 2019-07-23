@@ -63,6 +63,7 @@ class RandomQuestionDTO extends Question implements \JsonSerializable
         $ret = new \stdClass();
         $ret->type = $this->getType();
         $ret->subType = $this->getSubType();
+        $ret->typeId = $this->getTypeId();
         $ret->numberSubQuestion = $this->getNumberSubQuestion();    
         $ret->isDifferentSource = $this->getIsDifferentSource(); 
         $ret->mark = $this->getMark();        

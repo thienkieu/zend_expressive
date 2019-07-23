@@ -6,6 +6,7 @@ namespace Test\Convertor\Adapter\Documents\Test;
 
 
 use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
+use Test\Services\Interfaces\TypeServiceInterface;
 
 class ToRandomQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
@@ -32,8 +33,16 @@ class ToRandomQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
     public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Test\RandomQuestionDocument();
-        $document->setType($dto->getType());
-        $document->setSubType($dto->getSubType());
+
+        $typeService = $this->container->get(TypeServiceInterface::class);
+        $typeDocument = $typeService->getTypeByName($dto->getType(), $dto->getSubType());
+        if (!$typeDocument) {
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $message = $translator->translate('Type not found, please check it again.');
+            throw new \Infrastructure\Exceptions\DataException($message);
+        }
+        $document->setType($typeDocument);
+
         $document->setIsDifferentSource($dto->getIsDifferentSource());
         $document->setNumberSubQuestion($dto->getNumberSubQuestion());
         $document->setReferId(uniqid('', true));

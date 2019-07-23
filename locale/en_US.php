@@ -61,6 +61,7 @@ return array(
     'The question has been deleted successfully!' => 'The question has been deleted successfully!',
     'The question has been update successfully!' => 'The question has been update successfully!',
     'Source not found, please check it again.' => 'Source not found, please check it again.',
+    'Source not found at line number %lineNumber%, please check it again.' => 'Source not found at line number %lineNumber%, please check it again.',
     'Type isnot existed, Please check your spelling again!' => 'Type isnot existed, Please check your spelling again!',
     'Source is edited successfully!' => 'Source is edited successfully!',
     'Source is existed in question, Please remove question contain source first.' => 'Source is existed in question, Please remove question contain source first.',

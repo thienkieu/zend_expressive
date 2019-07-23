@@ -17,6 +17,17 @@ use date;
 
 class TypeRepository extends DocumentRepository
 {
+    public function getTypes() {
+        $builder = $this->createAggregationBuilder();
+        $documents = $builder
+                    ->group()
+                        ->field('parentType')
+                    
+                    ->execute();
+        echo count($documents);die;
+        return $documents;
+    }
+
     public function getType($typeName) {
        
         $builder = $this->createQueryBuilder();

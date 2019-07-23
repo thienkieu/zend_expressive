@@ -228,9 +228,10 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         return $startRow;
     }
 
-    protected function exportWritingQuestion($sheet, $question, $questionIndex, $startRow) {
+    protected function exportWritingQuestion($sheet, $question, $questionIndex, $startRow, $isExportAnswer = true) {
         $startRow =  $this->exportGeneralQuestion($sheet, $question, $questionIndex, $startRow);
-        
+        if (!$isExportAnswer) return $startRow+1;
+
         $this->exportComment($sheet, 'B'.$startRow, 'Candidate Answer: ', $question->getAnswer());
         $startRow += 1;
 
@@ -354,6 +355,31 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         return $startRow+1;
     }
 
+    protected function setCellStyle(&$sheet, $cells, $styles) {
+        $sheet->getStyle($cells)->applyFromArray($styles);
+    }
+
+    protected function setCellValue(&$sheet, $cells, $value, $params = [], $isTranslate = false) {
+        echo $cells.chr(13);
+        if ($isTranslate == true) {
+            $value = $this->translator->translate($value, $params);
+        }
+
+        $sheet->setCellValue($cells, $value);
+    }
+
+    protected function toRichTextFromHTML($html) {
+        $wizard = new \PhpOffice\PhpSpreadsheet\Helper\Html();
+        return $wizard->toRichTextObject($html);
+    }
+
+    protected function addRichTextToRichText($source, &$des) {
+        $iTextElements = $source->getRichTextElements();
+        foreach($iTextElements as $iTextElement) {
+            $des->addText($iTextElement);
+        }
+    }
+
     public function exportCandidateExamResult($params, &$messages, &$writer, &$candidateName) {
         $doExamResultService = $this->container->get(DoExamResultServiceInterface::class);
         $ok = $doExamResultService->getExamResult($params, $messages, $outDTO);
@@ -374,31 +400,97 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
         $writer = new Xlsx($spreadsheet);
         return true;
-        // $fileName = 'c:\\'.$outDTO->getCandidate()->getName().'.xlsx';
-        // $writer->save($fileName);;
     }
 
-    protected function setCellStyle(&$sheet, $cells, $styles) {
-        $sheet->getStyle($cells)->applyFromArray($styles);
-    }
+    public function exportQuestion($dto, &$messages, &$writer) {
+        $questionService = $this->container->get(Question\QuestionServiceInterface::class);
+        $questionsResult = $questionService->getQuestions($dto, 1, 0);
+        
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $spreadsheet = $reader->load("c:\\questionTemplate.xlsx"); 
 
-    protected function setCellValue(&$sheet, $cells, $value, $params = [], $isTranslate = false) {
-        if ($isTranslate == true) {
-            $value = $this->translator->translate($value, $params);
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle($this->translator->translate('Questions'));
+        
+        $questions = $questionsResult['questions'];
+        $questionIndex = 1;
+        $startIndex = 5;
+        
+        foreach($questions as $question) {
+            $startIndex += 1;
+            //QuestionIndex
+            $startColumnIndex = 66;
+            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $questionIndex);
+            $startColumnIndex += 1;
+
+            //Type
+            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getType());
+            $startColumnIndex += 1;
+
+            //SubType
+            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSubType());
+            $startColumnIndex += 1;
+
+            //Source
+            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSource());
+            $startColumnIndex += 1;
+
+            //ImageFile/Audio
+            //$this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSource());
+            $startColumnIndex += 1;
+
+            //Repeat
+            $repeat = '';
+            if ($question->getType() === \Config\AppConstant::Listening) $repeat = $question->getRepeat();
+            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $repeat);
+            $startColumnIndex += 1;
+
+            //Content
+            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getContent());
+            $startColumnIndex += 1;
+
+            $subQuestions = $question->getSubQuestions();
+            foreach($subQuestions as $subQuestion) {
+                $startColumnIndexSubQuestion = $startColumnIndex;
+
+                //Question content
+                $this->setCellValue($sheet, chr($startColumnIndexSubQuestion).$startIndex, $subQuestion->getContent());
+                $startColumnIndexSubQuestion += 1;
+
+                //Correct answer
+                $correctAnswerColumn = chr($startColumnIndexSubQuestion).$startIndex;
+                $startColumnIndexSubQuestion += 1;
+
+                $isCorrectIndex = -1;
+                $answers = $subQuestion->getAnswers();
+                $answerindex = 1;
+                
+                $startColumnIndexAnswer = $startColumnIndexSubQuestion;
+                foreach($answers as $answer) {
+                    //Answer
+                    $this->setCellValue($sheet, chr($startColumnIndexAnswer).$startIndex, $answer->getContent());
+                    $startColumnIndexAnswer += 1;
+                    
+                    if ($answer->getIsCorrect()) {
+                        $isCorrectIndex = $answerindex;
+                    }
+
+                    $answerindex +=1;
+                    
+                }
+
+                $this->setCellValue($sheet, $correctAnswerColumn, $isCorrectIndex);
+                $startIndex += 1;
+            }
+           
+            
+            $questionIndex += 1;                
         }
 
-        $sheet->setCellValue($cells, $value);
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('c:\\questions.xlsx');
+        return true;
     }
 
-    protected function toRichTextFromHTML($html) {
-        $wizard = new \PhpOffice\PhpSpreadsheet\Helper\Html();
-        return $wizard->toRichTextObject($html);
-    }
-
-    protected function addRichTextToRichText($source, &$des) {
-        $iTextElements = $source->getRichTextElements();
-        foreach($iTextElements as $iTextElement) {
-            $des->addText($iTextElement);
-        }
-    }
+    
 }

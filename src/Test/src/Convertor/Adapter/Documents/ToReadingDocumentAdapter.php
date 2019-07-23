@@ -37,7 +37,7 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         if (!$sourceDocument) {
             $translator = $this->container->get(\Config\AppConstant::Translator);
             $message = $translator->translate('Source not found, please check it again.');
-            throw new \Exception($message);
+            throw new \Infrastructure\Exceptions\DataException($message);
         }
 
 
@@ -48,11 +48,11 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         $document->setSource($sourceDocument);
         
         $typeService = $this->container->get(TypeServiceInterface::class);
-        $typeDocument = $typeService->getTypeByName($dto->getType(), $dto->getSubType());
+        $typeDocument = $typeService->getTypeById($dto->getTypeId());
         if (!$typeDocument) {
             $translator = $this->container->get(\Config\AppConstant::Translator);
             $message = $translator->translate('Type not found, please check it again.');
-            throw new \Exception($message);
+            throw new \Infrastructure\Exceptions\DataException($message);
         }
         $document->setType($typeDocument);
         

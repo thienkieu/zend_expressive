@@ -10,6 +10,7 @@ class QuestionDTO
     protected $type;
     protected $content;
     protected $subType;
+    protected $typeId;
     protected $source;
     protected $sourceId;
     protected $mark;
@@ -25,6 +26,8 @@ class QuestionDTO
         $ret->content = $this->getContent();
         $ret->type = $this->getType();
         $ret->subType = $this->getSubType();
+        $ret->typeId = $this->getTypeId();
+        
         $ret->id = $this->getId();
         $ret->source = $this->getSource();
         $ret->sourceId = $this->getSourceId();
@@ -257,6 +260,26 @@ class QuestionDTO
     public function setSourceId($sourceId)
     {
         $this->sourceId = $sourceId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of typeId
+     */ 
+    public function getTypeId()
+    {
+        return $this->typeId;
+    }
+
+    /**
+     * Set the value of typeId
+     *
+     * @return  self
+     */ 
+    public function setTypeId($typeId)
+    {
+        $this->typeId = $typeId;
 
         return $this;
     }

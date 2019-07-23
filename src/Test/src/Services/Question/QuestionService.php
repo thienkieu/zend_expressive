@@ -96,7 +96,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             $notInsources = [];
         }
        
-        $question = $questionRepository->generateRandomQuestion($questionDTO->getType(), $questionDTO->getSubType(), $questionDTO->getNumberSubQuestion(), $notInsources, $notInQuestions, $toClass);
+        $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $notInsources, $notInQuestions, $toClass);
         if (!$question) {
             $generateQuestionCiterial = [
                 '%type%' => $questionDTO->getType(),
@@ -183,7 +183,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
         $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
         $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto);        
-        //echo '<pre>'.print_r($questionDocument->getSource(), true).'</pre>'; die;
+        
         $this->dm->persist($questionDocument);
         $this->dm->flush();
 

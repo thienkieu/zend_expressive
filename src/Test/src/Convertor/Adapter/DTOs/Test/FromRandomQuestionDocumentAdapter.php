@@ -29,12 +29,14 @@ class FromRandomQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterIn
 
     public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Test\RandomQuestionDTO();
-        $dto->setType($document->getType());
-        $dto->setSubType($document->getSubType());
+        $dto->setType($document->getType()->getParentType()->getName());
+        $dto->setSubType($document->getType()->getName());
+        $dto->setTypeId($document->getType()->getId());
+
         $dto->setNumberSubQuestion($document->getNumberSubQuestion());
         $dto->setIsDifferentSource($document->getIsDifferentSource());
         $dto->setMark($document->getMark());
-             
+                
         return $dto;
     }
     

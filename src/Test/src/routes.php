@@ -52,4 +52,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->delete('/coordinator/questions/delete', Test\Handlers\DeleteQuestionHandler::class, 'questions.delete');
     $app->post('/coordinator/questions/import', Test\Handlers\ImportQuestionHandler::class, 'questions.import');
     $app->post('/coordinator/question/questions', Test\Handlers\GetQuestionHandler::class, 'question.questions');
+    $app->post('/coordinator/question/export', Test\Handlers\ExportQuestionHandler::class, 'question.export');
+
+    $app->get('/coordinator/question/type', Test\Handlers\GetTypeHandler::class, 'question.types');
 };

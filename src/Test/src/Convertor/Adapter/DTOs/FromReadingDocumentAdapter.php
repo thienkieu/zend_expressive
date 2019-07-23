@@ -33,8 +33,11 @@ class FromReadingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         $dto->setContent($content);
         $dto->setSource($document->getSource()->getName());
         $dto->setSourceId($document->getSource()->getId());
+
         $dto->setType($document->getType()->getParentType()->getName());
         $dto->setSubType($document->getType()->getName());
+        $dto->setTypeId($document->getType()->getId());
+        
         $dto->setId($document->getId());
         $dto->setMark($document->getMark());
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);

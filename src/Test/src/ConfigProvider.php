@@ -69,6 +69,8 @@ class ConfigProvider
                 Handlers\DeleteQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\CreateQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\ExportQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\GetTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,

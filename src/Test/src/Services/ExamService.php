@@ -202,10 +202,11 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                 $questions = $section->getQuestions();                
                 foreach ($questions as $question) {
                     $questionInfo = $question->getQuestionInfo();
-                    if (!isset($sources[$questionInfo->getType()])) $sources[$questionInfo->getType()] = [];
                     
-                    $q = $questionService->generateQuestion($question, $sources[$questionInfo->getType()], $questionIds, $keepCorrectAnswer);
-                    $sources[$q->getType()][] = $q->getSourceId();
+                    if (!isset($sources[$questionInfo->getTypeId()])) $sources[$questionInfo->getTypeId()] = [];
+                    
+                    $q = $questionService->generateQuestion($question, $sources[$questionInfo->getTypeId()], $questionIds, $keepCorrectAnswer);
+                    $sources[$q->getTypeId()][] = $q->getSourceId();
                     $questionIds[] = $q->getId();
                 
 

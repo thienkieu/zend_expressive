@@ -17,13 +17,12 @@ use date;
 
 class QuestionRepository extends DocumentRepository
 {
-    public function generateRandomQuestion($type, $subType, $numberSubQuestion, $sources, $notInQuestions, $toClass) {
+    public function generateRandomQuestion($typeId, $numberSubQuestion, $sources, $notInQuestions, $toClass) {
         $aggregationBuilder = $this->createAggregationBuilder();
         $question = $aggregationBuilder
                         ->hydrate($toClass)
                         ->match()
-                            ->field('type')->equals($type)
-                            ->field('subType')->equals($subType)
+                            ->field('type')->equals($typeId)
                             ->field('source')->notIn($sources)
                             ->field('id')->notIn($notInQuestions)
                             ->field('numberSubQuestion')->gte($numberSubQuestion)
@@ -38,11 +37,15 @@ class QuestionRepository extends DocumentRepository
     public function getQuestionWithPagination($filterData, $itemPerPage, $pageNumber) {
         $filterQuery = $this->getFilterQuery($filterData);
         $totalDocument = $filterQuery->getQuery()->execute()->count();        
-        $data = $filterQuery->field('type')->prime(true)
-                            ->field('source')->prime(true)
-                            ->limit($itemPerPage)
-                            ->skip($itemPerPage*($pageNumber-1))
-                            ->sort('createDate', 'desc')
+        $filterQuery = $filterQuery->field('type')->prime(true)
+                            ->field('source')->prime(true);
+
+        if (!empty($itemPerPage)) {
+            $filterQuery = $filterQuery->limit($itemPerPage)
+                                    ->skip($itemPerPage*($pageNumber-1));
+        }
+        
+        $data = $filterQuery->sort('createDate', 'desc')
                             ->getQuery()
                             ->execute();
        

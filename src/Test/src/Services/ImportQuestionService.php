@@ -61,16 +61,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
     }
 
-    private function getNextRow() {
-        $row = null;
-        $this->rowIndex += 1;
-        $this->dataParser->next();
-        if ($this->dataParser->valid()){
-            $row = $this->dataParser->current();
-        }
-
-        return $row;
-    }
+    
 
     public function importQuestion($dtoObject, & $dto, & $messages) {
         try {
@@ -167,6 +158,17 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
     }
     
+    private function getNextRow() {
+        $row = null;
+        $this->rowIndex += 1;
+        $this->dataParser->next();
+        if ($this->dataParser->valid()){
+            $row = $this->dataParser->current();
+        }
+
+        return $row;
+    }
+
     protected function isCorrectColumns($columns) {
         if ($columns[$this->id] !== '#' || $columns[$this->type] !== 'Type' || $columns[$this->subType] !== 'Sub-Type'
             || $columns[$this->source] !== 'Source' || $columns[$this->fileName] !== 'File Name' || $columns[$this->repeatTime] !== 'Repeat Time'
@@ -188,8 +190,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         $sourceDocument = $this->sourceService->getSourceByName($data[$this->source]);
         if (!$sourceDocument) {
             $translator = $this->container->get(\Config\AppConstant::Translator);
-            $message = $translator->translate('Source not found, please check it again.');
-            throw new \Exception($message);
+            $message = $translator->translate('Source is not exist.', ['%sourceName%'=>$data[$this->source]]);
+            throw new ImportQuestionException($message);
         }
         $question->setSource($sourceDocument);
 

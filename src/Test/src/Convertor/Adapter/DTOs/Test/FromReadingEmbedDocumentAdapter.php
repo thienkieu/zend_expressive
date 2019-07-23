@@ -31,8 +31,10 @@ class FromReadingEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInte
         $content = \Infrastructure\CommonFunction::revertToHost($document->getContent());
         $dto->setContent($content);
 
-        $dto->setSubType($document->getSubType());
-        $dto->setType($document->getType());
+        $dto->setType($document->getType()->getParentType()->getName());
+        $dto->setSubType($document->getType()->getName());
+        $dto->setTypeId($document->getType()->getId());
+        
         $dto->setId($document->getId());
         $dto->setCandidateMark($document->getCandidateMark());
         $dto->setMark($document->getMark());
