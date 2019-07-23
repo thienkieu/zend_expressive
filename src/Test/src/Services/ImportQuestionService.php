@@ -106,7 +106,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                             $question->addSubQuestion($subQuestion);
                             
                             $row = $this->getNextRow();                            
-                            if(!$row || $row[$this->id] !== $previousId) {
+                            if(!$row || !empty($row[$this->id])) {
                                 break;
                             }
                         }
@@ -122,7 +122,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                             $question->addSubQuestion($subQuestion);
 
                             $row = $this->getNextRow();                            
-                            if(!$row || $row[$this->id] !== $previousId) {
+                            if(!$row || !empty($row[$this->id])) {
                                 break;
                             }
                         }
@@ -183,9 +183,18 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         $this->validSource($data[$this->source], $question, $lineNumber);
         $this->validType($data[$this->type], $data[$this->subType], $question, $lineNumber);
         $question->setContent($data[$this->content]);
-        $question->setType($data[$this->type]);
-        $question->setSource($data[$this->source]);
-        $question->setSubType($data[$this->subType]);
+        
+
+        $sourceDocument = $this->sourceService->getSourceByName($data[$this->source]);
+        if (!$sourceDocument) {
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $message = $translator->translate('Source not found, please check it again.');
+            throw new \Exception($message);
+        }
+        $question->setSource($sourceDocument);
+
+        $typeDocument = $this->typeService->getTypeByName($data[$this->type], $data[$this->subType]);
+        $question->setType($typeDocument);
 
     }
 
@@ -209,9 +218,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             $error = $this->translator->translate('Type cannot empty.', ['%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
-        
-        $type = trim($type, ' ');
-        $isExistType = $this->typeService->isExistTypeName($type);
+
+        $isExistType = $this->typeService->getTypeByName($type);
         if (!$isExistType) {
             $error = $this->translator->translate('Type is not exist.', ['%typeName%'=> $type, '%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
@@ -221,10 +229,11 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             $error = $this->translator->translate('SubType cannot empty.', ['%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }
+
+        $type = trim($type, ' ');
         
-        $subType = trim($subType, ' ');
-        $isExistSubType = $this->typeService->isExistSubTypeName($type, $subType);
-        if (empty($isExistSubType)) {
+        $isExistSubType = $this->typeService->getTypeByName($type, $subType);
+        if (!$isExistSubType) {
             $error = $this->translator->translate('SubType is not exist.', ['%subType%'=> $subType, '%lineNumber%'=> $lineNumber]);
             throw new ImportQuestionException($error);
         }

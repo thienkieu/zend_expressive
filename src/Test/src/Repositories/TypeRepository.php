@@ -22,9 +22,21 @@ class TypeRepository extends DocumentRepository
         $builder = $this->createQueryBuilder();
         $document = $builder
                     ->field('name')->equals($typeName)
+                    ->field('parentType')->prime(true)
                     ->getQuery()
                     ->getSingleResult();
 
         return $document;
+    }
+
+    public function getTypeByName($parentName, $subTypeName) {
+        $parentType = $this->findOneBy(['name' => $parentName]);
+        if (empty($subTypeName)) return $parentType;
+
+        if (!$parentType) {
+            return null;
+        }
+
+        return $this->findOneBy(['name' => $subTypeName, 'parentType'=>$parentType->getId()]);
     }
 }

@@ -8,6 +8,8 @@ return [
         'test.create'   => \Test\DTOs\Test\BaseTestDTO::class,
         'test.update'   => \Test\DTOs\Test\BaseTestDTO::class,
         'question.source.create'   => \Test\DTOs\Question\SourceDTO::class,
+        'question.source.update'   => \Test\DTOs\Question\SourceDTO::class,
+        'question.source.delete'   => \Test\DTOs\Question\SourceDTO::class,
         'exam.create' => \Test\DTOs\Exam\ExamDTO::class,
         'exam.update' => \Test\DTOs\Exam\ExamDTO::class,
         'exam.updateTest' => \Test\DTOs\Exam\EditTestOfExamDTO::class,

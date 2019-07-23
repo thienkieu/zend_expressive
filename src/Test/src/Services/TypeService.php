@@ -33,42 +33,16 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         return preg_replace('/\s\s+/', ' ', trim(strtoupper($typeName), ' '));
     }
 
-    public function isExistTypeName($typeName) {
-        if (!$this->types) {
-            $typeData = [];
-            $ok = $this->getAllTypes($typeData);
-            if ($ok) {
-                $this->types = [];
-                foreach ($typeData as $type) {
-                    $this->types[$type->getId()] = $this->standardizedName($type->getName());
-                }
-            }
-        }
-        
-        if (!$this->types) return false;
-        $values = array_values($this->types);
-        $needToCheckValue = $this->standardizedName($typeName);
-
-        return in_array($needToCheckValue, $values);
-    }
-    
-    public function isExistSubTypeName($typeName, $subTypeName) {
+    public function getTypeByName($parentName, $subTypeName = '') {
         $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
-        $type = $typeRepository->getType($typeName);
-        if (!$type) {
-            return false;
-        }
-        
-        $subTypes = $type->getSubTypes();
-        foreach ($subTypes as $subType) {
-           if ($subType->getName() === $subTypeName) {
-               return true;
-           }
-        }
-
-        return false;
+        return $typeRepository->getTypeByName($parentName, $subTypeName);
     }
-    
+
+    public function getTypeById($id) {
+        $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
+        return $typeRepository->find($id);
+    }
+        
     public function getAllTypes(& $ret) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
@@ -104,19 +78,33 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         return true;
     }
 
+    
     public function createType($dto, & $returnDTO, & $messages) {
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
         
-        $isExistedType = $this->isExistTypeName($dto->getName(), $messages);
+        $isExistedType = $this->getTypeByName($dto->getName());        
         if ($isExistedType) {
             $messages[] = $translator->translate('Type is existed, Please check your spelling again!');
             return false;
         }
 
+        
+        $parentType = null;
+        $parentName = $dto->getParentName();
+        if (!empty($parentName)) {
+            $parentType = $this->getTypeByName($parentName);
+            if (!$parentType) {
+                $messages[] = $translator->translate('Type isnot existed, Please check your spelling again!');
+                return false;
+            }
+        }
+
         try{
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($dto);
+            
+            $document->setParentType($parentType);
             
             $this->dm->persist($document);
             $this->dm->flush();
@@ -134,5 +122,7 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
             
             return false;
         }
+
+               
     }
 }

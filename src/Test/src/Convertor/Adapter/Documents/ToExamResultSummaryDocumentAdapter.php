@@ -48,17 +48,25 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
             $questions = $section->getQuestions();
             $candidateMark = 0;
             $isScored = true;
+            $sectionMark = 0;
             foreach($questions as $question) {
                 $questionInfo = $question->getQuestionInfo();
                 $isScored = $questionInfo->getIsScored();
                 
                 $candidateMark += $questionInfo->getCandidateMark();
+                $sectionMark += $questionInfo->getMark();
             }
 
             $summary = new \Test\Documents\Exam\ExamResultSummaryDocument();
             $summary->setName($section->getName());
             $summary->setCandidateMark($candidateMark);
-            $summary->setMark($section->getMark());
+            
+            if (!empty($section->getMark())) {
+                $summary->setMark($section->getMark());
+            } else {
+                $summary->setMark($sectionMark);
+            }
+            
             $summary->setType($this->getInputMarkType($questions));
             $summary->setIsScored($isScored);
 

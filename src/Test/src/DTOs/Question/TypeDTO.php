@@ -8,17 +8,12 @@ class TypeDTO implements \JsonSerializable
 {
     protected $id;
     protected $name; 
-    
-    /**
-     * @var SubTypeDTO[]
-     */
-    protected $subTypes;
+    protected $parentName;
     
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->id = $this->getId();
         $ret->name = $this->getName();
-        $ret->subTypes = $this->getSubTypes();
         
         return $ret;
     }
@@ -64,25 +59,21 @@ class TypeDTO implements \JsonSerializable
     }
 
     /**
-     * Get the value of subTypes
-     *
-     * @return  SubTypeDTO[]
+     * Get the value of parentName
      */ 
-    public function getSubTypes()
+    public function getParentName()
     {
-        return $this->subTypes;
+        return $this->parentName;
     }
 
     /**
-     * Set the value of subTypes
-     *
-     * @param  SubTypeDTO[]  $subTypes
+     * Set the value of parentName
      *
      * @return  self
      */ 
-    public function setSubTypes($subTypes)
+    public function setParentName($parentName)
     {
-        $this->subTypes = $subTypes;
+        $this->parentName = $parentName;
 
         return $this;
     }

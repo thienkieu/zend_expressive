@@ -205,7 +205,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                     if (!isset($sources[$questionInfo->getType()])) $sources[$questionInfo->getType()] = [];
                     
                     $q = $questionService->generateQuestion($question, $sources[$questionInfo->getType()], $questionIds, $keepCorrectAnswer);
-                    $sources[$q->getType()][] = $q->getSource();
+                    $sources[$q->getType()][] = $q->getSourceId();
                     $questionIds[] = $q->getId();
                 
 

@@ -30,9 +30,11 @@ class FromWritingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         $dto = new \Test\DTOs\Question\WritingQuestionDTO();
         $dto->setContent($document->getContent());
         $dto->setId($document->getId());
-        $dto->setType($document->getType());
-        $dto->setSource($document->getSource());
-        $dto->setSubType($document->getSubType());
+        $dto->setType($document->getType()->getParentType()->getName());
+        $dto->setSubType($document->getType()->getName());
+        $dto->setSource($document->getSource()->getName());
+        $dto->setSourceId($document->getSource()->getId());
+        
         $dto->setMark($document->getMark());
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);

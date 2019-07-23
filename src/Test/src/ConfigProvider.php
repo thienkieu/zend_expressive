@@ -44,6 +44,8 @@ class ConfigProvider
                 Handlers\GetCandidateHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\CreateSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\DeleteSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\CreateExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\EnterPinHandler::class => \Infrastructure\Factory\BaseFactory::class,

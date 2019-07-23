@@ -43,6 +43,13 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return \Test\Documents\Question\QuestionDocument::class;;
     }
 
+    public function getQuestionWithSource($sourceId) {
+        $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
+        $questionDocuments = $questionRepository->findBy(['source'=>$sourceId]);
+        
+        return $questionDocuments;
+    }
+
     protected function limitSubQuestion($questionDTO, $numberSubQuestion) {
         $subQuestions = $questionDTO->getSubQuestions();        
         $maxRand = count($subQuestions) - 1;
@@ -108,7 +115,6 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion());
             $ret->setSubQuestions($subQuestions);
         }
-        
         return $ret;
     }
 
@@ -176,7 +182,8 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $dto->setContent($content);
 
         $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-        $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto);
+        $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto);        
+        //echo '<pre>'.print_r($questionDocument->getSource(), true).'</pre>'; die;
         $this->dm->persist($questionDocument);
         $this->dm->flush();
 
@@ -221,7 +228,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
     protected function hasEffectToGenerateExamTest($questionDocument, $updateQuestionDTO) {
         if ($questionDocument->getType() != $updateQuestionDTO->getType() || 
-            $questionDocument->getSource() != $updateQuestionDTO->getSource() ||
+            $questionDocument->getSource()->getName() != $updateQuestionDTO->getSource() ||
             $questionDocument->getSubType() != $updateQuestionDTO->getSubType() || 
             $questionDocument->getNumberSubQuestion() > count($updateQuestionDTO->getSubQuestions())) {
                 return true;

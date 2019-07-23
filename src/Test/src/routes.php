@@ -9,7 +9,10 @@ use Zend\Expressive\MiddlewareFactory;
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     //Source
     $app->post('/coordinator/question/source/create', Test\Handlers\CreateSourceHandler::class, 'question.source.create');
+    $app->put('/coordinator/question/source/update', Test\Handlers\UpdateSourceHandler::class, 'question.source.update');
+    $app->delete('/coordinator/question/source/delete', Test\Handlers\DeleteSourceHandler::class, 'question.source.delete');
     $app->get('/coordinator/question/sources', Test\Handlers\GetSourceHandler::class, 'question.sources');
+
     
     //Type
     $app->post('/coordinator/question/type/create', Test\Handlers\CreateTypeHandler::class, 'question.type.create');

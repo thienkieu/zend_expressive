@@ -59,5 +59,10 @@ return array(
     'The question doesnot exist, Please check it again.' => 'The question doesnot exist, Please check it again.',
     'Cannot generate a test for exam %examName%' => 'Cannot generate a test for exam %examName%',
     'The question has been deleted successfully!' => 'The question has been deleted successfully!',
-    'The question has been update successfully!' => 'The question has been update successfully!'
+    'The question has been update successfully!' => 'The question has been update successfully!',
+    'Source not found, please check it again.' => 'Source not found, please check it again.',
+    'Type isnot existed, Please check your spelling again!' => 'Type isnot existed, Please check your spelling again!',
+    'Source is edited successfully!' => 'Source is edited successfully!',
+    'Source is existed in question, Please remove question contain source first.' => 'Source is existed in question, Please remove question contain source first.',
+    'Source is deleted successfully!' => 'Source is deleted successfully!'
 );

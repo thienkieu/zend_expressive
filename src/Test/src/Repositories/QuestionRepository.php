@@ -38,11 +38,14 @@ class QuestionRepository extends DocumentRepository
     public function getQuestionWithPagination($filterData, $itemPerPage, $pageNumber) {
         $filterQuery = $this->getFilterQuery($filterData);
         $totalDocument = $filterQuery->getQuery()->execute()->count();        
-        $data = $filterQuery->limit($itemPerPage)
-                                    ->skip($itemPerPage*($pageNumber-1))
-                                    ->sort('createDate', 'desc')
-                                    ->getQuery()
-                                    ->execute();
+        $data = $filterQuery->field('type')->prime(true)
+                            ->field('source')->prime(true)
+                            ->limit($itemPerPage)
+                            ->skip($itemPerPage*($pageNumber-1))
+                            ->sort('createDate', 'desc')
+                            ->getQuery()
+                            ->execute();
+       
         return [
             'totalDocument' => $totalDocument,
             'questions' => $data 
@@ -51,11 +54,16 @@ class QuestionRepository extends DocumentRepository
 
     public function getFilterQuery($filterData) {
         $builder = $this->createQueryBuilder();
+        $type = $filterData->type;
         $builder = $builder
-                        ->field('type')->equals(new \MongoRegex('/.*'.$filterData->type.'.*/i'))
                         ->addOr($builder->expr()->field('content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
                         ->addOr($builder->expr()->field('subQuestions.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
                         ->addOr($builder->expr()->field('subQuestions.answers.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')));
+    
+        if ($type) {
+            $builder->field('type')->equals($type);
+        }
+
         return $builder;
     }
 

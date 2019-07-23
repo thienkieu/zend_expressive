@@ -13,7 +13,5 @@ interface TypeServiceInterface
 
     public function getAllTypes(& $ret);
 
-    public function isExistTypeName($name);
-
-    public function isExistSubTypeName($type, $subTypeName);
+    public function getTypeByName($parentName, $subTypeName = '');
 }

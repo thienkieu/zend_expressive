@@ -9,6 +9,7 @@ use Zend\Log\Logger;
 use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
+use Test\Services\Question\QuestionServiceInterface;
 
 
 class SourceService implements Interfaces\SourceServiceInterface, HandlerInterface
@@ -17,11 +18,14 @@ class SourceService implements Interfaces\SourceServiceInterface, HandlerInterfa
     private $dm;
     private $options;
     private $sources = null;
+    private $translator;
 
     public function __construct($container, $options) {
         $this->container = $container;
         $this->options = $options;
         $this->dm = $this->container->get('documentManager');
+        $this->translator = $this->container->get(\Config\AppConstant::Translator);
+
     }
 
     public function isHandler($param, $options = []){
@@ -51,6 +55,16 @@ class SourceService implements Interfaces\SourceServiceInterface, HandlerInterfa
         return in_array($needToCheckValue, $values);
     }
     
+    public function getSourceByName($name) {
+        $sourceRepository = $this->dm->getRepository(\Test\Documents\Question\SourceDocument::class);  
+        return $sourceRepository->findOneBy(['name' => $name]);
+    }
+
+    public function getSourceById($id) {
+        $sourceRepository = $this->dm->getRepository(\Test\Documents\Question\SourceDocument::class);  
+        return $sourceRepository->find($id);
+    }
+
     public function getAllSource(& $ret, & $messages) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
@@ -85,6 +99,44 @@ class SourceService implements Interfaces\SourceServiceInterface, HandlerInterfa
 
         return true;
     }
+
+    public function editSource($dto, & $returnDTO, & $messages) {
+        $sourceRepository = $this->dm->getRepository(\Test\Documents\Question\SourceDocument::class);  
+        $sourceDocument = $sourceRepository->find($dto->getId());
+        if (!$sourceDocument) {
+            $messages[] = $this->translator->translate('Source not found, please check it again.');
+            return false;
+        }
+
+        $sourceDocument->setName($dto->getName());
+        $this->dm->flush();
+
+        $messages[] = $this->translator->translate('Source is edited successfully!');
+        return true;
+    }
+
+    public function deleteSource($dto, & $returnDTO, & $messages) {
+        $sourceRepository = $this->dm->getRepository(\Test\Documents\Question\SourceDocument::class);  
+        $sourceDocument = $sourceRepository->find($dto->getId());
+        if (!$sourceDocument) {
+            $messages[] = $this->translator->translate('Source not found, please check it again.');
+            return false;
+        }
+
+        $questionService = $this->container->get(QuestionServiceInterface::class);
+        $questionDocuments = $questionService->getQuestionWithSource($sourceDocument->getId());
+        if ($questionDocuments) {
+            $messages[] = $this->translator->translate('Source is existed in question, Please remove question contain source first.');
+            return false;
+        }
+
+        $this->dm->remove($sourceDocument);
+        $this->dm->flush();
+
+        $messages[] = $this->translator->translate('Source is deleted successfully!');
+        return true;
+    }
+
 
     public function createSource($dto, & $returnDTO, & $messages) {
         $messages = [];

@@ -19,14 +19,15 @@ class QuestionDocument
   /** @ODM\Field(type="string") */
   private $content;
 
-  /** @ODM\Field(type="string") */
+  /**
+  * @ODM\ReferenceOne(targetDocument="TypeDocument", simple=true)
+  */
   private $type;
 
-  /** @ODM\Field(type="string") */
+  /**
+  * @ODM\ReferenceOne(targetDocument="SourceDocument", simple=true)
+  */
   private $source;
-
-  /** @ODM\Field(type="string") */
-  private $subType;
 
   /** @ODM\Field(type="int") */
   private $numberSubQuestion;
@@ -87,27 +88,6 @@ class QuestionDocument
     return $this;
   }
   
-
-  /**
-   * Get the value of subType
-   */ 
-  public function getSubType()
-  {
-    return $this->subType;
-  }
-
-  /**
-   * Set the value of subType
-   *
-   * @return  self
-   */ 
-  public function setSubType($subType)
-  {
-    $this->subType = $subType;
-
-    return $this;
-  }
-
   /**
    * Get the value of source
    */ 

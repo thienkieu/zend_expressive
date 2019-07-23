@@ -64,7 +64,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     
     $app->pipe(LocaleMiddleware::class);
     $app->pipe(CorsMiddleware::class);
-    $app->pipe(AuthenticationMiddleware::class);
+    //$app->pipe(AuthenticationMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);    
     $app->pipe(BodyParamsMiddleware::class);
     $app->pipe(UploadFileMiddleware::class);

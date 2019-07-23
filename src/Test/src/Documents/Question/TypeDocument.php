@@ -16,14 +16,11 @@ class TypeDocument
   /** @ODM\Field(type="string") */
   private $name;
 
-  /** @ODM\EmbedMany(targetDocument="SubTypeDocument") */
-  private $subTypes;
+  /**
+  * @ODM\ReferenceOne(targetDocument="TypeDocument", simple=true)
+  */
+  private $parentType;
 
-  public function __construct()
-  {
-    $this->subTypes = new ArrayCollection();
-  }
-  
   /**
    * Get the value of name
    */ 
@@ -80,6 +77,26 @@ class TypeDocument
   public function setSubTypes($subTypes)
   {
     $this->subTypes = $subTypes;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of parentType
+   */ 
+  public function getParentType()
+  {
+    return $this->parentType;
+  }
+
+  /**
+   * Set the value of parentType
+   *
+   * @return  self
+   */ 
+  public function setParentType($parentType)
+  {
+    $this->parentType = $parentType;
 
     return $this;
   }

@@ -12,7 +12,7 @@ use Zend\Diactoros\Response\JsonResponse;
 
 use Test\Services\Interfaces\SourceServiceInterface;
 
-class GetSourceHandler implements RequestHandlerInterface
+class DeleteSourceHandler implements RequestHandlerInterface
 {
     /** @var Psr\Container\ContainerInterface */
     private $container;
@@ -23,15 +23,12 @@ class GetSourceHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
-        $queryData = $request->getQueryParams();
-        $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
-        $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
-
+        $dtoObject = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         $sourceService = $this->container->get(SourceServiceInterface::class);
-        $ok = $sourceService->getSources($sources, $messages, $pageNumber, $itemPerPage);
+        $ok = $sourceService->deleteSource($dtoObject, $returnDTO, $messages);
 
         return new JsonResponse([
-            'data' => $sources,
+            'data' => $returnDTO,
             'isSuccess' => $ok,    
             'messages' => $messages,   
         ]);

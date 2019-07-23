@@ -32,13 +32,6 @@ class ToTypeDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     {
         $document = new \Test\Documents\Question\TypeDocument();
         $document->setName($dtoObject->getName());
-
-        $subTypes = [];
-        foreach ($dtoObject->getSubTypes() as $subType) {
-           $subTypes[] = $this->convertor->convertToDocument($subType, $options);
-        }
-
-        $document->setSubTypes($subTypes);
         
         return $document;            
     }

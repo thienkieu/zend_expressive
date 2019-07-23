@@ -11,6 +11,7 @@ class QuestionDTO
     protected $content;
     protected $subType;
     protected $source;
+    protected $sourceId;
     protected $mark;
     protected $comment;
     protected $candidateMark;
@@ -26,14 +27,13 @@ class QuestionDTO
         $ret->subType = $this->getSubType();
         $ret->id = $this->getId();
         $ret->source = $this->getSource();
+        $ret->sourceId = $this->getSourceId();
         $ret->mark = $this->getMark();
         $ret->comment = $this->getComment();
         $ret->candidateMark = $this->getCandidateMark();
         
         return $ret;
     }
-
-   
 
     public function __construct()
     {
@@ -237,6 +237,26 @@ class QuestionDTO
     public function setCandidateMark($candidateMark)
     {
         $this->candidateMark = $candidateMark;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of sourceId
+     */ 
+    public function getSourceId()
+    {
+        return $this->sourceId;
+    }
+
+    /**
+     * Set the value of sourceId
+     *
+     * @return  self
+     */ 
+    public function setSourceId($sourceId)
+    {
+        $this->sourceId = $sourceId;
 
         return $this;
     }
