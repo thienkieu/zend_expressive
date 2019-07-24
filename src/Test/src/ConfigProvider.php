@@ -71,11 +71,16 @@ class ConfigProvider
                 Handlers\CreateQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ExportQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\GetTestTemplateHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
                 Services\TestService::class => \Infrastructure\Factory\BaseFactory::class,
                 
+                Services\TestTemplateService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\Interfaces\TestTemplateServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                
+
                 Services\AdvanceTestService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\Interfaces\TestServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 

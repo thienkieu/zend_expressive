@@ -78,6 +78,8 @@ return [
         \Test\Convertor\Adapter\DTOs\FromExamDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromTestWithSectionEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromExamResultHasSectionTestDocumentAdapter::class,
+
+        \Test\Convertor\Adapter\DTOs\Test\FromTestTemplateDocumentAdapter::class
     ],
 
     'validatorRequestAdapters' => [

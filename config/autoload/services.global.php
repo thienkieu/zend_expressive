@@ -16,7 +16,10 @@ return [
         \Test\Services\Interfaces\TestServiceInterface::class => [
             \Test\Services\TestService::class,
             \Test\Services\AdvanceTestService::class,        
-        ],        
+        ], 
+        \Test\Services\Interfaces\TestTemplateServiceInterface::class => [
+            \Test\Services\TestTemplateService::class,       
+        ], 
         \Test\Services\ImportQuestionServiceInterface::class => [
             \Test\Services\ImportQuestionService::class,
         ],
@@ -47,6 +50,7 @@ return [
         \Test\Services\PinServiceInterface::class => [
             \Test\Services\PinService::class,
         ],
+
         \Test\Services\DoExamResultServiceInterface::class => [
             \Test\Services\DoExamResultService::class,
             \Test\Services\DoExamResultWritingService::class,
