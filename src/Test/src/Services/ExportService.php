@@ -405,13 +405,18 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
     }
 
-    public function addDrawingToSheet(&$sheet, $path, $name= '', $description= '') {
+    public function addDrawingToSheet(&$sheet, $cell , $path,  $name= '', $description= '') {
         $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
         $drawing->setName($name);
         $drawing->setDescription($description);
         $drawing->setPath($path);
+        $drawing->setCoordinates($cell);
         $drawing->setHeight(36);
         $drawing->setWorksheet($sheet);
+    }
+
+    public function addLinkToCell(&$sheet, $cell, $toSheet, $toCell) {
+        $sheet->getCell($cell)->getHyperlink()->setUrl("sheet://'".$toSheet."'!".$toCell);
     }
 
     public function setBorderCell(&$sheet, $cell) {
@@ -465,6 +470,11 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $startColumnIndex += 1;
 
             //ImageFile/Audio
+            if ($question->getType() === \Config\AppConstant::Listening) {
+                $path = $question->getPath();
+                $this->addDrawingToSheet($sheet, chr($startColumnIndex).$startIndex, $path, '', '');
+                $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getPath());
+            }
             //$this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSource());
             //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
