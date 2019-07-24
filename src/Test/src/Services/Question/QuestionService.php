@@ -118,7 +118,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $ret;
     }
 
-    public function getQuestions($dto, $pageNumber, $itemPerPage) {
+    public function getQuestions($dto, $pageNumber, $itemPerPage, $isShowCorrectAnswer = false) {
         $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
         $data = $questionRepository->getQuestionWithPagination($dto, $itemPerPage, $pageNumber);
         $questions = $data['questions'];
@@ -126,7 +126,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         $dtos = [];
         foreach($questions as $document) {
-            $dtoObject = $documentToDTOConvertor->convertToDTO($document);
+            $dtoObject = $documentToDTOConvertor->convertToDTO($document, [\Config\AppConstant::ShowCorrectAnswer => $isShowCorrectAnswer]);
             $dtos[] = $dtoObject;
         }
        

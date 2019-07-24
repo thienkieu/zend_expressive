@@ -360,7 +360,6 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
     }
 
     protected function setCellValue(&$sheet, $cells, $value, $params = [], $isTranslate = false) {
-        echo $cells.chr(13);
         if ($isTranslate == true) {
             $value = $this->translator->translate($value, $params);
         }
@@ -402,9 +401,34 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         return true;
     }
 
+    public function getImageNameFromText($text) {
+
+    }
+
+    public function addDrawingToSheet(&$sheet, $path, $name= '', $description= '') {
+        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+        $drawing->setName($name);
+        $drawing->setDescription($description);
+        $drawing->setPath($path);
+        $drawing->setHeight(36);
+        $drawing->setWorksheet($sheet);
+    }
+
+    public function setBorderCell(&$sheet, $cell) {
+        $boderStyles = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['rgb' => '90EE90'],
+                ]
+            ]
+        ];
+
+        $this->setCellStyle($sheet, $cell, $boderStyles);
+    }
     public function exportQuestion($dto, &$messages, &$writer) {
         $questionService = $this->container->get(Question\QuestionServiceInterface::class);
-        $questionsResult = $questionService->getQuestions($dto, 1, 0);
+        $questionsResult = $questionService->getQuestions($dto, 1, 0, true);
         
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = $reader->load("c:\\questionTemplate.xlsx"); 
@@ -414,39 +438,48 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         
         $questions = $questionsResult['questions'];
         $questionIndex = 1;
-        $startIndex = 5;
-        
+        $startIndex = 5; 
+        $maxColumn = 0;
         foreach($questions as $question) {
             $startIndex += 1;
             //QuestionIndex
             $startColumnIndex = 66;
             $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $questionIndex);
+            //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
             //Type
             $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getType());
+            //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getFont()->setBold(true);
+            //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
             //SubType
             $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSubType());
+            //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
             //Source
             $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSource());
+            //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
             //ImageFile/Audio
             //$this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSource());
+            //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
             //Repeat
             $repeat = '';
             if ($question->getType() === \Config\AppConstant::Listening) $repeat = $question->getRepeat();
             $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $repeat);
+            //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
             //Content
-            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getContent());
+            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $this->toRichTextFromHTML($question->getContent()));
+            $sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
+            //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
             $subQuestions = $question->getSubQuestions();
@@ -454,21 +487,25 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                 $startColumnIndexSubQuestion = $startColumnIndex;
 
                 //Question content
-                $this->setCellValue($sheet, chr($startColumnIndexSubQuestion).$startIndex, $subQuestion->getContent());
+                $this->setCellValue($sheet, chr($startColumnIndexSubQuestion).$startIndex, $this->toRichTextFromHTML($subQuestion->getContent()));
+                $sheet->getStyle(chr($startColumnIndexSubQuestion).$startIndex)->getAlignment()->setWrapText(true);
+                //$this->setBorderCell($sheet, chr($startColumnIndexSubQuestion).$startIndex);
                 $startColumnIndexSubQuestion += 1;
 
                 //Correct answer
                 $correctAnswerColumn = chr($startColumnIndexSubQuestion).$startIndex;
                 $startColumnIndexSubQuestion += 1;
 
-                $isCorrectIndex = -1;
+                $isCorrectIndex = '';
                 $answers = $subQuestion->getAnswers();
                 $answerindex = 1;
                 
                 $startColumnIndexAnswer = $startColumnIndexSubQuestion;
                 foreach($answers as $answer) {
                     //Answer
-                    $this->setCellValue($sheet, chr($startColumnIndexAnswer).$startIndex, $answer->getContent());
+                    $this->setCellValue($sheet, chr($startColumnIndexAnswer).$startIndex, $this->toRichTextFromHTML($answer->getContent()));
+                    $sheet->getStyle(chr($startColumnIndexAnswer).$startIndex)->getAlignment()->setWrapText(true);
+                    //$this->setBorderCell($sheet, chr($startColumnIndexAnswer).$startIndex);
                     $startColumnIndexAnswer += 1;
                     
                     if ($answer->getIsCorrect()) {
@@ -476,10 +513,11 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                     }
 
                     $answerindex +=1;
-                    
+                    if ($startColumnIndexAnswer > $maxColumn) $maxColumn = $startColumnIndexAnswer; 
                 }
 
                 $this->setCellValue($sheet, $correctAnswerColumn, $isCorrectIndex);
+                //$this->setBorderCell($sheet, $correctAnswerColumn);
                 $startIndex += 1;
             }
            
@@ -487,6 +525,8 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $questionIndex += 1;                
         }
 
+        
+        $this->setBorderCell($sheet, 'B5:'.chr($maxColumn-1).($startIndex-1));
         $writer = new Xlsx($spreadsheet);
         $writer->save('c:\\questions.xlsx');
         return true;

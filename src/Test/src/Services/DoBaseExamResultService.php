@@ -110,7 +110,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $ret = $this->updateResultSummary($examResult);
         
         $this->dm->flush();
-        return $ret;
+        return true;
     }
     
     protected function inValidPin($dto, & $messages) {

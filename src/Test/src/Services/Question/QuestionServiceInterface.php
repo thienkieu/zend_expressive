@@ -9,7 +9,7 @@ interface QuestionServiceInterface
 {
     public function generateQuestion($citerial, $notInSources, $notInQuestions, $keepCorrectAnswer = false);
 
-    public function getQuestions($dto, $pageNumber, $itemPerPage);
+    public function getQuestions($dto, $pageNumber, $itemPerPage, $isShowCorrectAnswer = false);
 
     public function caculateMark(&$document);
     public function setCandidateMark(&$document, $mark);
