@@ -12,6 +12,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->put('/coordinator/question/source/update', Test\Handlers\UpdateSourceHandler::class, 'question.source.update');
     $app->delete('/coordinator/question/source/delete', Test\Handlers\DeleteSourceHandler::class, 'question.source.delete');
     $app->get('/coordinator/question/sources', Test\Handlers\GetSourceHandler::class, 'question.sources');
+    $app->post('/app/uploadMedia', Test\Handlers\UploadMediaHandler::class, 'question.uploadMedia');
 
     
     //Type
@@ -54,7 +55,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->delete('/coordinator/questions/delete', Test\Handlers\DeleteQuestionHandler::class, 'questions.delete');
     $app->post('/coordinator/questions/import', Test\Handlers\ImportQuestionHandler::class, 'questions.import');
     $app->post('/coordinator/question/questions', Test\Handlers\GetQuestionHandler::class, 'question.questions');
-    $app->post('/coordinator/question/export', Test\Handlers\ExportQuestionHandler::class, 'question.export');
+    $app->get('/coordinator/question/export', Test\Handlers\ExportQuestionHandler::class, 'question.export');
 
     $app->get('/coordinator/question/type', Test\Handlers\GetTypeHandler::class, 'question.types');
 };
