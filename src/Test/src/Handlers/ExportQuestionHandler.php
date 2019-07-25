@@ -27,16 +27,24 @@ class ExportQuestionHandler implements RequestHandlerInterface
         $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
         $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
 
-        $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
+        $content = isset($queryData['content']) ? $queryData['content'] : '';
+        $type = isset($queryData['type']) ? $queryData['type'] : '';
+
+        $dto = new \stdClass();
+        $dto->type = $type;
+        $dto->content = $content;
+
         $exportService = $this->container->get(ExportServiceInterface::class);
-        $exportService->exportQuestion($dto, $pageNumber, $itemPerPage);
-        die;
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$candiateName.'.xlsx"');
-        header('Cache-Control: max-age=0');
+        $fileName = $exportService->exportQuestion($dto, $pageNumber, $itemPerPage);
+        
+        $nameOnly = \basename($fileName);
+        header("Content-type: application/zip"); 
+        header("Content-Disposition: attachment; filename=$nameOnly");
+        header("Content-length: " . filesize($fileName));
+        header("Pragma: no-cache"); 
+        header("Expires: 0"); 
+        readfile("$fileName");
 
-        $writer->save('php://output');
-
-        return \Infrastructure\CommonFunction::buildResponseFormat(true, [], $ret);
+        return \Infrastructure\CommonFunction::buildResponseFormat(true, []);
     }
 }

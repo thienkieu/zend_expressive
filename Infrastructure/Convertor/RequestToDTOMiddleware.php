@@ -73,6 +73,14 @@ class RequestToDTOMiddleware implements MiddlewareInterface
                     return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $body));
                 }
             }
+        } catch( \Infrastructure\Exceptions\DataException $e) {
+            $logger = $this->container->get(Logger::class);
+            $logger->info($e);
+
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $messages[] = $translator->translate($e->getMessage());
+            
+            return \Infrastructure\CommonFunction::buildResponseFormat(false, $messages);
         } catch(\Exception $e){
             $logger = $this->container->get(Logger::class);
             $logger->info($e);

@@ -28,12 +28,15 @@ return [
         \Test\Convertor\Adapter\Documents\ToListeningEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToWritingEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToReadingEmbedDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToNoSubQuestionDocumentAdapter::class,
+        
         \Test\Convertor\Adapter\Documents\ExamResult\ToExamResultCandidateDocumentAdapter::class,
     ],
 
     'convertorDTOAdapters' => [
         \Test\Convertor\Adapter\DTOs\ToListeningDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToReadingDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToNoSubQuestionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToWritingDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToSourceDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToTypeDTOAdapter::class,

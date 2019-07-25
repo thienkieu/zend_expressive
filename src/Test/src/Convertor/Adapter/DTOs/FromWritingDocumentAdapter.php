@@ -41,14 +41,7 @@ class FromWritingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         $dto->setMark($document->getMark());
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-        
-        $questionDocuments = $document->getSubQuestions();
-        $questions = [];
-        foreach($questionDocuments as $q) {
-            $questions[] = $documentToDTOConvertor->convertToDTO($q, $options);
-        }
-        $dto->setSubQuestions($questions);
-
+       
         return $dto;
     }
     

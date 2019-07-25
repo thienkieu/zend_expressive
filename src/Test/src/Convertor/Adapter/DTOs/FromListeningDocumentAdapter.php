@@ -45,12 +45,13 @@ class FromListeningDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
         $questionDocuments = $document->getSubQuestions();
-       
-        $questions = [];
-        foreach($questionDocuments as $q) {
-            $questions[] = $documentToDTOConvertor->convertToDTO($q, $options);
+        if ($questionDocuments) {
+            $questions = [];
+            foreach($questionDocuments as $q) {
+                $questions[] = $documentToDTOConvertor->convertToDTO($q, $options);
+            }
+            $dto->setSubQuestions($questions);
         }
-        $dto->setSubQuestions($questions);
 
         return $dto;
     }

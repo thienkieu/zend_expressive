@@ -405,18 +405,13 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
     }
 
-    public function addDrawingToSheet(&$sheet, $cell , $path,  $name= '', $description= '') {
-        $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-        $drawing->setName($name);
-        $drawing->setDescription($description);
-        $drawing->setPath($path);
-        $drawing->setCoordinates($cell);
-        $drawing->setHeight(36);
-        $drawing->setWorksheet($sheet);
-    }
+    public function extractImages($text) {
+        $ok = preg_match_all( '@src="([^"]+)"@' , $text, $match );
+        if ($ok) {
+            return $match[1];
+        }
 
-    public function addLinkToCell(&$sheet, $cell, $toSheet, $toCell) {
-        $sheet->getCell($cell)->getHyperlink()->setUrl("sheet://'".$toSheet."'!".$toCell);
+        return '';
     }
 
     public function setBorderCell(&$sheet, $cell) {
@@ -431,7 +426,26 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
         $this->setCellStyle($sheet, $cell, $boderStyles);
     }
+
+    private function getRealPath($path) {
+        $path = \Infrastructure\CommonFunction::replaceHost($path);
+        $path = str_replace('%HOST%/', '', $path);
+        $path = realpath($path);
+
+        return $path;
+    }
+
     public function exportQuestion($dto, &$messages, &$writer) {
+        $mediaFolder = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.'Export'.\Config\AppConstant::DS.date('Ymdhis');
+        if (!file_exists($mediaFolder)) {
+            mkdir($mediaFolder, 0777, true);
+        }
+        
+        $zip = new \ZipArchive();
+        if (! $zip->open($mediaFolder.\Config\AppConstant::DS.'question.zip', \ZipArchive::CREATE) === TRUE) {
+            return false;
+        }
+
         $questionService = $this->container->get(Question\QuestionServiceInterface::class);
         $questionsResult = $questionService->getQuestions($dto, 1, 0, true);
         
@@ -471,9 +485,26 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
             //ImageFile/Audio
             if ($question->getType() === \Config\AppConstant::Listening) {
-                $path = $question->getPath();
-                $this->addDrawingToSheet($sheet, chr($startColumnIndex).$startIndex, $path, '', '');
-                $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getPath());
+                $path = $this->getRealPath($question->getPath());
+                //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
+                $zip->addFile($path, basename($path));
+                $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \basename($path));
+                //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
+                //$sheet->getCell(chr($startColumnIndex).$startIndex)->getHyperlink()->setUrl($path);
+            } 
+            if ($question->getType() === \Config\AppConstant::Reading) {
+                $images = $this->extractImages($question->getContent());
+                $baseImageName = [];
+                foreach($images as $image) {
+                    $path = $this->getRealPath($image);
+                    //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
+                    $zip->addFile($path, \basename($path));
+                    $baseImageName[] = basename($path);
+                }
+                
+                $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \implode(',',$baseImageName));
+                //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
+                //$sheet->getCell(chr($startColumnIndex).$startIndex)->getHyperlink()->setUrl($images);
             }
             //$this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSource());
             //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
@@ -487,7 +518,16 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $startColumnIndex += 1;
 
             //Content
-            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $this->toRichTextFromHTML($question->getContent()));
+            if ($question->getType() === \Config\AppConstant::Reading) {
+                $content = preg_replace_callback('(<div class="online-test-question-image">.*src="(.*?)".*</div>)', function ($matches) {
+                    $image = $this->getRealPath($matches[1]);
+                    return '['.basename($image).']';
+                }, $question->getContent());
+                $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $this->toRichTextFromHTML($content));
+            } else {
+                $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $this->toRichTextFromHTML($question->getContent()));
+            }
+            
             $sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
             //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
@@ -530,17 +570,20 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                 //$this->setBorderCell($sheet, $correctAnswerColumn);
                 $startIndex += 1;
             }
+            if ($subQuestions) $startIndex += -1;
            
             
             $questionIndex += 1;                
         }
 
         
-        $this->setBorderCell($sheet, 'B5:'.chr($maxColumn-1).($startIndex-1));
+        $this->setBorderCell($sheet, 'B5:'.chr($maxColumn-1).$startIndex);
         $writer = new Xlsx($spreadsheet);
-        $writer->save('c:\\questions.xlsx');
-        return true;
+        
+        $writer->save($mediaFolder.\Config\AppConstant::DS.'questions.xlsx');
+        $zip->addFile($mediaFolder.\Config\AppConstant::DS.'questions.xlsx', 'questions.xlsx');
+        $zip->close();
+        return \realpath($mediaFolder).\Config\AppConstant::DS.'question.zip';
     }
 
-    
 }

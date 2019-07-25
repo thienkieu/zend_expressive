@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ODM\Document(repositoryClass="\Test\Repositories\ListeningQuestionRepository")
  */
 
-class ListeningQuestionDocument extends QuestionDocument
+class ListeningQuestionDocument extends HasSubQuestionDocument
 {
   
   /** @ODM\Field(type="string") */

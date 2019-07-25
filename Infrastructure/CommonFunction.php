@@ -27,6 +27,10 @@ class CommonFunction
         rename($source, $destination);
     }
 
+    public static function moveFileToFolder($source, $destination) {
+        copy($source, $destination.\Config\AppConstant::DS.basename($source));
+    }
+
     public static function getServerHost() {
         $protocal = 'http://';
         if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
