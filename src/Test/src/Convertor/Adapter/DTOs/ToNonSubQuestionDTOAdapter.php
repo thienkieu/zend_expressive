@@ -8,7 +8,7 @@ use Infrastructure\Convertor\ToDTOAdapter;
 use Test\Enum\DTOName;
 use Config\AppConstant;
 
-class ToNoSubQuestionDTOAdapter extends ToDTOAdapter {
+class ToNonSubQuestionDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
         $type = isset($dtoObject->type) ? $dtoObject->type: '';

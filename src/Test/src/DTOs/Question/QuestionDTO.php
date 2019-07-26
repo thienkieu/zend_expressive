@@ -16,6 +16,8 @@ class QuestionDTO
     protected $mark;
     protected $comment;
     protected $candidateMark;
+    protected $order;
+    
      /**
      * @var SubQuestionDTO[]
      */
@@ -280,6 +282,26 @@ class QuestionDTO
     public function setTypeId($typeId)
     {
         $this->typeId = $typeId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of order
+     */ 
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * Set the value of order
+     *
+     * @return  self
+     */ 
+    public function setOrder($order)
+    {
+        $this->order = $order;
 
         return $this;
     }

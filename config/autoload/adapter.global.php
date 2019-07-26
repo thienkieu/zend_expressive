@@ -28,7 +28,7 @@ return [
         \Test\Convertor\Adapter\Documents\ToListeningEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToWritingEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToReadingEmbedDocumentAdapter::class,
-        \Test\Convertor\Adapter\Documents\ToNoSubQuestionDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToNonSubQuestionDocumentAdapter::class,
         
         \Test\Convertor\Adapter\Documents\ExamResult\ToExamResultCandidateDocumentAdapter::class,
     ],
@@ -36,7 +36,7 @@ return [
     'convertorDTOAdapters' => [
         \Test\Convertor\Adapter\DTOs\ToListeningDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToReadingDTOAdapter::class,
-        \Test\Convertor\Adapter\DTOs\ToNoSubQuestionDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\ToNonSubQuestionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToWritingDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToSourceDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToTypeDTOAdapter::class,
@@ -65,7 +65,10 @@ return [
         \Test\Convertor\Adapter\DTOs\FromTypeDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromSubTypeDocumentAdapter::class,
         
+        \Test\Convertor\Adapter\DTOs\FromNonSubQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromQuestionDocumentAdapter::class,
+        
+        
         \Test\Convertor\Adapter\DTOs\FromAnswerDocumentAdapter::class,
         
         \Test\Convertor\Adapter\DTOs\Test\FromQuestionDocumentAdapter::class,

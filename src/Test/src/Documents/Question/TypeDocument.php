@@ -17,7 +17,7 @@ class TypeDocument
   private $name;
 
   /**
-  * @ODM\ReferenceOne(targetDocument="TypeDocument", simple=true)
+  * @ODM\ReferenceOne(targetDocument="TypeDocument", storeAs="id")
   */
   private $parentType;
 

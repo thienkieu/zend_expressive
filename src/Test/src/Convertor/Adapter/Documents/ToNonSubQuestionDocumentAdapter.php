@@ -8,7 +8,7 @@ use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 use Test\Services\Interfaces\SourceServiceInterface;
 use Test\Services\Interfaces\TypeServiceInterface;
 
-class ToNoSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
+class ToNonSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
     protected $convertor;
 
@@ -41,7 +41,7 @@ class ToNoSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInte
         }
 
 
-        $document = new \Test\Documents\Question\NoSubQuestionDocument();
+        $document = new \Test\Documents\Question\NonSubQuestionDocument();
         $content = \Infrastructure\CommonFunction::replaceHost($dto->getContent());
         $document->setContent($content);
         

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ODM\Document
  */
 
-class NoSubQuestionDocument extends QuestionDocument
+class NonSubQuestionDocument extends QuestionDocument
 {
     /** @ODM\EmbedMany(targetDocument="AnswerDocument") */
     private $answers;

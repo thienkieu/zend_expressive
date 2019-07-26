@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ODM\Document(collection="questions", repositoryClass="\Test\Repositories\QuestionRepository")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField("documentType")
- * @ODM\DiscriminatorMap({"reading"="ReadingQuestionDocument", "listening"="ListeningQuestionDocument", "writing"="WritingQuestionDocument", "nonSub"="NoSubQuestionDocument", "normal"="QuestionDocument"})
+ * @ODM\DiscriminatorMap({"reading"="ReadingQuestionDocument", "listening"="ListeningQuestionDocument", "writing"="WritingQuestionDocument", "nonSub"="NonSubQuestionDocument", "normal"="QuestionDocument"})
  */
 
 class QuestionDocument
@@ -18,6 +18,9 @@ class QuestionDocument
 
   /** @ODM\Field(type="string") */
   private $content;
+
+  /** @ODM\Field(type="int") */
+  private $order;
 
   /**
   * @ODM\ReferenceOne(targetDocument="TypeDocument", simple=true)
@@ -158,6 +161,26 @@ class QuestionDocument
   public function setMark($mark)
   {
     $this->mark = $mark;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of order
+   */ 
+  public function getOrder()
+  {
+    return $this->order;
+  }
+
+  /**
+   * Set the value of order
+   *
+   * @return  self
+   */ 
+  public function setOrder($order)
+  {
+    $this->order = $order;
 
     return $this;
   }
