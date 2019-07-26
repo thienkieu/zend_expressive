@@ -28,7 +28,9 @@ class FromWritingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
 
     public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\WritingQuestionDTO();
-        $dto->setContent($document->getContent());
+        $content = \Infrastructure\CommonFunction::revertToHost($document->getContent());
+        $dto->setContent($content);
+        
         $dto->setId($document->getId());
         
         $dto->setType($document->getType()->getParentType()->getName());
