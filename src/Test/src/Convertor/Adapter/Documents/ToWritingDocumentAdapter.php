@@ -44,6 +44,9 @@ class ToWritingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         }
         $document->setSource($sourceDocument);
         
+        $content = \Infrastructure\CommonFunction::replaceHost($dto->getContent());
+        $document->setContent($content);
+        
         $typeService = $this->container->get(TypeServiceInterface::class);
         $typeDocument = $typeService->getTypeById($dto->getTypeId());
         if (!$typeDocument) {
