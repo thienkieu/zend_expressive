@@ -9,7 +9,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 /** 
  * @ODM\EmbeddedDocument
  */
-class RandomQuestionDocument extends QuestionDocument
+class RandomQuestionDocument extends HasSubQuestionDocument
 {
     /** @ODM\Field(type="bool") */
     protected $isDifferentSource;
