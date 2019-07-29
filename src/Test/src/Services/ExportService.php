@@ -575,9 +575,11 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             
             $questionIndex += 1;                
         }
-
         
-        $this->setBorderCell($sheet, 'B5:'.chr($maxColumn-1).$startIndex);
+        if ($maxColumn > 0) {
+            $this->setBorderCell($sheet, 'B5:'.chr($maxColumn-1).$startIndex);
+        }
+        
         $writer = new Xlsx($spreadsheet);
         
         $writer->save($mediaFolder.\Config\AppConstant::DS.'questions.xlsx');
