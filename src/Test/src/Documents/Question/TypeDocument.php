@@ -16,6 +16,10 @@ class TypeDocument
   /** @ODM\Field(type="string") */
   private $name;
 
+  /** @ODM\Field(type="bool") */
+  private $isManualScored;
+
+
   /**
   * @ODM\ReferenceOne(targetDocument="TypeDocument", storeAs="id")
   */
@@ -97,6 +101,26 @@ class TypeDocument
   public function setParentType($parentType)
   {
     $this->parentType = $parentType;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isManualScored
+   */ 
+  public function getIsManualScored()
+  {
+    return $this->isManualScored;
+  }
+
+  /**
+   * Set the value of isManualScored
+   *
+   * @return  self
+   */ 
+  public function setIsManualScored($isManualScored)
+  {
+    $this->isManualScored = $isManualScored;
 
     return $this;
   }

@@ -32,7 +32,7 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
     public function getInputMarkType($questions) {
         $ret = \Config\AppConstant::MarkInputTypeAuto;
         foreach($questions as $question) {
-            if ($question->getQuestionInfo()->getType() === \Config\AppConstant::Writing) {
+            if ($question->getQuestionInfo()->getType()->getIsManualScored()) {
                 return \Config\AppConstant::MarkInputTypeManual;
             }
         }
