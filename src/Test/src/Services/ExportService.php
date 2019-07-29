@@ -494,15 +494,17 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             } 
             if ($question->getType() === \Config\AppConstant::Reading) {
                 $images = $this->extractImages($question->getContent());
-                $baseImageName = [];
-                foreach($images as $image) {
-                    $path = $this->getRealPath($image);
-                    //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
-                    $zip->addFile($path, \basename($path));
-                    $baseImageName[] = basename($path);
+                if ($images) {
+                    $baseImageName = [];
+                    foreach($images as $image) {
+                        $path = $this->getRealPath($image);
+                        //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
+                        $zip->addFile($path, \basename($path));
+                        $baseImageName[] = basename($path);
+                    }
+                    
+                    $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \implode(',',$baseImageName));
                 }
-                
-                $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \implode(',',$baseImageName));
                 //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
                 //$sheet->getCell(chr($startColumnIndex).$startIndex)->getHyperlink()->setUrl($images);
             }
