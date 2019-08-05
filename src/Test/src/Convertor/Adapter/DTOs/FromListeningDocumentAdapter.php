@@ -31,7 +31,7 @@ class FromListeningDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
         $dto->setContent($document->getContent());
         $dto->setRepeat($document->getRepeat());
         
-        $dto->setPath($this->appendHost($document->getPath()));
+        $dto->setPath(\Infrastructure\CommonFunction::revertToHost($document->getPath()));
 
         $dto->setType($document->getType()->getParentType()->getName());
         $dto->setSubType($document->getType()->getName());
@@ -55,11 +55,4 @@ class FromListeningDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
 
         return $dto;
     }
-
-    protected function appendHost($content, $options = []) {
-        $host = \Infrastructure\CommonFunction::getServerHost();
-
-        $content = $host.$content;
-        return $content;
-    }   
 }
