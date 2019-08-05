@@ -37,7 +37,10 @@ class ListeningQuestionService extends QuestionService
             $destinationPath = $realPath.\Config\AppConstant::DS.$fileName;
 
             \Infrastructure\CommonFunction::moveFile($dto->getPath(), $destinationPath);
-            $dto->setPath('/'.\Config\AppConstant::DS.$mediaQuestionFolder.\Config\AppConstant::DS.$fileName);
+            $serverConstant = \Config\AppConstant::HOST_REPLACE;
+            $dto->setPath($serverConstant.'/'.\Config\AppConstant::DS.$mediaQuestionFolder.\Config\AppConstant::DS.$fileName);
+            $dto->setPath(\Infrastructure\CommonFunction::revertToHost($document->getPath()));
+
 
         }
         
