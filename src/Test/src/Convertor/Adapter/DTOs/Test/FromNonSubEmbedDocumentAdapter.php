@@ -20,6 +20,7 @@ class FromNonSubEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInter
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
         if ($document instanceof \Test\Documents\Test\NonSubQuestionDocument) {
+            
             return true;
         }
 
@@ -41,7 +42,6 @@ class FromNonSubEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInter
         $dto->setId($document->getId());
         $dto->setCandidateMark($document->getCandidateMark());
         $dto->setMark($document->getMark());
-        $dto->setNumberCorrectSubQuestion($document->getNumberCorrectSubQuestion());
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         

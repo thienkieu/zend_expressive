@@ -61,6 +61,5 @@ class FromListeningDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
 
         $content = $host.$content;
         return $content;
-    }
-    
+    }   
 }

@@ -16,6 +16,10 @@ class ExamResultSummaryDocument
   /** @ODM\Field(type="string") */
   protected $type;
 
+  // TOIEC, LOGIGER
+  /** @ODM\Field(type="string") */
+  protected $businessType;
+
    /** @ODM\Field(type="bool") */
    protected $isScored;
 
@@ -121,6 +125,26 @@ class ExamResultSummaryDocument
   public function setCandidateMark($candidateMark)
   {
     $this->candidateMark = $candidateMark;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of businessType
+   */ 
+  public function getBusinessType()
+  {
+    return $this->businessType;
+  }
+
+  /**
+   * Set the value of businessType
+   *
+   * @return  self
+   */ 
+  public function setBusinessType($businessType)
+  {
+    $this->businessType = $businessType;
 
     return $this;
   }

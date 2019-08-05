@@ -12,4 +12,5 @@ interface DoExamResultServiceInterface
     public function finish($dto, & $messages);
     public function getExamResult($dto, & $messages, & $examResultDTO);
     public function isExistResultOfExam($examId);
+    public function addManualResult($examResultDTO, &$messages);
 }

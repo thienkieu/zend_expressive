@@ -27,6 +27,7 @@ abstract class AppConstant
     const Reading = 'Reading';
     const Writing = 'Writing';
     const Listening = 'Listening';
+    const NonSub = 'NonSub';
 
     /**
      * Generate type

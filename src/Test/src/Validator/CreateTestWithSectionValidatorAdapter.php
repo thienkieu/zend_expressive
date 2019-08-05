@@ -24,7 +24,9 @@ class CreateTestWithSectionValidatorAdapter implements ValidatorAdapterInterface
         $this->container = $container;
     }
     public function isHandleValid($routerName, $request) : bool
-    {
+    {   
+        //$body = $request->getParsedBody();
+        //$sections = $body->sections;
         if ($routerName === \Config\AppRouterName::CreateTest) {
             return true;
         }
@@ -52,7 +54,11 @@ class CreateTestWithSectionValidatorAdapter implements ValidatorAdapterInterface
             if (is_array($sections)) {
                 foreach ($sections as  $section) {
                     if (property_exists($section, 'questions')) {
-                        $ret = array_merge($ret, $section->questions) ;                        
+                        foreach($section->questions as $question) {
+                            if ($question->generateFrom === \Config\AppConstant::Random){
+                                $ret[] =  $question;
+                            }
+                        }                      
                     }
                 }
             }

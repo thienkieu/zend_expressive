@@ -428,10 +428,12 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
     }
 
     private function getRealPath($path) {
-        $path = \Infrastructure\CommonFunction::replaceHost($path);
+		$path = \Infrastructure\CommonFunction::replaceHost($path);
+		$path = str_replace('%HOST%/\\', '', $path);
         $path = str_replace('%HOST%/', '', $path);
+		
         $path = realpath($path);
-
+		
         return $path;
     }
 
@@ -485,22 +487,26 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
             //ImageFile/Audio
             if ($question->getType() === \Config\AppConstant::Listening) {
-                $path = $this->getRealPath($question->getPath());
+				$path = $this->getRealPath($question->getPath());
+				if ($path !== false && strpos($path, 'http://') === false) {
                 //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
-                $zip->addFile($path, basename($path));
-                $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \basename($path));
+					$zip->addFile($path, basename($path));
+					$this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \basename($path));
+				}
                 //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
                 //$sheet->getCell(chr($startColumnIndex).$startIndex)->getHyperlink()->setUrl($path);
             } 
             if ($question->getType() === \Config\AppConstant::Reading) {
-                $images = $this->extractImages($question->getContent());
+                $images = \Infrastructure\CommonFunction::extractImages($question->getContent());
                 if ($images) {
                     $baseImageName = [];
                     foreach($images as $image) {
                         $path = $this->getRealPath($image);
+						if ($path !== false && strpos($path, 'http://') === false) {
                         //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
-                        $zip->addFile($path, \basename($path));
-                        $baseImageName[] = basename($path);
+							$zip->addFile($path, \basename($path));
+							$baseImageName[] = basename($path);
+						}
                     }
                     
                     $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \implode(',',$baseImageName));

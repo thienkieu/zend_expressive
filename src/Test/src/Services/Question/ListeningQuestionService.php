@@ -25,14 +25,22 @@ class ListeningQuestionService extends QuestionService
     }
 
     public function createQuestion($dto, &$messages) {
-        $fileName = basename($dto->getPath());
-        $mediaQuestionFolder = \Config\AppConstant::MediaQuestionFolder;
-        $realPath = realpath($mediaQuestionFolder);
-        $destinationPath = $realPath.\Config\AppConstant::DS.$fileName;
+        $path = $dto->getPath();
+        $isUrl = \Infrastructure\CommonFunction::isURI($path);
+        if (\Infrastructure\CommonFunction::isURI($path) === true) {
+            $path = \Infrastructure\CommonFunction::replaceHost($path);
+            $dto->setPath($path);
+        } else {
+            $fileName = basename($dto->getPath());
+            $mediaQuestionFolder = \Config\AppConstant::MediaQuestionFolder;
+            $realPath = realpath($mediaQuestionFolder);
+            $destinationPath = $realPath.\Config\AppConstant::DS.$fileName;
 
-        \Infrastructure\CommonFunction::moveFile($dto->getPath(), $destinationPath);
-        $dto->setPath('/'.\Config\AppConstant::DS.$mediaQuestionFolder.\Config\AppConstant::DS.$fileName);
+            \Infrastructure\CommonFunction::moveFile($dto->getPath(), $destinationPath);
+            $dto->setPath('/'.\Config\AppConstant::DS.$mediaQuestionFolder.\Config\AppConstant::DS.$fileName);
 
+        }
+        
         $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
         $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto);
         $this->dm->persist($questionDocument);

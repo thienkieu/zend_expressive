@@ -83,20 +83,21 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return round($questionMark / $numberSubQuestion, 2);
     }
 
-    public function generateQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer = false) {
-        if ($citerial->getGenerateFrom() !== \Config\AppConstant::Random) {
-            return $citerial;
-        }
+    protected function generatePickupQuestion($questionInfo) {
+        return $questionInfo->getQuestionInfo();
+    }
 
+    protected function generateRandomQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer = false) {
         $questionDTO = $citerial->getQuestionInfo();        
         $toClass = $this->getClassName($questionDTO->getType());
         $questionRepository = $this->dm->getRepository($toClass);
         
+        $questionnotInsources = $notInsources;
         if (!$citerial->getQuestionInfo()->getIsDifferentSource()) {
-            $notInsources = [];
+            $questionnotInsources = [];
         }
        
-        $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $notInsources, $notInQuestions, $toClass);
+        $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $questionnotInsources, $notInQuestions, $toClass);
         if (!$question) {
             $generateQuestionCiterial = [
                 '%type%' => $questionDTO->getType(),
@@ -115,7 +116,16 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion());
             $ret->setSubQuestions($subQuestions);
         }
+
         return $ret;
+    }
+
+    public function generateQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer = false) {
+        if ($citerial->getGenerateFrom() !== \Config\AppConstant::Random) {
+            return $this->generatePickupQuestion($citerial);
+        }
+
+        return $this->generateRandomQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer);
     }
 
     public function getQuestions($dto, $pageNumber, $itemPerPage, $isShowCorrectAnswer = false) {
@@ -180,8 +190,29 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $numberCorrectSubQuestion;
     }
 
+    protected function moveImageToQuestionFolder($content) {
+        $mediaFolder = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.\Config\AppConstant::DS.date('Ymdhis');
+        \Infrastructure\CommonFunction::createFolder($mediaFolder);
+
+        $images = \Infrastructure\CommonFunction::extractImages($content);
+        if ($images) {
+            $baseImageName = [];
+            foreach($images as $image) {
+                $path =  \Infrastructure\CommonFunction::getRealPath($image);
+                if ($path !== false && strpos($path, 'http://') === false) {
+                    \Infrastructure\CommonFunction::moveFileToFolder($path, \realpath($mediaFolder));                    
+                    $mediaFolder.\basename($path);
+                    $content = str_replace($image, \Config\AppConstant::HOST_REPLACE.'/'.$mediaFolder.'/'.\basename($path), $content);
+                } 
+            }
+        }
+
+        return $content;
+    }
+
     public function createQuestion($dto, &$messages) {
         $content = \Infrastructure\CommonFunction::replaceHost($dto->getContent());
+        $content = $this->moveImageToQuestionFolder($content);
         $dto->setContent($content);
 
         $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);

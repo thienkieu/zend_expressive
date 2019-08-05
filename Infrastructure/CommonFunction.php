@@ -23,12 +23,36 @@ class CommonFunction
         return $content;  
     }
 
+    public static function isURI($path) {
+        $url = filter_var($path, FILTER_VALIDATE_URL);
+        return !!$url;
+    }
+
+    public static function getRealPath($path) {
+		$path = \Infrastructure\CommonFunction::replaceHost($path);
+		$path = str_replace(\Config\AppConstant::HOST_REPLACE.'/\\', '', $path);
+        $path = str_replace(\Config\AppConstant::HOST_REPLACE.'/', '', $path);
+		$path = realpath($path);
+		
+        return $path;
+    }
+
+    public static function createFolder($path) {
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+    }
+    
     public static function moveFile($source, $destination) {
         rename($source, $destination);
     }
 
-    public static function moveFileToFolder($source, $destination) {
+    public static function copyFileToFolder($source, $destination) {
         copy($source, $destination.\Config\AppConstant::DS.basename($source));
+    }
+
+    public static function moveFileToFolder($source, $destination) {
+        rename($source, $destination.\Config\AppConstant::DS.basename($source));
     }
 
     public static function getServerHost() {
@@ -119,5 +143,14 @@ class CommonFunction
         } 
         
         return \DateTime::createFromFormat($format, $date);
+    }
+
+    public static function extractImages($text) {
+        $ok = preg_match_all( '@src="([^"]+)"@' , $text, $match );
+        if ($ok) {
+            return $match[1];
+        }
+
+        return false;
     }
 }

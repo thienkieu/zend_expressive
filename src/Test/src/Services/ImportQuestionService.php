@@ -46,7 +46,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         $this->sourceService = $this->container->get(SourceServiceInterface::class);  
         $this->typeService = $this->container->get(TypeServiceInterface::class);       
         $this->dataParser = $this->container->build(DataParserInterface::class, [DataParserInterface::FileTypeKey => 'excel']);
-        $this->imageFiles = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.date('Ymd');
+        $this->imageFiles = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.date('YmdHis');
         if (!file_exists($this->imageFiles)) {
             mkdir($this->imageFiles, 0777, true);
         }

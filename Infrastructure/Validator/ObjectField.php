@@ -57,7 +57,7 @@ class ObjectField extends AbstractValidator {
         }
        
         if ($obj->isParent) {
-            $this->abstractOptions['messages'][$obj->fieldName][] = $this->translateObject->translate($this->parentEmptyMessage, ['%propertyName%' => $fieldName]);
+            $this->abstractOptions['messages'][$obj->fieldName][] = $this->translateObject->translate($this->parentEmptyMessage, ['%propertyName%' => $obj->fieldName]);
             return;
         }
 

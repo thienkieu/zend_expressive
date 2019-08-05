@@ -29,6 +29,7 @@ return [
         \Test\Convertor\Adapter\Documents\ToWritingEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToReadingEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToNonSubQuestionDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToNonSubQuestionEmbedDocumentAdapter::class,
         
         \Test\Convertor\Adapter\Documents\ExamResult\ToExamResultCandidateDocumentAdapter::class,
     ],
@@ -54,6 +55,8 @@ return [
         \Test\Convertor\Adapter\DTOs\ToUpdateRepeatTimesDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToUpdateWritingAnswerDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\UpdateQuestionMarkDTOAdapter::class,
+
+        \Test\Convertor\Adapter\DTOs\ExamResult\ToExamResultHasSectionTestDTOAdapter::class,
     ],
 
     'convertorDocumentToDTOAdapters' => [
@@ -76,6 +79,7 @@ return [
         \Test\Convertor\Adapter\DTOs\Test\FromTestWithSectionDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromReadingEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromListeningEmbedDocumentAdapter::class,
+        \Test\Convertor\Adapter\DTOs\Test\FromNonSubEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromWritingEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\FromRandomQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromExamResultSummaryDocumentAdapter::class,

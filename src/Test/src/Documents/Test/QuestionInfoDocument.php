@@ -19,7 +19,8 @@ class QuestionInfoDocument
    *     "reading"="ReadingQuestionDocument",
    *     "writing"="WritingQuestionDocument",
    *     "listening"="ListeningQuestionDocument",
-   *      "random"="RandomQuestionDocument"
+   *     "random"="RandomQuestionDocument",
+   *     "nonsubquestion"="NonSubQuestionDocument" 
    *   }) */
   private $questionInfo;
 

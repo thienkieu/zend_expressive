@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Test\Convertor\Adapter\DTOs\Test;
+namespace Test\Convertor\Adapter\DTOs;
 
 use Infrastructure\Convertor\ConvertDocumentToDTOAdapterInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 
-class FromNonSubEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
+class FromNonSubDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
     private $container;
     /**
      * Class constructor.

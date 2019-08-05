@@ -36,7 +36,6 @@ class FromRandomQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterIn
         $dto->setNumberSubQuestion($document->getNumberSubQuestion());
         $dto->setIsDifferentSource($document->getIsDifferentSource());
         $dto->setMark($document->getMark());
-                
         return $dto;
     }
     

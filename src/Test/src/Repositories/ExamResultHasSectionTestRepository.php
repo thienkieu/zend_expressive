@@ -107,4 +107,15 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
         return $document;
     }
 
+    public function getExamJoined($type, $objectId) {
+        $examResult = $this->createQueryBuilder()
+                            ->field('candidate.objectId')->equals($objectId)
+                            ->field('candidate.type')->equals($type)
+                            ->select(['time','title', 'startDate', 'examId', 'candidate', 'resultSummary'])
+                            ->sort('startDate', 'desc')
+                            ->getQuery()
+                            ->execute();
+        
+        return $examResult;
+    }
 }

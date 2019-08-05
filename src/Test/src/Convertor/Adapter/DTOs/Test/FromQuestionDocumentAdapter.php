@@ -34,7 +34,7 @@ class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
-        $questionInfoDocument = $document->getQuestionInfo();        
+        $questionInfoDocument = $document->getQuestionInfo();  
         $questionDTO = $documentToDTOConvertor->convertToDTO($questionInfoDocument, $options);
 
         

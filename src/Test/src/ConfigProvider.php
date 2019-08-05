@@ -73,6 +73,8 @@ class ConfigProvider
                 Handlers\GetTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetTestTemplateHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UploadMediaHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\AddExamResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\GetExamJoinedHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,

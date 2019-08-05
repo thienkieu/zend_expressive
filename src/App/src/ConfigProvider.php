@@ -23,6 +23,12 @@ class ConfigProvider
         return [
             'dependencies' => $this->getDependencies(),
             'templates'    => $this->getTemplates(),
+            'mapingQuestion' => [
+                'Writing' => \Infrastructure\Enums\QuestionType::Writing,
+                'Reading' => \Infrastructure\Enums\QuestionType::Reading,
+                'Listening' => \Infrastructure\Enums\QuestionType::Listening,
+                'NonSub' => \Infrastructure\Enums\QuestionType::NonSub,
+            ]
         ];
     }
 

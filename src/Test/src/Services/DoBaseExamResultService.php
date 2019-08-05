@@ -224,4 +224,31 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
         return null;
     }
+
+
+    public function addManualResult($examResultDTO, &$messages) {
+        $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
+        $document = $dtoToDocumentConvertor->convertToDocument($examResultDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
+        $this->dm->persist($document);
+        $this->dm->flush();
+
+        $messages= [];
+        $messages[] = $this->translator->translate('Your exam result have been added successfully!');
+        return true;
+    }
+
+    public function getExamJoined(& $exams, $type, $objectId) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $documents = $examResultRepository->getExamJoined($type, $objectId);
+
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+
+        $exams = [];
+        foreach ($documents as $exam) {
+            $dto = $documentToDTOConvertor->convertToDTO($exam);
+            $exams[] = $dto;
+        }
+        
+        return true;
+    }
 }

@@ -110,7 +110,7 @@ class SectionDTO implements \JsonSerializable
         $ret->id = $this->getId();   
         $questions = $this->getQuestions();
         $dtoQuestions = [];
-        foreach ($questions as $question) {  
+        foreach ($questions as $question) {
             $info = json_decode(json_encode($question->getQuestionInfo()));
             $info->generateFrom = $question->getGenerateFrom();
             $info->id = $question->getId();

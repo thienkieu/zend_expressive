@@ -20,6 +20,10 @@ class ExamDocument
   /** @ODM\Field(type="string") */
   protected $title;
 
+  // Verbal, Writing, Choice
+  /** @ODM\Field(type="string") */
+  protected $type;
+
   /** @ODM\Field(type="date") */
   protected $startDate;
 
@@ -238,6 +242,26 @@ class ExamDocument
   public function setIsStarted($isStarted)
   {
     $this->isStarted = $isStarted;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of type
+   */ 
+  public function getType()
+  {
+    return $this->type;
+  }
+
+  /**
+   * Set the value of type
+   *
+   * @return  self
+   */ 
+  public function setType($type)
+  {
+    $this->type = $type;
 
     return $this;
   }

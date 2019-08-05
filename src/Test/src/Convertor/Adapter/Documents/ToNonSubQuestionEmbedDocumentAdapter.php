@@ -23,7 +23,7 @@ class ToNonSubQuestionEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapt
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Question\NonSubQuestionDTO && !isset($options[\Config\AppConstant::ToDocumentClass])) {
+        if ($dtoObject instanceof \Test\DTOs\Question\NonSubQuestionDTO && isset($options[\Config\AppConstant::ToDocumentClass])) {
             return true;
         }
 
@@ -41,7 +41,7 @@ class ToNonSubQuestionEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapt
         }
 
 
-        $document = new \Test\Documents\Question\Test\NonSubQuestionDocument();
+        $document = new \Test\Documents\Test\NonSubQuestionDocument();
         $content = \Infrastructure\CommonFunction::replaceHost($dto->getContent());
         $document->setContent($content);
         

@@ -11,9 +11,8 @@ use Zend\Validator\ValidatorChain;
 use Zend\Diactoros\Response\JsonResponse;
 use Infrastructure\Validator\ValidatorAdapterInterface;
 use Infrastructure\Validator\RequireField;
-use Infrastructure\Validator\ObjectField;
 
-class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
+class CreateTestWithoutSectionValidatorAdapter implements ValidatorAdapterInterface
 {
     protected $container;
 
@@ -26,7 +25,7 @@ class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
     }
     public function isHandleValid($routerName, $request) : bool
     {
-        if ($routerName === \Config\AppRouterName::CreateExam) {
+        if ($routerName === \Config\AppRouterName::CreateTest) {
             return true;
         }
 
@@ -42,10 +41,7 @@ class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
             }
         }
         
-        $ret = new \stdClass();
-        $ret->messages = $error;
-        $ret->isSuccess = false;
-        $responseMessage = new JsonResponse($ret);
+        $responseMessage = new JsonResponse($error);
         return empty($error);
     }
 
@@ -56,7 +52,11 @@ class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
             if (is_array($sections)) {
                 foreach ($sections as  $section) {
                     if (property_exists($section, 'questions')) {
-                        $ret = array_merge($ret, $section->questions) ;                        
+                        foreach($section->questions as $question) {
+                            if ($question->generateFrom === \Config\AppConstant::Random){
+                                $ret[] =  $question;
+                            }
+                        }                      
                     }
                 }
             }
@@ -67,48 +67,44 @@ class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
     public function valid(ServerRequestInterface $request, ResponseInterface & $messageResponse): bool
     {
         $validData = $request->getParsedBody();
-        
-        $validator = new StringLength(['min' => 8, 'max' => 12]);
-        $sectionTestValidator = new SectionTestValidator(
-            $this->container->get(\Config\AppConstant::Translator)
-        );
-        $objectFieldValidator = new ObjectField(
-            $this->container->get(\Config\AppConstant::Translator),
-            false,
-            [
-                'title' => [
-                    new \Zend\Validator\NotEmpty(),
-                ],
-                'test.sections.name' => [
-                    new \Zend\Validator\NotEmpty(),
-                ]
-            ]
-        );
+        $messageFormat = 'Field \'%field%\' can not empty';
+        $messageKey = '%field%';
 
         $testValidator = new RequireField(
             $this->container->get(\Config\AppConstant::Translator),
+            $messageKey,
+            $messageFormat,
             [
-               // 'sections=>sections' => 'test=>sections',
+                'title' => 'title', 
+                'sections' => 'sections',
             ]
         );
 
+        $sectionTestValidator = new SectionTestValidator(
+            $this->container->get(\Config\AppConstant::Translator),
+            $messageKey,
+            $messageFormat
+        );
 
         $validatorChain = new ValidatorChain();
-        $validatorChain->attach($objectFieldValidator);
         $validatorChain->attach($testValidator);
+        $validatorChain->attach($sectionTestValidator);
         $validatorChain->isValid($validData);        
 
         $validators = [];
         $validators[] = $validatorChain;
 
         $randomQuestions = $this->getRandomQuestion($validData);
+        
         foreach ($randomQuestions as $value) {
             $v = new RandomQuestionValidator(
-                $this->container->get(\Config\AppConstant::Translator)
+                $this->container->get(\Config\AppConstant::Translator),
+                $messageKey,
+                $messageFormat
             );
 
             $v->isValid($value);
-            $validators[] = $v;
+            $validators[] = $v;            
         }
                 
         return $this->showErrorMessage($validators, $messageResponse);

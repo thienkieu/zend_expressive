@@ -17,6 +17,8 @@ class QuestionDTO
     protected $comment;
     protected $candidateMark;
     protected $order;
+    protected $systemType;
+
     
      /**
      * @var SubQuestionDTO[]
@@ -36,6 +38,7 @@ class QuestionDTO
         $ret->mark = $this->getMark();
         $ret->comment = $this->getComment();
         $ret->candidateMark = $this->getCandidateMark();
+        $ret->systemType = $this->getSystemType();
         
         return $ret;
     }
@@ -302,6 +305,26 @@ class QuestionDTO
     public function setOrder($order)
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of systemType
+     */ 
+    public function getSystemType()
+    {
+        return $this->systemType;
+    }
+
+    /**
+     * Set the value of systemType
+     *
+     * @return  self
+     */ 
+    public function setSystemType($systemType)
+    {
+        $this->systemType = $systemType;
 
         return $this;
     }

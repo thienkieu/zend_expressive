@@ -23,7 +23,8 @@ class ToNonSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
-        if ($dtoObject instanceof \Test\DTOs\Question\QuestionDTO && !isset($options[\Config\AppConstant::ToDocumentClass])) {
+        if ($dtoObject instanceof \Test\DTOs\Question\NonSubQuestionDTO && !isset($options[\Config\AppConstant::ToDocumentClass])) {
+        
             return true;
         }
 
@@ -32,6 +33,7 @@ class ToNonSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
     
     public function convert($dto, $options = []) 
     {  
+       
         $sourceService = $this->container->get(SourceServiceInterface::class);
         $sourceDocument = $sourceService->getSourceByName($dto->getSource());
         if (!$sourceDocument) {

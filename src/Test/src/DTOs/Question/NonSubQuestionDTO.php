@@ -12,7 +12,8 @@ class NonSubQuestionDTO extends QuestionDTO implements \JsonSerializable
     protected $answers;
     
     public function jsonSerialize() {
-        $ret = parent::jsonSerialize();        
+        $ret = parent::jsonSerialize(); 
+        $ret->answers = $this->getAnswers();            
         return $ret;
     }
     

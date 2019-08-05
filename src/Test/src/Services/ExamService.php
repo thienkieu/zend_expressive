@@ -129,6 +129,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Exam\ExamDocument::class]);
+            
             $this->assignPin($document);
             $this->dm->persist($document);
             
