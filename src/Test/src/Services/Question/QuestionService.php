@@ -107,7 +107,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
                 '%sources%' => implode(',', $notInsources)
             ];
             
-            throw new \Test\Exceptions\GenerateQuestionException($this->translator->translate('Cannot generate question with citerials: [type => %type%, subType => %subType%, numberSubQuestion => %numberSubQuestion%, sources=>%sources%]', $generateQuestionCiterial));
+            throw new \Test\Exceptions\GenerateQuestionException($this->translator->translate('Cannot generate question for test'));
         }
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);

@@ -58,6 +58,7 @@ return array(
     'The question have been created successfully!' => 'The question have been created successfully!',
     'The question doesnot exist, Please check it again.' => 'The question doesnot exist, Please check it again.',
     'Cannot generate a test for exam %examName%' => 'Cannot generate a test for exam %examName%',
+    'Cannot generate question for test' => 'Cannot generate question for test. Please review the follow case. <ul><li>Number sub question of test</li><li>Source is enough to generate question</li><li> Type is enough to generate question </li></ul>',
     'The question has been deleted successfully!' => 'The question has been deleted successfully!',
     'The question has been update successfully!' => 'The question has been update successfully!',
     'Source not found, please check it again.' => 'Source not found, please check it again.',
