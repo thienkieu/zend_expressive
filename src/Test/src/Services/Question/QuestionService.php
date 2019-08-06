@@ -56,6 +56,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $maxRand = count($subQuestions) - 1;
         $ret = [];
 
+        $this->updateQuestionMark($questionDTO, $numberSubQuestion);
         $questionMark = $questionDTO->getMark();
         $markOfSubQuestion = $this->getSubQuestionMark($questionMark, $numberSubQuestion);
         $totalMarkOfSubQuestion = 0;
@@ -75,6 +76,11 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         }
         
         return $ret;
+    }
+
+    protected function updateQuestionMark(&$questionDTO, $numberSubQuestion) {
+        $questionMark = $questionDTO->getMark();
+        if (empty($questionMark)) $questionDTO->setMark(\Config\AppConstant::DefaultSubQuestionMark * $numberSubQuestion);
     }
 
     protected function getSubQuestionMark($questionMark, $numberSubQuestion) {
