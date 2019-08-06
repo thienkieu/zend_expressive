@@ -9,6 +9,7 @@ use Zend\Log\Logger;
 use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class QuestionService implements QuestionServiceInterface, HandlerInterface
 {
@@ -215,8 +216,15 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $content = $this->moveImageToQuestionFolder($content);
         $dto->setContent($content);
 
+        $existingDocument = null;
+        $id = $dto->getId();
+        if (!empty($id)) {
+            $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
+            $existingDocument = $questionRepository->find($dto->getId());
+        }
+
         $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-        $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto);        
+        $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto, $existingDocument ? [\Config\AppConstant::ExistingDocument => $existingDocument]: []);        
         
         $this->dm->persist($questionDocument);
         $this->dm->flush();
@@ -301,9 +309,8 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             }
 
         }
-
-        $this->dm->remove($questionDocument);
-        $ok = $this->createQuestion($dto, $messages);
+        $oldId = $questionDocument->getId();       
+        $ok = $this->createQuestion($dto->setId($oldId), $messages);
         if ($ok) {
             $messages = [$this->translator->translate('The question has been update successfully!')];
         }

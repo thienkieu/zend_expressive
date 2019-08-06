@@ -83,7 +83,8 @@ abstract class AppConstant
     const DateTimeFormat = 'm/d/Y';
 
     const ToDocumentClass = 'toDocumentClass';
-    const ShowCorrectAnswer= 'showCorrectAnswer';
+    const ShowCorrectAnswer = 'showCorrectAnswer';
+    const ExistingDocument = 'existingDocument';
 
     const ReduceTimeSpan = 10;
     const DefaultSubQuestionMark = 2;

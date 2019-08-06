@@ -7,6 +7,7 @@ namespace Test\Convertor\Adapter\Documents;
 use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 use Test\Services\Interfaces\SourceServiceInterface;
 use Test\Services\Interfaces\TypeServiceInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
@@ -42,8 +43,13 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
 
 
         $document = new \Test\Documents\Question\ReadingQuestionDocument();
+        if (isset($options[\Config\AppConstant::ExistingDocument])) {
+            $document = $options[\Config\AppConstant::ExistingDocument];            
+        }
+
         $content = \Infrastructure\CommonFunction::replaceHost($dto->getContent());
         $document->setContent($content);
+        
         
         $document->setSource($sourceDocument);
         
@@ -58,10 +64,11 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         
         $questions = $dto->getSubQuestions();
 
+        $questionDocuments = new ArrayCollection();
         foreach($questions as $question) {
-            $questionDocument = $this->convertor->convertToDocument($question, $options);
-            $document->addSubQuestion($questionDocument);            
+            $questionDocuments->add($this->convertor->convertToDocument($question, $options));
         }
+        $document->setSubQuestions($questionDocuments);     
         
         return $document;
             

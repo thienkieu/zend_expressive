@@ -39,13 +39,18 @@ class ListeningQuestionService extends QuestionService
             \Infrastructure\CommonFunction::moveFile($dto->getPath(), $destinationPath);
             $serverConstant = \Config\AppConstant::HOST_REPLACE;
             $dto->setPath($serverConstant.'/'.\Config\AppConstant::DS.$mediaQuestionFolder.\Config\AppConstant::DS.$fileName);
-            $dto->setPath(\Infrastructure\CommonFunction::revertToHost($document->getPath()));
-
-
         }
         
+        $existingDocument = null;
+        $id = $dto->getId();
+        if (!empty($id)) {
+            $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
+            $existingDocument = $questionRepository->find($dto->getId());
+        }
+
         $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-        $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto);
+        $questionDocument = $dtoToDocumentConvertor->convertToDocument($dto, $existingDocument ? [\Config\AppConstant::ExistingDocument => $existingDocument]: []);
+        
         $this->dm->persist($questionDocument);
         $this->dm->flush();
 

@@ -44,8 +44,16 @@ class ToNonSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
 
 
         $document = new \Test\Documents\Question\NonSubQuestionDocument();
+        if (isset($options[\Config\AppConstant::ExistingDocument]))  {
+            $document = $options[\Config\AppConstant::ExistingDocument];            
+        }
+        
         $content = \Infrastructure\CommonFunction::replaceHost($dto->getContent());
         $document->setContent($content);
+        $id = $dto->getId();
+        if (!empty($id)) {
+            $document->setId($id);
+        }
         
         $document->setSource($sourceDocument);
         
