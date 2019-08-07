@@ -165,12 +165,10 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         
         try {
             $dto = $this->generateExamTest($testDTO, $messages);
-            if (!$dto) {
+            if ($dto === false) {
                 return false;
-            }
+            }            
             
-            $messages[] = $translator->translate('Your exam have been created successfull!');
-            return true;
         } catch(\Test\Exceptions\GenerateQuestionException $e) {
             $messages[] =  $e->getMessage(); 
             $dto = null;      
