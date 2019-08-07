@@ -168,7 +168,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             if ($dto === false) {
                 return false;
             }            
-            
+            return true;
         } catch(\Test\Exceptions\GenerateQuestionException $e) {
             $messages[] =  $e->getMessage(); 
             $dto = null;      
@@ -180,7 +180,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             $logger->info($e);
             
             return false;
-        }        
+        }
     }
 
     public function generateExamTest($test, & $messages, $keepCorrectAnswer = false, $options = []) {
