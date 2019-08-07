@@ -33,6 +33,9 @@ class ExamResultDocument
   /** @ODM\Field(type="string") */
   protected $title;
 
+  /** @ODM\Field(type="string") */
+  protected $examType;
+
    /** @ODM\Field(type="date") */
   protected $startDate;
 
@@ -228,6 +231,26 @@ class ExamResultDocument
   public function setResultSummary($resultSummary)
   {
     $this->resultSummary = $resultSummary;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of examType
+   */ 
+  public function getExamType()
+  {
+    return $this->examType;
+  }
+
+  /**
+   * Set the value of examType
+   *
+   * @return  self
+   */ 
+  public function setExamType($examType)
+  {
+    $this->examType = $examType;
 
     return $this;
   }

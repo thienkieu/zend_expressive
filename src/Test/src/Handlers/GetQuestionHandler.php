@@ -29,7 +29,7 @@ class GetQuestionHandler implements RequestHandlerInterface
 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         $questionService = $this->container->get(QuestionServiceInterface::class);
-        $data = $questionService->getQuestions($dto, $pageNumber, $itemPerPage);
+        $data = $questionService->getQuestions($dto, $pageNumber, $itemPerPage, true);
 
         $ret = new \stdClass();
         $ret->questions = $data['questions'];

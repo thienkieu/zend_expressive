@@ -26,11 +26,7 @@ class ViewSampleExamHandler implements RequestHandlerInterface
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         $testService = $this->container->get(ExamServiceInterface::class);
         $ok = $testService->createExamSample($dto, $resultDTO, $messages);
-        return new JsonResponse([
-            'welcome' => 'Create Exam Handler.',
-            'success' => $ok,
-            'messages' => $messages,
-            'data' => $resultDTO
-        ]);
+        
+        return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages, $resultDTO);
     }
 }

@@ -79,7 +79,8 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             
             $examResult = new \Test\DTOs\ExamResult\ExamResultHasSectionTestDTO();
             $examResult->setTest($examTest);
-
+            $examResult->setExamType($examDTO->getType());
+            
             $candidateDTO = $documentToDTOConvertor->convertToDTO($candidate);
             $examResult->setCandidate($candidateDTO);
             $examResult->setExamId($examDTO->getId());

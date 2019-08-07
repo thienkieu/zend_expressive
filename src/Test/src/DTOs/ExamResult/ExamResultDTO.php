@@ -14,7 +14,8 @@ class ExamResultDTO implements \JsonSerializable
     protected $startDate;
     protected $remainingTime;
     protected $resultSummary;
-
+    protected $examType;
+    
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->id = $this->getId();
@@ -25,6 +26,8 @@ class ExamResultDTO implements \JsonSerializable
         $ret->startDate = $this->getStartDate() ? $this->getStartDate()->format(\Config\AppConstant::DateTimeFormat) : '';   
         $ret->remainingTime = $this->getRemainingTime();
         $ret->resultSummary = $this->getResultSummary();
+        $ret->examType = $this->getExamType();
+        
         return $ret;
     }
 
@@ -185,6 +188,26 @@ class ExamResultDTO implements \JsonSerializable
     public function setResultSummary($resultSummary)
     {
         $this->resultSummary = $resultSummary;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of examType
+     */ 
+    public function getExamType()
+    {
+        return $this->examType;
+    }
+
+    /**
+     * Set the value of examType
+     *
+     * @return  self
+     */ 
+    public function setExamType($examType)
+    {
+        $this->examType = $examType;
 
         return $this;
     }

@@ -25,7 +25,8 @@ class GetExamJoinedHandler implements RequestHandlerInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         $examServiceResult = $this->container->get(DoExamResultServiceInterface::class);
-        $ok = $examServiceResult->getExamJoined($exams, $dto->type, $dto->objectId);
+
+        $ok = $examServiceResult->getExamJoined($exams, $dto);
         return new JsonResponse([
             'isSuccess' => $ok,
             'exams' => $exams,

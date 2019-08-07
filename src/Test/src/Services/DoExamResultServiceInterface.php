@@ -13,4 +13,5 @@ interface DoExamResultServiceInterface
     public function getExamResult($dto, & $messages, & $examResultDTO);
     public function isExistResultOfExam($examId);
     public function addManualResult($examResultDTO, &$messages);
+    public function getExamJoined(& $exams, $dto);
 }

@@ -101,6 +101,10 @@ class CreateExamWithSectionValidatorAdapter implements ValidatorAdapterInterface
         $validators = [];
         $validators[] = $validatorChain;
 
+        $examTypeValidate = new ExamTypeValidator($this->container->get(\Config\AppConstant::Translator));
+        $examTypeValidate->isValid($validData->type);
+        $validators[] = $examTypeValidate;
+        
         $randomQuestions = $this->getRandomQuestion($validData);
         foreach ($randomQuestions as $value) {
             $v = new RandomQuestionValidator(

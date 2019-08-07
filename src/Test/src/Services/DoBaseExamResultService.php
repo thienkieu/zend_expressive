@@ -237,9 +237,9 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         return true;
     }
 
-    public function getExamJoined(& $exams, $type, $objectId) {
+    public function getExamJoined(& $exams, $dto) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-        $documents = $examResultRepository->getExamJoined($type, $objectId);
+        $documents = $examResultRepository->getExamJoined($dto);
 
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
