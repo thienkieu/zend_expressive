@@ -45,6 +45,7 @@ return [
             \Test\Services\Question\ReadingQuestionService::class,
             \Test\Services\Question\WritingQuestionService::class,
             \Test\Services\Question\ListeningQuestionService::class,
+            \Test\Services\Question\VerbalQuestionService::class,
             \Test\Services\Question\QuestionService::class,
         ],
         \Test\Services\PinServiceInterface::class => [

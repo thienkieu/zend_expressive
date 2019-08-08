@@ -7,7 +7,7 @@ use League\OAuth2\Server\Grant;
 $dir = realpath('src');
 
 return [
-    'environment' => '',
+    'environment' => 'dev',
     'sqldb' => [
         'db' => [
             'driver'   => 'pdo_mysql',

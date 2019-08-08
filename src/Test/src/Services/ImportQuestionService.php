@@ -325,7 +325,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         }
         $listeningQuestion = new \Test\Documents\Question\ListeningQuestionDocument();
         $listeningQuestion->setRepeat($data[$this->repeatTime]);
-        $listeningQuestion->setPath('/'.$this->imageFiles.'/'.$data[$this->fileName]);
+        $listeningQuestion->setPath(\Config\AppConstant::HOST_REPLACE.'/'.$this->imageFiles.'/'.$data[$this->fileName]);
 
         $this->buidGeneralQuestion($data, $listeningQuestion, $lineNumber);
         return $listeningQuestion;

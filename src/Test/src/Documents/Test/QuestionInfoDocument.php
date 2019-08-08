@@ -20,6 +20,7 @@ class QuestionInfoDocument
    *     "writing"="WritingQuestionDocument",
    *     "listening"="ListeningQuestionDocument",
    *     "random"="RandomQuestionDocument",
+   *     "verbal"="VerbalQuestionDocument", 
    *     "nonsubquestion"="NonSubQuestionDocument" 
    *   }) */
   private $questionInfo;

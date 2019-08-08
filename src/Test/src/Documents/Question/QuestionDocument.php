@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ODM\Document(collection="questions", repositoryClass="\Test\Repositories\QuestionRepository")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField("documentType")
- * @ODM\DiscriminatorMap({"reading"="ReadingQuestionDocument", "listening"="ListeningQuestionDocument", "writing"="WritingQuestionDocument", "nonSub"="NonSubQuestionDocument", "normal"="QuestionDocument"})
+ * @ODM\DiscriminatorMap({"reading"="ReadingQuestionDocument", "listening"="ListeningQuestionDocument", "writing"="WritingQuestionDocument", "nonSub"="NonSubQuestionDocument", "verbal"="VerbalQuestionDocument", "normal"="QuestionDocument"})
  */
 
 class QuestionDocument

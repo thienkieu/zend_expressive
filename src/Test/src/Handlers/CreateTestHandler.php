@@ -24,10 +24,9 @@ class CreateTestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        
         $testService = $this->container->get(TestServiceInterface::class);
         $ok = $testService->createTest($dto, $messages, $resultDTO);
-   
+
         return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages, $resultDTO);
     }
 }
