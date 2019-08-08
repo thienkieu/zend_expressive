@@ -60,8 +60,8 @@ class UploadFileMiddleware implements MiddlewareInterface
             
             foreach($files as $key => $file) {
                 $time = time();
-                $file->moveTo($uploadToFolder.'/'.$time.$file->getclientFilename()) ;        
-                $body->$key = $uploadToFolder.'/'.$time.$file->getclientFilename();
+                $file->moveTo($uploadToFolder.'/'.$file->getclientFilename()) ;        
+                $body->$key = $uploadToFolder.'/'.$file->getclientFilename();
             }
             
             return $handler->handle($request->withParsedBody($body));

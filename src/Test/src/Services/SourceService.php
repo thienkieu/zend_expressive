@@ -108,6 +108,12 @@ class SourceService implements Interfaces\SourceServiceInterface, HandlerInterfa
             return false;
         }
 
+        $isExistedSource = $this->isExistSourceName($dto->getName(), $messages);
+        if ($isExistedSource) {
+            $messages[] = $translator->translate('Source is existed, Please check your spelling again!');
+            return false;
+        }
+        
         $sourceDocument->setName($dto->getName());
         $this->dm->flush();
 

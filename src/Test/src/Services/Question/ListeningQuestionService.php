@@ -32,7 +32,9 @@ class ListeningQuestionService extends QuestionService
             $dto->setPath($path);
         } else {
             $fileName = basename($dto->getPath());
-            $mediaQuestionFolder = \Config\AppConstant::MediaQuestionFolder;
+            
+            $mediaQuestionFolder = \Config\AppConstant::MediaQuestionFolder.\Config\AppConstant::DS.date('YmdHis');
+            \Infrastructure\CommonFunction::createFolder($mediaQuestionFolder);
             $realPath = realpath($mediaQuestionFolder);
             $destinationPath = $realPath.\Config\AppConstant::DS.$fileName;
 
