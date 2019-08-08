@@ -67,7 +67,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
         $questionDocument = $this->getQuestion($examResult, $dto);
         if (!$questionDocument) {
-            $messages[] = $this->translator->translate('Exam not found');
+            $messages[] = $this->translator->translate('Question not found');
             return false;
         }
 

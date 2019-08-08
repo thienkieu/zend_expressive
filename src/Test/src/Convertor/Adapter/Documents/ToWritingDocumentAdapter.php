@@ -33,12 +33,12 @@ class ToWritingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
     public function convert($dto, $options = []) 
     {  
         $document = new \Test\Documents\Question\WritingQuestionDocument();
-        $document->setContent($dto->getContent());
-        $id = $dto->getId();
-        if (!empty($id)) {
-            $document->setId($id);
+        if (isset($options[\Config\AppConstant::ExistingDocument])) {
+            $document = $options[\Config\AppConstant::ExistingDocument];            
         }
-        
+
+
+        $document->setContent($dto->getContent());
         $sourceService = $this->container->get(SourceServiceInterface::class);
         $sourceDocument = $sourceService->getSourceByName($dto->getSource());
         if (!$sourceDocument) {

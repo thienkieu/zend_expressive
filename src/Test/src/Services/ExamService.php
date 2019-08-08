@@ -104,6 +104,9 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
         try {
+            $options = [];
+            $options[\Config\AppConstant::ToDocumentClass] = \Test\Documents\Exam\ExamDocument::class;
+         
             $existExamId = $examDTO->getId();
             if (!empty($existExamId)) {
                 $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamDocument::class, $existExamId);
@@ -118,8 +121,8 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                     $messages[] = $translator->translate('Cannot edit this exam because this exam have been used.');
                     return false;
                 }
-
-                $this->dm->remove($existExamObj);
+               
+                $options[\Config\AppConstant::ExistingDocument] = $existExamObj;
             }
             
             $examTest = $this->generateExamTest($examDTO->getTest(), $messages);
@@ -128,7 +131,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             }
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $document = $dtoToDocumentConvertor->convertToDocument($examDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Exam\ExamDocument::class]);
+            $document = $dtoToDocumentConvertor->convertToDocument($examDTO, $options);
             
             $this->assignPin($document);
             $this->dm->persist($document);

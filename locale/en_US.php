@@ -67,5 +67,6 @@ return array(
     'Source is edited successfully!' => 'Source is edited successfully!',
     'Source is existed in question, Please remove question contain source first.' => 'Source is existed in question, Please remove question contain source first.',
     'Source is deleted successfully!' => 'Source is deleted successfully!',
-    'Your exam result have been added successfully!' => 'Your exam result have been added successfully!'
+    'Your exam result have been added successfully!' => 'Your exam result have been added successfully!',
+    "Question not found" => "Question not found"
 );
