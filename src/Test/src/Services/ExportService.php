@@ -460,7 +460,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $questions = $questionsResult['questions'];
         $questionIndex = 1;
         $startIndex = 5; 
-        $maxColumn = 0;
+        $maxColumn = 0;  
+        $maxColumHeader = 78;  
+        $headerIndex = 4;   
         foreach($questions as $question) {
             $startIndex += 1;
             //QuestionIndex
@@ -482,6 +484,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
             //Source
             $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSource());
+            $sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
             //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
@@ -561,6 +564,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                 $startColumnIndexAnswer = $startColumnIndexSubQuestion;
                 foreach($answers as $answer) {
                     //Answer
+                    if ($startColumnIndexAnswer > $maxColumHeader) {
+                        $this->setCellValue($sheet, chr($startColumnIndexAnswer).$headerIndex, 'Answer '.($startColumnIndexAnswer - $maxColumHeader + 4));
+                    }
                     $this->setCellValue($sheet, chr($startColumnIndexAnswer).$startIndex, $this->toRichTextFromHTML($answer->getContent()));
                     $sheet->getStyle(chr($startColumnIndexAnswer).$startIndex)->getAlignment()->setWrapText(true);
                     //$this->setBorderCell($sheet, chr($startColumnIndexAnswer).$startIndex);
