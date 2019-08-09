@@ -126,7 +126,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             }
 
             if ($this->existExamWithTitle($examDTO->getTitle(), $existExamTitle)) {
-                if (!empty($examDTO->getId()) && $examDTO->getId() != $existExamTitle->getId()) {
+                if ($examDTO->getId() != $existExamTitle->getId()) {
                     $messages[] = $translator->translate('There is existing exam with the same title, Please enter another title.');
                     return false;
                 }
