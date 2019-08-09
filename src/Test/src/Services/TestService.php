@@ -43,6 +43,13 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
                 return false;
             }
 
+            if ($this->existTestWithTitle($testDTO->getTitle(), $existDocumentWithTitle)) {
+                if ($existDocumentWithTitle->getId() != $testDTO->getId()) {
+                    $messages[] = $translator->translate('There is existing test with this title, Please enter another title');
+                    return false;
+                }
+            }
+
             $examService = $this->container->get(ExamServiceInterface::class);
             $examDTO = $examService->generateExamTest($testDTO, $messages);
             if (!$examDTO) {
@@ -84,6 +91,11 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($testDTO);
             
+            if ($this->existTestWithTitle($testDTO->getTitle(), $existDocumentWithTitle)) {
+                $messages[] = $translator->translate('There is existing test with this title, Please enter another title');
+                return false;
+            }
+
             $examService = $this->container->get(ExamServiceInterface::class);
             $examDTO = $examService->generateExamTest($testDTO, $messages);
             if (!$examDTO) {
@@ -107,6 +119,19 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
             
             return false;
         }        
+    }
+
+    public function existTestWithTitle($title, &$document) {
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+
+        $testRepository = $this->dm->getRepository(\Test\Documents\Test\TestWithSectionDocument::class);
+        $document = $testRepository->findOneBy(['title' => $title]);
+        
+        if ($document) {
+            return true;
+        }
+        
+        return false;
     }
 
     public function getTests(& $ret, & $messages, $filterData, $pageNumber = \Config\AppConstant::PageNumber, $itemPerPage = \Config\AppConstant::ItemPerPage) {

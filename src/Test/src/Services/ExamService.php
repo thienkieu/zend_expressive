@@ -124,6 +124,13 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                
                 $options[\Config\AppConstant::ExistingDocument] = $existExamObj;
             }
+
+            if ($this->existExamWithTitle($examDTO->getTitle(), $existExamTitle)) {
+                if (!empty($examDTO->getId()) && $examDTO->getId() != $existExamTitle->getId()) {
+                    $messages[] = $translator->translate('There is existing exam with the same title, Please enter another title.');
+                    return false;
+                }
+            }
             
             $examTest = $this->generateExamTest($examDTO->getTest(), $messages);
             if (!$examTest) {
@@ -291,6 +298,19 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         
         $ret = $documentToDTOConvertor->convertToDTO($examDocument);
         return true;
+    }
+
+    public function existExamWithTitle($title, &$document) {
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $document = $examRepository->findOneBy(['title' => $title]);
+        
+        if ($document) {
+            return true;
+        }
+        
+        return false;
     }
 
     public function getSectionByContent($content) {
