@@ -569,7 +569,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                     //Answer
                     if ($startColumnIndexAnswer > $maxColumHeader) {
                         $this->setCellValue($sheet, chr($startColumnIndexAnswer).$headerIndex, 'Answer '.($startColumnIndexAnswer - $maxColumHeader + 4));
-                        $sheet->getColumnDimension(chr($startColumnIndexAnswer))->setWidth(20);
+                        $sheet->getColumnDimension(chr($startColumnIndexAnswer))->setWidth(30);
                     }
                     $this->setCellValue($sheet, chr($startColumnIndexAnswer).$startIndex, $this->toRichTextFromHTML($answer->getContent()));
                     $sheet->getStyle(chr($startColumnIndexAnswer).$startIndex)->getAlignment()->setWrapText(true);
