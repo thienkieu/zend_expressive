@@ -75,6 +75,7 @@ class ConfigProvider
                 Handlers\UploadMediaHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\AddExamResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetExamJoinedHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\ExportPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,

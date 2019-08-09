@@ -278,6 +278,21 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         return true;
     }
 
+    public function getExam($id, & $ret, &$messages) {
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $examDocument = $examRepository->find($id);
+        
+        if (!$examDocument) {
+            $messages[] = $this->translator->translate('The exam doesnot exist, Please check it again.');
+            return false;
+        }   
+        
+        $ret = $documentToDTOConvertor->convertToDTO($examDocument);
+        return true;
+    }
+
     public function getSectionByContent($content) {
         $repository = $this->dm->getRepository(Documents\SectionDocument::class);
         $obj = $repository->find("5caac4c7ce10c916c8007032");

@@ -47,6 +47,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->delete('/coordinator/exam/delete', Test\Handlers\DeleteExamHandler::class, 'exam.delete');
     $app->post('/coordinator/exam/addResult', Test\Handlers\AddExamResultHandler::class, 'exam.addResult');
     $app->get('/coordinator/exam/examJoined', Test\Handlers\GetExamJoinedHandler::class, 'exam.examJoined');
+    $app->get('/coordinator/exam/exportPin', Test\Handlers\ExportPinHandler::class, 'exam.exportPin');
     
     $app->post('/coordinator/exam/exportCandidateResult', Test\Handlers\ExportCandidateResultHandler::class, 'exam.exportCandidateResult');
     $app->get('/coordinator/exam/exportCandidateResult', Test\Handlers\ExportCandidateResultHandler::class, 'exam.exportCandidateResult');

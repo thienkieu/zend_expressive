@@ -462,7 +462,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $startIndex = 5; 
         $maxColumn = 0;  
         $maxColumHeader = 78;  
-        $headerIndex = 4;   
+        $headerIndex = 5;   
         foreach($questions as $question) {
             $startIndex += 1;
             //QuestionIndex
@@ -600,6 +600,42 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $zip->addFile($mediaFolder.\Config\AppConstant::DS.'questions.xlsx', 'questions.xlsx');
         $zip->close();
         return \realpath($mediaFolder).\Config\AppConstant::DS.'question.zip';
+    }
+
+
+    public function exportPin($examId, &$messages, &$writer) {
+        $examService = $this->container->get(ExamServiceInterface::class);
+        $ok = $examService->getExam($examId, $outDTO, $messages);
+        if (!$ok) {
+            return false;
+        }
+
+        $candidates = $outDTO->getCandidates();
+        
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $spreadsheet = $reader->load("c:\\pinTemplate.xlsx"); 
+        $sheet = $spreadsheet->getActiveSheet();
+        $startIndex = 9; 
+        $index = 1; 
+        $this->setCellValue($sheet, 'D5', $outDTO->getTitle()); 
+        
+        $this->setCellValue($sheet, 'D6',$outDTO->getStartDate()->format('M/d/Y'));     
+        foreach($candidates as $candidate) {
+            $this->setCellValue($sheet, 'B'.$startIndex, $index);
+            $this->setCellValue($sheet, 'C'.$startIndex, $candidate->getObjectId());
+            $this->setCellValue($sheet, 'D'.$startIndex, $candidate->getEmail());
+            $this->setCellValue($sheet, 'E'.$startIndex, $candidate->getName());
+            $this->setCellValue($sheet, 'F'.$startIndex, $candidate->getPin());
+
+            $startIndex += 1; 
+            $index += 1;  
+        }
+       
+        if ($index > 1) {
+            $this->setBorderCell($sheet, 'B9:F'.($startIndex-1));
+        }
+        $writer = new Xlsx($spreadsheet);
+        return true;
     }
 
 }
