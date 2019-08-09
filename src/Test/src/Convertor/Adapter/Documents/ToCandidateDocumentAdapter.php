@@ -35,6 +35,10 @@ class ToCandidateDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
         $document->setEmail($dto->getEmail());
         $document->setObjectId($dto->getObjectId());
         $document->setType($dto->getType());
+        $pin = $dto->getPin();
+        if (!empty($pin)) {
+            $document->setPin($pin);
+        }
 
         return $document;
     }
