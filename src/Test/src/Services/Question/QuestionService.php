@@ -29,7 +29,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return true;
     }
     
-    protected function getClassName($type) {
+    protected function getClassName($type, $subType) {
         switch($type) {
             case \Config\AppConstant::Reading:
                 return \Test\Documents\Question\ReadingQuestionDocument::class;
@@ -39,6 +39,11 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             break;
             case \Config\AppConstant::Writing:
                 return \Test\Documents\Question\WritingQuestionDocument::class;
+            break;
+            case \Config\AppConstant::Other:
+                return \Test\Documents\Question\VerbalQuestionDocument::class;
+            case \Config\AppConstant::NonSub:
+                return \Test\Documents\Question\NonSubQuestionDocument::class;
             break;
         }
         return \Test\Documents\Question\QuestionDocument::class;;
@@ -96,7 +101,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
     protected function generateRandomQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer = false) {
         $questionDTO = $citerial->getQuestionInfo();        
-        $toClass = $this->getClassName($questionDTO->getType());
+        $toClass = $this->getClassName($questionDTO->getType(), $questionDTO->getSubType());
         $questionRepository = $this->dm->getRepository($toClass);
         
         $questionnotInsources = $notInsources;

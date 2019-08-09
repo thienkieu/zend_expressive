@@ -27,6 +27,8 @@ abstract class AppConstant
     const Reading = 'Reading';
     const Writing = 'Writing';
     const Listening = 'Listening';
+    const Verbal = 'Verbal';
+    const Other = 'Other';
     const NonSub = 'NonSub';
 
     /**
