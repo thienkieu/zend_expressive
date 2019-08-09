@@ -34,7 +34,11 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $pins = \Infrastructure\CommonFunction::generateUniquePin(count($candidates));
         $index =0;
         foreach ($candidates as $candiate) {
-            $candiate->setPin($pins[$index]);
+            $oldPin = $candiate->getPin();
+            if (empty($oldPin)) {
+                $candiate->setPin($pins[$index]);
+            }
+            
             $index++;
         }
     }
