@@ -17,4 +17,5 @@ interface ExamServiceInterface
     public function enterPin($dto, & $results, & $messages);
     public function deleteExam($id, & $messages);
     public function existExamWithTitle($title, &$document);
+    public function getTypes();
 }

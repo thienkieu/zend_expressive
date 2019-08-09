@@ -70,5 +70,7 @@ return array(
     'Your exam result have been added successfully!' => 'Your exam result have been added successfully!',
     "Question not found" => "Question not found",
     "There is existing exam with the same title, Please enter another title." => "There is existing exam with the same title, Please enter another title.",
-    "There is existing test with this title, Please enter another title." => "There is existing test with this title, Please enter another title."
+    "There is existing test with this title, Please enter another title." => "There is existing test with this title, Please enter another title.",
+    "Skill Exam Type" => "Skill exam",
+    "Verbal Exam Type" => "Verbal exam"
 );
