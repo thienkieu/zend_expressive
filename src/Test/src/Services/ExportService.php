@@ -19,12 +19,15 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
     private $options;
     private $translator;
     private $dataParser; 
+    private $templateFolder;
 
     public function __construct($container, $options) {
         $this->container = $container;
         $this->options = $options;
         $this->dm = $this->container->get('documentManager');  
         $this->translator = $this->container->get(\Config\AppConstant::Translator);
+        $appConfig = $container->get(\Config\AppConstant::AppConfig);
+        $this->templateFolder = $appConfig['exportTemplateFolder'];
     }
 
     public function isHandler($dto, $options = []){
@@ -452,7 +455,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $questionsResult = $questionService->getQuestions($dto, 1, 0, true);
         
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        $spreadsheet = $reader->load("c:\\questionTemplate.xlsx"); 
+        $spreadsheet = $reader->load($this->templateFolder.\Config\AppConstant::DS."questionTemplate.xlsx"); 
 
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle($this->translator->translate('Questions'));
@@ -613,7 +616,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $candidates = $outDTO->getCandidates();
         
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        $spreadsheet = $reader->load("c:\\pinTemplate.xlsx"); 
+        $spreadsheet = $reader->load($this->templateFolder.\Config\AppConstant::DS."pinTemplate.xlsx"); 
         $sheet = $spreadsheet->getActiveSheet();
         $startIndex = 9; 
         $index = 1; 

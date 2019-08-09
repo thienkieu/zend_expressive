@@ -77,7 +77,7 @@ return [
     'i18n' => [
         'default_locale' => 'en_US',
     ],
-
+    'exportTemplateFolder' => $dir.'/../ExportTemplates',
     'uploadConfig' => [
         'fileTypes' => [
             'image/png',
