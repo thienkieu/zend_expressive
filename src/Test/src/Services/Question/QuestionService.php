@@ -124,7 +124,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         $ret = $documentToDTOConvertor->convertToDTO($question, [\Config\AppConstant::ShowCorrectAnswer => $keepCorrectAnswer]);
         $ret->setMark($questionDTO->getMark());
-        if (!($ret instanceof \Test\DTOs\Question\WritingQuestionDTO)) {
+        if (!($ret instanceof \Test\DTOs\Question\WritingQuestionDTO || $ret instanceof \Test\DTOs\Question\VerbalQuestionDTO || $ret instanceof \Test\DTOs\Question\NonSubQuestionDTO)) {
             $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion());
             $ret->setSubQuestions($subQuestions);
         }
