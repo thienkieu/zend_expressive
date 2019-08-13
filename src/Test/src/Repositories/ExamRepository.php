@@ -77,7 +77,7 @@ class ExamRepository extends DocumentRepository
                     ->field('candidates.pin')->equals($pin)
                     ->field('startDate')->gte($now)                
                 ->project()   
-                    ->includeFields(['title', 'startDate', 'test', 'time'])                
+                    ->includeFields(['title', 'startDate', 'test', 'time','type'])                
                     ->excludeFields(['candidates'])
                     ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
                     
