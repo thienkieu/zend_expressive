@@ -33,7 +33,7 @@ return array(
     'This is not listening question' => 'This is not listening question',
     'cannot found your question' => 'Cannot found your question',
     'Exam not found' => 'Exam not found',
-    'Your test have been finished!' => 'Your test have been finished!',
+    'Your answer have been updated!' => 'Your answer have been updated!',
     'Cannot found your exam with pin, Please check with admin.' => 'Cannot found your exam with pin: %pin%, Please check with admin.',
     'Type cannot empty.' => 'Type cannot empty at line %lineNumber%.', 
     'Type is not exist.' => 'Type %typeName% is not exist at line %lineNumber%, Please check spelling or creating type first!',
@@ -72,5 +72,6 @@ return array(
     "There is existing exam with the same title, Please enter another title." => "There is existing exam with the same title, Please enter another title.",
     "There is existing test with this title, Please enter another title." => "There is existing test with this title, Please enter another title.",
     "Skill Exam Type" => "Skill exam",
-    "Verbal Exam Type" => "Verbal exam"
+    "Verbal Exam Type" => "Verbal exam",
+    "Your cannot finish this exam because this exam have been finished!" => "Your cannot finish this exam because this exam have been finished!"
 );

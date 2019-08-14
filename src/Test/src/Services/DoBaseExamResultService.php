@@ -88,28 +88,40 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         return true;
     }
 
-    protected function updateResultSummary($examResult) {
+    protected function updateResultSummary($examId, $candidateId) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $examResult = $examResultRepository->getExamResult($examId, $candidateId, '');
+
         $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter(null, null);
         $summaries = $adapter->convert($examResult);
         $examService = $this->container->get(ExamServiceInterface::class);
         $examService->updateExamResultSummary($examResult->getExamId(), $examResult->getCandidate()->getId(), $summaries);
         $examService->updateExamStatus($examResult->getExamId());
         $examResult->setResultSummary($summaries);
+
+        $this->dm->flush();
+        return;
+    }
+
+    protected function isPinValid($examId, $candidateId) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $document = $examResultRepository->getExamResult($examId, $candidateId, '');
+        return $document->getCandidate()->isPinValid;        
     }
 
     public function finish($dto, & $messages) {
         $outRemainTime = 0;
         $dto->remainTime = 0;
-
+        $isPinValid = $this->isPinValid($dto->examId, $dto->candidateId);
+        if (!$isPinValid) {
+            $messages[] = $this->translator->translate('Your cannot finish this exam because this exam have been finished!');
+            return false;
+        }
         $ret = $this->synchronyTime($dto, $outRemainTime, $messages);
         $ret = $this->calculatorExamMark($dto, $messages);
         $ret = $this->inValidPin($dto, $messages);
+        $ret = $this->updateResultSummary($dto->examId, $dto->candidateId);
 
-        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-        $examResult = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
-        $ret = $this->updateResultSummary($examResult);
-        
-        $this->dm->flush();
         return true;
     }
     
@@ -184,7 +196,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
             
             $remaintTime = $document->getRemainTime();
             if ($remaintTime <= 0) {
-                $messages[] = $this->translator->translate('Your test have been finished!');
+                $messages[] = $this->translator->translate('Your answer have been updated!');
                 return false; 
             }
 

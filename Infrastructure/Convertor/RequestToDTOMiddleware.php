@@ -86,7 +86,7 @@ class RequestToDTOMiddleware implements MiddlewareInterface
             $logger->info($e);
 
             $translator = $this->container->get(\Config\AppConstant::Translator);
-            $messages[] = $e->getString();//$translator->translate('There is error with format data, Please check it again');
+            $messages[] = $e->getMessage();//$translator->translate('There is error with format data, Please check it again');
             
             return \Infrastructure\CommonFunction::buildResponseFormat(false, $messages);
         }  

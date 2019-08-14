@@ -27,13 +27,7 @@ class ExportQuestionHandler implements RequestHandlerInterface
         $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
         $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
 
-        $content = isset($queryData['content']) ? $queryData['content'] : '';
-        $type = isset($queryData['type']) ? $queryData['type'] : '';
-
-        $dto = new \stdClass();
-        $dto->type = $type;
-        $dto->content = $content;
-
+        $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         $exportService = $this->container->get(ExportServiceInterface::class);
         $fileName = $exportService->exportQuestion($dto, $pageNumber, $itemPerPage);
         

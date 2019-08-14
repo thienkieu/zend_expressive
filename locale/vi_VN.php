@@ -33,7 +33,7 @@ return array(
     'This is not listening question' => 'This is not listening question',
     'cannot found your question' => 'Cannot found your question',
     'Exam not found' => 'Exam not found',
-    'Your test have been finished!' => 'Your test have been finished!',
+    'Your answer have been updated!' => 'Your answer have been updated!',
     'Cannot found your exam with pin, Please check with admin.' => 'Cannot found your exam with pin: %pin%, Please check with admin.',
     'Type cannot empty.' => 'Type cannot empty at line %lineNumber%.', 
     'Type is not exist.' => '%typeName% is not exist at line %lineNumber%, Please check spelling or creating type first!',

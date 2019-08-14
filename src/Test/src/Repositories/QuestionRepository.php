@@ -57,12 +57,19 @@ class QuestionRepository extends DocumentRepository
 
     public function getFilterQuery($filterData) {
         $builder = $this->createQueryBuilder();
+        
+        $content = '';
+        if (isset($filterData->content)) {
+            $content = $filterData->content;
+        }
+        if ($content) {
+            $builder = $builder
+                            ->addOr($builder->expr()->field('content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
+                            ->addOr($builder->expr()->field('subQuestions.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
+                            ->addOr($builder->expr()->field('subQuestions.answers.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')));
+        }
+        
         $type = $filterData->type;
-        $builder = $builder
-                        ->addOr($builder->expr()->field('content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
-                        ->addOr($builder->expr()->field('subQuestions.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
-                        ->addOr($builder->expr()->field('subQuestions.answers.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')));
-    
         if ($type) {
             $builder->field('typeId')->equals($type);
         }
