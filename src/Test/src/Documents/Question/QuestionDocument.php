@@ -31,7 +31,7 @@ class QuestionDocument
   private $typeId;
 
   /** @ODM\Field(type="string") */
-  private $subTypeId;
+  private $parentTypeId;
 
   /**
   * @ODM\ReferenceOne(targetDocument="SourceDocument", simple=true)
@@ -212,21 +212,21 @@ class QuestionDocument
   }
 
   /**
-   * Get the value of subTypeId
+   * Get the value of parentTypeId
    */ 
-  public function getSubTypeId()
+  public function getParentTypeId()
   {
-    return $this->subTypeId;
+    return $this->parentTypeId;
   }
 
   /**
-   * Set the value of subTypeId
+   * Set the value of parentTypeId
    *
    * @return  self
    */ 
-  public function setSubTypeId($subTypeId)
+  public function setParentTypeId($parentTypeId)
   {
-    $this->subTypeId = $subTypeId;
+    $this->parentTypeId = $parentTypeId;
 
     return $this;
   }

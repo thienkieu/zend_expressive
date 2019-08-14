@@ -57,7 +57,7 @@ class ToVerbalDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
         }
         $document->setType($typeDocument);
         $document->setTypeId($typeDocument->getId());
-        $document->setSubTypeId($typeDocument->getParent()->getId());
+        $document->setParentTypeId($typeDocument->getParent()->getId());
 
         return $document;
             

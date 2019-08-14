@@ -66,7 +66,7 @@ class ToNonSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
         }
         $document->setType($typeDocument);
         $document->setTypeId($typeDocument->getId());
-        $document->setSubTypeId($typeDocument->getParent()->getId());
+        $document->setParentTypeId($typeDocument->getParent()->getId());
         
         $answers = $dto->getAnswers();
         foreach($answers as $answer){

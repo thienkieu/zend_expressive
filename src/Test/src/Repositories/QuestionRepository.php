@@ -67,13 +67,13 @@ class QuestionRepository extends DocumentRepository
             $builder->field('typeId')->equals($type);
         }
 
-        $subType = '';
-        if (isset($filterData->subType)) {
-            $subType = $filterData->subType;
+        $parentType = '';
+        if (isset($filterData->parentType)) {
+            $parentType = $filterData->parentType;
         }
-        
-        if ($subType) {
-            $builder->field('subTypeId')->equals($subType);
+
+        if ($parentType) {
+            $builder->field('parentTypeId')->equals($parentType);
         }
 
         return $builder;
