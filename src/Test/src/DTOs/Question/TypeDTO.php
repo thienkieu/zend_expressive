@@ -21,7 +21,7 @@ class TypeDTO implements \JsonSerializable
         $ret->id = $this->getId();
         $ret->name = $this->getName();
         $ret->isManualScored = $this->getIsManualScored();
-        $ret->subTypes = $this->getSubTypes();
+        $ret->subType = $this->getSubTypes();
         
         return $ret;
     }
