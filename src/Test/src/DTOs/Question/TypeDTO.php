@@ -9,11 +9,19 @@ class TypeDTO implements \JsonSerializable
     protected $id;
     protected $name; 
     protected $parentName;
+    protected $isManualScored;
     
+    /**
+     * @var TypeDTO[]
+     */
+    protected $subTypes;
+
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->id = $this->getId();
         $ret->name = $this->getName();
+        $ret->isManualScored = $this->getIsManualScored();
+        $ret->subTypes = $this->getSubTypes();
         
         return $ret;
     }
@@ -74,6 +82,50 @@ class TypeDTO implements \JsonSerializable
     public function setParentName($parentName)
     {
         $this->parentName = $parentName;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isManualScored
+     */ 
+    public function getIsManualScored()
+    {
+        return $this->isManualScored;
+    }
+
+    /**
+     * Set the value of isManualScored
+     *
+     * @return  self
+     */ 
+    public function setIsManualScored($isManualScored)
+    {
+        $this->isManualScored = $isManualScored;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of subTypes
+     *
+     * @return  TypeDTO[]
+     */ 
+    public function getSubTypes()
+    {
+        return $this->subTypes;
+    }
+
+    /**
+     * Set the value of subTypes
+     *
+     * @param  TypeDTO[]  $subTypes
+     *
+     * @return  self
+     */ 
+    public function setSubTypes($subTypes)
+    {
+        $this->subTypes = $subTypes;
 
         return $this;
     }

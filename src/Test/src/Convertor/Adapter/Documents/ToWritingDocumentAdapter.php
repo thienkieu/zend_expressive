@@ -56,6 +56,8 @@ class ToWritingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
             throw new \Infrastructure\Exceptions\DataException($message);
         }
         $document->setType($typeDocument);
+        $document->setTypeId($typeDocument->getId());
+        $document->setSubTypeId($typeDocument->getParent()->getId());
 
 
         return $document;

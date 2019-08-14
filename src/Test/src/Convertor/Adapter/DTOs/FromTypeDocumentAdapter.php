@@ -32,12 +32,21 @@ class FromTypeDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
         $dto = new \Test\DTOs\Question\TypeDTO();
         $dto->setId($document->getId());
         $dto->setName($document->getName());
-        $dto->setParentName('');
+        $dto->setIsManualScored($document->getIsManualScored());
 
-        $parentType = $document->getParentType();
-        if ($parentType) {
-            $dto->setParentName($parentType->getName());
+        $dm = $this->container->get(\Config\AppConstant::DocumentManager);
+        $repository = $dm->getRepository(\Test\Documents\Question\TypeDocument::class);
+        $subTypeDocuments = $repository->findBy(['parentType' => $document->getId()]);
+
+        $subTypeDTO = [];
+        foreach($subTypeDocuments as $subTypeDocument) {
+            $subDTO = new \Test\DTOs\Question\TypeDTO();
+            $subDTO->setId($subTypeDocument->getId());
+            $subDTO->setName($subTypeDocument->getName());
+            $subDTO->setIsManualScored($subTypeDocument->getIsManualScored());
+            $subTypeDTO[] =  $subDTO;
         }
+        $dto->setSubTypes($subTypeDTO);
         
         return $dto;
     }

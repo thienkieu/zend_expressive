@@ -31,6 +31,7 @@ class FromSubTypeDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         $dto = new \Test\DTOs\Question\SubTypeDTO();
         $dto->setId($document->getId());
         $dto->setName($document->getName());
+        $dto->setIsManualScored($document->getIsManualScored());
         
         return $dto;
     }

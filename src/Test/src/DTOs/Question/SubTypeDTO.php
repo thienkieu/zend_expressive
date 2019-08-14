@@ -8,12 +8,14 @@ class SubTypeDTO implements \JsonSerializable
 {
     protected $id;
     protected $name; 
+    protected $isManualScored;
     
     public function jsonSerialize() {
         $ret = new \stdClass();
         $ret->id = $this->getId();
         $ret->name = $this->getName();
-
+        $ret->isManualScored = $this->getIsManualScored();
+        
         return $ret;
     }
 
@@ -53,6 +55,26 @@ class SubTypeDTO implements \JsonSerializable
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isManualScored
+     */ 
+    public function getIsManualScored()
+    {
+        return $this->isManualScored;
+    }
+
+    /**
+     * Set the value of isManualScored
+     *
+     * @return  self
+     */ 
+    public function setIsManualScored($isManualScored)
+    {
+        $this->isManualScored = $isManualScored;
 
         return $this;
     }

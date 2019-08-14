@@ -27,6 +27,12 @@ class QuestionDocument
   */
   private $type;
 
+  /** @ODM\Field(type="string") */
+  private $typeId;
+
+  /** @ODM\Field(type="string") */
+  private $subTypeId;
+
   /**
   * @ODM\ReferenceOne(targetDocument="SourceDocument", simple=true)
   */
@@ -181,6 +187,46 @@ class QuestionDocument
   public function setOrder($order)
   {
     $this->order = $order;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of typeId
+   */ 
+  public function getTypeId()
+  {
+    return $this->typeId;
+  }
+
+  /**
+   * Set the value of typeId
+   *
+   * @return  self
+   */ 
+  public function setTypeId($typeId)
+  {
+    $this->typeId = $typeId;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of subTypeId
+   */ 
+  public function getSubTypeId()
+  {
+    return $this->subTypeId;
+  }
+
+  /**
+   * Set the value of subTypeId
+   *
+   * @return  self
+   */ 
+  public function setSubTypeId($subTypeId)
+  {
+    $this->subTypeId = $subTypeId;
 
     return $this;
   }
