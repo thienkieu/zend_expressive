@@ -197,6 +197,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
         $typeDocument = $this->typeService->getTypeByName($data[$this->type], $data[$this->subType]);
         $question->setType($typeDocument);
+        $question->setTypeId($typeDocument->getId());
+        $question->setSubTypeId($typeDocument->getParentType()->getId());
 
     }
 
