@@ -39,7 +39,8 @@ class QuestionRepository extends DocumentRepository
         $totalDocument = $filterQuery->getQuery()->execute()->count();        
         $filterQuery = $filterQuery->field('type')->prime(true)
                             ->field('source')->prime(true);
-
+        
+        
         if (!empty($itemPerPage)) {
             $filterQuery = $filterQuery->limit($itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1));
@@ -48,7 +49,6 @@ class QuestionRepository extends DocumentRepository
         $data = $filterQuery->sort('createDate', 'desc')
                             ->getQuery()
                             ->execute();
-       
         return [
             'totalDocument' => $totalDocument,
             'questions' => $data 
