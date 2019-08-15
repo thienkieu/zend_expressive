@@ -64,7 +64,7 @@ class ConfigProvider
             'factories'  => [
                 Handler\SetupSampleDataHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
-                Infrastructure\Authentication\AuthenticationMiddleware::class => Infrastructure\Authentication\AuthenticationMiddlewareFactory::class,
+                \ODMAuth\Middleware\AuthenticationMiddleware::class => \ODMAuth\Factory\AuthenticationMiddlewareFactory::class,
                 Zend\Expressive\Authentication\OAuth2\OAuth2Adapter::class => Zend\Expressive\Authentication\OAuth2\OAuth2AdapterFactory::class,
                 League\OAuth2\Server\ResourceServer::class => Zend\Expressive\Authentication\OAuth2\ResourceServerFactory::class,  
                 Zend\Expressive\Authentication\OAuth2\TokenEndpointHandler::class => Zend\Expressive\Authentication\OAuth2\TokenEndpointHandlerFactory::class,
@@ -77,6 +77,9 @@ class ConfigProvider
                 League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface::class => \ODMAuth\Repositories\RefreshTokenRepositoryFactory::class,
                 League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface::class => \ODMAuth\Repositories\AuthCodeRepositoryFactory::class,
                 
+                \ODMAuth\Handler\SetupPermissionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                \ODMAuth\Handler\VerifyPermissionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+
                 League\OAuth2\Server\Grant\ClientCredentialsGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\ClientCredentialsGrantFactory::class,
                 League\OAuth2\Server\Grant\PasswordGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\PasswordGrantFactory::class,
                 League\OAuth2\Server\Grant\RefreshTokenGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\RefreshTokenGrantFactory::class,
@@ -84,10 +87,13 @@ class ConfigProvider
                 League\OAuth2\Server\Grant\ImplicitGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\ImplicitGrantFactory::class,
                 \ODMAuth\Grant\SSOGrant::class                  => \ODMAuth\Grant\SSOGrantFactory::class, 
 
+                Services\AuthorizationService::class => \Infrastructure\Factory\BaseFactory::class,
+
 
             ],
             'aliases' => [
                 Zend\Expressive\Authentication\AuthenticationInterface::class => Zend\Expressive\Authentication\OAuth2\OAuth2Adapter::class,
+                Services\Interfaces\AuthorizationServiceInterface::class => Services\AuthorizationService::class,
             ],
         ];
     }

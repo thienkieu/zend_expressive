@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Authentication;
+namespace ODMAuth\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -43,9 +43,15 @@ class AuthenticationMiddleware extends \Zend\Expressive\Authentication\Authentic
         $routerName = $rotuer->getMatchedRouteName(); 
         if ($routerName && !in_array($routerName, $authenticationExcludeUrl)) { 
             $user = $this->auth->authenticate($request);
+
             if (null !== $user) {
-                return $handler->handle($request->withAttribute(UserInterface::class, $user));
+                $authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class);
+                $ok = $authorizationService->isAllow($user->getIdentity(), $routerName, $messages);
+                if ($ok) {
+                    return $handler->handle($request->withAttribute(UserInterface::class, $user));
+                }                
             }
+
             return $this->auth->unauthorizedResponse($request);
         }
 

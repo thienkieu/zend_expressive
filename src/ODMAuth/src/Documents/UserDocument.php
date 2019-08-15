@@ -17,6 +17,9 @@ class UserDocument
   private $username;
 
   /** @ODM\Field(type="string") */
+  private $objectId;
+
+  /** @ODM\Field(type="string") */
   private $password;
 
   /** @ODM\Field(type="string") */
@@ -25,6 +28,13 @@ class UserDocument
   /** @ODM\Field(type="string") */
   private $lastName;
 
+  /** @ODM\ReferenceMany(targetDocument="PermissionDocument", storeAs="id") */
+  private $permissionDocument;
+
+  public function __construct() {
+    $this->permissionDocument = new ArrayCollection();
+  }
+  
   /**
    * Get the value of lastName
    */ 
@@ -121,6 +131,46 @@ class UserDocument
   public function setUsername($username)
   {
     $this->username = $username;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of permissionDocument
+   */ 
+  public function getPermissionDocument()
+  {
+    return $this->permissionDocument;
+  }
+
+  /**
+   * Set the value of permissionDocument
+   *
+   * @return  self
+   */ 
+  public function setPermissionDocument($permissionDocument)
+  {
+    $this->permissionDocument = $permissionDocument;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of objectId
+   */ 
+  public function getObjectId()
+  {
+    return $this->objectId;
+  }
+
+  /**
+   * Set the value of objectId
+   *
+   * @return  self
+   */ 
+  public function setObjectId($objectId)
+  {
+    $this->objectId = $objectId;
 
     return $this;
   }

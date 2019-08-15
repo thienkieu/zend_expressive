@@ -13,4 +13,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     //odm auth
     $app->get('/odmauth/setup', ODMAuth\Handler\SetupSampleDataHandler::class, 'odmauth.setup');
+    $app->get('/odmauth/setupPermission', ODMAuth\Handler\SetupPermissionHandler::class, 'odmauth.setupPermission');
+    $app->get('/odmauth/verifyPermission', ODMAuth\Handler\VerifyPermissionHandler::class, 'odmauth.verifyPermission');
 };

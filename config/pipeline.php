@@ -20,7 +20,7 @@ use Tuupola\Middleware\CorsMiddleware;
 use Infrastructure\i18n\LocaleMiddleware;
 use Infrastructure\Convertor\RequestToDTOMiddleware;
 use Infrastructure\Middleware\UploadFileMiddleware;
-use Infrastructure\Authentication\AuthenticationMiddleware;
+use ODMAuth\Middleware\AuthenticationMiddleware;
 
 /**
  * Setup middleware pipeline:
@@ -64,7 +64,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     
     $app->pipe(LocaleMiddleware::class);
     $app->pipe(CorsMiddleware::class);
-    //$app->pipe(AuthenticationMiddleware::class);
+    $app->pipe(AuthenticationMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);    
     $app->pipe(BodyParamsMiddleware::class);
     $app->pipe(UploadFileMiddleware::class);

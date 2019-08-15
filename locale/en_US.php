@@ -73,5 +73,6 @@ return array(
     "There is existing test with this title, Please enter another title." => "There is existing test with this title, Please enter another title.",
     "Skill Exam Type" => "Skill exam",
     "Verbal Exam Type" => "Verbal exam",
-    "Your cannot finish this exam because this exam have been finished!" => "Your cannot finish this exam because this exam have been finished!"
+    "Your cannot finish this exam because this exam have been finished!" => "Your cannot finish this exam because this exam have been finished!",
+    "You do not have permission" => "You do not have permission",
 );

@@ -7,10 +7,11 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Authentication;
+namespace ODMAuth\Factory;
 
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
+use \ODMAuth\Middleware\AuthenticationMiddleware;
 
 class AuthenticationMiddlewareFactory
 {
@@ -24,6 +25,6 @@ class AuthenticationMiddlewareFactory
                 'AuthenticationInterface service is missing'
             );
         }
-        return new AuthenticationMiddleware($authentication, $container);
+        return new \ODMAuth\Middleware\AuthenticationMiddleware($authentication, $container);
     }
 }

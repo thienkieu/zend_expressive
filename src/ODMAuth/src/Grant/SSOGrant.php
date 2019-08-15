@@ -102,6 +102,7 @@ class SSOGrant extends AbstractGrant
         $data = explode("@@##@@", $plaintext);
         $userData = $data[1];
         $verifyData = $data[0];
+        $userName = $data[2];
 
         $ok = false;
         $user = null;
