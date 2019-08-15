@@ -106,7 +106,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
     protected function isPinValid($examId, $candidateId) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $document = $examResultRepository->getExamResult($examId, $candidateId, '');
-        return $document->getCandidate()->isPinValid;        
+        return $document->getCandidate()->getIsPinValid();        
     }
 
     public function finish($dto, & $messages) {
