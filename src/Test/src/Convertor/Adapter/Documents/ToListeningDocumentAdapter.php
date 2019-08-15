@@ -64,7 +64,7 @@ class ToListeningDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
         }
         $document->setType($typeDocument);
         $document->setTypeId($typeDocument->getId());
-        $document->setParentTypeId($typeDocument->getParent()->getId());
+        $document->setParentTypeId($typeDocument->getParentType()->getId());
         
         $questions = $dto->getSubQuestions();
 
