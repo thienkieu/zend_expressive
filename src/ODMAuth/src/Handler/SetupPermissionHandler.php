@@ -27,24 +27,76 @@ class SetupPermissionHandler implements RequestHandlerInterface
     {
         $dm = $this->container->get(\Config\AppConstant::DocumentManager);
 
-        $codeFunctions = [];
-        $codeFunctions[] ="questions.create";
-        $codeFunctions[] ="questions.update";
-        $codeFunctions[] ="questions.delete";
-        $codeFunctions[] ="questions.import";
-        $codeFunctions[] ="question.questions";
-        $codeFunctions[] ="question.export";
+        $questionCodeFunctions = [];
+        $questionCodeFunctions[] ="questions.create";
+        $questionCodeFunctions[] ="questions.update";
+        $questionCodeFunctions[] ="questions.delete";
+        $questionCodeFunctions[] ="questions.import";
+        $questionCodeFunctions[] ="question.questions";
+        $questionCodeFunctions[] ="question.export";
+        $questionCodeFunctions[] ="question.source.create";
+        $questionCodeFunctions[] ="question.source.update";
+        $questionCodeFunctions[] ="question.source.delete";
+        $questionCodeFunctions[] ="question.sources";
+        $questionCodeFunctions[] ="question.uploadMedia";
+        $questionCodeFunctions[] ="question.type.create";
+        $questionCodeFunctions[] ="question.types";
+        $questionCodeFunctions[] ="question.subType.create";
 
-        $permissionDocument = new \ODMAuth\Documents\PermissionDocument();
-        $permissionDocument->setBusinessName("Question management");
-        $permissionDocument->setCodeFunctions($codeFunctions);
-        $dm->persist($permissionDocument);
+        $questionPermissionDocument = new \ODMAuth\Documents\PermissionDocument();
+        $questionPermissionDocument->setBusinessName("Question management");
+        $questionPermissionDocument->setCodeFunctions($questionCodeFunctions);
+        $dm->persist($questionPermissionDocument);
+
+        $testCodeFunctions = [];
+        $testCodeFunctions[] ="test.create";
+        $testCodeFunctions[] ="test.update";
+        $testCodeFunctions[] ="test.tests";
+        $testCodeFunctions[] ="test.viewSampleExam";
+        $testCodeFunctions[] ="test.delete";
+        $testCodeFunctions[] ="test.templates";
+
+        $testPermissionDocument = new \ODMAuth\Documents\PermissionDocument();
+        $testPermissionDocument->setBusinessName("Test management");
+        $testPermissionDocument->setCodeFunctions($testCodeFunctions);
+        $dm->persist($testPermissionDocument);
+
+        $examCodeFunctions = [];
+        $examCodeFunctions[] ="exam.candidates";
+        $examCodeFunctions[] ="exam.create";
+        $examCodeFunctions[] ="exam.update";
+        $examCodeFunctions[] ="exam.updateTest";
+        $examCodeFunctions[] ="exam.enterPin";
+        $examCodeFunctions[] ="pin.refresh";
+        $examCodeFunctions[] ="exam.updateAnswer";
+        $examCodeFunctions[] ="exam.updateQuestionMark";
+        $examCodeFunctions[] ="exam.viewExamResult";
+        $examCodeFunctions[] ="exam.exams";
+        $examCodeFunctions[] ="exam.delete";
+        $examCodeFunctions[] ="exam.addResult";
+        $examCodeFunctions[] ="exam.examJoined";
+        $examCodeFunctions[] ="exam.exportPin";
+        $examCodeFunctions[] ="exam.types";
+        $examCodeFunctions[] ="exam.exportCandidateResult";
+        $examCodeFunctions[] ="exam.exportCandidateResult";
+        $examCodeFunctions[] ="exam.types";
+        $examCodeFunctions[] ="exam.types";
+
+        $examPermissionDocument = new \ODMAuth\Documents\PermissionDocument();
+        $examPermissionDocument->setBusinessName("Exam management");
+        $examPermissionDocument->setCodeFunctions($examCodeFunctions);
+        $dm->persist($examPermissionDocument);
+
+
 
         $permissionArray = new ArrayCollection();
-        $permissionArray->add($permissionDocument);
+        $permissionArray->add($questionPermissionDocument);
+        $permissionArray->add($testPermissionDocument);
+        $permissionArray->add($examCodeFunctions);
+
 
         $user = new \ODMAuth\Documents\UserDocument();
-        $user->setUsername('test_permission');
+        $user->setUsername('full_permission_usser');
         $user->setPassword('$2y$10$DW12wQQvr4w7mQ.uSmz37OQkKcIZrRZnpXWoYue7b5v8E/pxvsAru');
         $user->setPermissionDocument($permissionArray);
         $dm->persist($user);
@@ -53,8 +105,8 @@ class SetupPermissionHandler implements RequestHandlerInterface
         $userArray->add($user);
 
         $groups = new \ODMAuth\Documents\GroupsDocument();
-        $groups->setName('HR-Question');
-        $groups->setDescription('Only working with question');
+        $groups->setName('Admin group');
+        $groups->setDescription('Full permission of online test');
         $groups->setPermissionDocument($permissionArray);
         $groups->setUserDocument($userArray);
 
