@@ -81,10 +81,11 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $hasQuestionNotScored = $examResultRepository->hasQuestionNotScored($examResult->getId());
         if (!$hasQuestionNotScored) {
             $examResult->setIsDone(true);
+            $this->dm->flush();
         }
         $this->updateResultSummary($dto->getExamId(), $dto->getCandidateId());
         
-        $this->dm->flush();
+        
         return true;
     }
 
