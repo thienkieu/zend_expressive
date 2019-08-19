@@ -69,7 +69,10 @@ class QuestionRepository extends DocumentRepository
                             ->addOr($builder->expr()->field('subQuestions.answers.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')));
         }
         
-        $type = $filterData->type;
+        $type = '';
+        if (isset($filterData->type)) {
+            $type = $filterData->type;
+        }
         if ($type) {
             $builder->field('typeId')->equals($type);
         }

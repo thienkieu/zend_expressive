@@ -463,7 +463,6 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $questions = $questionsResult['questions'];
         $questionIndex = 1;
         $startIndex = 5; 
-        $maxColumn = 0;  
         $maxColumHeader = 78;  
         $headerIndex = 5;   
         foreach($questions as $question) {
@@ -534,8 +533,13 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             //Content
             if ($question->getType() === \Config\AppConstant::Reading) {
                 $content = preg_replace_callback('(<div class="online-test-question-image">.*src="(.*?)".*</div>)', function ($matches) {
-                    $image = $this->getRealPath($matches[1]);
-                    return '['.basename($image).']';
+                    if (count($matches) > 0) {
+                        $image = $this->getRealPath($matches[1]);
+                        if ($image) {
+                            return '['.basename($image).']';
+                        }                        
+                    }
+                    return '';
                 }, $question->getContent());
                 $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $this->toRichTextFromHTML($content));
             } else {
@@ -547,6 +551,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $startColumnIndex += 1;
 
             $subQuestions = $question->getSubQuestions();
+            
             foreach($subQuestions as $subQuestion) {
                 $startColumnIndexSubQuestion = $startColumnIndex;
 
@@ -580,24 +585,26 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                         $isCorrectIndex = $answerindex;
                     }
 
-                    $answerindex +=1;
-                    if ($startColumnIndexAnswer > $maxColumn) $maxColumn = $startColumnIndexAnswer; 
+                    $answerindex +=1;                    
                 }
 
                 $this->setCellValue($sheet, $correctAnswerColumn, $isCorrectIndex);
                 //$this->setBorderCell($sheet, $correctAnswerColumn);
                 $startIndex += 1;
             }
-            if ($subQuestions) $startIndex += -1;
+
+            if ($subQuestions) {
+                $startIndex += -1;
+            }
            
             
             $questionIndex += 1;                
         }
-        
-        if ($maxColumn > 0) {
-            $this->setBorderCell($sheet, 'B5:'.chr($maxColumn-1).$startIndex);
+       
+        if ($startIndex > 5) {
+            $this->setBorderCell($sheet, 'B5:'.chr($maxColumHeader).$startIndex);
         }
-        
+
         $writer = new Xlsx($spreadsheet);
         
         $writer->save($mediaFolder.\Config\AppConstant::DS.'questions.xlsx');
