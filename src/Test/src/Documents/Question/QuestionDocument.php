@@ -17,29 +17,29 @@ class QuestionDocument
   protected $id;
 
   /** @ODM\Field(type="string") */
-  private $content;
+  protected $content;
 
   /** @ODM\Field(type="int") */
-  private $order;
+  protected $order;
 
   /**
   * @ODM\ReferenceOne(targetDocument="TypeDocument", simple=true)
   */
-  private $type;
+  protected $type;
 
   /** @ODM\Field(type="string") */
-  private $typeId;
+  protected $typeId;
 
   /** @ODM\Field(type="string") */
-  private $parentTypeId;
+  protected $parentTypeId;
 
   /**
   * @ODM\ReferenceOne(targetDocument="SourceDocument", simple=true)
   */
-  private $source;
+  protected $source;
   
   /** @ODM\Field(type="float") */
-  private $mark;
+  protected $mark;
   
   /** @ODM\Field(type="date") */
   protected $createDate;
