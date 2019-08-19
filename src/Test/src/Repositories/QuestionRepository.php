@@ -81,9 +81,16 @@ class QuestionRepository extends DocumentRepository
         if (isset($filterData->parentType)) {
             $parentType = $filterData->parentType;
         }
-
         if ($parentType) {
             $builder->field('parentTypeId')->equals($parentType);
+        }
+
+        $source = '';
+        if (isset($filterData->source)) {
+            $source = $filterData->source;
+        }
+        if ($source) {
+            $builder->field('source')->equals($source);
         }
 
         return $builder;

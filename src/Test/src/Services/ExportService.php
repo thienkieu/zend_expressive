@@ -208,6 +208,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                     case \Config\AppConstant::Listening :
                         $startIndex = $this->exportListeningQuestion($sheet, $questionInfo, $questionIndex, $startIndex +1);
                     break;
+                    case \Config\AppConstant::Other :
+                        $startIndex = $this->exportWritingQuestion($sheet, $questionInfo, $questionIndex, $startIndex +1);
+                    break;
                 }
 
                 $questionIndex += 1;                
