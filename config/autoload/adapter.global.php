@@ -59,6 +59,8 @@ return [
         \Test\Convertor\Adapter\DTOs\ToUpdateWritingAnswerDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\UpdateQuestionMarkDTOAdapter::class,
 
+        \ODMAuth\Convertor\Adapter\DTOs\ToAssignUserPermissionDTOAdapter::class,
+
         \Test\Convertor\Adapter\DTOs\ExamResult\ToExamResultHasSectionTestDTOAdapter::class,
     ],
 
@@ -94,7 +96,9 @@ return [
         \Test\Convertor\Adapter\DTOs\FromTestWithSectionEmbedDocumentAdapter::class,
         \Test\Convertor\Adapter\DTOs\FromExamResultHasSectionTestDocumentAdapter::class,
 
-        \Test\Convertor\Adapter\DTOs\Test\FromTestTemplateDocumentAdapter::class
+        \Test\Convertor\Adapter\DTOs\Test\FromTestTemplateDocumentAdapter::class,
+
+        \ODMAuth\Convertor\Adapter\DTOs\FromPermissionDocumentAdapter::class
     ],
 
     'validatorRequestAdapters' => [

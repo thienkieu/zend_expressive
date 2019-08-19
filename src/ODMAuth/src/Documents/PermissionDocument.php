@@ -18,6 +18,15 @@ class PermissionDocument
   /** @ODM\Field(type="hash") */
   private $codeFunctions;
 
+  /** @ODM\Field(type="date") */
+  protected $createDate;
+
+
+  public function __construct()
+  {
+    $this->createDate = new \DateTime();
+  }
+
   /**
    * Get the value of id
    */ 
@@ -26,6 +35,7 @@ class PermissionDocument
     return $this->id;
   }
 
+  
   /**
    * Set the value of id
    *
@@ -75,6 +85,26 @@ class PermissionDocument
   public function setBusinessName($businessName)
   {
     $this->businessName = $businessName;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of createDate
+   */ 
+  public function getCreateDate()
+  {
+    return $this->createDate;
+  }
+
+  /**
+   * Set the value of createDate
+   *
+   * @return  self
+   */ 
+  public function setCreateDate($createDate)
+  {
+    $this->createDate = $createDate;
 
     return $this;
   }

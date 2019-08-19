@@ -60,5 +60,51 @@ class AuthorizationService implements Interfaces\AuthorizationServiceInterface
         $messages[] = $this->translator->translate('You do not have permission');
         return false;
     }
+
+    public function getListPermission($dto, $itemPerPage, $pageNumber) {
+        $repository = $this->dm->getRepository(\ODMAuth\Documents\PermissionDocument::class);
+        $data = $repository->getPermissions($dto, $itemPerPage, $pageNumber);
+        $permissionDocuments = $data['permissions'];
+ 
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+        
+        $permissions = [];
+        foreach($permissionDocuments as $document) {
+            $dtoObject = $documentToDTOConvertor->convertToDTO($document);
+            $permission[] = $dtoObject;
+        }
+        
+        
+        return [
+            'totalDocument' => $data['totalDocument'],
+            'permissions' => $permission 
+        ];
+    }
+
+
+    public function assignUserPermission($dto, &$messages) {
+        $userRepository = $this->dm->getRepository(\ODMAuth\Documents\UserDocument::class);
+        $permissionRepository = $this->dm->getRepository(\ODMAuth\Documents\PermissionDocument::class);
+
+        $userDocument = $userRepository->findOneBy(['objectId' =>$dto->getUserId()]);
+        if (!$userDocument) {
+            $userDocument = new \ODMAuth\Documents\UserDocument();
+            $userDocument->setObjectId($dto->getUserId());
+            $this->dm->persist($userDocument);
+        }
+
+        $permissionDocuments = $permissionRepository->getListByIds($dto->getPermissionsIds());
+        if (count($permissionDocuments) < 1) {
+            $messages[] = $this->translator->translate('Permission not found');
+            return false;
+        }
+
+        $userDocument->setPermissionDocument($permissionDocuments);
+        $this->dm->flush();
+
+        $messages[] = $this->translator->translate('Your permission have been assigned');
+        return true;
+        
+    } 
     
 }

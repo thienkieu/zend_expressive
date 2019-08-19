@@ -43,7 +43,6 @@ class AuthenticationMiddleware extends \Zend\Expressive\Authentication\Authentic
         $routerName = $rotuer->getMatchedRouteName(); 
         if ($routerName && !in_array($routerName, $authenticationExcludeUrl)) { 
             $user = $this->auth->authenticate($request);
-
             if (null !== $user) {
                 $authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class);
                 $ok = $authorizationService->isAllow($user->getIdentity(), $routerName, $messages);

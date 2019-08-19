@@ -27,7 +27,20 @@ class SetupPermissionHandler implements RequestHandlerInterface
     {
         $dm = $this->container->get(\Config\AppConstant::DocumentManager);
 
-        $questionCodeFunctions = [];
+        $systemCodeFunctions = [];
+        $systemCodeFunctions[] ="odmauth.setup";
+        $systemCodeFunctions[] ="odmauth.setupPermission";
+        $systemCodeFunctions[] ="odmauth.verifyPermission";
+        $systemCodeFunctions[] ="odmauth.permissions";
+        $systemCodeFunctions[] ="odmauth.assignUserPermission";
+
+        $systemPermissionDocument = new \ODMAuth\Documents\PermissionDocument();
+        $systemPermissionDocument->setBusinessName("System management");
+        $systemPermissionDocument->setCodeFunctions($systemCodeFunctions);
+        $dm->persist($systemPermissionDocument);
+
+
+        /*$questionCodeFunctions = [];
         $questionCodeFunctions[] ="questions.create";
         $questionCodeFunctions[] ="questions.update";
         $questionCodeFunctions[] ="questions.delete";
@@ -93,9 +106,9 @@ class SetupPermissionHandler implements RequestHandlerInterface
         $permissionArray->add($questionPermissionDocument);
         $permissionArray->add($testPermissionDocument);
         $permissionArray->add($examCodeFunctions);
+*/
 
-
-        $user = new \ODMAuth\Documents\UserDocument();
+        /*$user = new \ODMAuth\Documents\UserDocument();
         $user->setUsername('full_permission_usser');
         $user->setPassword('$2y$10$DW12wQQvr4w7mQ.uSmz37OQkKcIZrRZnpXWoYue7b5v8E/pxvsAru');
         $user->setPermissionDocument($permissionArray);
@@ -110,7 +123,7 @@ class SetupPermissionHandler implements RequestHandlerInterface
         $groups->setPermissionDocument($permissionArray);
         $groups->setUserDocument($userArray);
 
-        $dm->persist($groups);
+        $dm->persist($groups);*/
         $dm->flush();
 
 

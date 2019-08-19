@@ -15,4 +15,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/odmauth/setup', ODMAuth\Handler\SetupSampleDataHandler::class, 'odmauth.setup');
     $app->get('/odmauth/setupPermission', ODMAuth\Handler\SetupPermissionHandler::class, 'odmauth.setupPermission');
     $app->get('/odmauth/verifyPermission', ODMAuth\Handler\VerifyPermissionHandler::class, 'odmauth.verifyPermission');
+    $app->get('/odmauth/permissions', ODMAuth\Handler\GetListPermissionHandler::class, 'odmauth.permissions');
+    $app->post('/odmauth/assignUserPermission', ODMAuth\Handler\AssignUserPermissionHandler::class, 'odmauth.assignUserPermission');
 };

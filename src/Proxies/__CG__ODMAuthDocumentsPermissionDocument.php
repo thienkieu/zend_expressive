@@ -64,10 +64,10 @@ class PermissionDocument extends \ODMAuth\Documents\PermissionDocument implement
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', '' . "\0" . 'ODMAuth\\Documents\\PermissionDocument' . "\0" . 'businessName', '' . "\0" . 'ODMAuth\\Documents\\PermissionDocument' . "\0" . 'codeFunctions'];
+            return ['__isInitialized__', 'id', '' . "\0" . 'ODMAuth\\Documents\\PermissionDocument' . "\0" . 'businessName', '' . "\0" . 'ODMAuth\\Documents\\PermissionDocument' . "\0" . 'codeFunctions', 'createDate'];
         }
 
-        return ['__isInitialized__', 'id', '' . "\0" . 'ODMAuth\\Documents\\PermissionDocument' . "\0" . 'businessName', '' . "\0" . 'ODMAuth\\Documents\\PermissionDocument' . "\0" . 'codeFunctions'];
+        return ['__isInitialized__', 'id', '' . "\0" . 'ODMAuth\\Documents\\PermissionDocument' . "\0" . 'businessName', '' . "\0" . 'ODMAuth\\Documents\\PermissionDocument' . "\0" . 'codeFunctions', 'createDate'];
     }
 
     /**
@@ -241,6 +241,28 @@ class PermissionDocument extends \ODMAuth\Documents\PermissionDocument implement
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setBusinessName', [$businessName]);
 
         return parent::setBusinessName($businessName);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreateDate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreateDate', []);
+
+        return parent::getCreateDate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCreateDate($createDate)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCreateDate', [$createDate]);
+
+        return parent::setCreateDate($createDate);
     }
 
 }

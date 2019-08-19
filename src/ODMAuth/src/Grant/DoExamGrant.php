@@ -26,7 +26,7 @@ use phpseclib\Crypt\RSA;
 /**
  * Password grant class.
  */
-class SSOGrant extends AbstractGrant
+class DoExamGrant extends AbstractGrant
 {
     /**
      * @param UserRepositoryInterface         $userRepository
@@ -106,8 +106,9 @@ class SSOGrant extends AbstractGrant
 
         $ok = false;
         $user = null;
+        
         if($verifyData === $recData[0]) {
-            $user = new \Zend\Expressive\Authentication\OAuth2\Entity\UserEntity($userData); 
+            $user = new \Zend\Expressive\Authentication\OAuth2\Entity\UserEntity($userData);
         }
 
         if ($user instanceof UserEntityInterface === false) {

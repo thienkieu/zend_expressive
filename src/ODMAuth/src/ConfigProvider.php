@@ -46,7 +46,7 @@ class ConfigProvider
                     Grant\AuthCodeGrant::class          => Grant\AuthCodeGrant::class,
                     Grant\ImplicitGrant::class          => Grant\ImplicitGrant::class,
                     Grant\RefreshTokenGrant::class      => Grant\RefreshTokenGrant::class,
-                    \ODMAuth\Grant\SSOGrant::class      => \ODMAuth\Grant\SSOGrant::class,            
+                    \ODMAuth\Grant\SSOGrant::class      => \ODMAuth\Grant\SSOGrant::class
                 ],
         
             ]        
@@ -79,6 +79,8 @@ class ConfigProvider
                 
                 \ODMAuth\Handler\SetupPermissionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 \ODMAuth\Handler\VerifyPermissionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                \ODMAuth\Handler\GetListPermissionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                \ODMAuth\Handler\AssignUserPermissionHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 League\OAuth2\Server\Grant\ClientCredentialsGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\ClientCredentialsGrantFactory::class,
                 League\OAuth2\Server\Grant\PasswordGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\PasswordGrantFactory::class,
@@ -86,6 +88,7 @@ class ConfigProvider
                 League\OAuth2\Server\Grant\AuthCodeGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\AuthCodeGrantFactory::class,
                 League\OAuth2\Server\Grant\ImplicitGrant::class => Zend\Expressive\Authentication\OAuth2\Grant\ImplicitGrantFactory::class,
                 \ODMAuth\Grant\SSOGrant::class                  => \ODMAuth\Grant\SSOGrantFactory::class, 
+                \ODMAuth\Grant\DoExamGrant::class                  => \ODMAuth\Grant\DoExamGrantFactory::class, 
 
                 Services\AuthorizationService::class => \Infrastructure\Factory\BaseFactory::class,
 

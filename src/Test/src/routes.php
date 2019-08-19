@@ -36,7 +36,10 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/coordinator/exam/update', Test\Handlers\UpdateExamHandler::class, 'exam.update');
     $app->post('/coordinator/exam/updateTest', Test\Handlers\UpdateTestOfExamHandler::class, 'exam.updateTest');
     $app->post('/coordinator/exam/enterPin', Test\Handlers\EnterPinHandler::class, 'exam.enterPin');
-    $app->post('/coordinator/exam/doExam', Test\Handlers\DoExamHandler::class, 'exam.doExam');
+    $app->post('/coordinator/exam/doExam', [
+        Test\Handlers\DoExamHandler::class,
+        
+    ], 'exam.doExam');
     $app->post('/coordinator/pin/refresh', Test\Handlers\RefreshPinHandler::class, 'pin.refresh');
     $app->post('/coordinator/exam/updateAnswer', Test\Handlers\UpdateAnswerHandler::class, 'exam.updateAnswer');
     $app->post('/coordinator/exam/synchronyTime', Test\Handlers\SynchronyTimeHandler::class, 'exam.synchronyTime');

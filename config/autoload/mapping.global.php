@@ -21,5 +21,6 @@ return [
         'question.type.create'  => \Test\DTOs\Question\TypeDTO::class,
         'questions.create'  => \Test\DTOs\Question\QuestionDTO::class,
         'questions.update'  => \Test\DTOs\Question\QuestionDTO::class,
+        'odmauth.assignUserPermission'  => \ODMAuth\DTOs\AssignUserPermissionDTO::class,
     ]
 ];
