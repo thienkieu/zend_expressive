@@ -50,4 +50,15 @@ class TypeRepository extends DocumentRepository
 
         return $this->findOneBy(['name' => $subTypeName, 'parentType'=>$parentType->getId()]);
     }
+
+    public function findParentType() {
+        $builder = $this->createQueryBuilder();
+        $documents = $builder
+                    ->field('parentType')->equals(null)
+                    ->getQuery()
+                    ->execute();
+
+        return $documents;
+    }
+    
 }

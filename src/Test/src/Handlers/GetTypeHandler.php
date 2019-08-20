@@ -23,12 +23,14 @@ class GetTypeHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
+        
         $queryData = $request->getQueryParams();
         $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
         $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
         $content = isset($queryData['content']) ? $queryData['content'] : '';
-
+        
         $typeService = $this->container->get(TypeServiceInterface::class);
+       
         $data = $typeService->getTypes($content, $messages, $pageNumber, $itemPerPage);
 
         return \Infrastructure\CommonFunction::buildResponseFormat(true, [], $data);        

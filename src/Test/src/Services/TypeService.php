@@ -23,7 +23,7 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         $this->options = $options;
         $this->dm = $this->container->get('documentManager');
         $this->translator = $this->container->get(\Config\AppConstant::Translator);;
-        if (!$this->types) {
+        /*if (!$this->types) {
             $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
             $typeDocuments = $typeRepository->findAll();
 
@@ -35,7 +35,7 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
                 $this->types[$dto->getId()] = $dto;
             }
 
-        }
+        }*/
     }
 
     public function isHandler($param, $options = []){
@@ -83,21 +83,26 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
     }
 
     public function getTypes($content, & $messages, $pageNumber = 1, $itemPerPage = 25) {
-        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-
-        $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
-        $typeDocuments = $typeRepository->findBy(['parentType'=> null]);
-
         $types = [];
-        foreach($typeDocuments as $parent) {
-            $types[] = $documentToDTOConvertor->convertToDTO($parent);            
-        }
+        if (!$this->types) {
+            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
+            $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
+            $typeDocuments = $typeRepository->findParentType();
+            
+            foreach($typeDocuments as $parent) {
+                $types[] = $documentToDTOConvertor->convertToDTO($parent);            
+            }
+            $this->types = $types;
+        }
+        
+        $types = $this->types;
+        
         $ret = new \stdClass();
         $ret->type = $types;
         $ret->pageNumber = $pageNumber;
         $ret->itemPerPage = $itemPerPage;
-
+        
         return $ret;
     }
 

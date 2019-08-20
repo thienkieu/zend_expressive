@@ -64,10 +64,10 @@ class TypeDocument extends \Test\Documents\Question\TypeDocument implements \Doc
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'name', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'isManualScored', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'parentType'];
+            return ['__isInitialized__', 'id', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'name', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'isManualScored', 'subTypes', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'parentType'];
         }
 
-        return ['__isInitialized__', 'id', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'name', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'isManualScored', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'parentType'];
+        return ['__isInitialized__', 'id', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'name', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'isManualScored', 'subTypes', '' . "\0" . 'Test\\Documents\\Question\\TypeDocument' . "\0" . 'parentType'];
     }
 
     /**
@@ -230,6 +230,17 @@ class TypeDocument extends \Test\Documents\Question\TypeDocument implements \Doc
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getSubTypes', []);
 
         return parent::getSubTypes();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addSubType($subType)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addSubType', [$subType]);
+
+        return parent::addSubType($subType);
     }
 
     /**

@@ -19,12 +19,21 @@ class TypeDocument
   /** @ODM\Field(type="bool") */
   private $isManualScored;
 
+  protected $subTypes;
 
   /**
   * @ODM\ReferenceOne(targetDocument="TypeDocument", storeAs="id")
   */
   private $parentType;
 
+  /**
+   * Class constructor.
+   */
+  public function __construct()
+  {
+    $this->subTypes = new ArrayCollection();
+  }
+  
   /**
    * Get the value of name
    */ 
@@ -71,6 +80,18 @@ class TypeDocument
   public function getSubTypes()
   {
     return $this->subTypes;
+  }
+
+  /**
+   * Set the value of subTypes
+   *
+   * @return  self
+   */ 
+  public function addSubType($subType)
+  {
+    $this->subTypes->add($subType);
+
+    return $this;
   }
 
   /**
