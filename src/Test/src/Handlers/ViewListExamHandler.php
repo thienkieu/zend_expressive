@@ -24,7 +24,7 @@ class ViewListExamHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        
+      
         $pageNumber = \Infrastructure\CommonFunction::getValue($dto, 'pageNumber', 1);
         $itemPerPage = \Infrastructure\CommonFunction::getValue($dto, 'itemPerPage', 15);
 
