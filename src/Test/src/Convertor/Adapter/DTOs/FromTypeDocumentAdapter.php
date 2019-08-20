@@ -41,7 +41,7 @@ class FromTypeDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
         $subTypeDTO = [];
         $firstSubDTO = new \Test\DTOs\Question\TypeDTO();
         $firstSubDTO->setId('');
-        $firstSubDTO->setName('All');
+        $firstSubDTO->setName('');
         $firstSubDTO->setIsManualScored(false);
         $subTypeDTO[] =  $firstSubDTO;
         
