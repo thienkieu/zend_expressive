@@ -21,7 +21,8 @@ class WritingQuestionRepository extends QuestionRepository
         $question = $aggregationBuilder
                         ->hydrate($toClass)
                         ->match()
-                            ->field('type')->equals($typeId)
+                            ->addOr($aggregationBuilder->matchExpr()->field('typeId')->equals($typeId))
+                            ->addOr($aggregationBuilder->matchExpr()->field('parentTypeId')->equals($typeId))
                             ->field('id')->notIn($notInQuestions) 
                             ->field('source')->notIn($sources)                         
                         ->sample(1)
@@ -30,7 +31,7 @@ class WritingQuestionRepository extends QuestionRepository
         
         return $question;
     }
-    
+
     public function getExamInfo($pin) {
        
         $now  = new \DateTime(date('Y-m-d H:i:s',\time()));

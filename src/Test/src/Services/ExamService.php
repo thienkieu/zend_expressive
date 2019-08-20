@@ -378,8 +378,8 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $skill->value = 'Skill';
         $skill->name = $this->translator->translate('Skill Exam Type');
         return [
-            $verbal,
             $skill,
+            $verbal,
         ];
     }
 }

@@ -13,7 +13,7 @@ class RandomQuestionValidator extends RequireField {
         'questions.type'=>'type',
         'questions.isDifferentSource'=>'isDifferentSource',
         'questions.numberQuestion'=>'numberSubQuestion',
-        'question.subType'=>'subType',
+        //'question.subType'=>'subType',
         'generateFrom'=>'generateFrom',
     ];
 }

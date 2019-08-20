@@ -54,11 +54,17 @@ class ToQuestionDTOAdapter extends ToDTOAdapter {
         $dto->setNumberSubQuestion($jsonObject->numberSubQuestion);
         $dto->setType($jsonObject->type);
         $dto->setTypeId($jsonObject->typeId);
-
-        if (isset($jsonObject->mark)) $dto->setMark($jsonObject->mark);
-        
         $dto->setSubType($jsonObject->subType);
+
+        if (empty($jsonObject->typeId)) {
+            $typeService = $this->container->get(\Test\Services\Interfaces\TypeServiceInterface::class);
+            $typeDTO = $typeService->getTypeByName($jsonObject->type);
+            $dto->setTypeId($typeDTO->getId());
+        }
+        
         $dto->setIsDifferentSource($jsonObject->isDifferentSource);
+        
+        if (isset($jsonObject->mark)) $dto->setMark($jsonObject->mark);
         
         return $dto;
     }

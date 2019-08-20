@@ -108,7 +108,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         if (!$citerial->getQuestionInfo()->getIsDifferentSource()) {
             $questionnotInsources = [];
         }
-       
+        
         $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $questionnotInsources, $notInQuestions, $toClass);
         if (!$question) {
             $generateQuestionCiterial = [

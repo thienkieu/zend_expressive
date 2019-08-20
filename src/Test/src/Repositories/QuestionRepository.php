@@ -22,7 +22,8 @@ class QuestionRepository extends DocumentRepository
         $question = $aggregationBuilder
                         ->hydrate($toClass)
                         ->match()
-                            ->field('type')->equals($typeId)
+                            ->addOr($aggregationBuilder->matchExpr()->field('typeId')->equals($typeId))
+                            ->addOr($aggregationBuilder->matchExpr()->field('parentTypeId')->equals($typeId))
                             ->field('source')->notIn($sources)
                             ->field('id')->notIn($notInQuestions)
                             ->field('numberSubQuestion')->gte($numberSubQuestion)
@@ -32,7 +33,6 @@ class QuestionRepository extends DocumentRepository
         
         return $question;
     }
-
 
     public function getQuestionWithPagination($filterData, $itemPerPage, $pageNumber) {
         $filterQuery = $this->getFilterQuery($filterData);

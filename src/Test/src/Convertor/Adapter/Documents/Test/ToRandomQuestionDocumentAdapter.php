@@ -35,6 +35,7 @@ class ToRandomQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
         $document = new \Test\Documents\Test\RandomQuestionDocument();
 
         $typeService = $this->container->get(TypeServiceInterface::class);
+        
         $typeDocument = $typeService->getTypeByName($dto->getType(), $dto->getSubType());
         if (!$typeDocument) {
             $translator = $this->container->get(\Config\AppConstant::Translator);

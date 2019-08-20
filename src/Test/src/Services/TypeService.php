@@ -23,6 +23,19 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         $this->options = $options;
         $this->dm = $this->container->get('documentManager');
         $this->translator = $this->container->get(\Config\AppConstant::Translator);;
+        if (!$this->types) {
+            $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
+            $typeDocuments = $typeRepository->findAll();
+
+            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+            $this->types = [];
+            foreach ($typeDocuments as $type) {
+                $dto = $documentToDTOConvertor->convertToDTO($type);
+                $this->types[$dto->getName()] = $dto;
+                $this->types[$dto->getId()] = $dto;
+            }
+
+        }
     }
 
     public function isHandler($param, $options = []){
@@ -34,11 +47,22 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
     }
 
     public function getTypeByName($parentName, $subTypeName = '') {
+        if ($this->types && isset($this->types[$parentName])) {
+            if (empty($subTypeName)) $this->types[$parentName];
+            if (isset($this->types[$subTypeName])) {
+                return $this->types[$subTypeName];
+            }            
+        }
+
         $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
         return $typeRepository->getTypeByName($parentName, $subTypeName);
     }
 
     public function getTypeById($id) {
+        if ($this->types && isset($this->types[$id])) {
+            $this->types[$id];
+        }
+
         $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
         return $typeRepository->find($id);
     }

@@ -29,7 +29,10 @@ class FromRandomQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterIn
 
     public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Test\RandomQuestionDTO();
-        $dto->setType($document->getType()->getParentType()->getName());
+        $typeDTO = $document->getType()->getParentType();
+        if ($typeDTO) {
+            $dto->setType($typeDTO->getName());
+        }        
         $dto->setSubType($document->getType()->getName());
         $dto->setTypeId($document->getType()->getId());
 
