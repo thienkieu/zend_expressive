@@ -124,6 +124,8 @@ return [
         'exam.updateAnswer',
         'exam.synchronyTime',
         'exam.finish',
+        'question.types',
+        'question.sources',
         'log'
     ]
 ];
