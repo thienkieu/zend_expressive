@@ -17,14 +17,11 @@ use date;
 class ListeningQuestionRepository extends QuestionRepository
 {
     public function getExamInfo($pin) {
-       
-        $now  = new \DateTime(date('Y-m-d H:i:s',\time()));
         $builder = $this->createAggregationBuilder();
         $command = $builder
                 ->hydrate(\Test\Documents\Exam\ExamDocument::class)
                 ->match()
-                    ->field('candidates.pin')->equals($pin)
-                    ->field('startDate')->gte($now)                
+                    ->field('candidates.pin')->equals($pin)       
                 ->project()   
                     ->includeFields(['title', 'startDate', 'test', 'time'])                
                     //->excludeFields(['candidates'])
@@ -44,16 +41,11 @@ class ListeningQuestionRepository extends QuestionRepository
         $expr = new Expr();
         $equalPin = $expr->field('candidate.pin')->equals($pin);
 
-        //$timeBefore5MinutesAgo  = new \DateTime(date('Y-m-d H:i:s',\time() - 36000 * 60));
-        //$mongoDateBefore5MinutesAgo = new \MongoDate($timeBefore5MinutesAgo->getTimestamp());
-
-        $now  = new \DateTime(date('Y-m-d H:i:s',\time()));
         $builder = $this->createAggregationBuilder();
         $command = $builder
                 ->hydrate(\Test\Documents\Exam\ExamDocument::class)
                 ->match()
-                    ->field('candidates.pin')->equals($pin)
-                    ->field('startDate')->gte($now)                
+                    ->field('candidates.pin')->equals($pin)       
                 ->project()   
                     ->includeFields(['title', 'startDate'])                
                     ->field('candidates')

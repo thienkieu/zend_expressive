@@ -42,6 +42,14 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
         return true;
         
     }
+    
+    protected function isAllowAccessExam($examDocument) {
+        $startDate = $examDocument->getStartDate()->format(\Config\AppConstant::DateTimeFormat);
+        $now = (new \DateTime())->format(\Config\AppConstant::DateTimeFormat);
+
+        if ($now === $startDate) return true;
+        return false;
+    }
 
     public function doExam($dto, & $results, & $messages) {
         try {
@@ -52,6 +60,11 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 return false;
             }
             
+            if (!$this->isAllowAccessExam($examDocument)) {
+                $messages[] = $this->translator->translate('Your PIN is invalid.');
+                return false;
+            }
+
             $candidates = $examDocument->getCandidates();
             $candidate = $candidates[0];
             if (!$candidate->getIsPinValid()) {

@@ -40,11 +40,6 @@ class FromTypeDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
         $subTypeDocuments = $repository->findBy(['parentType' => $document->getId()]);
 
         $subTypeDTO = [];
-        $firstSubDTO = new \Test\DTOs\Question\TypeDTO();
-        $firstSubDTO->setId('');
-        $firstSubDTO->setName('');
-        $firstSubDTO->setIsManualScored(false);
-        $subTypeDTO[] =  $firstSubDTO;
         
         foreach($subTypeDocuments as $subTypeDocument) {
             $subDTO = new \Test\DTOs\Question\TypeDTO();

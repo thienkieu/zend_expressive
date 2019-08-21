@@ -126,6 +126,8 @@ return [
         'exam.finish',
         'question.types',
         'question.sources',
+        'exam.types',
+        'exam.viewExamResult',
         'log'
     ]
 ];

@@ -16,9 +16,7 @@ use  Doctrine\MongoDB\Query\Expr;
 use date;
 
 class ExamRepository extends DocumentRepository
-{
-    private $canAccessExamBefore = (1 * 24 * 60 * 60);
-    
+{    
     public function refreshPin($examId, $candidateId, $newPin) {
         $queryBuilder = $this->createQueryBuilder();
         $result = $queryBuilder
@@ -68,14 +66,11 @@ class ExamRepository extends DocumentRepository
     }
 
     public function getExamInfo($pin) {
-       
-        $now  = new \DateTime(date('Y-m-d H:i:s',\time() - $this->canAccessExamBefore));
         $builder = $this->createAggregationBuilder();
         $command = $builder
                 ->hydrate(\Test\Documents\Exam\ExamDocument::class)
                 ->match()
-                    ->field('candidates.pin')->equals($pin)
-                    ->field('startDate')->gte($now)                
+                    ->field('candidates.pin')->equals($pin)       
                 ->project()   
                     ->includeFields(['title', 'startDate', 'test', 'time','type'])                
                     ->excludeFields(['candidates'])
@@ -96,16 +91,11 @@ class ExamRepository extends DocumentRepository
         $expr = new Expr();
         $equalPin = $expr->field('candidate.pin')->equals($pin);
 
-        //$timeBefore5MinutesAgo  = new \DateTime(date('Y-m-d H:i:s',\time() - 36000 * 60));
-        //$mongoDateBefore5MinutesAgo = new \MongoDate($timeBefore5MinutesAgo->getTimestamp());
-
-        $now  = new \DateTime(date('Y-m-d H:i:s',\time() - $this->canAccessExamBefore));
         $builder = $this->createAggregationBuilder();
         $command = $builder
                 ->hydrate(\Test\Documents\Exam\ExamDocument::class)
                 ->match()
-                    ->field('candidates.pin')->equals($pin)
-                    ->field('startDate')->gte($now)                
+                    ->field('candidates.pin')->equals($pin)       
                 ->project()   
                     ->includeFields(['title', 'startDate'])                
                     ->field('candidates')

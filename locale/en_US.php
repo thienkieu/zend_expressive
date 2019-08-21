@@ -75,4 +75,5 @@ return array(
     "Verbal Exam Type" => "Verbal exam",
     "Your cannot finish this exam because this exam have been finished!" => "Your cannot finish this exam because this exam have been finished!",
     "You do not have permission" => "You do not have permission",
+    "Your PIN is invalid." => "Your PIN is invalid."
 );

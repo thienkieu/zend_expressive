@@ -11,6 +11,7 @@ use Doctrine\ODM\MongoDB\Configuration;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
 use MongoDB\Client;
+use Doctrine\Common\Cache\ApcuCache;
 
 class DoctrineODMFactory
 {
@@ -33,11 +34,11 @@ class DoctrineODMFactory
         $config->setHydratorNamespace('Hydrators');
         $config->setDefaultDB($dbConfig['dbname']);
 
-        // if ($environment !== 'dev') {
-        //     $config->setAutoGenerateHydratorClasses(false);
-        //     $config->setAutoGenerateProxyClasses(false);
-        //     //$config->setMetadataCacheImpl(new \ApcCache());
-        // }
+        
+        $config->setAutoGenerateHydratorClasses(false);
+        $config->setAutoGenerateProxyClasses(false);
+        $config->setMetadataCacheImpl(new ApcuCache());
+         
 
         $config->setMetadataDriverImpl(AnnotationDriver::create($dbConfig['document-path']));
         
