@@ -47,11 +47,13 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
         foreach($sections as $section) {
             $questions = $section->getQuestions();
             $candidateMark = 0;
-            $isScored = true;
+            $isScored = false;
             $sectionMark = 0;
             foreach($questions as $question) {
                 $questionInfo = $question->getQuestionInfo();
-                $isScored = $questionInfo->getIsScored();
+                if($questionInfo->getIsScored()) {
+                    $isScored = true;
+                }
                 
                 $candidateMark += $questionInfo->getCandidateMark();
                 $sectionMark += $questionInfo->getMark();

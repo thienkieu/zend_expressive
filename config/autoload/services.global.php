@@ -30,9 +30,11 @@ return [
             \Test\Services\SourceService::class,
         ],
         \Test\Services\Interfaces\TypeServiceInterface::class => [
+            \Test\Services\LogigearTypeService::class,
             \Test\Services\TypeService::class,
         ],
         \Test\Services\ExamServiceInterface::class => [
+            \Test\Services\LogigearExamService::class,
             \Test\Services\ExamService::class,
         ],
         \Test\Services\DoExamServiceInterface::class => [

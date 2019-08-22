@@ -100,6 +100,7 @@ class ConfigProvider
 
                 Services\Interfaces\TypeServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\TypeService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\LogigearTypeService::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Services\Interfaces\ExportServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\ExportService::class => \Infrastructure\Factory\BaseFactory::class,
@@ -109,6 +110,7 @@ class ConfigProvider
 
                 Services\ExamServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\ExamService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\LogigearExamService::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Services\DoExamServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\DoExamService::class => \Infrastructure\Factory\BaseFactory::class,

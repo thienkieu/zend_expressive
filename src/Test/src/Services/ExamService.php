@@ -13,9 +13,9 @@ use Test\Services\Question\QuestionServiceInterface;
 
 class ExamService implements ExamServiceInterface, HandlerInterface
 {
-    private $container;
-    private $dm;
-    private $options;
+    protected $container;
+    protected $dm;
+    protected $options;
     protected $translator = null;
 
     public function __construct($container, $options) {
@@ -137,6 +137,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             }
             
             $examTest = $this->generateExamTest($examDTO->getTest(), $messages);
+            
             if (!$examTest) {
                 return false;
             }

@@ -12,11 +12,11 @@ use Infrastructure\Interfaces\HandlerInterface;
 
 class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
 {
-    private $container;
-    private $dm;
-    private $options;
-    private $types = null;
-    private $translator;
+    protected $container;
+    protected $dm;
+    protected $options;
+    protected $types = null;
+    protected $translator;
 
     public function __construct($container, $options) {
         $this->container = $container;
@@ -106,7 +106,6 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         return $ret;
     }
 
-    
     public function createType($dto, & $returnDTO, & $messages) {
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
