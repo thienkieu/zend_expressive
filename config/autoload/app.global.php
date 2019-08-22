@@ -128,6 +128,9 @@ return [
         'question.sources',
         'exam.types',
         'exam.viewExamResult',
+        'question.export',
+        'exam.exportCandidateResult',
+        'exam.exportPin',
         'log'
     ]
 ];
