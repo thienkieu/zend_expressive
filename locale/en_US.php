@@ -58,7 +58,7 @@ return array(
     'The question have been created successfully!' => 'The question has been created successfully!',
     'The question doesnot exist, Please check it again.' => 'The question does not exist. Please check again!',
     'Cannot generate a test for exam %examName%' => 'Cannot generate a test for the exam %examName%',
-    'Cannot generate question for test' => 'There are not enough questions to generate the tests. Please check if:<ul><li>Questions/Sub-questions for all sections are available.</li><li>Sources meet criteria</li><li>',
+    'Cannot generate question for test' => 'There are not enough questions to generate the tests. Please check if:<ul><li>Questions/Sub-questions for all sections are available.</li><li>Sources meet criteria</li>',
     'The question has been deleted successfully!' => 'The question has been deleted successfully!',
     'The question has been update successfully!' => 'The question has been updated successfully!',
     'Source not found, please check it again.' => 'Source is not found. Please check again!',
