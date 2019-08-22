@@ -45,6 +45,7 @@ class CreateQuestionValidatorAdapter implements ValidatorAdapterInterface
     public function valid(ServerRequestInterface $request, ResponseInterface & $messageResponse): bool
     {   
         $bodyRequest = $request->getParsedBody();
+        $type = isset($bodyRequest->bodyRequest) ? $body->type: '';
         
         $translator = $this->container->get(AppConstant::Translator);
         $errors = [];
@@ -90,7 +91,7 @@ class CreateQuestionValidatorAdapter implements ValidatorAdapterInterface
             }
         }
         
-        if (empty($bodyRequest->content)) {
+        if (empty($bodyRequest->content) && $type === DTOName::Reading ) {
             $isError = true;
             $errors = [
                 'content' => [
