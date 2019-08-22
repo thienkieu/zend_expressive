@@ -79,6 +79,7 @@ class ConfigProvider
                 Handlers\GetExamTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
+                Validators\CreateQuestionValidatorAdapter::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
                 Services\TestService::class => \Infrastructure\Factory\BaseFactory::class,
                 

@@ -7,4 +7,5 @@ abstract class AppRouterName
     const CreateExam       = 'exam.create';
     const EnterPin       = 'exam.enterPin';
     const CreateQuestion = 'questions.create';
+    const UpdateQuestion = 'questions.update';
 }
