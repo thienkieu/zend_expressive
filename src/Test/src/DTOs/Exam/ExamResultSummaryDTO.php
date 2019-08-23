@@ -9,6 +9,7 @@ class ExamResultSummaryDTO implements \JsonSerializable
     protected $name;
     protected $mark;
     protected $type;
+    protected $comments;
     protected $candidateMark;
     protected $isScored;
 
@@ -17,6 +18,7 @@ class ExamResultSummaryDTO implements \JsonSerializable
         $ret->name = $this->getName();
         $ret->mark = $this->getMark(); 
         $ret->type = $this->getType();
+        $ret->comments = $this->getComments();
         $ret->candidateMark = $this->getCandidateMark();
         $ret->isScored = $this->getIsScored();
 
@@ -119,6 +121,26 @@ class ExamResultSummaryDTO implements \JsonSerializable
     public function setIsScored($isScored)
     {
         $this->isScored = $isScored;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of comments
+     */ 
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set the value of comments
+     *
+     * @return  self
+     */ 
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
 
         return $this;
     }

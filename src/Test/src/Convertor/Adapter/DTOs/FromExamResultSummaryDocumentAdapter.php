@@ -32,6 +32,7 @@ class FromExamResultSummaryDocumentAdapter implements ConvertDocumentToDTOAdapte
         $dto->setName($document->getName());
         $dto->setMark($document->getMark());
         $dto->setType($document->getType());
+        $dto->setComments($document->getComments());
         $dto->setIsScored($document->getIsScored());
         $dto->setCandidateMark($document->getCandidateMark());
         

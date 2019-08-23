@@ -20,6 +20,9 @@ class ExamResultSummaryDocument
   /** @ODM\Field(type="string") */
   protected $businessType;
 
+  /** @ODM\Field(type="hash") */
+  protected $comments;
+
    /** @ODM\Field(type="bool") */
    protected $isScored;
 
@@ -145,6 +148,26 @@ class ExamResultSummaryDocument
   public function setBusinessType($businessType)
   {
     $this->businessType = $businessType;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of comments
+   */ 
+  public function getComments()
+  {
+    return $this->comments;
+  }
+
+  /**
+   * Set the value of comments
+   *
+   * @return  self
+   */ 
+  public function setComments($comments)
+  {
+    $this->comments = $comments;
 
     return $this;
   }
