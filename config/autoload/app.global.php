@@ -131,6 +131,7 @@ return [
         'question.export',
         'exam.exportCandidateResult',
         'exam.exportPin',
+        'exam.examJoined',
         'log'
     ]
 ];

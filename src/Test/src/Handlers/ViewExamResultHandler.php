@@ -37,13 +37,17 @@ class ViewExamResultHandler implements RequestHandlerInterface
                 'isSuccess' => $ret,      
                 'messages'  => $messages,
                 'summary'   => $examResultDTO->getResultSummary(),
+                'candidate' => $examResultDTO->getCandidate(),
+                'examTitle' => $examResultDTO->getTitle(),
                 'exam' => $examResultDTO
             ]);
         } else {
             return new JsonResponse([
                 'isSuccess' => $ret,      
                 'messages'  => $messages,
-                'summary'   => $examResultDTO->getResultSummary()
+                'summary'   => $examResultDTO->getResultSummary(),
+                'candidate' => $examResultDTO->getCandidate(),
+                'examTitle' => $examResultDTO->getTitle(),
             ]);
         }
         
