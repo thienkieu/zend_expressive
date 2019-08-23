@@ -31,7 +31,7 @@ class ExportPinHandler implements RequestHandlerInterface
         }
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="pin.xlsx"');
+        header('Content-Disposition: attachment;filename="PIN.xlsx"');
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');

@@ -171,7 +171,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
 
     protected function isCorrectColumns($columns) {
         if ($columns[$this->id] !== '#' || $columns[$this->type] !== 'Type' || $columns[$this->subType] !== 'Sub-Type'
-            || $columns[$this->source] !== 'Source' || $columns[$this->fileName] !== 'File Name' || $columns[$this->repeatTime] !== 'Repeat Time'
+            || $columns[$this->source] !== 'Source' || $columns[$this->fileName] !== 'File Name' || $columns[$this->repeatTime] !== 'Times of listening'
             || $columns[$this->content] !== 'Content' || $columns[$this->question] !== 'Question' || $columns[$this->correctAnswers] !== 'Correct Answers'
             || $columns[$this->answer] !== 'Answer 1'
         ) {
