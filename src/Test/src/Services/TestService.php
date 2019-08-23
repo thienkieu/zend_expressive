@@ -143,7 +143,7 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
         
         $tests = [];
         foreach ($documents as $test) {
-            $dto = $documentToDTOConvertor->convertToDTO($test);
+            $dto = $documentToDTOConvertor->convertToDTO($test, [\Config\AppConstant::ShowCorrectAnswer => true]);
             $tests[] = $dto;
         }
 
