@@ -80,7 +80,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 return true;
             }
 
-            $examDTO = $documentToDTOConvertor->convertToDTO($examDocument);
+            $examDTO = $documentToDTOConvertor->convertToDTO($examDocument, [\Config\AppConstant::ShowCorrectAnswer => true]);
             $examService = $this->container->get(ExamServiceInterface::class);            
            
             $examTest = $examService->generateExamTest($examDTO->getTest(), $messages, true);
