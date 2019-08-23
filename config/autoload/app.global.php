@@ -28,7 +28,7 @@ return [
         ],
         'proxy-path' =>  $dir.'/Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
-        'dbname' => 'thienkieu',
+        'dbname' => 'onlinetest',
     ],
     'nonsqldb_dev' => [
         'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243897.mlab.com:43897/onlinetest_dev',

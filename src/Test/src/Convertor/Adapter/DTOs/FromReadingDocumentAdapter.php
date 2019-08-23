@@ -39,17 +39,24 @@ class FromReadingDocumentAdapter implements ConvertDocumentToDTOAdapterInterface
         $dto->setTypeId($document->getType()->getId());
         
         $dto->setId($document->getId());
-        $dto->setMark($document->getMark());
-        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+        $numberSubQuestion = 0;
         $questionDocuments = $document->getSubQuestions();
         if ($questionDocuments) {
             $questions = [];
             foreach($questionDocuments as $q) {
                 $questions[] = $documentToDTOConvertor->convertToDTO($q, $options);
             }
-            $dto->setSubQuestions($questions);       
+            $dto->setSubQuestions($questions);
+            $numberSubQuestion += 1;       
         }
+
+        $mark = $document->getMark();
+        if(!$mark) {
+            $mark = $numberSubQuestion * \Config\AppConstant::DefaultSubQuestionMark;
+        }
+        $dto->setMark($document->getMark($mark));
         
         return $dto;
     }
