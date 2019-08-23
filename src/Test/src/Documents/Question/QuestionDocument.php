@@ -47,8 +47,7 @@ class QuestionDocument
   
   public function __construct()
   {
-    $this->createDate = new \DateTime();
-    $this->mark = \Config\AppConstant::DefaultSubQuestionMark;
+    $this->createDate = new \DateTime();    
   }
 
   /**
