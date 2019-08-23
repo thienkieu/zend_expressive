@@ -61,7 +61,13 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
                     $comments[] = $comment;
                 }
                 $candidateMark += $questionInfo->getCandidateMark();
-                $subQuestionCount = $questionInfo->getSubQuestions() ? $questionInfo->getSubQuestions()->count() : 0;
+
+                $subQuestionCount = 0;
+                if ($questionInfo instanceof \Test\Documents\Test\HasSubQuestionDocument) {
+                    $subQuestions = $questionInfo->getSubQuestions();
+                    $subQuestionCount = $subQuestions->count();
+                }
+                
                 $sectionMark += $questionInfo->getMark() ? $questionInfo->getMark(): $subQuestionCount * \Config\AppConstant::DefaultSubQuestionMark;
             }
 
