@@ -61,7 +61,7 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
                     $comments[] = $comment;
                 }
                 $candidateMark += $questionInfo->getCandidateMark();
-                $sectionMark += $questionInfo->getMark();
+                $sectionMark += $questionInfo->getMark() ? $questionInfo->getMark(): $questionInfo->getNumberSubQuestion() * \Config\AppConstant::DefaultSubQuestionMark;
             }
 
             $summary = new \Test\Documents\Exam\ExamResultSummaryDocument();
