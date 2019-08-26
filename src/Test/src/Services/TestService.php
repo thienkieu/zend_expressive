@@ -56,18 +56,18 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
                 return false;
             }
 
-            $this->dm->remove($testDocument);
-            $this->dm->flush();
             
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $newTestDocument = $dtoToDocumentConvertor->convertToDocument($testDTO);
-            $this->dm->persist($newTestDocument);
+            
 
-            $newTestEmbedDocument = $dtoToDocumentConvertor->convertToDocument($testDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
+            $newTestDocument = $dtoToDocumentConvertor->convertToDocument($testDTO, [\Config\AppConstant::ExistingDocument => $testDocument]);
+            //$this->dm->persist($newTestDocument);
+
+            /*$newTestEmbedDocument = $dtoToDocumentConvertor->convertToDocument($testDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
             $examNotStarteds = $examService->getExamNotStartedByTestId($testDTO->getId());
             foreach($examNotStarteds as $examDocument) {
                 $examDocument->setTest($newTestEmbedDocument);
-            }
+            }*/
 
             $this->dm->flush();
             $messages[] = $this->translator->translate('The test have been updated successfully!');
@@ -89,7 +89,7 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
         
         try{
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $document = $dtoToDocumentConvertor->convertToDocument($testDTO);
+            $document = $dtoToDocumentConvertor->convertToDocument($testDTO, []);
             
             if ($this->existTestWithTitle($testDTO->getTitle(), $existDocumentWithTitle)) {
                 $messages[] = $translator->translate('There is existing test with this title, Please enter another title');

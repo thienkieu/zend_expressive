@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 class BaseTestDocument
 {
-  /** @ODM\Id(strategy="NONE", type="string")  */
+  /** @ODM\Id */
   protected $id;
 
   /** @ODM\Field(type="string") */

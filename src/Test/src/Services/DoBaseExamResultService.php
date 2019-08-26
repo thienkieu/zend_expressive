@@ -95,11 +95,12 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
         $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter(null, null);
         $summaries = $adapter->convert($examResult);
+        
         $examService = $this->container->get(ExamServiceInterface::class);
         $examService->updateExamResultSummary($examResult->getExamId(), $examResult->getCandidate()->getId(), $summaries);
         $examService->updateExamStatus($examResult->getExamId());
         $examResult->setResultSummary($summaries);
-
+        
         $this->dm->flush();
         return;
     }

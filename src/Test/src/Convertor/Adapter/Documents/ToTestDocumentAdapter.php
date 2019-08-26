@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Test\Convertor\Adapter\Documents;
 
 use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
-
+use Doctrine\Common\Collections\ArrayCollection;
 class ToTestDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
     protected $convertor;
@@ -21,6 +21,7 @@ class ToTestDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     
     public function isHandleConvertDTOToDocument($dtoObject, $options = []) : bool
     {
+        
         if ($dtoObject instanceof \Test\DTOs\Test\TestWithSectionDTO && !isset($options[\Config\AppConstant::ToDocumentClass])) {
             return true;
         }
@@ -30,16 +31,17 @@ class ToTestDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     
     public function convert($dto, $options = []) 
     {  
+        $options[\Config\AppConstant::ToDocumentClass] = \Test\Documents\Test\TestWithSectionDocument::class;
         $document = new \Test\Documents\Test\TestWithSectionDocument();
-        $document->setTitle($dto->getTitle());
-        if (empty($dto->getId())) {
-            $document->setId(uniqid('test_',true));
-        } else {
-            $document->setId($dto->getId());
+        if (isset($options[\Config\AppConstant::ExistingDocument])) {
+            $document = $options[\Config\AppConstant::ExistingDocument];            
         }
         
-        $sections = $dto->getSections();
+        $document->setTitle($dto->getTitle());
+        $document->getSections()->clear();
 
+        $sections = $dto->getSections();
+       
         foreach($sections as $section) {
             $sectionDocument = $this->convertor->convertToDocument($section, $options);
             $document->addSection($sectionDocument);            
