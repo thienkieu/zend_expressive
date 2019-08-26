@@ -55,7 +55,7 @@ class ToReadingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInter
         $document->setType($typeDocument);
         
         $document->setReferId($dto->getId());
-        $document->setMark($dto->getMark());
+        
         
         $questions = $dto->getSubQuestions();
 
@@ -63,6 +63,12 @@ class ToReadingEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInter
             $questionDocument = $this->convertor->convertToDocument($question, $options);
             $document->addSubQuestion($questionDocument);            
         }
+        
+        $mark = $dto->getMark();
+        if (!$mark) {
+            $mark = count($questions) * \Config\AppConstant::DefaultSubQuestionMark;
+        }
+        $document->setMark($mark);
         
         return $document;
             

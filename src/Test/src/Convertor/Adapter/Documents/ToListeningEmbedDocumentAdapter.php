@@ -60,14 +60,19 @@ class ToListeningEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
         $document->setType($typeDocument);
 
         $document->setReferId($dto->getId());
-        $document->setMark($dto->getMark());
-        
+                
         $questions = $dto->getSubQuestions();
 
         foreach($questions as $question) {
             $questionDocument = $this->convertor->convertToDocument($question, $options);
             $document->addSubQuestion($questionDocument);            
         }
+
+        $mark = $dto->getMark();
+        if (!$mark) {
+            $mark = count($questions) * \Config\AppConstant::DefaultSubQuestionMark;
+        }
+        $document->setMark($mark);
         
         return $document;
             
