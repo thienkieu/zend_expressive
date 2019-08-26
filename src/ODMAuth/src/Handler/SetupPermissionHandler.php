@@ -40,7 +40,7 @@ class SetupPermissionHandler implements RequestHandlerInterface
         $dm->persist($systemPermissionDocument);
 
 
-        /*$questionCodeFunctions = [];
+        $questionCodeFunctions = [];
         $questionCodeFunctions[] ="questions.create";
         $questionCodeFunctions[] ="questions.update";
         $questionCodeFunctions[] ="questions.delete";
@@ -83,6 +83,8 @@ class SetupPermissionHandler implements RequestHandlerInterface
         $examCodeFunctions[] ="pin.refresh";
         $examCodeFunctions[] ="exam.updateAnswer";
         $examCodeFunctions[] ="exam.updateQuestionMark";
+        $examCodeFunctions[] ="exam.updateSectionMark";
+
         $examCodeFunctions[] ="exam.viewExamResult";
         $examCodeFunctions[] ="exam.exams";
         $examCodeFunctions[] ="exam.delete";
@@ -106,7 +108,7 @@ class SetupPermissionHandler implements RequestHandlerInterface
         $permissionArray->add($questionPermissionDocument);
         $permissionArray->add($testPermissionDocument);
         $permissionArray->add($examCodeFunctions);
-*/
+
 
         /*$user = new \ODMAuth\Documents\UserDocument();
         $user->setUsername('full_permission_usser');

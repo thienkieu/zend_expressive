@@ -20,7 +20,7 @@ return [
         ],
     ],
     'nonsqldb' => [
-        'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243963.mlab.com:43963/thienkieu',
+        'mongodb-connection' => 'mongodb://192.168.191.79:27017/demo_2608',
         'document-path' => [
             $dir.'/App/src/Documents',
             $dir.'/Test/src/Documents',
@@ -28,7 +28,7 @@ return [
         ],
         'proxy-path' =>  $dir.'/Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
-        'dbname' => 'onlinetest',
+        'dbname' => 'demo_2608',
     ],
     'nonsqldb_dev' => [
         'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243897.mlab.com:43897/onlinetest_dev',

@@ -45,6 +45,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/coordinator/exam/synchronyTime', Test\Handlers\SynchronyTimeHandler::class, 'exam.synchronyTime');
     $app->post('/coordinator/exam/finish', Test\Handlers\FinishExamHandler::class, 'exam.finish');
     $app->post('/coordinator/exam/updateQuestionMark', Test\Handlers\UpdateQuestionMarkHandler::class, 'exam.updateQuestionMark');
+    $app->post('/coordinator/exam/updateSectionMark', Test\Handlers\UpdateSectionMarkHandler::class, 'exam.updateSectionMark');
     $app->get('/coordinator/exam/viewExamResult', Test\Handlers\ViewExamResultHandler::class, 'exam.viewExamResult');
     $app->post('/coordinator/exam/exams', Test\Handlers\ViewListExamHandler::class, 'exam.exams');
     $app->delete('/coordinator/exam/delete', Test\Handlers\DeleteExamHandler::class, 'exam.delete');

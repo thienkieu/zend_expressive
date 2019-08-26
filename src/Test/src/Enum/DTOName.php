@@ -21,5 +21,6 @@ abstract class DTOName
     const PinInfoDTO = \Test\DTOs\Exam\PinInfoDTO::class;
     const UserAnswerDTO = \Test\DTOs\ExamResult\UserAnswerDTO::class;
     const UpdateQuestionMark = \Test\DTOs\ExamResult\UpdateQuestionMarkDTO::class;
+    const UpdateSectionMarkDTO = \Test\DTOs\ExamResult\UpdateSectionMarkDTO::class;
     const AssignUserPermissionDTO = \ODMAuth\DTOs\AssignUserPermissionDTO::class;
 }

@@ -24,6 +24,9 @@ class SectionDocument
   /** @ODM\Field(type="float") */
   private $candidateMark;
 
+  /** @ODM\Field(type="string") */
+  private $comment;
+
   /** @ODM\EmbedMany(targetDocument="QuestionInfoDocument") */
   private $questions;
 
@@ -163,6 +166,26 @@ class SectionDocument
   public function setCandidateMark($candidateMark)
   {
     $this->candidateMark = $candidateMark;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of comment
+   */ 
+  public function getComment()
+  {
+    return $this->comment;
+  }
+
+  /**
+   * Set the value of comment
+   *
+   * @return  self
+   */ 
+  public function setComment($comment)
+  {
+    $this->comment = $comment;
 
     return $this;
   }

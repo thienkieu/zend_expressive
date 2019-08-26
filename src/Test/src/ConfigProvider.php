@@ -55,6 +55,7 @@ class ConfigProvider
                 Handlers\SynchronyTimeHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\FinishExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateQuestionMarkHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateSectionMarkHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ViewExamResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\CreateTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,

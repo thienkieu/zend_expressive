@@ -13,7 +13,7 @@ return array(
     'File is not correct format.' => 'File %file% is in incorrect format.',
     'Answer can not empty at question' => 'Answer %answerIndex% cannot be empty at line %lineNumber%.',
     'Correct answer can not empty at question' => 'Correct answer cannot be empty at line %lineNumber%.',
-    'Correct answer is incorrect. There is not answer at question' => 'Correct answer is incorrect. There is not answer %correctAnswer% at line %lineNumber%.',
+    'Correct answer is incorrect. There is not answer at question' => 'Correct answer is incorrect. There is no answer %correctAnswer% at line %lineNumber%.',
     'Listening must have radio file at question' => 'Listening question must have radio file at line %lineNumber%.',
     'Source is existed, Please check your spelling again!' => 'The source has existed, please check your spelling again!',
     'Field \'%field%\' can not empty' => 'Field %field% is required.',

@@ -45,7 +45,7 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
 
             if ($this->existTestWithTitle($testDTO->getTitle(), $existDocumentWithTitle)) {
                 if ($existDocumentWithTitle->getId() != $testDTO->getId()) {
-                    $messages[] = $translator->translate('There is existing test with this title, Please enter another title');
+                    $messages[] = $this->translator->translate('There is existing test with this title, Please enter another title.');
                     return false;
                 }
             }

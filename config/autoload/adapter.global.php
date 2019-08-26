@@ -58,6 +58,7 @@ return [
         \Test\Convertor\Adapter\DTOs\ToUpdateRepeatTimesDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToUpdateWritingAnswerDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\UpdateQuestionMarkDTOAdapter::class,
+        \Test\Convertor\Adapter\DTOs\UpdateSectionMarkDTOAdapter::class,
 
         \ODMAuth\Convertor\Adapter\DTOs\ToAssignUserPermissionDTOAdapter::class,
 

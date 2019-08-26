@@ -35,10 +35,10 @@ class DoctrineODMFactory
         $config->setDefaultDB($dbConfig['dbname']);
 
         
-        $config->setAutoGenerateHydratorClasses(false);
+        /*$config->setAutoGenerateHydratorClasses(false);
         $config->setAutoGenerateProxyClasses(false);
         $config->setMetadataCacheImpl(new ApcuCache());
-         
+        */
 
         $config->setMetadataDriverImpl(AnnotationDriver::create($dbConfig['document-path']));
         

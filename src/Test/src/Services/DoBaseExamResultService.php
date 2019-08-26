@@ -57,6 +57,41 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         
     }
 
+    public function updateSectionMark($dto, & $messages) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $examResult = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), '');
+        if (!$examResult) {
+            $messages[] = $this->translator->translate('Exam not found');
+            return false;
+        }
+
+        $sectionDocument = $this->getSection($examResult, $dto);
+        if (!$sectionDocument) {
+            $messages[] = $this->translator->translate('Section not found');
+            return false;
+        }
+
+        $sectionDocument->setComment($dto->getComment());
+        $sectionDocument->setCandidateMark($dto->getMark());
+        $questionDocuments = $sectionDocument->getQuestions();
+        foreach($questionDocuments as $questionDocument) {
+            $questionDocument->getQuestionInfo()->setIsScored(true);
+        }
+
+        $this->dm->flush();
+        $examResult = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), '');
+        $hasQuestionNotScored = $examResultRepository->hasQuestionNotScored($examResult->getId());
+        if (!$hasQuestionNotScored) {
+            $examResult->setIsDone(true);
+            $this->dm->flush();
+        }
+
+        $this->updateResultSummary($dto->getExamId(), $dto->getCandidateId());
+        
+        
+        return true;
+    }
+
     public function updateQuestionMark($dto, & $messages) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $examResult = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), '');
@@ -219,6 +254,17 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
     protected function updateSubQuestionAnswer(& $examResult, $dto) {        
     
+    }
+
+    protected function getSection(& $examResult, $dto) {
+        $sections = $examResult->getTest()->getSections();
+        foreach ($sections as $section) {
+            if ($section->getId() == $dto->getSectionId()) {
+                return $section;
+            }
+        }
+
+        return null;
     }
 
     protected function getQuestion(& $examResult, $dto) {

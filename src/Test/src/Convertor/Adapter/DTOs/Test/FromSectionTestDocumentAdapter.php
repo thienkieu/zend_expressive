@@ -34,6 +34,9 @@ class FromSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInter
         $dto->setName($document->getName());
         $dto->setDescription($document->getDescription());
         $dto->setId($document->getId());
+        $dto->setMark($document->getMark());
+        $dto->setCandidateMark($document->getCandidateMark());
+        $dto->setComment($document->getComment());
         
         $questionDocuments = $document->getQuestions();
         $questionDTOs = [];
