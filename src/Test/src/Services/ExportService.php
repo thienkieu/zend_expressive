@@ -184,9 +184,12 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $this->setCellValue($sheet, 'A'.$startIndex, $section->getName());
             
             $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
-            $content = $this->toRichTextFromHTML($section->getDescription());
-            $this->addRichTextToRichText($content, $richText);        
+            $boldText = $richText->createTextRun($section->getDescription());
+            $boldText->getFont()->setBold(true);
             $sheet->getCell('B'.$startIndex)->setValue($richText);
+
+            
+
 
             $styleArray = [
                 'font' => [
