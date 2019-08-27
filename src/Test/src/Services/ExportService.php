@@ -184,12 +184,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $this->setCellValue($sheet, 'A'.$startIndex, $section->getName());
             
             $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
-            $boldText = $richText->createTextRun($section->getDescription());
-            $boldText->getFont()->setBold(true);
+            $content = $this->toRichTextFromHTML($section->getDescription());
+            $this->addBoldRichTextToRichText($content, $richText);
             $sheet->getCell('B'.$startIndex)->setValue($richText);
-
-            
-
 
             $styleArray = [
                 'font' => [
@@ -395,6 +392,14 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
     protected function toRichTextFromHTML($html) {
         $wizard = new \PhpOffice\PhpSpreadsheet\Helper\Html();
         return $wizard->toRichTextObject($html);
+    }
+
+    protected function addBoldRichTextToRichText($source, &$des) {
+        $iTextElements = $source->getRichTextElements();
+        foreach($iTextElements as $iTextElement) {
+            $iTextElement->getFont()->setBold(true);
+            $des->addText($iTextElement);
+        }
     }
 
     protected function addRichTextToRichText($source, &$des) {
