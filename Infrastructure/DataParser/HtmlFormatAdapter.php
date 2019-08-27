@@ -36,7 +36,7 @@ class HtmlFormatAdapter implements FormatAdapterInterface
     }
 
     protected function buildItaclicFormat($data, $options = []) {
-        return sprintf('<i">%s</i>', $data);
+        return sprintf('<i>%s</i>', $data);
     }
 
     protected function buildStrikeFormat($data, $options = []) {
