@@ -39,7 +39,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $sheet->setTitle($sheetName);
         $sheet->getColumnDimension('A')->setWidth(20);
         $sheet->getColumnDimension('C')->setWidth(20);
-        $this->setCellValue($sheet, 'A1', 'CRM Online Test System - Export Exam Result', [], true);
+        $this->setCellValue($sheet, 'A1', 'Online Test System - Export Exam Result', [], true);
         $cellStyles = [
             'font' => [
                 'bold' => true,
@@ -64,7 +64,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         ];
         $sheet->getStyle('A2:D2')->applyFromArray($styleArray);
 
-        $this->setCellValue($sheet, 'A3', 'Candidate Id:', [], true);
+        $this->setCellValue($sheet, 'A3', 'Candidate ID:', [], true);
         $this->setCellValue($sheet, 'B3', $examResultDTO->getCandidate()->getObjectId());
         $cellStyles = [
             'alignment' => [
@@ -80,11 +80,11 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $this->setCellValue($sheet, 'A5', 'Candidate Email:', [], true);
         $this->setCellValue($sheet, 'B5', $examResultDTO->getCandidate()->getEmail());
 
-        $this->setCellValue($sheet, 'C3', 'Exam Name:', [], true);
+        $this->setCellValue($sheet, 'C3', 'Exam Title:', [], true);
         $this->setCellValue($sheet, 'D3', $examResultDTO->getTitle());
 
         $this->setCellValue($sheet, 'C4', 'Exam Date:', [], true);
-        $this->setCellValue($sheet, 'D4', $examResultDTO->getStartDate());
+        $this->setCellValue($sheet, 'D4', $examResultDTO->getStartDate()->format('m/d/Y'));
 
 
     }
@@ -130,7 +130,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $sheet->mergeCells('A8:D8');
 
         $this->setCellStyle($sheet, 'A9:C9', $boderStyles);
-        $this->setCellValue($sheet, 'A9', 'Section', [], true);
+        $this->setCellValue($sheet, 'A9', 'Skills', [], true);
         $sheet->mergeCells('A9:C9');
 
         $this->setCellStyle($sheet, 'D9', $boderStyles);
@@ -139,6 +139,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $resultSummary = $examResultDTO->getResultSummary();
         $startIndex = 10;
         $sum = 0;
+        $totalMark = 0;
         foreach($resultSummary as $resultSummaryItem) {
             $this->setCellValue($sheet, 'A'.$startIndex, $resultSummaryItem->getName());
             $this->setCellValue($sheet, 'D'.$startIndex, $resultSummaryItem->getCandidateMark().'/'.$resultSummaryItem->getMark());
@@ -149,11 +150,12 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             ];
             $this->setCellStyle($sheet, 'D'.$startIndex, $boderStyleValue);
             $sum += $resultSummaryItem->getCandidateMark();
+            $totalMark += $resultSummaryItem->getMark();
             $startIndex += 1;
         }
 
-        $this->setCellValue($sheet, 'A'.$startIndex, 'Sum');
-        $this->setCellValue($sheet, 'D'.$startIndex, $sum);
+        $this->setCellValue($sheet, 'A'.$startIndex, 'Final Score');
+        $this->setCellValue($sheet, 'D'.$startIndex, $sum.'/'.$totalMark);
         $this->setCellStyle($sheet, 'A'.$startIndex.':D'.$startIndex, $boderStyles);
             
         $boderStyles = [
@@ -226,8 +228,17 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
     }
 
     protected function exportListeningQuestion($sheet, $question, $questionIndex, $startRow) {
-        $this->exportComment($sheet, 'B'.$startRow, 'Path '.$questionIndex, '');
+        $this->exportComment($sheet, 'B'.$startRow, 'Click here to listen the audio'.$questionIndex, '');
         $sheet->getCell('B'.$startRow)->getHyperlink()->setUrl($question->getPath());
+        $styleArray = [
+            'borders' => [
+                'outline' => [
+                    'style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                    'color' => ['argb' => 'FFFF0000'],
+                ],
+            ],
+        ];
+        $this->setCellStyle($sheet, 'B'.$startRow, $styleArray);
         $startRow +1;
         $startRow = $this->exportSubQuestion($sheet, $question->getSubQuestions(), $startRow+1);
 
