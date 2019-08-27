@@ -11,7 +11,6 @@ use Zend\Validator\AbstractValidator;
 class SectionTestValidator extends RequireField {
     protected $options = [
         'section.name'=>'sections=>name',
-        'section.description'=>'sections=>description',
         'section.questions'=>'sections=>questions',
     ];
 }
