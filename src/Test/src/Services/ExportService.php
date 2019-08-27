@@ -182,7 +182,12 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $startIndex = 8;
         foreach($sections as $section) {
             $this->setCellValue($sheet, 'A'.$startIndex, $section->getName());
-            $this->setCellValue($sheet, 'B'.$startIndex, $section->getDescription());
+            
+            $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText();
+            $content = $this->toRichTextFromHTML($section->getDescription());
+            $this->addRichTextToRichText($content, $richText);        
+            $sheet->getCell('B'.$startIndex)->setValue($richText);
+
             $styleArray = [
                 'font' => [
                     'bold' => true,
