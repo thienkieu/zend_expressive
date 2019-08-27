@@ -28,15 +28,15 @@ class HtmlFormatAdapter implements FormatAdapterInterface
     }
 
     protected function buildBoldFormat($data, $options = []) {
-        return sprintf('<b>%s</b>', $data);
+        return sprintf('<strong>%s</strong>', $data);
     }
 
     protected function buildUnderlineFormat($data, $options = []) {
-        return sprintf('<u>%s</u>', $data);
+        return sprintf('<ins>%s</ins>', $data);
     }
 
     protected function buildItaclicFormat($data, $options = []) {
-        return sprintf('<i>%s</i>', $data);
+        return sprintf('<em>%s</em>', $data);
     }
 
     protected function buildStrikeFormat($data, $options = []) {
