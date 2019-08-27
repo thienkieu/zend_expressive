@@ -92,7 +92,7 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
             $document = $dtoToDocumentConvertor->convertToDocument($testDTO, []);
             
             if ($this->existTestWithTitle($testDTO->getTitle(), $existDocumentWithTitle)) {
-                $messages[] = $translator->translate('There is existing test with this title, Please enter another title');
+                $messages[] = $translator->translate('There is existing test with this title, Please enter another title.');
                 return false;
             }
 
