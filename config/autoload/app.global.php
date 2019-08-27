@@ -132,6 +132,7 @@ return [
         'exam.exportCandidateResult',
         'exam.exportPin',
         'exam.examJoined',
+        'exam.latestExamJoined',
         'log'
     ]
 ];

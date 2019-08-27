@@ -107,6 +107,37 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
         return $document;
     }
 
+    public function getLatestExamJoined($dto) {
+        $queryBuilder = $this->createQueryBuilder();
+
+        if (isset($dto->candidateType) && !empty($dto->candidateType)) {
+            $queryBuilder->field('candidate.type')->equals($dto->candidateType);
+        }
+
+        if (isset($dto->objectId) && !empty($dto->objectId)) {
+            $queryBuilder->field('candidate.objectId')->equals($dto->objectId);
+        }
+
+        if (isset($dto->examType) && !empty($dto->examType)) {
+            $queryBuilder->field('examType')->equals($dto->examType);
+        }
+
+        if (isset($dto->latestDate) && !empty($dto->latestDate)) {
+            $date = \DateTime::createFromFormat(\Config\AppConstant::DateTimeFormat, $dto->latestDate);
+            $queryBuilder->field('startDate')->gte($date);
+        }
+
+
+
+        $examResult = $queryBuilder->select(['time','title', 'startDate', 'examId', 'candidate', 'resultSummary'])
+        ->sort('startDate', 'desc')
+        ->distinct('candidate.objectId')
+        ->getQuery()
+        ->execute();
+        
+        return $examResult;
+    }
+
     public function getExamJoined($dto) {
         $queryBuilder = $this->createQueryBuilder();
 

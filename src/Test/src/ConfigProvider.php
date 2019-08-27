@@ -76,6 +76,7 @@ class ConfigProvider
                 Handlers\UploadMediaHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\AddExamResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetExamJoinedHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\GetLatestJoinedHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ExportPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetExamTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
