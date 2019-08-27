@@ -79,7 +79,17 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                 }
             }
             
-            $this->dataParser->parseData($dtoObject, ['rowIndexStart' => $this->rowDataIndex]);
+            $this->dataParser->parseData($dtoObject, ['rowIndexStart' => $this->rowDataIndex -1]);
+            if ($this->dataParser->valid()) {
+                $row = $this->dataParser->current();
+                if (!$this->isCorrectColumns($row)) {
+                    echo '<pre>'.print_r($row, true).'</pre>'; die;
+                    $messages[] = $this->translator->translate('The format file is incorrect, Please use the template of online test system.');
+                    return false;
+                } 
+                $row = $this->getNextRow();               
+            }
+
 
             $lstQuestions = [];
             $this->rowIndex = $this->rowDataIndex;
@@ -170,10 +180,10 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     }
 
     protected function isCorrectColumns($columns) {
-        if ($columns[$this->id] !== '#' || $columns[$this->type] !== 'Type' || $columns[$this->subType] !== 'Sub-Type'
-            || $columns[$this->source] !== 'Source' || $columns[$this->fileName] !== 'File Name' || $columns[$this->repeatTime] !== 'Times of listening'
-            || $columns[$this->content] !== 'Content' || $columns[$this->question] !== 'Question' || $columns[$this->correctAnswers] !== 'Correct Answers'
-            || $columns[$this->answer] !== 'Answer 1'
+        if ($columns[$this->id] !== '<strong>#</strong>' || $columns[$this->type] !== '<strong>Type</strong>' || $columns[$this->subType] !== '<strong>Sub-Type</strong>'
+            || $columns[$this->source] !== '<strong>Source</strong>' || $columns[$this->fileName] !== '<strong>File Name</strong>' || $columns[$this->repeatTime] !== '<strong>Times of listening</strong>'
+            || $columns[$this->content] !== '<strong>Content</strong>' || $columns[$this->question] !== '<strong>Question</strong>' || $columns[$this->correctAnswers] !== '<strong>Correct Answers</strong>'
+            || $columns[$this->answer] !== '<strong>Answer 1</strong>'
         ) {
             return false;
         }
