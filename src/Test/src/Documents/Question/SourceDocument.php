@@ -16,6 +16,15 @@ class SourceDocument
   /** @ODM\Field(type="string") */
   private $name;
 
+  /** @ODM\Field(type="date") */
+  protected $createDate;
+  
+
+  public function __construct()
+  {
+    $this->createDate = new \DateTime();    
+  }
+  
   /**
    * Get the value of name
    */ 
@@ -52,6 +61,26 @@ class SourceDocument
   public function setId($id)
   {
     $this->id = $id;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of createDate
+   */ 
+  public function getCreateDate()
+  {
+    return $this->createDate;
+  }
+
+  /**
+   * Set the value of createDate
+   *
+   * @return  self
+   */ 
+  public function setCreateDate($createDate)
+  {
+    $this->createDate = $createDate;
 
     return $this;
   }
