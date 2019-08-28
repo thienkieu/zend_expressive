@@ -83,7 +83,6 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             if ($this->dataParser->valid()) {
                 $row = $this->dataParser->current();
                 if (!$this->isCorrectColumns($row)) {
-                    echo '<pre>'.print_r($row, true).'</pre>'; die;
                     $messages[] = $this->translator->translate('The format file is incorrect, Please use the template of online test system.');
                     return false;
                 } 
