@@ -94,10 +94,10 @@ class AuthorizationService implements Interfaces\AuthorizationServiceInterface
         }
 
         $permissionDocuments = $permissionRepository->getListByIds($dto->getPermissionsIds());
-        if (count($permissionDocuments) < 1) {
+        /*if (count($permissionDocuments) < 1) {
             $messages[] = $this->translator->translate('Permission not found');
             return false;
-        }
+        }*/
 
         $userDocument->setPermissionDocument($permissionDocuments);
         $this->dm->flush();

@@ -103,7 +103,7 @@ return [
             ]
         ],
         'uploadFolder' => $dir.'/../Uploads',
-        'maxUploadSizeAllow' => 10024,
+        'maxUploadSizeAllow' => 25600,
     ],
 
     'CORS' => [
