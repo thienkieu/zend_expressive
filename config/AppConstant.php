@@ -91,6 +91,7 @@ abstract class AppConstant
     const ReduceTimeSpan = 10;
     const DefaultSubQuestionMark = 2;
     const DefaultWritingMark = 20;
+    const DefaultVerbalMark = 5;
 
     const HOST_REPLACE = '%HOST%';
 

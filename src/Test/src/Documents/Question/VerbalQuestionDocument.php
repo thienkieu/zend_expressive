@@ -9,4 +9,9 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 class VerbalQuestionDocument extends QuestionDocument
 {  
+    public function __construct()
+    {
+        $this->createDate = new \DateTime();
+        $this->mark = \Config\AppConstant::DefaultVerbalMark;
+    }
 }
