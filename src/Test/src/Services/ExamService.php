@@ -257,8 +257,9 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $document = $examRepository->getCandidateInfo($dto->pin);
         if ($document) {
             $doExamService = $this->container->get(DoExamServiceInterface::class);
-            $ok = $doExamService->isAllowAccessExam($document, $messages);
+            $ok = $doExamService->isAllowAccessExam($document);
             if (!$ok) {
+                $messages[] = $this->translator->translate('Your PIN is invalid.');
                 return false;
             }
 
