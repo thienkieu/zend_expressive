@@ -46,11 +46,9 @@ class UploadFileMiddleware implements MiddlewareInterface
                     $messages[] =  $translator->translate('Size of upload file can not larger than', ['%max_size%'=> $maxUploadFileSize]);
                 }
                 $fileType = $file->getClientMediaType();
-                
                 if (!in_array($fileType,  $uploadFileTypes)) {
                     $isError = true;
-                    
-                    $messages[] =  $translator->translate('File type is not support', ['%file_type%'=> $fileType]);
+                    $messages[] =  $translator->translate('File type is not support', ['%file_type%'=> pathinfo($file->getClientFilename(), PATHINFO_EXTENSION), '%file_name%' => $file->getClientFilename()]);
                 }            
             }
 

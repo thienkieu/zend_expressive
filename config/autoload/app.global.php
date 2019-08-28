@@ -85,8 +85,7 @@ return [
             'image/jpeg',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'application/zip',
-            'application/x-zip-compressed',
-            'application/octet-stream',
+            'application/x-zip-compressed',            
             'audio/mp3'
         ],
         'extensions' => [
