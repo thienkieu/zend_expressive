@@ -9,4 +9,5 @@ interface DoExamServiceInterface
 {
     public function doExam($dto, & $results, & $messages);
     public function updateAnswer($dto, & $messages);
+    public function isAllowAccessExam($examDocument);
 }

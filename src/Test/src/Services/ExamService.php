@@ -253,9 +253,15 @@ class ExamService implements ExamServiceInterface, HandlerInterface
     }
     
     public function enterPin($dto, & $results, & $messages) {
-        $testRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
-        $document = $testDocuments = $testRepository->getCandidateInfo($dto->pin);
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $document = $examRepository->getCandidateInfo($dto->pin);
         if ($document) {
+            $doExamService = $this->container->get(DoExamServiceInterface::class);
+            $ok = $doExamService->isAllowAccessExam($document, $messages);
+            if (!$ok) {
+                return false;
+            }
+
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $results = $documentToDTOConvertor->convertToDTO($document);
             return true;

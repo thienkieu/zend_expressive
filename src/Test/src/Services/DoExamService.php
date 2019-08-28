@@ -43,7 +43,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
         
     }
     
-    protected function isAllowAccessExam($examDocument) {
+    public function isAllowAccessExam($examDocument) {
         $startDate = $examDocument->getStartDate()->format(\Config\AppConstant::DateTimeFormat);
         $now = (new \DateTime())->format(\Config\AppConstant::DateTimeFormat);
 
