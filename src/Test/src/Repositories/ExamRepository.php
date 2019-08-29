@@ -155,6 +155,22 @@ class ExamRepository extends DocumentRepository
                 
         }
 
+        if (!empty($fromDate) && empty($toDate)) {
+            $queryBuilder->addAnd(
+                $queryBuilder->expr()
+                    ->field('startDate')->gte($fromDate)
+            );
+                
+        }
+
+        if (empty($fromDate) && !empty($toDate)) {
+            $queryBuilder->addAnd(
+                $queryBuilder->expr()
+                    ->field('startDate')->lte($toDate)
+            );
+                
+        }
+
         return $queryBuilder;
     }
 
