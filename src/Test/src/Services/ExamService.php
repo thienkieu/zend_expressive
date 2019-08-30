@@ -149,7 +149,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             $this->dm->persist($document);
             
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
-            $dto = $documentToDTOConvertor->convertToDTO($document);
+            $dto = $documentToDTOConvertor->convertToDTO($document, [\Config\AppConstant::ShowCorrectAnswer => true]);
 
             $this->dm->flush();
             
@@ -283,7 +283,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $examDocuments = $results['exams'];
         
         foreach ($examDocuments as $exam) {
-            $dto = $documentToDTOConvertor->convertToDTO($exam);
+            $dto = $documentToDTOConvertor->convertToDTO($exam, [\Config\AppConstant::ShowCorrectAnswer => true]);
             $exams[] = $dto;
         }
 
@@ -308,7 +308,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             return false;
         }   
         
-        $ret = $documentToDTOConvertor->convertToDTO($examDocument);
+        $ret = $documentToDTOConvertor->convertToDTO($examDocument, [\Config\AppConstant::ShowCorrectAnswer => true]);
         return true;
     }
 
