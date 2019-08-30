@@ -18,7 +18,7 @@ class ExamResultSummaryDTO implements \JsonSerializable
         $ret->name = $this->getName();
         $ret->mark = $this->getMark(); 
         $ret->type = $this->getType();
-        $ret->comments = $this->getComments();
+        $ret->comments = $this->getComments() ? $this->getComments(): '';
         $ret->candidateMark = $this->getCandidateMark();
         $ret->isScored = $this->getIsScored();
 
