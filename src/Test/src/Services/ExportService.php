@@ -472,30 +472,6 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $reader->setReadDataOnly(false);
         $spreadsheet = $reader->load($this->templateFolder.\Config\AppConstant::DS."importQuestionTemplate.xlsx"); 
 
-        $sheet = $spreadsheet->getActiveSheet();
-        $validation = $sheet->setDataValidation('C6:C1048576',
-            (new DataValidation())
-                ->setType(DataValidation::TYPE_LIST)
-                ->setShowDropDown(true)
-                ->setFormula1('Data!$B$2:INDEX(Data!$B$2:$B$1000,SUMPRODUCT(--(Data!$B$2:$B$1000<>"")))')
-        );
-
-        $sheet = $spreadsheet->getActiveSheet();
-        $validation = $sheet->setDataValidation('D6:D1048576',
-            (new DataValidation())
-                ->setType(DataValidation::TYPE_LIST)
-                ->setShowDropDown(true)
-                ->setFormula1('Data!$C$2:INDEX(Data!$C$2:$C$1000,SUMPRODUCT(--(Data!$C$2:$C$1000<>"")))')
-        );
-
-        $sheet = $spreadsheet->getActiveSheet();
-        $validation = $sheet->setDataValidation('E6:E1048576',
-            (new DataValidation())
-                ->setType(DataValidation::TYPE_LIST)
-                ->setShowDropDown(true)
-                ->setFormula1('Data!$D$2:INDEX(Data!$D$2:$D$1000,SUMPRODUCT(--(Data!$D$2:$D$1000<>"")))')
-        );
-
         $spreadsheet->setActiveSheetIndex(1);
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -503,26 +479,49 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $sourceDocuments = $sourceService->getSources('', $messsages);
         $sources = $sourceDocuments['sources'];
         
-        $startIndex = 2;
+        $sourceIndex = 2;
         foreach($sources as $source) {
-            $this->setCellValue($sheet, 'D'.$startIndex, $source->getName());
-            $startIndex++;
+            $this->setCellValue($sheet, 'D'.$sourceIndex, $source->getName());
+            $sourceIndex++;
         }
 
         $typeService  = $this->container->get(Interfaces\TypeServiceInterface::class);
         $typeDocuments = $typeService->getTypes('', $messsages);
         $types = $typeDocuments->type;
-        $startIndex = 2;
+        $typeIndex = 2;
         $subTypeIndex = 2;
         foreach($types as $type) {
-            $this->setCellValue($sheet, 'B'.$startIndex, $type->getName());
+            $this->setCellValue($sheet, 'B'.$typeIndex, $type->getName());
             foreach($type->getSubTypes() as $subType) {
                 $this->setCellValue($sheet, 'C'.$subTypeIndex, $subType->getName());
                 $subTypeIndex++;
             }
             
-            $startIndex++;
+            $typeIndex++;
         }
+
+        $spreadsheet->setActiveSheetIndex(0);
+        $sheet = $spreadsheet->getActiveSheet();
+        $validation = $sheet->setDataValidation('C6:C1048576',
+            (new DataValidation())
+                ->setType(DataValidation::TYPE_LIST)
+                ->setShowDropDown(true)
+                ->setFormula1('Data!$B$2:$B$'.($typeIndex-1))
+        );
+        
+        $validation = $sheet->setDataValidation('D6:D1048576',
+            (new DataValidation())
+                ->setType(DataValidation::TYPE_LIST)
+                ->setShowDropDown(true)
+                ->setFormula1('Data!$C$2:$C$'.($subTypeIndex-1))
+        );
+        
+        $validation = $sheet->setDataValidation('E6:E1048576',
+            (new DataValidation())
+                ->setType(DataValidation::TYPE_LIST)
+                ->setShowDropDown(true)
+                ->setFormula1('Data!$D$2:$D$'.($sourceIndex-1))
+        );
 
         $spreadsheet->setActiveSheetIndex(0);
         $writer = new Xlsx($spreadsheet);
