@@ -65,6 +65,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/coordinator/questions/import', Test\Handlers\ImportQuestionHandler::class, 'questions.import');
     $app->post('/coordinator/question/questions', Test\Handlers\GetQuestionHandler::class, 'question.questions');
     $app->get('/coordinator/question/export', Test\Handlers\ExportQuestionHandler::class, 'question.export');
+    $app->get('/coordinator/question/importTemplate', Test\Handlers\DownloadImportQuestionTemplateHandler::class, 'question.importTemplate');
 
     $app->get('/coordinator/question/type', Test\Handlers\GetTypeHandler::class, 'question.types');
 };

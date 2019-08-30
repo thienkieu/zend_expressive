@@ -11,6 +11,7 @@ use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 
 class ExportService implements Interfaces\ExportServiceInterface, HandlerInterface
 {
@@ -426,7 +427,6 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $sheet = $spreadsheet->getActiveSheet();
         $this->exportDetails($sheet, $outDTO);
 
-
         $writer = new Xlsx($spreadsheet);
         return true;
     }
@@ -465,6 +465,68 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $path = realpath($path);
 		
         return $path;
+    }
+
+    public function exportImportQuestionTemplate(& $writer) {
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $reader->setReadDataOnly(false);
+        $spreadsheet = $reader->load($this->templateFolder.\Config\AppConstant::DS."importQuestionTemplate.xlsx"); 
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $validation = $sheet->setDataValidation('C6:C1048576',
+            (new DataValidation())
+                ->setType(DataValidation::TYPE_LIST)
+                ->setShowDropDown(true)
+                ->setFormula1('Data!$B$2:INDEX(Data!$B$2:$B$1000,SUMPRODUCT(--(Data!$B$2:$B$1000<>"")))')
+        );
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $validation = $sheet->setDataValidation('D6:D1048576',
+            (new DataValidation())
+                ->setType(DataValidation::TYPE_LIST)
+                ->setShowDropDown(true)
+                ->setFormula1('Data!$C$2:INDEX(Data!$C$2:$C$1000,SUMPRODUCT(--(Data!$C$2:$C$1000<>"")))')
+        );
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $validation = $sheet->setDataValidation('E6:E1048576',
+            (new DataValidation())
+                ->setType(DataValidation::TYPE_LIST)
+                ->setShowDropDown(true)
+                ->setFormula1('Data!$D$2:INDEX(Data!$D$2:$D$1000,SUMPRODUCT(--(Data!$D$2:$D$1000<>"")))')
+        );
+
+        $spreadsheet->setActiveSheetIndex(1);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sourceService  = $this->container->get(Interfaces\SourceServiceInterface::class);
+        $sourceDocuments = $sourceService->getSources('', $messsages);
+        $sources = $sourceDocuments['sources'];
+        
+        $startIndex = 2;
+        foreach($sources as $source) {
+            $this->setCellValue($sheet, 'D'.$startIndex, $source->getName());
+            $startIndex++;
+        }
+
+        $typeService  = $this->container->get(Interfaces\TypeServiceInterface::class);
+        $typeDocuments = $typeService->getTypes('', $messsages);
+        $types = $typeDocuments->type;
+        $startIndex = 2;
+        $subTypeIndex = 2;
+        foreach($types as $type) {
+            $this->setCellValue($sheet, 'B'.$startIndex, $type->getName());
+            foreach($type->getSubTypes() as $subType) {
+                $this->setCellValue($sheet, 'C'.$subTypeIndex, $subType->getName());
+                $subTypeIndex++;
+            }
+            
+            $startIndex++;
+        }
+
+        $spreadsheet->setActiveSheetIndex(0);
+        $writer = new Xlsx($spreadsheet);
+        return true;
     }
 
     public function exportQuestion($dto, &$messages, &$writer) {

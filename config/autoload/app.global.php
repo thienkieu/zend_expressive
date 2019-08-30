@@ -132,6 +132,7 @@ return [
         'exam.exportPin',
         'exam.examJoined',
         'exam.latestExamJoined',
+        'question.importTemplate',
         'log'
     ]
 ];

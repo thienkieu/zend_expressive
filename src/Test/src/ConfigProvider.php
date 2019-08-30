@@ -71,6 +71,7 @@ class ConfigProvider
                 Handlers\UpdateQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\CreateQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ExportQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\DownloadImportQuestionTemplateHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetTestTemplateHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UploadMediaHandler::class => \Infrastructure\Factory\BaseFactory::class,

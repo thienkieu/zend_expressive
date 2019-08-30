@@ -8,4 +8,6 @@ interface ExportServiceInterface
 {
     public function exportCandidateExamResult($params, &$messages, &$writer, &$candidateName);
     public function exportPin($params, &$messages, &$writer);
+    public function exportQuestion($dto, &$messages, &$writer);
+    public function exportImportQuestionTemplate(& $writer);
 }
