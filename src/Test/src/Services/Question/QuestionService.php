@@ -176,8 +176,9 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
     protected function getNumberCorrectSubQuestion($questionDocument, & $candidateMark) {
         $numberCorrectSubQuestion = 0;
-
+        $questionMark = $questionDocument->getMark();
         $subQuestionDocuments = $questionDocument->getSubQuestions();
+        $numberSubQuestion = $subQuestionDocuments->count();
         foreach ($subQuestionDocuments as $subQuestion) {
             $answers = $subQuestion->getAnswers();
             $isCorrect = true;
@@ -196,7 +197,13 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             
             if ($isCorrect) {
                 $numberCorrectSubQuestion += 1;
-                $candidateMark += $subQuestion->getMark();
+                $subQuestionMark = $subQuestion->getMark();
+                if ($subQuestionMark) {
+                    $candidateMark += $subQuestion->getMark();
+                } else {
+                    $candidateMark += ($questionMark / $numberSubQuestion);
+                }
+                
             }
         }
 
@@ -281,9 +288,9 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
     }
 
     protected function hasEffectToGenerateExamTest($questionDocument, $updateQuestionDTO) {
-        if ($questionDocument->getType() != $updateQuestionDTO->getType() || 
+        if ($questionDocument->getType()->getName() != $updateQuestionDTO->getSubType() || 
             $questionDocument->getSource()->getName() != $updateQuestionDTO->getSource() ||
-            $questionDocument->getSubType() != $updateQuestionDTO->getSubType() || 
+            $questionDocument->getType()->getParentType()->getName() != $updateQuestionDTO->getType() || 
             $questionDocument->getNumberSubQuestion() > count($updateQuestionDTO->getSubQuestions())) {
                 return true;
             }
