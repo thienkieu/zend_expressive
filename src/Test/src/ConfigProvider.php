@@ -43,6 +43,7 @@ class ConfigProvider
                 Handlers\ImportQuestionHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetCandidateHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\CreateTestTemplateHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\CreateSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\DeleteSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateSourceHandler::class => \Infrastructure\Factory\BaseFactory::class,

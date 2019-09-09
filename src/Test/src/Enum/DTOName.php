@@ -9,6 +9,7 @@ abstract class DTOName
     const Listening = 'Listening';
     const Section = \Test\DTOs\Test\SectionDTO::class;
     const Test = \Test\DTOs\Test\BaseTestDTO::class;
+    const TestTemplate = \Test\DTOs\Test\BaseTestDTO::class;
     const Exam = \Test\DTOs\Exam\ExamDTO::class;
     const ExamResult = \Test\DTOs\ExamResult\ExamResultDTO::class;
     const EditTestOfExam = \Test\DTOs\Exam\EditTestOfExamDTO::class;

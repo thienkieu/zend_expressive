@@ -63,6 +63,7 @@ class SetupPermissionHandler implements RequestHandlerInterface
 
         $testCodeFunctions = [];
         $testCodeFunctions[] ="test.create";
+        $testCodeFunctions[] ="test.createTemplate";
         $testCodeFunctions[] ="test.update";
         $testCodeFunctions[] ="test.tests";
         $testCodeFunctions[] ="test.viewSampleExam";

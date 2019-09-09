@@ -12,6 +12,7 @@ return [
         \Test\Convertor\Adapter\Documents\ToReadingDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToWritingDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToVerbalDocumentAdapter::class,
+        \Test\Convertor\Adapter\Documents\ToTestTemplateDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToTestDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToSubQuestionDocumentAdapter::class,
         \Test\Convertor\Adapter\Documents\ToSourceDocumentAdapter::class,
@@ -46,6 +47,7 @@ return [
         \Test\Convertor\Adapter\DTOs\ToTypeDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\ToSubTypeDTOAdapter::class,
         
+        \Test\Convertor\Adapter\DTOs\Test\ToTestTemplateSectionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\ToTestWithSectionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\ToSectionDTOAdapter::class,
         \Test\Convertor\Adapter\DTOs\Test\ToQuestionDTOAdapter::class,  

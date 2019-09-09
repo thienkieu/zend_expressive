@@ -8,6 +8,7 @@ use Zend\Log\Logger;
 
 Interface AuthorizationServiceInterface
 {
+    public function setUser($user);
     public function isAllow($userId, $action, &$messages);
     public function getListPermission($dto, $itemPerPage, $pageNumber);  
     public function assignUserPermission($dto, &$messages); 

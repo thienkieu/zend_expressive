@@ -2,6 +2,7 @@
 namespace Test\Documents\Test;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
  * @ODM\Document(collection="test_template", repositoryClass="\Test\Repositories\TestTemplateRepository")
@@ -15,6 +16,9 @@ class TestTemplateDocument
   /** @ODM\Field(type="string") */
   protected $title;
 
+  /** @ODM\Field(type="string") */
+  protected $path;
+
   /** @ODM\Field(type="bool") */
   protected $isDefault;
 
@@ -24,6 +28,11 @@ class TestTemplateDocument
   /** @ODM\EmbedMany(targetDocument="SectionDocument") */
   private $sections;
   
+  /**
+  * @ODM\ReferenceOne(targetDocument="\ODMAuth\Documents\UserDocument", storeAs="id")
+  */
+  private $user;
+
   public function __construct()
   {
     $this->sections = new ArrayCollection();
@@ -126,6 +135,58 @@ class TestTemplateDocument
   public function setIsDefault($isDefault)
   {
     $this->isDefault = $isDefault;
+
+    return $this;
+  }
+
+   /**
+   * Add the value of sections
+   *
+   * @return  self
+   */ 
+  public function addSection($section)
+  {
+    $this->sections->add($section);
+
+    return $this;
+  }
+
+  /**
+   * Get the value of user
+   */ 
+  public function getUser()
+  {
+    return $this->user;
+  }
+
+  /**
+   * Set the value of user
+   *
+   * @return  self
+   */ 
+  public function setUser($user)
+  {
+    $this->user = $user;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of path
+   */ 
+  public function getPath()
+  {
+    return $this->path;
+  }
+
+  /**
+   * Set the value of path
+   *
+   * @return  self
+   */ 
+  public function setPath($path)
+  {
+    $this->path = $path;
 
     return $this;
   }

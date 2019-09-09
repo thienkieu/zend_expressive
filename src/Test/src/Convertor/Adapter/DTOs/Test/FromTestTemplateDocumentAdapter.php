@@ -34,7 +34,8 @@ class FromTestTemplateDocumentAdapter implements ConvertDocumentToDTOAdapterInte
         $dto->setTitle($document->getTitle());
         $dto->setId($document->getId());
         $dto->setIsDefault($document->getIsDefault());
-        
+        $dto->setPath(\Infrastructure\CommonFunction::revertToHost($document->getPath()));
+
         $sectionDocuments = $document->getSections();
         $sectionDTO = [];
         foreach($sectionDocuments as $section) {

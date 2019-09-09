@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace ODMAuth\Services;
 
 use Zend\Log\Logger;
-
 use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+
 
 class AuthorizationService implements Interfaces\AuthorizationServiceInterface
 {
@@ -17,6 +17,7 @@ class AuthorizationService implements Interfaces\AuthorizationServiceInterface
     protected $dm;
     protected $options;
     protected $translator= null;
+    protected $user = null;
 
     public function __construct($container, $options = []) {
         $this->container = $container;
@@ -29,9 +30,22 @@ class AuthorizationService implements Interfaces\AuthorizationServiceInterface
         return true;
     }
     
-    public function isAllow($userId, $action, &$messages) {
+    public function setUser($user) {
+        $userIdentity = $user->getIdentity();
         $userRepository = $this->dm->getRepository(\ODMAuth\Documents\UserDocument::class);
+        $userDocument = $userRepository->findOneBy(['objectId'=>$userIdentity]); 
+        $this->user = $userDocument;
+    }
+
+    public function getUser() {
+        return $this->user;
+    }
+
+    public function isAllow($userId, $action, &$messages) {
+        $userDocument = $this->getUser();
+        /*$userRepository = $this->dm->getRepository(\ODMAuth\Documents\UserDocument::class);
         $userDocument = $userRepository->findOneBy(['objectId'=>$userId]);
+        */
         if (!$userDocument) {
             $messages[] = $this->translator->translate('You do not have permission');
             return false;

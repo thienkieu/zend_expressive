@@ -12,6 +12,8 @@ class TestTemplateDTO extends BaseTestDTO implements \JsonSerializable
     protected $sections;
     
     protected $isDefault;
+
+    protected $path;
     
     public function jsonSerialize() {
         $ret = new \stdClass();
@@ -19,7 +21,8 @@ class TestTemplateDTO extends BaseTestDTO implements \JsonSerializable
         $ret->referId = $this->getReferId() ? $this->getReferId(): '';
         $ret->isDefault = $this->getIsDefault();
         $ret->title = $this->getTitle();
-        $ret->sections = $this->getSections();       
+        $ret->sections = $this->getSections(); 
+        $ret->path = $this->getPath();      
         return $ret;
     }
 
@@ -86,6 +89,26 @@ class TestTemplateDTO extends BaseTestDTO implements \JsonSerializable
     public function setIsDefault($isDefault)
     {
         $this->isDefault = $isDefault;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of path
+     */ 
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set the value of path
+     *
+     * @return  self
+     */ 
+    public function setPath($path)
+    {
+        $this->path = $path;
 
         return $this;
     }

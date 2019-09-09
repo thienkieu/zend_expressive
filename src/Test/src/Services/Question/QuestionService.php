@@ -294,7 +294,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         if ($questionDocument->getType()->getName() != $updateQuestionDTO->getSubType() || 
             $questionDocument->getSource()->getName() != $updateQuestionDTO->getSource() ||
             $questionDocument->getType()->getParentType()->getName() != $updateQuestionDTO->getType() || 
-            $questionDocument->getNumberSubQuestion() > count($updateQuestionDTO->getSubQuestions())) {
+            (method_exists($questionDocument, 'getNumberSubQuestion') && $questionDocument->getNumberSubQuestion() > count($updateQuestionDTO->getSubQuestions()))) {
                 return true;
             }
         return false;

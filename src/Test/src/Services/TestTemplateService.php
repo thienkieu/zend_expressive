@@ -27,69 +27,20 @@ class TestTemplateService implements Interfaces\TestTemplateServiceInterface, Ha
     public function isHandler($dto, $options = []){
         return true;
     }
-    
-    public function updateTest(\Test\DTOs\Test\BaseTestDTO $testDTO, & $messages, & $outDTO) {
-        $testId = $testDTO->getId();
-        if (empty($testId)) {
-            $messages[] = $this->translator->translate('Your test doesnot exist!');
-            return false;
-        }
 
-        try {
-            $testRepository = $this->dm->getRepository(\Test\Documents\Test\TestWithSectionDocument::class);
-            $testDocument = $testRepository->find($testDTO->getId());
-            if (!$testDocument) {
-                $messages[] = $this->translator->translate('Your test doesnot exist!');
-                return false;
-            }
-
-            $examService = $this->container->get(ExamServiceInterface::class);
-            $examDTO = $examService->generateExamTest($testDTO, $messages);
-            if (!$examDTO) {
-                return false;
-            }
-
-            $this->dm->remove($testDocument);
-            $this->dm->flush();
-            
-            $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $newTestDocument = $dtoToDocumentConvertor->convertToDocument($testDTO);
-            $this->dm->persist($newTestDocument);
-
-            $newTestEmbedDocument = $dtoToDocumentConvertor->convertToDocument($testDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\TestWithSectionDocument::class]);
-            $examNotStarteds = $examService->getExamNotStartedByTestId($testDTO->getId());
-            foreach($examNotStarteds as $examDocument) {
-                $examDocument->setTest($newTestEmbedDocument);
-            }
-
-            $this->dm->flush();
-            $messages[] = $this->translator->translate('The test have been updated successfully!');
-            return true;
-            
-        } catch(\Exception $e){
-            $messages[] = $this->translator->translate('There is error with update test, Please check admin site');
-           
-            $logger = $this->container->get(Logger::class);
-            $logger->info($e);
-            
-            return false;
-        } 
-    }
-
-    public function createTest(\Test\DTOs\Test\BaseTestDTO $testDTO, & $messages, & $outDTO) {
+    public function createTestTemplate(\Test\DTOs\Test\BaseTestDTO $testDTO, & $messages, & $outDTO) {
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
         
         try{
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
-            $document = $dtoToDocumentConvertor->convertToDocument($testDTO);
-            
-            $examService = $this->container->get(ExamServiceInterface::class);
-            $examDTO = $examService->generateExamTest($testDTO, $messages);
-            if (!$examDTO) {
-                return false;
-            }
+            $document = $dtoToDocumentConvertor->convertToDocument($testDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Test\TestTemplateDocument::class]);
 
+            $authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class);
+            $userDocument = $authorizationService->getUser();
+            $document->setUser($userDocument);
+            //echo $userDocument->getObjectId();
+            
             $this->dm->persist($document);
             $this->dm->flush();
             
@@ -97,10 +48,10 @@ class TestTemplateService implements Interfaces\TestTemplateServiceInterface, Ha
             $dto = $documentToDTOConvertor->convertToDTO($document);
             $outDTO = $dto;
 
-            $messages[] = $translator->translate('Your test have been created successfull!');
+            $messages[] = $translator->translate('Your test template have been created successfull!');
             return true;
         } catch(\Exception $e){
-            $messages[] = $translator->translate('There is error with create section, Please check admin site');
+            $messages[] = $translator->translate('There is error with create test template, Please check admin site');
            
             $logger = $this->container->get(Logger::class);
             $logger->info($e);
@@ -133,30 +84,18 @@ class TestTemplateService implements Interfaces\TestTemplateServiceInterface, Ha
         return true;
     }
 
-    public function getSectionByContent($content) {
-        $repository = $this->dm->getRepository(Documents\SectionDocument::class);
-        $obj = $repository->find("5caac4c7ce10c916c8007032");
-               
-        $builder = $dm->createQueryBuilder(array(Documents\ReadingSectionDocument::class, Documents\ListeningSectionDocument::class));
-        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*'.$content.'.*/i'));
-        $query = $builder->getQuery();
-        $documents = $query->execute();
-
-        return $document;
-    }
-
-    public function deleteTest($testId, & $messages) {
-        $testRepository = $this->dm->getRepository(\Test\Documents\Test\TestWithSectionDocument::class);  
+    public function deleteTestTemplate($testId, & $messages) {
+        $testTemplateRepository = $this->dm->getRepository(\Test\Documents\Test\TestTemplateDocument::class);  
         $testDocument = $testRepository->find($testId);
         if (!$testDocument) {
-            $messages[] = $this->translator->translate('The test is not found, Please check it again.');
+            $messages[] = $this->translator->translate('The test template is not found, Please check it again.');
             return false;
         }
 
         $this->dm->remove($testDocument);
         $this->dm->flush();
 
-        $messages[] = $this->translator->translate('Your test have been deleted successfully!');
+        $messages[] = $this->translator->translate('Your test template have been deleted successfully!');
         return true;
     }
 }

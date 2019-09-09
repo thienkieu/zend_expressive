@@ -6,6 +6,7 @@ return [
     'requestToDTO' => [
         'section.create' => \Test\DTOs\SectionDTO::class,
         'test.create'   => \Test\DTOs\Test\BaseTestDTO::class,
+        'test.createTemplate'   => \Test\DTOs\Test\BaseTestDTO::class,
         'test.update'   => \Test\DTOs\Test\BaseTestDTO::class,
         'question.source.create'   => \Test\DTOs\Question\SourceDTO::class,
         'question.source.update'   => \Test\DTOs\Question\SourceDTO::class,

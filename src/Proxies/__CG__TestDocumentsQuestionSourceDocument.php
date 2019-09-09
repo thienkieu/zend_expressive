@@ -64,10 +64,10 @@ class SourceDocument extends \Test\Documents\Question\SourceDocument implements 
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', '' . "\0" . 'Test\\Documents\\Question\\SourceDocument' . "\0" . 'name'];
+            return ['__isInitialized__', 'id', '' . "\0" . 'Test\\Documents\\Question\\SourceDocument' . "\0" . 'name', 'createDate'];
         }
 
-        return ['__isInitialized__', 'id', '' . "\0" . 'Test\\Documents\\Question\\SourceDocument' . "\0" . 'name'];
+        return ['__isInitialized__', 'id', '' . "\0" . 'Test\\Documents\\Question\\SourceDocument' . "\0" . 'name', 'createDate'];
     }
 
     /**
@@ -219,6 +219,28 @@ class SourceDocument extends \Test\Documents\Question\SourceDocument implements 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', [$id]);
 
         return parent::setId($id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreateDate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreateDate', []);
+
+        return parent::getCreateDate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setCreateDate($createDate)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCreateDate', [$createDate]);
+
+        return parent::setCreateDate($createDate);
     }
 
 }

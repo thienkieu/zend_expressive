@@ -80,5 +80,9 @@ return array(
     "Must have at least one answer for question." => "Please add at least one answer for this question.",
     "Must have at least one correct answer for question." => "Please add at least one correct answer for this question.",
     "The format file is incorrect, Please use the template of online test system." => "The format file is incorrect. Please use the template of online test system.",
-    "Your source have been created successfully!" => "Your source has been created successfully!"
+    "Your source have been created successfully!" => "Your source has been created successfully!",
+    "Your test template have been created successfull!" => 'Your test template have been created successfull!',
+    "There is error with create test template, Please check admin site" => 'There is error with create test template, Please check admin site',
+    "Your test template have been deleted successfully!" => "Your test template have been deleted successfully!",
+    "The test template is not found, Please check it again." => "The test template is not found, Please check it again."
 );

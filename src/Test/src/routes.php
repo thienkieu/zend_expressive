@@ -23,6 +23,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
    
     //Test
     $app->post('/coordinator/test/create', Test\Handlers\CreateTestHandler::class, 'test.create');
+    $app->post('/coordinator/test/createTemplate', Test\Handlers\CreateTestTemplateHandler::class, 'test.createTemplate');
     $app->post('/coordinator/test/update', Test\Handlers\UpdateTestHandler::class, 'test.update');
     $app->get('/coordinator/test/tests', Test\Handlers\GetTestHandler::class, 'test.tests');
     $app->post('/coordinator/test/viewSampleExam', Test\Handlers\ViewSampleExamHandler::class, 'test.viewSampleExam');
