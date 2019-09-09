@@ -24,7 +24,7 @@ class ListeningQuestionService extends QuestionService
         
     }
 
-    public function createQuestion($dto, &$messages) {
+    public function createQuestion($dto, &$messages, &$outDTO) {
         $path = $dto->getPath();
         $isUrl = \Infrastructure\CommonFunction::isURI($path);
         if (\Infrastructure\CommonFunction::isURI($path) === true) {
@@ -55,6 +55,9 @@ class ListeningQuestionService extends QuestionService
         
         $this->dm->persist($questionDocument);
         $this->dm->flush();
+
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+        $outDTO = $documentToDTOConvertor->convertToDTO($questionDocument, [\Config\AppConstant::ShowCorrectAnswer => true]);
 
         $messages[] = $this->translator->translate('The question have been created successfully!');
         return true;

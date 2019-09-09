@@ -230,7 +230,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $content;
     }
 
-    public function createQuestion($dto, &$messages) {
+    public function createQuestion($dto, &$messages, & $outDTO) {
         $content = \Infrastructure\CommonFunction::replaceHost($dto->getContent());
         $content = $this->moveImageToQuestionFolder($content);
         $dto->setContent($content);
@@ -247,6 +247,9 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         
         $this->dm->persist($questionDocument);
         $this->dm->flush();
+
+        $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+        $outDTO = $documentToDTOConvertor->convertToDTO($questionDocument, [\Config\AppConstant::ShowCorrectAnswer => true]);
 
         $messages[] = $this->translator->translate('The question have been created successfully!');
         return true;
@@ -297,7 +300,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return false;
     }
 
-    public function editQuestion($dto, &$messages) {
+    public function editQuestion($dto, &$messages, & $outDTO) {
         $questionRepository = $this->dm->getRepository(\Test\Documents\Question\QuestionDocument::class);
         $questionDocument = $questionRepository->find($dto->getId());
         if (!$questionDocument) {
@@ -329,9 +332,11 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
         }
         $oldId = $questionDocument->getId();       
-        $ok = $this->createQuestion($dto->setId($oldId), $messages);
+        $ok = $this->createQuestion($dto->setId($oldId), $messages, $outDTO);
         if ($ok) {
             $messages = [$this->translator->translate('The question has been update successfully!')];
+            $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
+            $outDTO = $documentToDTOConvertor->convertToDTO($questionDocument, [\Config\AppConstant::ShowCorrectAnswer => true]);
         }
 
         return true;

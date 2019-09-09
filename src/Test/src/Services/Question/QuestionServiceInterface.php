@@ -13,7 +13,8 @@ interface QuestionServiceInterface
 
     public function caculateMark(&$document);
     public function setCandidateMark(&$document, $mark);
-    public function createQuestion($dto, &$messages);
+    public function createQuestion($dto, &$messages, & $outDTO);
+    public function editQuestion($dto, &$messages, & $outDTO);
     public function deleteQuestion($id, &$messages);
     public function getQuestionWithSource($sourceId);
 }

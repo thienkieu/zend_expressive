@@ -26,8 +26,8 @@ class UpdateQuestionHandler implements RequestHandlerInterface
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
         
         $questionService = $this->container->build(QuestionServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
-        $ok = $questionService->editQuestion($dto, $messages);
+        $ok = $questionService->editQuestion($dto, $messages, $outDTO);
    
-        return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages);
+        return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages, $outDTO);
     }
 }
