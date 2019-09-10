@@ -461,9 +461,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 		$path = \Infrastructure\CommonFunction::replaceHost($path);
 		$path = str_replace('%HOST%/\\', '', $path);
         $path = str_replace('%HOST%/', '', $path);
-		
+
         $path = realpath($path);
-		
+
         return $path;
     }
 
@@ -620,7 +620,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
             //Content
             if ($question->getType() === \Config\AppConstant::Reading) {
-                $content = preg_replace_callback('(<div class="online-test-question-image">.*src="(.*?)".*</div>)', function ($matches) {
+                $content = preg_replace_callback('(<img.*src="(.*?)".*/>)', function ($matches) {
                     if (count($matches) > 0) {
                         $image = $this->getRealPath($matches[1]);
                         if ($image) {
