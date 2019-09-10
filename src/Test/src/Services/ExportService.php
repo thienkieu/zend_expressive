@@ -714,16 +714,69 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = $reader->load($this->templateFolder.\Config\AppConstant::DS."pinTemplate.xlsx"); 
         $sheet = $spreadsheet->getActiveSheet();
-        $startIndex = 8; 
+        $startIndex = 2; 
         $index = 1; 
-        $this->setCellValue($sheet, 'D5', $outDTO->getTitle()); 
-        
-        $this->setCellValue($sheet, 'D6',$outDTO->getStartDate()->format('M/d/Y'));     
+        $boldStyles = [
+            'font' => [
+                'bold' => true
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ],
+        ];
+
+        $titleStyles = [
+            'font' => [
+                'bold' => true,
+                'size' => 17,
+                'color' => ['rgb' => '000000'],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['rgb' => '90EE90'],
+                ]
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => '90EE90',
+                ]
+            ],
+        ];
+
         foreach($candidates as $candidate) {
+            $this->setCellValue($sheet, "B$startIndex", 'LogiGear Online Test - Candidate PIN');
+            $sheet->getRowDimension($startIndex)->setRowHeight(40);
+            $this->setCellStyle($sheet, "B$startIndex:F$startIndex", $titleStyles);
+            $sheet->mergeCells("B$startIndex:F$startIndex");
+            $startIndex += 2;
+
+            $this->setCellValue($sheet, 'B'.$startIndex, 'Exam Title:');
+            $this->setCellValue($sheet, 'D'.$startIndex, $outDTO->getTitle());
+            $sheet->mergeCells("B$startIndex:C$startIndex");
+            $this->setCellStyle($sheet, "B$startIndex:D$startIndex", $boldStyles);
+            $startIndex += 1;
+            
+            $this->setCellValue($sheet, 'B'.$startIndex, 'Exam Date:');
+            $this->setCellValue($sheet, 'D'.$startIndex, $outDTO->getStartDate()->format('M-d-Y'));
+            $sheet->mergeCells("B$startIndex:C$startIndex");
+            $this->setCellStyle($sheet, "B$startIndex:D$startIndex", $boldStyles);
+            $startIndex += 1;
+
+            $this->setCellValue($sheet, 'B'.$startIndex, 'Time:');
+            $this->setCellValue($sheet, 'D'.$startIndex, $outDTO->getTime().' minutes');
+            $this->setCellStyle($sheet, "B$startIndex:D$startIndex", $boldStyles);
+            $startIndex += 2;
+
             $this->setCellValue($sheet, 'B'.$startIndex, '#');
-            $this->setCellValue($sheet, 'C'.$startIndex, 'Candidate Id');
+            $this->setCellValue($sheet, 'C'.$startIndex, 'Candidate ID');
             $this->setCellValue($sheet, 'D'.$startIndex, 'Email');
-            $this->setCellValue($sheet, 'E'.$startIndex, 'Candiate Name');
+            $this->setCellValue($sheet, 'E'.$startIndex, 'Candidate Name');
             $this->setCellValue($sheet, 'F'.$startIndex, 'PIN');
             $sheet->getRowDimension($startIndex)->setRowHeight(20);
             $cellStyles = [
