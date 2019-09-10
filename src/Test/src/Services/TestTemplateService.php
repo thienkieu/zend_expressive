@@ -86,7 +86,7 @@ class TestTemplateService implements Interfaces\TestTemplateServiceInterface, Ha
 
     public function deleteTestTemplate($testId, & $messages) {
         $testTemplateRepository = $this->dm->getRepository(\Test\Documents\Test\TestTemplateDocument::class);  
-        $testDocument = $testRepository->find($testId);
+        $testDocument = $testTemplateRepository->find($testId);
         if (!$testDocument) {
             $messages[] = $this->translator->translate('The test template is not found, Please check it again.');
             return false;

@@ -65,6 +65,7 @@ class ConfigProvider
                 Handlers\UpdateTestOfExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ViewListExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\DeleteTestHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\DeleteTestTemplateHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\DeleteExamHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ExportCandidateResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateTestHandler::class => \Infrastructure\Factory\BaseFactory::class,

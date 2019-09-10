@@ -28,6 +28,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/coordinator/test/tests', Test\Handlers\GetTestHandler::class, 'test.tests');
     $app->post('/coordinator/test/viewSampleExam', Test\Handlers\ViewSampleExamHandler::class, 'test.viewSampleExam');
     $app->delete('/coordinator/test/delete', Test\Handlers\DeleteTestHandler::class, 'test.delete');
+    $app->delete('/coordinator/test/deleteTemplate', Test\Handlers\DeleteTestTemplateHandler::class, 'test.deleteTemplate');
 
     $app->get('/coordinator/test/templates', Test\Handlers\GetTestTemplateHandler::class, 'test.templates');
 

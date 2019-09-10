@@ -69,6 +69,7 @@ class SetupPermissionHandler implements RequestHandlerInterface
         $testCodeFunctions[] ="test.viewSampleExam";
         $testCodeFunctions[] ="test.delete";
         $testCodeFunctions[] ="test.templates";
+        $testCodeFunctions[] ="test.deleteTemplate";
 
         $testPermissionDocument = new \ODMAuth\Documents\PermissionDocument();
         $testPermissionDocument->setBusinessName("Test management");
