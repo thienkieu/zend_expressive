@@ -714,25 +714,41 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
         $spreadsheet = $reader->load($this->templateFolder.\Config\AppConstant::DS."pinTemplate.xlsx"); 
         $sheet = $spreadsheet->getActiveSheet();
-        $startIndex = 9; 
+        $startIndex = 8; 
         $index = 1; 
         $this->setCellValue($sheet, 'D5', $outDTO->getTitle()); 
         
         $this->setCellValue($sheet, 'D6',$outDTO->getStartDate()->format('M/d/Y'));     
         foreach($candidates as $candidate) {
-            $this->setCellValue($sheet, 'B'.$startIndex, $index);
+            $this->setCellValue($sheet, 'B'.$startIndex, '#');
+            $this->setCellValue($sheet, 'C'.$startIndex, 'Candidate Id');
+            $this->setCellValue($sheet, 'D'.$startIndex, 'Email');
+            $this->setCellValue($sheet, 'E'.$startIndex, 'Candiate Name');
+            $this->setCellValue($sheet, 'F'.$startIndex, 'PIN');
+            $sheet->getRowDimension($startIndex)->setRowHeight(20);
+            $cellStyles = [
+                'font' => [
+                    'bold' => true
+                ],
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                ],
+            ];
+            $this->setCellStyle($sheet, 'B'.$startIndex.':F'.$startIndex, $cellStyles);
+
+            $startIndex += 1;
+
+            $this->setCellValue($sheet, 'B'.$startIndex, '1');
             $this->setCellValue($sheet, 'C'.$startIndex, $candidate->getObjectId());
             $this->setCellValue($sheet, 'D'.$startIndex, $candidate->getEmail());
             $this->setCellValue($sheet, 'E'.$startIndex, $candidate->getName());
             $this->setCellValue($sheet, 'F'.$startIndex, $candidate->getPin());
+            $this->setBorderCell($sheet, 'B'.($startIndex-1).':F'.($startIndex));
 
-            $startIndex += 1; 
+            $startIndex += 2; 
             $index += 1;  
         }
        
-        if ($index > 1) {
-            $this->setBorderCell($sheet, 'B9:F'.($startIndex-1));
-        }
         $writer = new Xlsx($spreadsheet);
         return true;
     }
