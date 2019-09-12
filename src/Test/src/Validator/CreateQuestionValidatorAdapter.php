@@ -53,10 +53,8 @@ class CreateQuestionValidatorAdapter implements ValidatorAdapterInterface
 
         if (count($bodyRequest->subQuestions) < 1) {
             $isError = true;
-            $errors = [
-                'subQuestions' => [
-                    $translator->translate('Must have at least one sub question.')
-                ]
+            $errors = [            
+                $translator->translate('Must have at least one sub question.')  
             ];            
         }
 
@@ -66,9 +64,7 @@ class CreateQuestionValidatorAdapter implements ValidatorAdapterInterface
             if (count($answers) < 1) {
                 $isError = true;
                 $errors = [
-                    'answer' => [
-                        $translator->translate('Must have at least one answer for question.')
-                    ]
+                    $translator->translate('Must have at least one answer for question.')
                 ]; 
                 break;
             }
@@ -83,9 +79,7 @@ class CreateQuestionValidatorAdapter implements ValidatorAdapterInterface
             if (!$isCorrectAnswer) {
                 $isError = true;
                 $errors = [
-                    'answer' => [
-                        $translator->translate('Must have at least one correct answer for question.')
-                    ]
+                    $translator->translate('Must have at least one correct answer for question.')
                 ]; 
                 break;
             }
@@ -94,9 +88,7 @@ class CreateQuestionValidatorAdapter implements ValidatorAdapterInterface
         if (empty($bodyRequest->content) && $type === DTOName::Reading ) {
             $isError = true;
             $errors = [
-                'content' => [
-                    $translator->translate('Section content can not empty.')
-                ]
+                $translator->translate('Section content can not empty.')
             ];            
         }
 

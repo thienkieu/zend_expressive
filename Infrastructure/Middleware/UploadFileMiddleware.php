@@ -22,28 +22,30 @@ class UploadFileMiddleware implements MiddlewareInterface
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
-    {
-       
+    {       
+        $config = $this->container->get('config');
+		$uploadConfig = $config[AppConstant::UploadConfigName];
+		$maxUploadFileSize = isset($options[AppConstant::UploadSizeAllow]) ? $options[AppConstant::UploadSizeAllow] : $uploadConfig[AppConstant::UploadSizeAllow];
+		$uploadFileTypes = isset($options[AppConstant::UploadConfigFileTypes]) ? $options[AppConstant::UploadConfigFileTypes] : $uploadConfig[AppConstant::UploadConfigFileTypes];
+		$uploadToFolder = isset($options[AppConstant::UploadFolder]) ? $options[AppConstant::UploadFolder] : $uploadConfig[AppConstant::UploadFolder];
+        $translator = $this->container->get(AppConstant::Translator);
+			
+		if (isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > $maxUploadFileSize* 1024 && !$_FILES && !$_POST) {
+			$messages[] =  $translator->translate('Size of upload file can not larger than', ['%max_size%'=> $maxUploadFileSize * 1024]);
+			return CommonFunction::buildResponseFormat(false, $messages);
+        }
+        
         $files = $request->getUploadedFiles();
         if (count($files) > 0) { 
-            $config = $this->container->get('config');
-            $uploadConfig = $config[AppConstant::UploadConfigName];
-            $maxUploadFileSize = isset($options[AppConstant::UploadSizeAllow]) ? $options[AppConstant::UploadSizeAllow] : $uploadConfig[AppConstant::UploadSizeAllow];
-            $uploadFileTypes = isset($options[AppConstant::UploadConfigFileTypes]) ? $options[AppConstant::UploadConfigFileTypes] : $uploadConfig[AppConstant::UploadConfigFileTypes];
-            $uploadToFolder = isset($options[AppConstant::UploadFolder]) ? $options[AppConstant::UploadFolder] : $uploadConfig[AppConstant::UploadFolder];
-            
-
             $isError = false;
             $messages = [];
-
-            $translator = $this->container->get(AppConstant::Translator);
             
             $body = $request->getParsedBody(); 
             foreach($files as $key => $file) {
                 if ($file->getSize() / 1024 > $maxUploadFileSize) {
                     $isError = true;
                     
-                    $messages[] =  $translator->translate('Size of upload file can not larger than', ['%max_size%'=> $maxUploadFileSize]);
+                    $messages[] =  $translator->translate('Size of upload file can not larger than', ['%max_size%'=> $maxUploadFileSize * 1024]);
                 }
                 $fileType = $file->getClientMediaType();
                 if (!in_array($fileType,  $uploadFileTypes)) {
