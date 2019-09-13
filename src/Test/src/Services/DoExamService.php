@@ -79,8 +79,14 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
             $examResultDocument = $examResultRepository->getExamResult($examDocument->getId(), $candidate->getId(), '');
             if ($examResultDocument) {
-                $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
-                return true;
+                $isPinValid = $examResultDocument->getCandidate()->getIsPinValid();
+                if ($isPinValid) {
+                    $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
+                    return true;
+                } 
+                
+                $messages[] = $this->translator->translate('Your pin \'%pin%\' is not valid, Please notify to admin to get new pin', ['%pin%' => $dto->pin]);
+                return false;
             }
 
             $examDTO = $documentToDTOConvertor->convertToDTO($examDocument, [\Config\AppConstant::ShowCorrectAnswer => true]);
@@ -110,13 +116,14 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $this->dm->persist($examResultDocument);
             $this->dm->flush();
 
-            $doExamResultService = $this->container->get(DoExamResultServiceInterface::class);            
-           
+            
+
             $pinInfo = new \stdClass();
             $pinInfo->examId = $examDocument->getId();
             $pinInfo->candidateId = $candidate->getId();
-            $doExamResultService->inValidPin($pinInfo, $messages);
-
+            $pinService = $this->container->get(PinServiceInterface::class);
+            $pinService->inValidPin($dto->examId, $dto->candidateId);
+            
             $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
             return true;
             

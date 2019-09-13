@@ -230,7 +230,13 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
                 $messages[] = $this->translator->translate('Exam not found');
                 return false;
             }
-            
+
+            $isPinValid = $this->isPinValid($dto->getExamId(), $dto->getCandidateId());
+            if (!$isPinValid) {
+                $messages[] = $this->translator->translate('Your cannot finish this exam because this exam have been finished!');
+                return false;
+            }
+
             $remaintTime = $document->getRemainTime();
             if ($remaintTime <= 0) {
                 $messages[] = $this->translator->translate('Your answer have been updated!');
