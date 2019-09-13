@@ -92,12 +92,14 @@ class ConfigProvider
                 \ODMAuth\Grant\DoExamGrant::class                  => \ODMAuth\Grant\DoExamGrantFactory::class, 
 
                 Services\AuthorizationService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\DoExamAuthorizationService::class => \Infrastructure\Factory\BaseFactory::class,
 
 
             ],
             'aliases' => [
                 Zend\Expressive\Authentication\AuthenticationInterface::class => Zend\Expressive\Authentication\OAuth2\OAuth2Adapter::class,
                 Services\Interfaces\AuthorizationServiceInterface::class => Services\AuthorizationService::class,
+                Services\Interfaces\DoExamAuthorizationServiceInterface::class => Services\DoExamAuthorizationService::class,
             ],
         ];
     }

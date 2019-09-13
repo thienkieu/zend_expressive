@@ -55,6 +55,12 @@ class AuthenticationMiddleware extends \Zend\Expressive\Authentication\Authentic
             return $this->auth->unauthorizedResponse($request);
         }
 
+        $user = $this->auth->authenticate($request);
+        if (null !== $user) {
+            $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class, ['user' => $user]);
+            $doExamAuthorizationService->setCandidateInfo($user);
+        }
+
         return $handler->handle($request);
     }
 }

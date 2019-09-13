@@ -72,8 +72,8 @@ class DoExamGrant extends AbstractGrant
         // Finalize the requested scopes
         $finalizedScopes = $this->scopeRepository->finalizeScopes($scopes, $this->getIdentifier(), $client, $user->getIdentifier());
 
-        // Issue and persist new tokens
-        $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $user->getIdentifier(), $finalizedScopes);
+        // Issue and persist new tokens        
+        $accessToken = $this->issueAccessToken(new DateInterval('PT30S'), $client, $user->getIdentifier(), $finalizedScopes);
         $refreshToken = $this->issueRefreshToken($accessToken);
 
         // Send events to emitter
@@ -108,7 +108,7 @@ class DoExamGrant extends AbstractGrant
             $candidates = $examDocument->getCandidates();
             $candidate = $candidates[0];
             if ($candidate->getIsPinValid()) {
-                $user = new \Zend\Expressive\Authentication\OAuth2\Entity\UserEntity('pin_='.$examDocument->getId().'###@@###'.$candidate->getId());
+                $user = new \Zend\Expressive\Authentication\OAuth2\Entity\UserEntity('pin_=###@@###'.$examDocument->getId().'###@@###'.$candidate->getId());
             }
         }
 

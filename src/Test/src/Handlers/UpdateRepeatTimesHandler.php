@@ -25,6 +25,12 @@ class UpdateRepeatTimesHandler implements RequestHandlerInterface
     {
         $messages = [];
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
+        $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class);
+        $examOfCandidateInfo = $doExamAuthorizationService->getCandidateInfo();
+        
+        $dto->setExamId($examOfCandidateInfo->examId);
+        $dto->setCandidateId($examOfCandidateInfo->candidateId);
+        
         $pinService = $this->container->get(DoExamResultServiceInterface::class);
         $ret = $pinService->updateRepeatTimes($dto, $messages);
 

@@ -25,6 +25,12 @@ class UpdateAnswerHandler implements RequestHandlerInterface
     {
         $messages = [];
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
+        $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class);
+        $examOfCandidateInfo = $doExamAuthorizationService->getCandidateInfo();
+        
+        $dto->setExamId($examOfCandidateInfo->examId);
+        $dto->setCandidateId($examOfCandidateInfo->candidateId);
+        echo '<pre>'.print_r($dto, true).'</pre>'; die;
         $exExamResultService = $this->container->build(DoExamResultServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
         $ret = $exExamResultService->updateAnswer($dto, $messages);
 

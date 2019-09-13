@@ -65,9 +65,12 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 return false;
             }
 
+            $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class);
+            $examOfCandidateInfo = $doExamAuthorizationService->getCandidateInfo();
+
             $candidates = $examDocument->getCandidates();
             $candidate = $candidates[0];
-            if (!$candidate->getIsPinValid()) {
+            if (!$candidate->getIsPinValid() && (!$examOfCandidateInfo || !$examOfCandidateInfo->examId)) {
                 $messages[] = $this->translator->translate('Your pin \'%pin%\' is not valid, Please notify to admin to get new pin', ['%pin%' => $dto->pin]);
                 return false;
             }
