@@ -29,8 +29,8 @@ class SynchronyTimeHandler implements RequestHandlerInterface
         $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class);
         $examOfCandidateInfo = $doExamAuthorizationService->getCandidateInfo();
         
-        $dto->setExamId($examOfCandidateInfo->examId);
-        $dto->setCandidateId($examOfCandidateInfo->candidateId);
+        $dto->examId = $examOfCandidateInfo->examId;
+        $dto->candidateId = $examOfCandidateInfo->candidateId;
 
         $exExamResultService = $this->container->build(DoExamResultServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
         $ret = $exExamResultService->synchronyTime($dto, $outRemainTime, $messages);

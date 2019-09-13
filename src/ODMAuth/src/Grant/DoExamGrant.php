@@ -73,7 +73,7 @@ class DoExamGrant extends AbstractGrant
         $finalizedScopes = $this->scopeRepository->finalizeScopes($scopes, $this->getIdentifier(), $client, $user->getIdentifier());
 
         // Issue and persist new tokens        
-        $accessToken = $this->issueAccessToken(new DateInterval('PT30S'), $client, $user->getIdentifier(), $finalizedScopes);
+        $accessToken = $this->issueAccessToken(new DateInterval('PT1800S'), $client, $user->getIdentifier(), $finalizedScopes);
         $refreshToken = $this->issueRefreshToken($accessToken);
 
         // Send events to emitter

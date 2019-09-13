@@ -33,12 +33,13 @@ class DoExamAuthorizationService implements Interfaces\DoExamAuthorizationServic
     public function setCandidateInfo($canidateInfo) {
         $candidateInfo = $canidateInfo->getIdentity();
         $extractInfo = \explode("###@@###", $candidateInfo);
-        
-        $info = new \stdClass();
-        $info->examId = $extractInfo[1];
-        $info->candidateId = $extractInfo[2];
+        if (strpos($candidateInfo, 'pin') !== false ) {
+            $info = new \stdClass();
+            $info->examId = $extractInfo[1];
+            $info->candidateId = $extractInfo[2];
 
-        $this->candidateInfo = $info;
+            $this->candidateInfo = $info;            
+        }
     }
 
     public function getCandidateInfo() {
