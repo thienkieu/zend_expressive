@@ -15,48 +15,5 @@ use  Doctrine\MongoDB\Query\Expr;
 use date;
 
 class ListeningQuestionRepository extends QuestionRepository
-{
-    public function getExamInfo($pin) {
-        $builder = $this->createAggregationBuilder();
-        $command = $builder
-                ->hydrate(\Test\Documents\Exam\ExamDocument::class)
-                ->match()
-                    ->field('candidates.pin')->equals($pin)       
-                ->project()   
-                    ->includeFields(['title', 'startDate', 'test', 'time'])                
-                    //->excludeFields(['candidates'])
-                    //->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
-                    
-                ->execute();
-        //echo '<pre>'.print_r($command, true).'</pre>'; die;
-
-        $candidateDocument = null;
-        $document = $command->getSingleResult();
-        
-        return $document;
-    }
-
-    public function getCandidateInfo($pin) {
-        
-        $expr = new Expr();
-        $equalPin = $expr->field('candidate.pin')->equals($pin);
-
-        $builder = $this->createAggregationBuilder();
-        $command = $builder
-                ->hydrate(\Test\Documents\Exam\ExamDocument::class)
-                ->match()
-                    ->field('candidates.pin')->equals($pin)       
-                ->project()   
-                    ->includeFields(['title', 'startDate'])                
-                    ->field('candidates')
-                    ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
-                    
-                ->execute();
-        //echo '<pre>'.print_r($command, true).'</pre>'; die;
-
-        $candidateDocument = null;
-        $document = $command->getSingleResult();
-        
-        return $document;
-    }
+{ 
 }

@@ -46,7 +46,8 @@ class ConfigProvider
                     Grant\AuthCodeGrant::class          => Grant\AuthCodeGrant::class,
                     Grant\ImplicitGrant::class          => Grant\ImplicitGrant::class,
                     Grant\RefreshTokenGrant::class      => Grant\RefreshTokenGrant::class,
-                    \ODMAuth\Grant\SSOGrant::class      => \ODMAuth\Grant\SSOGrant::class
+                    \ODMAuth\Grant\SSOGrant::class      => \ODMAuth\Grant\SSOGrant::class,
+                    \ODMAuth\Grant\DoExamGrant::class      => \ODMAuth\Grant\DoExamGrant::class
                 ],
         
             ]        

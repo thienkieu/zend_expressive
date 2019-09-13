@@ -17,26 +17,40 @@ use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use League\OAuth2\Server\RequestEvent;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use phpseclib\Crypt\RSA;
+use Test\Repositories\ExamRepository;
+use Test\Services\DoExamServiceInterface;
 
 /**
  * Password grant class.
  */
 class DoExamGrant extends AbstractGrant
 {
+
     /**
-     * @param UserRepositoryInterface         $userRepository
+     * @var ExamRepository
+     */
+    protected $examRepository;
+
+    /**
+     * @var DoExamServiceInterface
+     */
+    protected $doExamService;
+
+    /**
+     * @param ExamRepository         $examRepository
      * @param RefreshTokenRepositoryInterface $refreshTokenRepository
      */
     public function __construct(
-        UserRepositoryInterface $userRepository,
+        ExamRepository $examRepository,
+        DoExamServiceInterface $doExamService,
         RefreshTokenRepositoryInterface $refreshTokenRepository
     ) {
-        $this->setUserRepository($userRepository);
+        $this->examRepository = $examRepository;
+        $this->doExamService = $doExamService;
         $this->setRefreshTokenRepository($refreshTokenRepository);
 
         $this->refreshTokenTTL = new DateInterval('P1M');
@@ -83,32 +97,19 @@ class DoExamGrant extends AbstractGrant
      */
     protected function validateUser(ServerRequestInterface $request, ClientEntityInterface $client)
     {
-        $recData = $this->getRequestParameter('userInfo', $request);
-        if (is_null($recData)) {
-            throw OAuthServerException::invalidRequest('userInfo');
+        $pin = $this->getRequestParameter('PIN', $request);
+        if (is_null($pin)) {
+            throw OAuthServerException::invalidRequest('PIN');
         }
-        
-        $dir = realpath('src');
-        $rsa = new RSA();
-        $rsa->loadKey(file_get_contents($dir.'/../data/oauth/privateKey.pub'));       
-        
-        $recData = base64_decode($recData);
-        $recData = explode("@@####@@", $recData);
-        
-        $ciphertext = $recData[1];
-        $ciphertext = base64_decode($ciphertext);        
-        $plaintext = $rsa->decrypt($ciphertext);
-
-        $data = explode("@@##@@", $plaintext);
-        $userData = $data[1];
-        $verifyData = $data[0];
-        $userName = $data[2];
-
-        $ok = false;
         $user = null;
         
-        if($verifyData === $recData[0]) {
-            $user = new \Zend\Expressive\Authentication\OAuth2\Entity\UserEntity($userData);
+        $examDocument = $this->examRepository->getExamInfo($pin);
+        if($examDocument && $this->doExamService->isAllowAccessExam($examDocument)) {
+            $candidates = $examDocument->getCandidates();
+            $candidate = $candidates[0];
+            if ($candidate->getIsPinValid()) {
+                $user = new \Zend\Expressive\Authentication\OAuth2\Entity\UserEntity('pin_='.$examDocument->getId().'###@@###'.$candidate->getId());
+            }
         }
 
         if ($user instanceof UserEntityInterface === false) {
@@ -125,6 +126,6 @@ class DoExamGrant extends AbstractGrant
      */
     public function getIdentifier()
     {
-        return 'sso';
+        return 'pin';
     }
 }

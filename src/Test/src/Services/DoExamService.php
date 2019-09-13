@@ -107,6 +107,13 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $this->dm->persist($examResultDocument);
             $this->dm->flush();
 
+            $doExamResultService = $this->container->get(DoExamResultServiceInterface::class);            
+           
+            $pinInfo = new \stdClass();
+            $pinInfo->examId = $examDocument->getId();
+            $pinInfo->candidateId = $candidate->getId();
+            $doExamResultService->inValidPin($pinInfo, $messages);
+
             $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
             return true;
             

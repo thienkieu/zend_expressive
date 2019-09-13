@@ -162,7 +162,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         return true;
     }
     
-    protected function inValidPin($dto, & $messages) {
+    public function inValidPin($dto, & $messages) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $document = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
         if (!$document) {
