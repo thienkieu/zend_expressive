@@ -84,5 +84,6 @@ return array(
     "Your test template have been created successfull!" => 'Your test template have been created successfull!',
     "There is error with create test template, Please check admin site" => 'There is error with create test template, Please check admin site',
     "Your test template have been deleted successfully!" => "Your test template have been deleted successfully!",
-    "The test template is not found, Please check it again." => "The test template is not found, Please check it again."
+    "The test template is not found, Please check it again." => "The test template is not found, Please check it again.",
+    "Type is not empty at line %lineNumber%." => "Type cannot be empty at line %lineNumber%."
 );

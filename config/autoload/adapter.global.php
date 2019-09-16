@@ -110,5 +110,6 @@ return [
         \Test\Validator\CreateTestWithSectionValidatorAdapter::class,
         \Test\Validator\CreateExamWithSectionValidatorAdapter::class,
         \Test\Validator\EnterPinValidatorAdapter::class,
+        \Test\Validator\CreateSourceValidatorAdapter::class,
     ],
 ];
