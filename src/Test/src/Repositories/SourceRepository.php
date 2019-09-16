@@ -22,7 +22,7 @@ class SourceRepository extends DocumentRepository
         $totalDocument = $filterQuery->getQuery()->execute()->count();        
         $data = $filterQuery->limit($itemPerPage)
                             ->skip($itemPerPage*($pageNumber-1))
-                            ->sort('name', 'asc')
+                            ->sort('createDate', 'asc')
                             ->getQuery()
                             ->execute();
        
