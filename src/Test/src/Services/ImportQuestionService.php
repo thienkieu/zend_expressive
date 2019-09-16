@@ -139,7 +139,12 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                     break;
 
                     default:
-                        $error = $this->translator->translate('Type is not valid at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
+                        if (empty($row[$this->type])) {
+                            $error = $this->translator->translate('Type is not empty at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
+                        } else {
+                            $error = $this->translator->translate('Type is not valid at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
+                        }
+                        
                         throw new ImportQuestionException($error);
                         $row = $this->getNextRow(); 
                     break;
