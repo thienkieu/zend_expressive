@@ -51,6 +51,14 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
         return false;
     }
 
+    protected function inValidPin($examId, $candidateId) {
+        $pinInfo = new \stdClass();
+        $pinInfo->examId = $examId;
+        $pinInfo->candidateId = $candidateId;
+        $pinService = $this->container->get(PinServiceInterface::class);
+        $pinService->inValidPin($pinInfo->examId, $pinInfo->candidateId);
+    }
+
     public function doExam($dto, & $results, & $messages) {
         try {
             $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
@@ -82,6 +90,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 $isPinValid = $examResultDocument->getCandidate()->getIsPinValid();
                 if ($isPinValid) {
                     $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
+                    $this->inValidPin($examDocument->getId(), $candidate->getId());
                     return true;
                 } 
                 
@@ -116,13 +125,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $this->dm->persist($examResultDocument);
             $this->dm->flush();
 
-            
-
-            $pinInfo = new \stdClass();
-            $pinInfo->examId = $examDocument->getId();
-            $pinInfo->candidateId = $candidate->getId();
-            $pinService = $this->container->get(PinServiceInterface::class);
-            $pinService->inValidPin($pinInfo->examId, $pinInfo->candidateId);
+            $this->inValidPin($examDocument->getId(), $candidate->getId());
             
             $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
             return true;
