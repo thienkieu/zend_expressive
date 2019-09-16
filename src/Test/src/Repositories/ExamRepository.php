@@ -26,6 +26,7 @@ class ExamRepository extends DocumentRepository
                     ->field('candidates.id')->equals($candidateId)
                     
                     ->field('candidates.$.pin')->set($newPin)
+                    ->field('candidates.$.isPinValid')->set(true)
                     ->getQuery()
                     ->execute();
         
