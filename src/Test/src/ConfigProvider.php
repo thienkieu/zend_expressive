@@ -23,10 +23,34 @@ class ConfigProvider
     {
         return [
             'dependencies' => $this->getDependencies(),
-            'templates'    => $this->getTemplates(),
+            'authenticationExcludeUrl' => $this->getAuthenticationExcludeUrl()
         ];
     }
 
+    public function getAuthenticationExcludeUrl(): array 
+    {
+        return [
+            'exam.doExam',
+            'api.publickey',
+            'home',
+            'api.token',
+            'exam.enterPin',
+            'exam.updateAnswer',
+            'exam.synchronyTime',
+            'exam.finish',
+            'question.types',
+            'question.sources',
+            'exam.types',
+            'exam.viewExamResult',
+            'question.export',
+            'exam.exportCandidateResult',
+            'exam.exportPin',
+            'exam.examJoined',
+            'exam.latestExamJoined',
+            'question.importTemplate',
+            'log'
+        ];
+    }
     /**
      * Returns the container dependencies
      */
@@ -141,20 +165,6 @@ class ConfigProvider
             'aliases' => [
                 //Services\SectionServiceInterface::class => Services\SectionService::class,
                 
-            ],
-        ];
-    }
-
-    /**
-     * Returns the templates configuration
-     */
-    public function getTemplates() : array
-    {
-        return [
-            'paths' => [
-                'app'    => [__DIR__ . '/../templates/app'],
-                'error'  => [__DIR__ . '/../templates/error'],
-                'layout' => [__DIR__ . '/../templates/layout'],
             ],
         ];
     }

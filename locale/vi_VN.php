@@ -3,7 +3,7 @@ return array(
     'Skeleton Application' => 'Skelett Applikation En Translator %abc%.',   
     'Questions have been upload successfull.!'  => 'Questions have been uploaded successfully!',
     'File type is not support' => 'The extension .%file_type% of %file_name% file is not supported.',
-    'Size of upload file can not larger than' => 'Size of uploaded file cannot be larger than %max_size% KB.',
+    'Size of upload file can not larger than' => 'Size of uploaded file cannot be larger than %max_size% MB.',
     'Can not extract media file, Please check format again.' => 'Cannot extract the media file. Please check the format again.',
     'There is error when parsed excel file, Please check with admin' => 'There is an error when parsing excel file. Please check with admin.',
     'Your test have been created successfull!' => 'Your test has been created successfully!',
