@@ -24,7 +24,7 @@ class CreateExamHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        $testService = $this->container->get(ExamServiceInterface::class);
+        $testService = $this->container->build(ExamServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
         $ok = $testService->createOrUpdateExam($dto, $resultDTO, $messages);
         return new JsonResponse([
             'success' => $ok,

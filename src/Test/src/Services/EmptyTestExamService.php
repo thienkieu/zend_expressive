@@ -15,7 +15,11 @@ use Test\Services\Interfaces\TypeServiceInterface;
 class EmptyTestExamService extends ExamService
 {
     public function isHandler($dto, $options = []){
-        if($dto instanceof \Test\DTOs\Test\BaseTestDTO) return true;
+        if($dto instanceof \Test\DTOs\Test\BaseTestDTO)  {
+            if (method_exists($dto, 'getSections')) {
+                return true;
+            }
+        }
         return false;
     }
    

@@ -35,6 +35,7 @@ return [
         ],
         \Test\Services\ExamServiceInterface::class => [
             \Test\Services\EmptyTestExamService::class,
+            \Test\Services\VerbalExamService::class,
             \Test\Services\LogigearExamService::class,
             \Test\Services\ExamService::class,
         ],

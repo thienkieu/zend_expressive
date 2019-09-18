@@ -34,6 +34,12 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         return false;
     }
 
+    public function isExistExamResultMarkDone($examId) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $examResult = $examResultRepository->findBy(['examId' =>$examId, 'isDone' => true]);
+        return !!$examResult;
+    }
+
     public function isExistResultOfExam($examId) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $examResult = $examResultRepository->findBy(['examId' =>$examId]);

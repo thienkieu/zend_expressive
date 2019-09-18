@@ -51,7 +51,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
         return false;
     }
 
-    protected function inValidPin($examId, $candidateId) {
+    public function inValidPin($examId, $candidateId) {
         $pinInfo = new \stdClass();
         $pinInfo->examId = $examId;
         $pinInfo->candidateId = $candidateId;
