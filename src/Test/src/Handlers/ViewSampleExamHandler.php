@@ -24,7 +24,7 @@ class ViewSampleExamHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     { 
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-        $examService = $this->container->get(ExamServiceInterface::class);
+        $examService = $this->container->build(ExamServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
         $ok = $examService->createExamSample($dto, $resultDTO, $messages);
         
         return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages, $resultDTO);

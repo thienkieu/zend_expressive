@@ -143,6 +143,7 @@ class ConfigProvider
                 Services\ExamServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\ExamService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\LogigearExamService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\EmptyTestExamService::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Services\DoExamServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\DoExamService::class => \Infrastructure\Factory\BaseFactory::class,
