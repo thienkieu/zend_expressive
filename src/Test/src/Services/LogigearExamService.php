@@ -25,7 +25,7 @@ class LogigearExamService extends ExamService
             $questionService = $this->container->get(QuestionServiceInterface::class);
             
             $sections = [];
-            if (method_exists($sections, 'getSections')) {
+            if (method_exists($test, 'getSections')) {
                 $sections = $test->getSections();
             }
             

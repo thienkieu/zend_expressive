@@ -16,7 +16,7 @@ class EmptyTestExamService extends ExamService
 {
     public function isHandler($dto, $options = []){
         if($dto instanceof \Test\DTOs\Test\BaseTestDTO)  {
-            if (method_exists($dto, 'getSections')) {
+            if (!method_exists($dto, 'getSections')) {
                 return true;
             }
         }
