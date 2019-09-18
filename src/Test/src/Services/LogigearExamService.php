@@ -23,8 +23,12 @@ class LogigearExamService extends ExamService
             $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
             $sectionsForDoExam = [];
             $questionService = $this->container->get(QuestionServiceInterface::class);
-        
-            $sections = $test->getSections();
+            
+            $sections = [];
+            if (method_exists($sections, 'getSections')) {
+                $sections = $test->getSections();
+            }
+            
             $sources = [];
             $questionIds = [];
             if (isset($options['questionId'])) {

@@ -174,7 +174,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         }        
     }
 
-    public function createExamSample(\Test\DTOs\Test\TestWithSectionDTO $testDTO, & $dto, & $messages) {
+    public function createExamSample(\Test\DTOs\Test\BaseTestDTO $testDTO, & $dto, & $messages) {
         $messages = [];
         $translator = $this->container->get(\Config\AppConstant::Translator);
         
