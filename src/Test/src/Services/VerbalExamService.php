@@ -66,6 +66,7 @@ class VerbalExamService extends ExamService implements HandlerInterface
             $options = [];
             $options[\Config\AppConstant::ToDocumentClass] = \Test\Documents\Exam\ExamDocument::class;
          
+            $examResultService  = $this->container->get(DoExamResultServiceInterface::class);
             $existExamId = $examDTO->getId();
             if (!empty($existExamId)) {
                 $existExamObj = $this->dm->find(\Test\Documents\Exam\ExamDocument::class, $existExamId);
@@ -74,7 +75,6 @@ class VerbalExamService extends ExamService implements HandlerInterface
                     return false;
                 }
 
-                $examResultService  = $this->container->get(DoExamResultServiceInterface::class);
                 $existedExamResult = $examResultService->isExistExamResultMarkDone($existExamId);
                 if ($existedExamResult) {
                     $messages[] = $translator->translate('Cannot edit this exam because this exam have been used.');
@@ -100,6 +100,9 @@ class VerbalExamService extends ExamService implements HandlerInterface
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO, $options);
             
+            if (!empty($existExamId)) {
+                $examResultService->removeExamResultByExamId($existExamId);
+            }
 
             $this->assignPin($document);
             $this->dm->persist($document);

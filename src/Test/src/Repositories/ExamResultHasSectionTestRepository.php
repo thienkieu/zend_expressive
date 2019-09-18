@@ -31,6 +31,14 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
 
     }
 
+    public function removeResultByExamId($examId) {
+        $queryBuilder = $this->createQueryBuilder()
+        ->remove()
+        ->field('examId')->equals($examId)
+        ->getQuery()
+        ->execute();
+    }
+
     public function getExamResult($examId, $candiateId, $questionId) {
         $queryBuilder = $this->createQueryBuilder();       
         $document = $queryBuilder
