@@ -31,7 +31,7 @@ class UploadFileMiddleware implements MiddlewareInterface
         $translator = $this->container->get(AppConstant::Translator);
 			
 		if (isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > $maxUploadFileSize* 1024 && !$_FILES && !$_POST) {
-			$messages[] =  $translator->translate('Size of upload file can not larger than', ['%max_size%'=> $maxUploadFileSize / (1024*1024)]);
+			$messages[] =  $translator->translate('Size of upload file can not larger than', ['%max_size%'=> $maxUploadFileSize / 1024]);
 			return CommonFunction::buildResponseFormat(false, $messages);
         }
         
@@ -45,7 +45,7 @@ class UploadFileMiddleware implements MiddlewareInterface
                 if ($file->getSize() / 1024 > $maxUploadFileSize) {
                     $isError = true;
                     
-                    $messages[] =  $translator->translate('Size of upload file can not larger than', ['%max_size%'=> $maxUploadFileSize / (1024*1024)]);
+                    $messages[] =  $translator->translate('Size of upload file can not larger than', ['%max_size%'=> $maxUploadFileSize / 1024]);
                 }
                 $fileType = $file->getClientMediaType();
                 if (!in_array($fileType,  $uploadFileTypes)) {
