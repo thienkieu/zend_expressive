@@ -10,7 +10,7 @@ use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
 use Test\Services\Question\QuestionServiceInterface;
-
+use Doctrine\Common\Collections\ArrayCollection;
 class VerbalExamService extends ExamService implements HandlerInterface
 {
     protected $container;
@@ -47,15 +47,16 @@ class VerbalExamService extends ExamService implements HandlerInterface
         $examResult->setTime($examDTO->getTime());
         $examResult->setTitle($examDTO->getTitle());
         $examResult->setStartDate($examDTO->getStartDate());
-
+        
         $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
         $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class]);
         $examResultDocument->setRemainTime($examDTO->getTime() * 60);
         $this->dm->persist($examResultDocument);
         
-
         $doExamService  = $this->container->get(DoExamServiceInterface::class);
         $doExamService->inValidPin($examDocument->getId(), $candidate->getId());
+
+        return $examResultDocument;
     }
 
     public function createOrUpdateExam(\Test\DTOs\Exam\ExamDTO $examDTO, & $dto, & $messages) {
@@ -99,6 +100,7 @@ class VerbalExamService extends ExamService implements HandlerInterface
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO, $options);
             
+
             $this->assignPin($document);
             $this->dm->persist($document);
             
@@ -107,7 +109,10 @@ class VerbalExamService extends ExamService implements HandlerInterface
             
             $candidates = $document->getCandidates();
             foreach($candidates as $candidate) {
-                $this->generateTestForExam($document, $candidate, $messages);
+                $examResultDocument = $this->generateTestForExam($document, $candidate, $messages);
+                $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter(null, null);
+                $summaries = $adapter->convert($examResultDocument);
+                $candidate->setResultSummary($summaries);
             }
             
             $this->dm->flush();
