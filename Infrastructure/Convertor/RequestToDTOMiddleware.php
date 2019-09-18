@@ -51,7 +51,8 @@ class RequestToDTOMiddleware implements MiddlewareInterface
                 $routertoDTO = $appConfig['requestToDTO'];
                 if (isset($routertoDTO[$routerName])) {
                     $dtoName = $routertoDTO[$routerName];
-                    $jsonData = $request->getParsedBody();
+                    $jsonData = $this->getRequestBody($request);
+                    
 
                     $convertorToDTO = $this->container->get(RequestToDTOConvertorInterface::class);
                     if ($convertorToDTO === null) {
@@ -62,13 +63,7 @@ class RequestToDTOMiddleware implements MiddlewareInterface
                     $dto = $convertorToDTO->convertToDTO($jsonData, [\Config\AppConstant::DTOKey => $dtoName]);
                     return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $dto));
                 } else {
-                    $body =  $request->getParsedBody();
-                    if (empty($body)) $body = new \stdClass();
-                    
-                    $queryData = $request->getQueryParams();
-                    foreach ($queryData as $key => $value) {
-                        $body->{$key} = $value;
-                    }
+                    $body =  $this->getRequestBody($request);
                     
                     return $handler->handle($request->withAttribute(\Config\AppConstant::DTODataFieldName, $body));
                 }
@@ -91,6 +86,18 @@ class RequestToDTOMiddleware implements MiddlewareInterface
             return \Infrastructure\CommonFunction::buildResponseFormat(false, $messages);
         }  
         return $handler->handle($request);      
+    }
+
+    protected function getRequestBody($request) {
+        $jsonData = $request->getParsedBody();
+        if (empty($jsonData)) $jsonData = new \stdClass();
+        
+        $queryData = $request->getQueryParams();
+        foreach ($queryData as $key => $value) {
+            $jsonData->{$key} = $value;
+        }
+
+        return $jsonData;
     }
 
 }

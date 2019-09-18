@@ -133,6 +133,7 @@ return [
         'exam.examJoined',
         'exam.latestExamJoined',
         'question.importTemplate',
-        'log'
+        'log',
+        'exam.exportExamResultSummary'
     ]
 ];

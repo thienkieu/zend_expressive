@@ -15,6 +15,7 @@ return [
         'exam.update' => \Test\DTOs\Exam\ExamDTO::class,
         'exam.updateTest' => \Test\DTOs\Exam\EditTestOfExamDTO::class,
         'exam.exams'    =>   \Test\DTOs\Exam\FilterExamDTO::class,
+        'exam.exportExamResultSummary'    =>   \Test\DTOs\Exam\FilterExamDTO::class,
         'exam.addResult'    =>   \Test\DTOs\ExamResult\ExamResultDTO::class,
         'test.viewSampleExam' => \Test\DTOs\Test\BaseTestDTO::class,
         'exam.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,

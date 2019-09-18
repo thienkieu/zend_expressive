@@ -48,7 +48,8 @@ class ConfigProvider
             'exam.examJoined',
             'exam.latestExamJoined',
             'question.importTemplate',
-            'log'
+            'log',
+            'exam.exportExamResultSummary'
         ];
     }
     /**
@@ -105,6 +106,7 @@ class ConfigProvider
                 Handlers\GetExamJoinedHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetLatestJoinedHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ExportPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\ExportExamResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetExamTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,

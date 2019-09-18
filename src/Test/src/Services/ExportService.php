@@ -806,4 +806,152 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         return true;
     }
 
+    public function exportExamSummary($filterCriterial, &$messages, &$writer) {
+        $examService = $this->container->get(ExamServiceInterface::class);
+        $ok = $examService->getExams($filterCriterial, $exams, $messages, $pageNumber = 1, $itemPerPage = 1000);
+        if (!$ok) {
+            return false;
+        }
+
+        
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setShowGridlines(false);
+        $boldStyles = [
+            'font' => [
+                'bold' => true
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ],
+        ];
+        
+        $rowIndex = 8; 
+        $index = 1; 
+        $maxColumn = 0;
+        $sheet->getColumnDimension('A')->setWidth(2);
+        $sheet->getRowDimension('1')->setRowHeight(5);
+
+        $examDTOs = $exams->exams;
+        foreach($examDTOs as $outDTO) {
+            
+            $candidates = $outDTO->getCandidates();
+            $this->setCellValue($sheet, 'B'.($rowIndex -3), 'Exam Title:');
+            $this->setCellValue($sheet, 'D'.($rowIndex -3), $outDTO->getTitle()); 
+            $this->setCellStyle($sheet, 'B'.($rowIndex -3).':'.'D'.($rowIndex -3), $boldStyles);
+
+            $this->setCellValue($sheet, 'B'.($rowIndex -2), 'Exam Date:');
+            $this->setCellValue($sheet, 'D'.($rowIndex -2), $outDTO->getStartDate()->format('M-d-Y'));
+            $this->setCellStyle($sheet, 'B'.($rowIndex -2).':'.'D'.($rowIndex -2), $boldStyles);
+            
+            $rowHeaderTitle = $rowIndex - 1;
+            $maxColumnEachExam = 0;
+            $totalMarks = [];
+            $startRowTotalMark = $rowIndex;
+            foreach($candidates as $candidate) {
+                $resultSummaries = $candidate->getResultSummary();
+                $columnIndex = 66;
+               
+                $this->setCellValue($sheet, chr($columnIndex).$rowHeaderTitle, 'No'); 
+                $this->setCellStyle($sheet, chr($columnIndex).$rowHeaderTitle, $boldStyles);
+                $this->setCellValue($sheet, chr($columnIndex).$rowIndex, $index);
+                $columnIndex += 1;
+
+                $sheet->getColumnDimension(chr($columnIndex))->setWidth(15);
+                $this->setCellValue($sheet, chr($columnIndex).$rowHeaderTitle, 'Candidate ID');
+                $this->setCellStyle($sheet, chr($columnIndex).$rowHeaderTitle, $boldStyles); 
+                $this->setCellValue($sheet, chr($columnIndex).$rowIndex, $candidate->getObjectId());
+                $columnIndex += 1;
+
+                $sheet->getColumnDimension(chr($columnIndex))->setWidth(30);
+                $this->setCellValue($sheet, chr($columnIndex).$rowHeaderTitle, 'Candidate Name'); 
+                $this->setCellStyle($sheet, chr($columnIndex).$rowHeaderTitle, $boldStyles);
+                $this->setCellValue($sheet, chr($columnIndex).$rowIndex, $candidate->getName());
+                $columnIndex += 1;
+
+                $sheet->getColumnDimension(chr($columnIndex))->setWidth(30);
+                $this->setCellValue($sheet, chr($columnIndex).$rowHeaderTitle, 'Email'); 
+                $this->setCellStyle($sheet, chr($columnIndex).$rowHeaderTitle, $boldStyles);
+                $this->setCellValue($sheet, chr($columnIndex).$rowIndex, $candidate->getEmail());
+                $columnIndex += 1;
+
+
+                $totalMark = 0;
+                $totalCandiateMark = 0;
+                
+                foreach($resultSummaries as $resultItem) {
+                    $sheet->getColumnDimension(chr($columnIndex))->setWidth(20);
+                    $this->setCellValue($sheet, chr($columnIndex).$rowHeaderTitle, $resultItem->getName());                
+                    $this->setCellStyle($sheet, chr($columnIndex).$rowHeaderTitle, $boldStyles);
+                    $this->setCellValue($sheet, chr($columnIndex).$rowIndex, $resultItem->getCandidateMark().'/'.$resultItem->getMark());                
+
+                    $totalCandiateMark += $resultItem->getCandidateMark();
+                    $totalMark += $resultItem->getMark();
+                    $columnIndex += 1;
+                    if ($maxColumnEachExam < $columnIndex) $maxColumnEachExam = $columnIndex;
+                }
+                
+                if ($columnIndex > $maxColumn) $maxColumn = $columnIndex;
+                if ($maxColumnEachExam < $columnIndex) $maxColumnEachExam = $columnIndex;
+
+                $totalMarks[] = $totalCandiateMark.'/'.$totalMark;
+                $rowIndex += 1;
+                $index += 1;
+
+            }
+        
+            $this->setCellValue($sheet, chr($maxColumnEachExam).$rowHeaderTitle, 'Total Mark');
+            $sheet->getColumnDimension(chr($maxColumnEachExam))->setWidth(15); 
+            $this->setCellStyle($sheet, chr($maxColumnEachExam).$rowHeaderTitle, $boldStyles);
+            
+            foreach($totalMarks as $item) {
+                $this->setCellValue($sheet, chr($maxColumnEachExam).$startRowTotalMark, $item); 
+                $startRowTotalMark +=1;
+            }     
+
+            $this->setBorderCell($sheet, 'B'.$rowHeaderTitle.':'.chr($maxColumnEachExam).($rowIndex -1));
+
+            $rowIndex += 6; 
+            $index = 1;
+
+        }
+        $this->setHeaderStyle($sheet, "B2:".chr($maxColumn).'2');
+        $this->setCellValue($sheet, "B2", 'Exam Result Summary');
+
+        $sheet->setTitle('Summary');
+        $writer = new Xlsx($spreadsheet);
+        return true;
+
+    }
+
+    protected function setHeaderStyle(&$sheet, $range) {
+        $headerStyles = [
+            'font' => [
+                'bold' => true,
+                'size' => 17,
+                'color' => ['rgb' => '000000'],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['rgb' => '90EE90'],
+                ]
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => '90EE90',
+                ]
+            ],
+        ];
+
+        $sheet->getRowDimension('B1')->setRowHeight(40);
+        $sheet->mergeCells($range);
+        $this->setCellStyle($sheet, $range, $headerStyles);
+    }
+
 }
