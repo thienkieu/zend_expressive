@@ -8,6 +8,7 @@ class ListeningQuestionDTO extends QuestionDTO implements \JsonSerializable
 {
     protected $path;
     protected $repeat;
+    protected $duration;
     private $numberCorrectSubQuestion;
      
     /**
@@ -54,6 +55,7 @@ class ListeningQuestionDTO extends QuestionDTO implements \JsonSerializable
         $ret = parent::jsonSerialize();
         $ret->path = $this->getPath();
         $ret->repeat = $this->getRepeat();
+        $ret->duration = $this->getDuration();
         $ret->subQuestions = $this->getSubQuestions();
         $ret->numberCorrectSubQuestion = $this->getNumberCorrectSubQuestion() ? $this->getNumberCorrectSubQuestion() : 0;
        
@@ -76,6 +78,26 @@ class ListeningQuestionDTO extends QuestionDTO implements \JsonSerializable
     public function setNumberCorrectSubQuestion($numberCorrectSubQuestion)
     {
         $this->numberCorrectSubQuestion = $numberCorrectSubQuestion;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of duration
+     */ 
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+    /**
+     * Set the value of duration
+     *
+     * @return  self
+     */ 
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
 
         return $this;
     }

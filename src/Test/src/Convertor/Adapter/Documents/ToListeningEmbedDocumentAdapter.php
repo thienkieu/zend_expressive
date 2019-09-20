@@ -40,7 +40,8 @@ class ToListeningEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
         $document->setPath($path);
         
         $document->setRepeat($dto->getRepeat());
-
+        $document->setDuration($dto->getDuration());
+        
         $sourceService = $this->container->get(SourceServiceInterface::class);
         $sourceDocument = $sourceService->getSourceByName($dto->getSource());
         if (!$sourceDocument) {

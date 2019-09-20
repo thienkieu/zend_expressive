@@ -17,6 +17,9 @@ class ListeningQuestionDocument extends HasSubQuestionDocument
   /** @ODM\Field(type="int") */
   private $repeat;
 
+  /** @ODM\Field(type="int") */
+  private $duration;
+
   /**
    * Get the value of path
    */ 
@@ -53,6 +56,26 @@ class ListeningQuestionDocument extends HasSubQuestionDocument
   public function setRepeat($repeat)
   {
     $this->repeat = $repeat;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of duration
+   */ 
+  public function getDuration()
+  {
+    return $this->duration;
+  }
+
+  /**
+   * Set the value of duration
+   *
+   * @return  self
+   */ 
+  public function setDuration($duration)
+  {
+    $this->duration = $duration;
 
     return $this;
   }

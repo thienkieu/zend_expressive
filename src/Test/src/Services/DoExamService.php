@@ -59,6 +59,10 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
         $pinService->inValidPin($pinInfo->examId, $pinInfo->candidateId);
     }
 
+    public function updateRemainingListeningTime(&$result) {
+
+    }
+
     public function doExam($dto, & $results, & $messages) {
         try {
             $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
@@ -90,6 +94,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 $isPinValid = $examResultDocument->getCandidate()->getIsPinValid();
                 if ($isPinValid) {
                     $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
+                    $this->updateRemainingListeningTime($results);
                     $this->inValidPin($examDocument->getId(), $candidate->getId());
                     return true;
                 } 

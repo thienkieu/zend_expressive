@@ -43,7 +43,8 @@ class ToListeningDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfac
         
         $path = $this->replaceHost($dto->getPath());
         $document->setPath($path);
-
+        $document->setDuration($dto->getDuration());
+        
         $document->setRepeat($dto->getRepeat());
 
         $sourceService = $this->container->get(SourceServiceInterface::class);

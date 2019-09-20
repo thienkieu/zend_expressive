@@ -30,6 +30,7 @@ class FromListeningDocumentAdapter implements ConvertDocumentToDTOAdapterInterfa
         $dto = new \Test\DTOs\Question\ListeningQuestionDTO();
         $dto->setContent($document->getContent());
         $dto->setRepeat($document->getRepeat());
+        $dto->setDuration($document->getDuration());
         
         $dto->setPath(\Infrastructure\CommonFunction::revertToHost($document->getPath()));
 

@@ -31,6 +31,7 @@ class FromListeningEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterIn
         $dto->setContent($document->getContent());
         $dto->setRepeat($document->getRepeat());
         $dto->setPath($this->appendHost($document->getPath()));
+        $dto->setDuration($document->getDuration());
         
         $dto->setType($document->getType()->getParentType()->getName());
         $dto->setSubType($document->getType()->getName());

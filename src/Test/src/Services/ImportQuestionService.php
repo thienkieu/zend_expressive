@@ -339,10 +339,15 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             $error = $this->translator->translate('File type %fileName% is not support.', ['%fileName%'=> $fileExtension[count($fileExtension) -1]]);
             throw new ImportQuestionException($error);
         }
+
+        $mp3file = new \Infrastructure\Utilities\MP3File($realPath.'/'.$data[$this->fileName]);
+        $duration = $mp3file->getDurationEstimate();
+
         $listeningQuestion = new \Test\Documents\Question\ListeningQuestionDocument();
         $listeningQuestion->setRepeat($data[$this->repeatTime]);
         $listeningQuestion->setPath(\Config\AppConstant::HOST_REPLACE.'/'.$this->imageFiles.'/'.$data[$this->fileName]);
-
+        $listeningQuestion->setDuration($duration);
+        
         $this->buidGeneralQuestion($data, $listeningQuestion, $lineNumber);
         return $listeningQuestion;
     }

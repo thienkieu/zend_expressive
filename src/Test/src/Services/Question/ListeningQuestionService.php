@@ -24,8 +24,15 @@ class ListeningQuestionService extends QuestionService
         
     }
 
+    protected function getDuration($path) {
+        $mp3file = new \Infrastructure\Utilities\MP3File($path);
+        return $mp3file->getDurationEstimate();
+    }
+
     public function createQuestion($dto, &$messages, &$outDTO) {
         $path = $dto->getPath();
+        $dto->setDuration($this->getDuration($path));
+        
         $isUrl = \Infrastructure\CommonFunction::isURI($path);
         if (\Infrastructure\CommonFunction::isURI($path) === true) {
             $path = \Infrastructure\CommonFunction::replaceHost($path);
