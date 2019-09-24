@@ -28,8 +28,8 @@ class UpdateDisconnectHandler implements RequestHandlerInterface
         $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class);
         $examOfCandidateInfo = $doExamAuthorizationService->getCandidateInfo();
         
-        $dto->setExamId($examOfCandidateInfo->examId);
-        $dto->setCandidateId($examOfCandidateInfo->candidateId);
+        $dto->examId = $examOfCandidateInfo->examId;
+        $dto->candidateId = $examOfCandidateInfo->candidateId;
         
         $examResultService = $this->container->get(DoExamResultListeningServiceInterface::class);
         $ret = $examResultService->updateDisconnect($dto, $messages);

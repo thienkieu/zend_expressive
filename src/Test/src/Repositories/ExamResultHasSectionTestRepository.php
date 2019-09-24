@@ -138,7 +138,7 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
                     ->updateOne()
                     
                     ->field('examId')->equals($examId)
-                    ->field('candidates.id')->equals($candidateId)
+                    ->field('candidate.id')->equals($candidateId)
                     
                     ->field('latestDisconnect')->set(time())
                     ->getQuery()
