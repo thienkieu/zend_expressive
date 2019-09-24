@@ -42,6 +42,9 @@ class ExamResultDocument
   /** @ODM\Field(type="int") */
   protected $remainTime;
   
+  /** @ODM\Field(type="int") */
+  protected $latestDisconnect;
+  
   /** @ODM\EmbedMany(targetDocument="\Test\Documents\Exam\ExamResultSummaryDocument") */
   protected $resultSummary;
 
@@ -251,6 +254,26 @@ class ExamResultDocument
   public function setExamType($examType)
   {
     $this->examType = $examType;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of latestDisconnect
+   */ 
+  public function getLatestDisconnect()
+  {
+    return $this->latestDisconnect;
+  }
+
+  /**
+   * Set the value of latestDisconnect
+   *
+   * @return  self
+   */ 
+  public function setLatestDisconnect($latestDisconnect)
+  {
+    $this->latestDisconnect = $latestDisconnect;
 
     return $this;
   }

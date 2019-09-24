@@ -21,6 +21,8 @@ abstract class DTOName
     const PinDTO = \Test\DTOs\Exam\PinDTO::class;
     const PinInfoDTO = \Test\DTOs\Exam\PinInfoDTO::class;
     const UserAnswerDTO = \Test\DTOs\ExamResult\UserAnswerDTO::class;
+    const ListeningQuestionListeningFinishedDTO = \Test\DTOs\ExamResult\ListeningQuestionListeningFinishedDTO::class;
+    const ListeningQuestionLoadingFinishedDTO = \Test\DTOs\ExamResult\ListeningQuestionLoadingFinishedDTO::class;
     const UpdateQuestionMark = \Test\DTOs\ExamResult\UpdateQuestionMarkDTO::class;
     const UpdateSectionMarkDTO = \Test\DTOs\ExamResult\UpdateSectionMarkDTO::class;
     const AssignUserPermissionDTO = \ODMAuth\DTOs\AssignUserPermissionDTO::class;

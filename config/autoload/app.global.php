@@ -134,6 +134,9 @@ return [
         'exam.latestExamJoined',
         'question.importTemplate',
         'log',
-        'exam.exportExamResultSummary'
+        'exam.exportExamResultSummary',
+        'exam.listeningFinished',
+        'exam.clickToListen',
+        'exam.updateDisconnect'
     ]
 ];

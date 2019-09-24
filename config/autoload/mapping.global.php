@@ -16,6 +16,8 @@ return [
         'exam.updateTest' => \Test\DTOs\Exam\EditTestOfExamDTO::class,
         'exam.exams'    =>   \Test\DTOs\Exam\FilterExamDTO::class,
         'exam.exportExamResultSummary'    =>   \Test\DTOs\Exam\FilterExamDTO::class,
+        'exam.listeningFinished'    =>   \Test\DTOs\ExamResult\ListeningQuestionListeningFinishedDTO::class,
+        'exam.clickToListen'    =>   \Test\DTOs\ExamResult\ListeningQuestionClickToListenDTO::class,
         'exam.addResult'    =>   \Test\DTOs\ExamResult\ExamResultDTO::class,
         'test.viewSampleExam' => \Test\DTOs\Test\BaseTestDTO::class,
         'exam.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,

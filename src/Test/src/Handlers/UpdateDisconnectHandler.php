@@ -10,9 +10,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Psr\Container\ContainerInterface;
 
-use Test\Services\DoExamResultServiceInterface;
+use Test\Services\DoExamResultListeningServiceInterface;
 
-class UpdateListeningFinishHandler implements RequestHandlerInterface
+class UpdateDisconnectHandler implements RequestHandlerInterface
 {    
     /** @var Psr\Container\ContainerInterface */
     private $container;
@@ -28,10 +28,11 @@ class UpdateListeningFinishHandler implements RequestHandlerInterface
         $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class);
         $examOfCandidateInfo = $doExamAuthorizationService->getCandidateInfo();
         
-        $dto->setExamId($examOfCandidateInfo->examId);
-        $dto->setCandidateId($examOfCandidateInfo->candidateId);
-        $examResultService = $this->container->build(DoExamResultServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
-        $ret = $examResultService->updateAnswer($dto, $messages);
+        //$dto->setExamId($examOfCandidateInfo->examId);
+        //$dto->setCandidateId($examOfCandidateInfo->candidateId);
+        
+        $examResultService = $this->container->get(DoExamResultListeningServiceInterface::class);
+        $ret = $examResultService->updateDisconnect($dto, $messages);
 
         return new JsonResponse([
             'isSuccess' => $ret,      

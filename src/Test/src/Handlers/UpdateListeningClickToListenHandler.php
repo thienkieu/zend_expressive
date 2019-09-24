@@ -12,7 +12,7 @@ use Psr\Container\ContainerInterface;
 
 use Test\Services\DoExamResultServiceInterface;
 
-class UpdateListeningFinishHandler implements RequestHandlerInterface
+class UpdateListeningClickToListenHandler implements RequestHandlerInterface
 {    
     /** @var Psr\Container\ContainerInterface */
     private $container;

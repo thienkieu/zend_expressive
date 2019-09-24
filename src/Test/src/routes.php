@@ -57,6 +57,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/coordinator/exam/exportPin', Test\Handlers\ExportPinHandler::class, 'exam.exportPin');
     $app->get('/coordinator/exam/exportExamResultSummary', Test\Handlers\ExportExamResultHandler::class, 'exam.exportExamResultSummary');
     $app->get('/coordinator/exam/types', Test\Handlers\GetExamTypeHandler::class, 'exam.types');
+    $app->post('/coordinator/exam/listeningFinished', Test\Handlers\UpdateListeningFinishHandler::class, 'exam.listeningFinished');
+    $app->post('/coordinator/exam/clickToListen', Test\Handlers\UpdateListeningClickToListenHandler::class, 'exam.clickToListen');
+    $app->post('/coordinator/exam/updateDisconnect', Test\Handlers\UpdateDisconnectHandler::class, 'exam.updateDisconnect');
     
     $app->post('/coordinator/exam/exportCandidateResult', Test\Handlers\ExportCandidateResultHandler::class, 'exam.exportCandidateResult');
     $app->get('/coordinator/exam/exportCandidateResult', Test\Handlers\ExportCandidateResultHandler::class, 'exam.exportCandidateResult');

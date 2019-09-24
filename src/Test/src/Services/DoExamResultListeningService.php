@@ -4,21 +4,34 @@ declare(strict_types=1);
 
 namespace Test\Services;
 
-class DoExamResultListeningService implements DoExamResultListeningServiceInterface
+use Infrastructure\Interfaces\HandlerInterface;
+
+class DoExamResultListeningService implements DoExamResultListeningServiceInterface, HandlerInterface
 {
-    public function listeningFinished($dto, & $messages) {
+    protected $container;
+    protected $dm;
+    protected $options;
+    protected $translator;
 
+    public function __construct($container, $options) {
+        $this->container = $container;
+        $this->options = $options;
+        $this->dm = $this->container->get('documentManager');    
+        $this->translator = $this->container->get(\Config\AppConstant::Translator);    
     }
 
-    public function isAudioLoadingFinish($dto, & $messages) {
-
+    public function isHandler($dto, $options = []){
+        return true;
     }
 
-    public function disconnectWhenListening($dto, & $messages) {
-
+    public function updateDisconnect($dto, & $messages) {
+        $repository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $repository->updateDisconnectTime($dto->examId, $dto->candidateId);
     }
 
     public function isAddMoreTimes($question, & $messages) {
-        if ($question->getIsFinish() !== true && $question->getIsListening() === true && )
+        if ($question->getLatestClick() !== null && $question->getIsFinished() !== true && ($question->getLatestDisconnect() - $question->getLatestClick() <$questin->getDuration())) {
+            return true;
+        }
     }
 }

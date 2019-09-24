@@ -37,7 +37,7 @@ class DoctrineODMFactory
         
         $config->setAutoGenerateHydratorClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);
         $config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);
-        $config->setMetadataCacheImpl(new ApcuCache());
+        //config->setMetadataCacheImpl(new ApcuCache());
         
 
         $config->setMetadataDriverImpl(AnnotationDriver::create($dbConfig['document-path']));

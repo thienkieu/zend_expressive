@@ -108,6 +108,9 @@ class ConfigProvider
                 Handlers\ExportPinHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\ExportExamResultHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetExamTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateListeningFinishHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateListeningClickToListenHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateDisconnectHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Validators\CreateQuestionValidatorAdapter::class => InvokableFactory::class,
@@ -137,7 +140,8 @@ class ConfigProvider
                 Services\Interfaces\ExportServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\ExportService::class => \Infrastructure\Factory\BaseFactory::class,
 
-
+                Services\DoExamResultListeningServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\DoExamResultListeningService::class => \Infrastructure\Factory\BaseFactory::class,
 
 
                 Services\ExamServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
@@ -161,6 +165,8 @@ class ConfigProvider
 
                 Services\DoExamResultServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\DoExamResultService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\DoExamResultListeningFinishService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\DoExamResultListeningClickToListenService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoExamResultWritingService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoExamResultRepeatTimesService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoBaseExamResultService::class => \Infrastructure\Factory\BaseFactory::class,

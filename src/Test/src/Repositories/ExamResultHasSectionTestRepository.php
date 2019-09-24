@@ -12,6 +12,7 @@ namespace Test\Repositories;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
+use time;
 
 class ExamResultHasSectionTestRepository extends DocumentRepository
 {
@@ -115,6 +116,38 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
         return $document;
     }
 
+    public function updateListeningFinished($examId, $candidateId, $sectionId, $questionId) {
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+                    ->findAndUpdate()
+                    ->field('examId')->equals($examId)
+                    ->field('candidate.id')->equals($candidateId)
+                    ->field('test.sections.id')->equals($sectionId)
+                    ->field('test.sections.questions.questionInfo.id')->equals($questionId)
+                    
+                    ->field('test.sections.questions.questionInfo.isFinished')->set(true)
+                    ->getQuery()
+                    ->execute();
+        echo '<pre>'.print_r($result, true).'</pre>'; die;
+        return $result;
+    }
+
+    public function updateDisconnectTime($examId, $candidateId) {
+        echo $candidateId;
+        echo '<pre>'.print_r($examId, true).'</pre>'; die;
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+                    ->updateOne()
+                    
+                    ->field('examId')->equals($examId)
+                    ->field('candidates.id')->equals($candidateId)
+                    
+                    ->field('latestDisconnect')->set(time())
+                    ->getQuery()
+                    ->execute();
+        return $result;
+    }
+
     public function getLatestExamJoined($dto) {
         $queryBuilder = $this->createQueryBuilder();
 
@@ -134,8 +167,6 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
             $date = \DateTime::createFromFormat(\Config\AppConstant::DateTimeFormat, $dto->latestDate);
             $queryBuilder->field('startDate')->gte($date);
         }
-
-
 
         $examResult = $queryBuilder->select(['time','title', 'startDate', 'examId', 'candidate', 'resultSummary'])
         ->sort('startDate', 'desc')

@@ -20,6 +20,15 @@ class ListeningQuestionDocument extends HasSubQuestionDocument
   /** @ODM\Field(type="int") */
   private $duration;
 
+  /** @ODM\Field(type="int") */
+  private $latestClick;
+
+  /** @ODM\Field(type="bool") */
+  private $isFinished;
+
+  /** @ODM\Field(type="int") */
+  private $latestDisconnect;
+
   /**
    * Get the value of path
    */ 
@@ -76,6 +85,66 @@ class ListeningQuestionDocument extends HasSubQuestionDocument
   public function setDuration($duration)
   {
     $this->duration = $duration;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of latestDisconnect
+   */ 
+  public function getLatestDisconnect()
+  {
+    return $this->latestDisconnect;
+  }
+
+  /**
+   * Set the value of latestDisconnect
+   *
+   * @return  self
+   */ 
+  public function setLatestDisconnect($latestDisconnect)
+  {
+    $this->latestDisconnect = $latestDisconnect;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isFinished
+   */ 
+  public function getIsFinished()
+  {
+    return $this->isFinished;
+  }
+
+  /**
+   * Set the value of isFinished
+   *
+   * @return  self
+   */ 
+  public function setIsFinished($isFinished)
+  {
+    $this->isFinished = $isFinished;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of latestClick
+   */ 
+  public function getLatestClick()
+  {
+    return $this->latestClick;
+  }
+
+  /**
+   * Set the value of latestClick
+   *
+   * @return  self
+   */ 
+  public function setLatestClick($latestClick)
+  {
+    $this->latestClick = $latestClick;
 
     return $this;
   }
