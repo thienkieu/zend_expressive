@@ -133,8 +133,6 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
     }
 
     public function updateDisconnectTime($examId, $candidateId) {
-        echo $candidateId;
-        echo '<pre>'.print_r($examId, true).'</pre>'; die;
         $queryBuilder = $this->createQueryBuilder();
         $result = $queryBuilder
                     ->updateOne()
