@@ -55,7 +55,6 @@ class ExamResultDocument
   {
     $this->isDone = false;
     $this->resultSummary = new ArrayCollection();
-    $this->latestDisconnect = time() *2;
   }
 
   /**

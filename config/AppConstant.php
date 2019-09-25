@@ -101,5 +101,7 @@ abstract class AppConstant
     const MarkInputTypeAuto = 'auto';
     const MarkInputTypeManual = 'manual';
     
-    const AuthenticationExcludeUrl = 'authenticationExcludeUrl';    
+    const AuthenticationExcludeUrl = 'authenticationExcludeUrl';  
+    
+    const DisconnectReason_Refresh = 'refresh';   
 }

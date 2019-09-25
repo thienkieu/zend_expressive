@@ -29,13 +29,13 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         return true;
     }
 
-    protected function assignPin(&$document) {
+    protected function assignPin(&$document, $isCreate) {
         $candidates = $document->getCandidates();
         $pins = \Infrastructure\CommonFunction::generateUniquePin(count($candidates));
         $index =0;
         foreach ($candidates as $candiate) {
             $oldPin = $candiate->getPin();
-            if (empty($oldPin)) {
+            if ($isCreate === true || empty($oldPin)) {
                 $candiate->setPin($pins[$index]);
             }
             
@@ -145,7 +145,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO, $options);
             
-            $this->assignPin($document);
+            $this->assignPin($document, empty($existExamId));
             $this->dm->persist($document);
             
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);

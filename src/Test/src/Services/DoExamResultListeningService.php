@@ -29,9 +29,33 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
         $repository->updateDisconnectTime($dto->examId, $dto->candidateId);
     }
 
-    public function isAddMoreTimes($question, & $messages) {
-        if ($question->getLatestClick() !== null && $question->getIsFinished() !== true && ($question->getLatestDisconnect() - $question->getLatestClick() <$questin->getDuration())) {
+    public function getListeningQuestion($examResultDocument) {
+        $questions = [];
+        $sections = $examResultDocument->getTest()->getSections();
+        foreach ($sections as $section) {
+            $questionDocuments = $section->getQuestions();
+            foreach($questionDocuments as $question) {
+                if($question->getType()->getName() === \Config\AppConstant::Listening) {
+                    $questions[] = $question;
+                }
+            }
+        }
+    } 
+
+    public function isAddMoreTimes($question, $latestDisconnect, & $messages) {
+        if ($question->getLatestClick() !== null && $question->getIsFinished() !== true && ($latestDisconnect - $question->getLatestClick() < $question->getDuration())) {
+            $remainRepeat = $question->getRepeat();
+            $question->setRepeat($remainRepeat +1);
             return true;
+        }
+    }
+
+    public function correctRemainRepeatListeningQuestion($disconenctReason, & $examResultDocument) {
+        if ($disconenctReason !== \Config\AppConstant::DisconnectReason_Refresh) {
+            $listeningQuestions = $this->getListeningQuestion($examResultDocument);
+            foreach ($listeningQuestions as $questions) {
+                $this->isAddMoreTimes($questions, $examResultDocument->getLatestDisconnect());
+            }
         }
     }
 }
