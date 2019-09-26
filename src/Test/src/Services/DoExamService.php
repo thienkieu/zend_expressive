@@ -94,7 +94,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             if ($examResultDocument) {
                 $isPinValid = $examResultDocument->getCandidate()->getIsPinValid();
                 if ($isPinValid) {
-                    $latestDisconnection = $examResultDocument->setLatestDisconnect();
+                    $latestDisconnection = $examResultDocument->getLatestDisconnect();
 
                     if (!$latestDisconnection ||  ($examResultDocument->getLatestConnectionTime() > $latestDisconnection)) {
                         //TODO need to sleep here to waiting for disconnection request;
