@@ -53,7 +53,7 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
         foreach ($sections as $section) {
             $questionDocuments = $section->getQuestions();
             foreach($questionDocuments as $question) {
-                if($question->getType()->getName() === \Config\AppConstant::Listening) {
+                if($question->getQuestionInfo()->getType()->getParentType()->getName() === \Config\AppConstant::Listening) {
                     $questions[] = $question;
                 }
             }
