@@ -113,7 +113,9 @@ class ExamRepository extends DocumentRepository
 
     public function getExamWithPagination($filterCriterial, $itemPerPage, $pageNumber) {
         $filterQuery = $this->getFilterQuery($filterCriterial);
-        $totalDocument = $filterQuery->getQuery()->execute()->count();        
+        $totalDocument = $filterQuery->getQuery()->execute()->count();    
+        $queryArray = $filterQuery->getQueryArray();
+        //echo '<pre>'.print_r($queryArray, true).'</pre>'; die;
         $data = $filterQuery->limit($itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1))
                                     ->sort('createDate', 'desc')
@@ -128,27 +130,22 @@ class ExamRepository extends DocumentRepository
     protected function getFilterQuery($filterData) {
         $queryBuilder = $this->createQueryBuilder();
         if (!empty($filterData->getTitle())) {
-            $queryBuilder->addAnd(
-                $queryBuilder->expr()->field('id')->notEqual('dd')
+            $queryBuilder
                 ->addOr($queryBuilder->expr()->field('test.title')->equals(new \MongoRegex('/.*'.$filterData->getTitle().'*/i')))
-                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoRegex('/.*'.$filterData->getTitle().'*/i')))
-            );
-           
+                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoRegex('/.*'.$filterData->getTitle().'*/i')));
         }
 
         if (!empty($filterData->getCandidateIdOrNameOrEmail())) {
-            $queryBuilder->addAnd(
-                $queryBuilder->expr()->field('id')->notEqual('dd')
-                ->addOr($queryBuilder->expr()->field('candidates.objectId')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i')))
+            $queryBuilder
+                ->addOr($queryBuilder->expr()->field('candidates.objectId')->equals($filterData->getCandidateIdOrNameOrEmail()))
                 ->addOr($queryBuilder->expr()->field('candidates.email')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i')))
-                ->addOr($queryBuilder->expr()->field('candidates.name')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i')))
-            );
+                ->addOr($queryBuilder->expr()->field('candidates.name')->equals(new \MongoRegex('/.*'.$filterData->getCandidateIdOrNameOrEmail().'*/i')));
         }
 
         $fromDate = $filterData->getFromDate();
         $toDate = $filterData->getToDate();
         if (!empty($fromDate) && !empty($toDate)) {
-            $queryBuilder->addAnd(
+            $queryBuilder = $queryBuilder->addAnd(
                 $queryBuilder->expr()
                     ->field('startDate')->gte($fromDate)
                     ->field('startDate')->lte($toDate)
@@ -157,7 +154,7 @@ class ExamRepository extends DocumentRepository
         }
 
         if (!empty($fromDate) && empty($toDate)) {
-            $queryBuilder->addAnd(
+            $queryBuilder = $queryBuilder->addAnd(
                 $queryBuilder->expr()
                     ->field('startDate')->gte($fromDate)
             );
@@ -165,7 +162,7 @@ class ExamRepository extends DocumentRepository
         }
 
         if (empty($fromDate) && !empty($toDate)) {
-            $queryBuilder->addAnd(
+            $queryBuilder = $queryBuilder->addAnd(
                 $queryBuilder->expr()
                     ->field('startDate')->lte($toDate)
             );
