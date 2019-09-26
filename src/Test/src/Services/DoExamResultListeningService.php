@@ -30,7 +30,7 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
         $repository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $examResultDocument = $repository->findOneBy(['examId' => $dto->examId, 'candidate.id' => $dto->candidateId]);
         $examRemain = $examResultDocument->getRemainTime();
-        $examTotalSpendingTime = $examResultDocument->getTotalSpendingTime();
+        $examTotalSpendingTime = $examResultDocument->getTotalSpendingTime() ? $examResultDocument->getTotalSpendingTime() : 0;
         $examTime = $examResultDocument->getTime();
 
         $startTime = $examResultDocument->getLatestConnectionTime();
