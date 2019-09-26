@@ -101,6 +101,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                         // or return error for user.
 
                         sleep(5);
+                        $examResultDocument = $examResultRepository->getExamResult($examDocument->getId(), $candidate->getId(), '');
                     }
 
                     $listeningService = $this->container->get(DoExamResultListeningService::class);

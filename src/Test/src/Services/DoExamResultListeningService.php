@@ -31,7 +31,7 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
         $examResultDocument = $repository->findOneBy(['examId' => $dto->examId, 'candidate.id' => $dto->candidateId]);
         $examRemain = $examResultDocument->getRemainTime();
         $examTotalSpendingTime = $examResultDocument->getTotalSpendingTime() ? $examResultDocument->getTotalSpendingTime() : 0;
-        $examTime = $examResultDocument->getTime();
+        $examTime = $examResultDocument->getTime() * 60;
 
         $startTime = $examResultDocument->getLatestConnectionTime();
         $remainTime = $examTime - ($examTotalSpendingTime + ($currentTime - $startTime));
@@ -54,10 +54,12 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
             $questionDocuments = $section->getQuestions();
             foreach($questionDocuments as $question) {
                 if($question->getQuestionInfo()->getType()->getParentType()->getName() === \Config\AppConstant::Listening) {
-                    $questions[] = $question;
+                    $questions[] = $question->getQuestionInfo();
                 }
             }
         }
+
+        return $questions;
     } 
 
     public function isAddMoreTimes($question, $latestDisconnect, & $messages) {
@@ -71,10 +73,11 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
 
     public function correctRemainRepeatListeningQuestion($disconenctReason, & $examResultDocument) {
         $ret = false;
+        $messages = [];
         if ($disconenctReason !== \Config\AppConstant::DisconnectReason_Refresh) {
             $listeningQuestions = $this->getListeningQuestion($examResultDocument);
-            foreach ($listeningQuestions as $questions) {
-                $needUpdate = $this->isAddMoreTimes($questions, $examResultDocument->getLatestDisconnect());
+            foreach ($listeningQuestions as $question) {
+                $needUpdate = $this->isAddMoreTimes($question, $examResultDocument->getLatestDisconnect(), $messages);
                 if ($needUpdate) {
                     $ret = true;
                 }
