@@ -103,5 +103,6 @@ abstract class AppConstant
     
     const AuthenticationExcludeUrl = 'authenticationExcludeUrl';  
     
-    const DisconnectReason_Refresh = 'refresh';   
+    const DisconnectReason_Refresh = 'refresh';
+    const DisconnectReason_Network = 'Network';   
 }

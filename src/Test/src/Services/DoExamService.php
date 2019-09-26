@@ -9,6 +9,7 @@ use Zend\Log\Logger;
 use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
+use time;
 
 class DoExamService implements DoExamServiceInterface, HandlerInterface
 {
@@ -93,6 +94,20 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             if ($examResultDocument) {
                 $isPinValid = $examResultDocument->getCandidate()->getIsPinValid();
                 if ($isPinValid) {
+                    $latestDisconnection = $examResultDocument->setLatestDisconnect();
+
+                    if (!$latestDisconnection ||  ($examResultDocument->getLatestConnectionTime() > $latestDisconnection)) {
+                        //TODO need to sleep here to waiting for disconnection request;
+                        // or return error for user.
+
+                        sleep(5);
+                    }
+
+                    $listeningService = $this->container->get(DoExamResultListeningService::class);
+                    $needUpdate = $listeningService->correctRemainRepeatListeningQuestion($dto->disconnectReason, $examResultDocument);
+                    $examResultDocument->setLatestConnectionTime(time());
+                    $this->dm->flush();                    
+
                     $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
                     $this->updateRemainingListeningTime($results);
                     $this->inValidPin($examDocument->getId(), $candidate->getId());
@@ -127,6 +142,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class]);
             $examResultDocument->setRemainTime($examDTO->getTime() * 60);
+            $examResultDocument->setLatestConnectionTime(time());
             $this->dm->persist($examResultDocument);
             $this->dm->flush();
 

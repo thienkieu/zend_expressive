@@ -52,7 +52,16 @@ class PinService implements PinServiceInterface, HandlerInterface
 
     public function refreshPin($examId, $candiateId, & $outNewPin, & $messages) {
         $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultDocument::class);
         $newPin = \Infrastructure\CommonFunction::generateUniquePin(1);
+
+        $listeningService = $this->container->get(DoExamResultListeningService::class);
+        $examResultDocument = $examResultRepository->findOneBy(['examId'=>$examId, 'candidate.id'=>$candidateId]);
+        $needUpdate = $listeningService->correctRemainRepeatListeningQuestion(\Config\AppConstant::DisconnectReason_Network, $examResultDocument);
+        if ($needUpdate) {
+            $this->dm->flush();
+        }       
+
         $result =  $examRepository->refreshPin($examId, $candiateId, $newPin[0]);
         if ($result['ok'] != 1) {
             $messages[] = $this->translator->translate('There is problem with refresh pin with candidate \'%candidateId%\', Please check with admin.', ['%candidateId%' => $candiateId]);

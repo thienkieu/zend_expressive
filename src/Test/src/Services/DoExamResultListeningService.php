@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Test\Services;
 
 use Infrastructure\Interfaces\HandlerInterface;
-
+use time;
 class DoExamResultListeningService implements DoExamResultListeningServiceInterface, HandlerInterface
 {
     protected $container;
@@ -25,8 +25,26 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
     }
 
     public function updateDisconnect($dto, & $messages) {
+        $currentTime = time();
+
         $repository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-        $repository->updateDisconnectTime($dto->examId, $dto->candidateId);
+        $examResultDocument = $repository->findOneBy(['examId' => $dto->examId, 'candidate.id' => $dto->candidateId]);
+        $examRemain = $examResultDocument->getRemainTime();
+        $examTotalSpendingTime = $examResultDocument->getTotalSpendingTime();
+        $examTime = $examResultDocument->getTime();
+
+        $startTime = $examResultDocument->getLatestConnectionTime();
+        $remainTime = $examTime - ($examTotalSpendingTime + ($currentTime - $startTime));
+        if ($examRemain > $remainTime) {
+            $examResultDocument->setRemainTime($remainTime);
+        }                
+        
+        $examResultDocument->setTotalSpendingTime($examTotalSpendingTime + ($currentTime - $startTime));
+        $examResultDocument->setLatestDisconnect($currentTime);
+
+        $this->dm->flush();
+
+        return true;
     }
 
     public function getListeningQuestion($examResultDocument) {
@@ -46,16 +64,26 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
         if ($question->getLatestClick() !== null && $question->getIsFinished() !== true && ($latestDisconnect - $question->getLatestClick() < $question->getDuration())) {
             $remainRepeat = $question->getRepeat();
             $question->setRepeat($remainRepeat +1);
+            $question->setLatestClick(null);
             return true;
         }
     }
 
     public function correctRemainRepeatListeningQuestion($disconenctReason, & $examResultDocument) {
+        $ret = false;
         if ($disconenctReason !== \Config\AppConstant::DisconnectReason_Refresh) {
             $listeningQuestions = $this->getListeningQuestion($examResultDocument);
             foreach ($listeningQuestions as $questions) {
-                $this->isAddMoreTimes($questions, $examResultDocument->getLatestDisconnect());
+                $needUpdate = $this->isAddMoreTimes($questions, $examResultDocument->getLatestDisconnect());
+                if ($needUpdate) {
+                    $ret = true;
+                }
             }
+
+            $examResultDocument->setLatestDisconnect(null);
+           
         }
+        
+        return $ret;
     }
 }

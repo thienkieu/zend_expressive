@@ -132,7 +132,7 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
         return $result;
     }
 
-    public function updateDisconnectTime($examId, $candidateId) {
+    public function updateDisconnectTime($examId, $candidateId, $duration) {
         $queryBuilder = $this->createQueryBuilder();
         $result = $queryBuilder
                     ->updateOne()
@@ -140,6 +140,7 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
                     ->field('examId')->equals($examId)
                     ->field('candidate.id')->equals($candidateId)
                     
+                    ->field('remain')
                     ->field('latestDisconnect')->set(time())
                     ->getQuery()
                     ->execute();

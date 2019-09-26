@@ -45,6 +45,12 @@ class ExamResultDocument
   /** @ODM\Field(type="int") */
   protected $latestDisconnect;
   
+  /** @ODM\Field(type="int") */
+  protected $latestConnectionTime;
+
+  /** @ODM\Field(type="int") */
+  protected $totalSpendingTime;
+
   /** @ODM\EmbedMany(targetDocument="\Test\Documents\Exam\ExamResultSummaryDocument") */
   protected $resultSummary;
 
@@ -274,6 +280,46 @@ class ExamResultDocument
   public function setLatestDisconnect($latestDisconnect)
   {
     $this->latestDisconnect = $latestDisconnect;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of latestConnectionTime
+   */ 
+  public function getLatestConnectionTime()
+  {
+    return $this->latestConnectionTime;
+  }
+
+  /**
+   * Set the value of latestConnectionTime
+   *
+   * @return  self
+   */ 
+  public function setLatestConnectionTime($latestConnectionTime)
+  {
+    $this->latestConnectionTime = $latestConnectionTime;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of totalSpendingTime
+   */ 
+  public function getTotalSpendingTime()
+  {
+    return $this->totalSpendingTime;
+  }
+
+  /**
+   * Set the value of totalSpendingTime
+   *
+   * @return  self
+   */ 
+  public function setTotalSpendingTime($totalSpendingTime)
+  {
+    $this->totalSpendingTime = $totalSpendingTime;
 
     return $this;
   }
