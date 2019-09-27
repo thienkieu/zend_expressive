@@ -56,7 +56,7 @@ class PinService implements PinServiceInterface, HandlerInterface
         $newPin = \Infrastructure\CommonFunction::generateUniquePin(1);
 
         $listeningService = $this->container->get(DoExamResultListeningService::class);
-        $examResultDocument = $examResultRepository->findOneBy(['examId'=>$examId, 'candidate.id'=>$candidateId]);
+        $examResultDocument = $examResultRepository->findOneBy(['examId'=>$examId, 'candidate.id'=>$candiateId]);
         $needUpdate = $listeningService->correctRemainRepeatListeningQuestion(\Config\AppConstant::DisconnectReason_Network, $examResultDocument);
         if ($needUpdate) {
             $this->dm->flush();
