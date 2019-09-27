@@ -79,7 +79,7 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
             $summary = new \Test\Documents\Exam\ExamResultSummaryDocument();
             $summary->setName($section->getName());
             $existingSectionCandidateMark = $section->getCandidateMark();
-            if ($existingSectionCandidateMark) {
+            if ($existingSectionCandidateMark || $existingSectionCandidateMark === 0) {
                 $summary->setCandidateMark($existingSectionCandidateMark);
                 $summary->setComments([$section->getComment()]);
             } else {
