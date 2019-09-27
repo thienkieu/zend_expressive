@@ -900,17 +900,20 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
             }
         
-            $this->setCellValue($sheet, chr($maxColumnEachExam).$rowHeaderTitle, 'Total Mark');
-            $sheet->getColumnDimension(chr($maxColumnEachExam))->setWidth(15); 
-            $this->setCellStyle($sheet, chr($maxColumnEachExam).$rowHeaderTitle, $boldStyles);
+            if ($maxColumnEachExam > 0) {
+                $this->setCellValue($sheet, chr($maxColumnEachExam).$rowHeaderTitle, 'Total Mark');
+                $sheet->getColumnDimension(chr($maxColumnEachExam))->setWidth(15); 
+                $this->setCellStyle($sheet, chr($maxColumnEachExam).$rowHeaderTitle, $boldStyles);
             
-            foreach($totalMarks as $item) {
-                $this->setCellValue($sheet, chr($maxColumnEachExam).$startRowTotalMark, $item); 
-                $startRowTotalMark +=1;
-            }     
 
-            $this->setBorderCell($sheet, 'B'.$rowHeaderTitle.':'.chr($maxColumnEachExam).($rowIndex -1));
+                foreach($totalMarks as $item) {
+                    $this->setCellValue($sheet, chr($maxColumnEachExam).$startRowTotalMark, $item); 
+                    $startRowTotalMark +=1;
+                }     
 
+                $this->setBorderCell($sheet, 'B'.$rowHeaderTitle.':'.chr($maxColumnEachExam).($rowIndex -1));
+            }
+            
             $rowIndex += 6; 
             $index = 1;
 

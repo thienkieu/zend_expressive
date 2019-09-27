@@ -56,28 +56,36 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $questionDocuments;
     }
 
+    protected function correctQuestionMark(&$questionDTO, $numberSubQuestion) {
+        $this->updateQuestionMark($questionDTO, $numberSubQuestion);
+        $questionMark = $questionDTO->getMark();
+        $markOfSubQuestion = $this->getSubQuestionMark($questionMark, $numberSubQuestion);
+        $totalMarkOfSubQuestion = 0;
+
+        $subQuestions = $questionDTO->getSubQuestions();  
+        for ($i=0; $i < $numberSubQuestion ; $i++) {
+            if ($i == $numberSubQuestion - 1 && !empty($questionMark)) {
+                $markOfSubQuestion = $questionMark - $totalMarkOfSubQuestion;
+            }
+           
+            $subQuestions[$i]->setMark($markOfSubQuestion);            
+
+            $totalMarkOfSubQuestion += $markOfSubQuestion;
+        }
+    }
+
     protected function limitSubQuestion($questionDTO, $numberSubQuestion) {
         $subQuestions = $questionDTO->getSubQuestions();        
         $maxRand = count($subQuestions) - 1;
         $ret = [];
 
-        $this->updateQuestionMark($questionDTO, $numberSubQuestion);
-        $questionMark = $questionDTO->getMark();
-        $markOfSubQuestion = $this->getSubQuestionMark($questionMark, $numberSubQuestion);
-        $totalMarkOfSubQuestion = 0;
-        for ($i=0; $i < $numberSubQuestion ; $i++) {
-            if ($i == $numberSubQuestion - 1 && !empty($questionMark)) {
-                $markOfSubQuestion = $questionMark - $totalMarkOfSubQuestion;
-            }
-
+         for ($i=0; $i < $numberSubQuestion ; $i++) {
             $index = mt_rand(0, $maxRand);
             $qArray = array_splice($subQuestions, $index, 1);            
-            $q = $qArray[0];
-            $q->setMark($markOfSubQuestion);            
+            $q = $qArray[0];                       
             $ret[] = $q;
 
             $maxRand = $maxRand - 1;
-            $totalMarkOfSubQuestion += $markOfSubQuestion;
         }
         
         return $ret;
@@ -89,6 +97,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
     }
 
     protected function getSubQuestionMark($questionMark, $numberSubQuestion) {
+        if (empty($numberSubQuestion)) return $questionMark;
         if (empty($questionMark)) return \Config\AppConstant::DefaultSubQuestionMark;
         
         //TODO điểm lẽ => tổng điểm thành phần sẽ lớn hơn điểm của câu hỏi
@@ -123,19 +132,29 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         $ret = $documentToDTOConvertor->convertToDTO($question, [\Config\AppConstant::ShowCorrectAnswer => $keepCorrectAnswer]);
-        
+        $ret->setMark($questionDTO->getMark());
+
+        $numberSubQuestion = 0;
         if (!($ret instanceof \Test\DTOs\Question\WritingQuestionDTO || $ret instanceof \Test\DTOs\Question\VerbalQuestionDTO || $ret instanceof \Test\DTOs\Question\NonSubQuestionDTO)) {
-            $ret->setMark($questionDTO->getMark());
             $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion());
             $ret->setSubQuestions($subQuestions);
+            $numberSubQuestion =  $questionDTO->getNumberSubQuestion();
         }
+
+        $this->correctQuestionMark($ret, $numberSubQuestion);
         
         return $ret;
     }
 
     public function generateQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer = false) {
         if ($citerial->getGenerateFrom() !== \Config\AppConstant::Random) {
-            return $this->generatePickupQuestion($citerial);
+            $ret = $this->generatePickupQuestion($citerial);
+            $numberSubQuestion = 0;
+            if (method_exists($ret, 'getNumberSubQuestion')) {
+                $numberSubQuestion = $ret->getNumberSubQuestion();
+            }
+            $this->correctQuestionMark($ret, $numberSubQuestion);
+            return $ret;
         }
 
         return $this->generateRandomQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer);

@@ -104,7 +104,7 @@ class VerbalExamService extends ExamService implements HandlerInterface
                 $examResultService->removeExamResultByExamId($existExamId);
             }
 
-            $this->assignPin($document);
+            $this->assignPin($document, empty($existExamId));
             $this->dm->persist($document);
             
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
