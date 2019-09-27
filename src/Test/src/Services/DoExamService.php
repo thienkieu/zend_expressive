@@ -123,6 +123,8 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $examService = $this->container->get(ExamServiceInterface::class);            
            
             $examTest = $examService->generateExamTest($examDTO->getTest(), $messages, true);
+            
+        
             if (!$examTest) {
                 return false;
             }

@@ -58,10 +58,11 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
     protected function correctQuestionMark(&$questionDTO, $numberSubQuestion) {
         $this->updateQuestionMark($questionDTO, $numberSubQuestion);
+        
         $questionMark = $questionDTO->getMark();
         $markOfSubQuestion = $this->getSubQuestionMark($questionMark, $numberSubQuestion);
         $totalMarkOfSubQuestion = 0;
-
+        
         $subQuestions = $questionDTO->getSubQuestions();  
         for ($i=0; $i < $numberSubQuestion ; $i++) {
             if ($i == $numberSubQuestion - 1 && !empty($questionMark)) {
@@ -142,17 +143,20 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         }
 
         $this->correctQuestionMark($ret, $numberSubQuestion);
-        
+
         return $ret;
     }
 
     public function generateQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer = false) {
+        
         if ($citerial->getGenerateFrom() !== \Config\AppConstant::Random) {
             $ret = $this->generatePickupQuestion($citerial);
+            
             $numberSubQuestion = 0;
-            if (method_exists($ret, 'getNumberSubQuestion')) {
-                $numberSubQuestion = $ret->getNumberSubQuestion();
+            if (method_exists($ret, 'getSubQuestions')) {
+                $numberSubQuestion = count($ret->getSubQuestions());
             }
+
             $this->correctQuestionMark($ret, $numberSubQuestion);
             return $ret;
         }
