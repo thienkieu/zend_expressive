@@ -30,11 +30,11 @@ class FromExamResultSummaryDocumentAdapter implements ConvertDocumentToDTOAdapte
     public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Exam\ExamResultSummaryDTO();
         $dto->setName($document->getName());
-        $dto->setMark($document->getMark());
+        $dto->setMark(sprintf("%01.2f", $document->getMark()));
         $dto->setType($document->getType());
         $dto->setComments($document->getComments());
         $dto->setIsScored($document->getIsScored());
-        $dto->setCandidateMark($document->getCandidateMark());
+        $dto->setCandidateMark(sprintf("%01.2f", $document->getCandidateMark()));
         
         return $dto;
     }
