@@ -76,7 +76,7 @@ class TestTemplateService implements Interfaces\TestTemplateServiceInterface, Ha
         
         $testTemplates = [];
         foreach ($documents as $test) {
-            $dto = $documentToDTOConvertor->convertToDTO($test);
+            $dto = $documentToDTOConvertor->convertToDTO($test, [\Config\AppConstant::ShowCorrectAnswer => true]);
             $testTemplates[] = $dto;
         }
 
