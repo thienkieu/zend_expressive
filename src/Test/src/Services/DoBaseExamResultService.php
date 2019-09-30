@@ -34,6 +34,43 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         return false;
     }
 
+    public function updateTimeoutExam($dto, &$messages) {
+        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+        $examResult = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
+        if (!$examResult) {
+            $messages[] = $this->translator->translate('Exam not found');
+            return false;
+        }
+
+        $latestDisconnect = $examResult->getLatestDisconnect();
+        if ($latestDisconnect) {
+            $messages[] = $this->translator->translate('Do not decrease time when candidate disconnect');
+            return false;
+        }
+
+        $examTime = $examResult->getTime() * 60;
+        $startTime = $examResult->getLatestConnectionTime();
+        $examTotalSpendingTime = $examResult->getTotalSpendingTime() ? $examResult->getTotalSpendingTime() : 0;
+        $examRemain = $examResultDocument->getRemainTime();
+        $currentTime = time();
+
+        $remainTime = $examTime - ($examTotalSpendingTime + ($currentTime - $startTime));
+        if ($examRemain > $remainTime) {
+            if ($remainTime <= 0) {
+                $dto->remainTime = $remainTime;
+                $this->finish($dto, $messages);
+            } else {
+                $examResult->setRemainTime($remainTime);
+                $this->dm->flush();
+            }
+            
+        }
+       
+        $messages[] = $this->translator->translate('Your exam has been synchonied time.');
+        return true;
+
+    }
+
     public function removeExamResultByExamId($examId) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $examResultRepository->removeResultByExamId($examId);

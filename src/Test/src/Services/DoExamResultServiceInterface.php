@@ -18,4 +18,5 @@ interface DoExamResultServiceInterface
     public function getLatestExamJoined(& $exams, $dto);
     public function inValidPin($dto, & $messages);
     public function isExistExamResultMarkDone($examId);
+    public function updateTimeoutExam($dto, &$messages);
 }

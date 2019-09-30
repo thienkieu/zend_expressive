@@ -60,6 +60,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/coordinator/exam/listeningFinished', Test\Handlers\UpdateListeningFinishHandler::class, 'exam.listeningFinished');
     $app->post('/coordinator/exam/clickToListen', Test\Handlers\UpdateListeningClickToListenHandler::class, 'exam.clickToListen');
     $app->post('/coordinator/exam/updateDisconnect', Test\Handlers\UpdateDisconnectHandler::class, 'exam.updateDisconnect');
+    $app->post('/coordinator/exam/updateTimeout', Test\Handlers\UpdateTimeoutHandler::class, 'exam.updateTimeout');
     
     $app->post('/coordinator/exam/exportCandidateResult', Test\Handlers\ExportCandidateResultHandler::class, 'exam.exportCandidateResult');
     $app->get('/coordinator/exam/exportCandidateResult', Test\Handlers\ExportCandidateResultHandler::class, 'exam.exportCandidateResult');

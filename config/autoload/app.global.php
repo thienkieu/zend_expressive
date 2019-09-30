@@ -137,6 +137,7 @@ return [
         'exam.exportExamResultSummary',
         'exam.listeningFinished',
         'exam.clickToListen',
-        'exam.updateDisconnect'
+        'exam.updateDisconnect',
+        'exam.updateTimeout'
     ]
 ];

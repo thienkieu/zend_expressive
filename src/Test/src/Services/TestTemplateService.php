@@ -33,6 +33,13 @@ class TestTemplateService implements Interfaces\TestTemplateServiceInterface, Ha
         $translator = $this->container->get(\Config\AppConstant::Translator);
         
         try{
+            $repository = $this->dm->getRepository(\Test\Documents\Test\TestTemplateDocument::class);
+            $template = $repository->findOneBy(['title' => $testDTO->getTitle()]);
+            if($template) {
+                $messages[] = $translator->translate('There is existed %TITLE%. Please enter another title', ['%TITLE%' => $testDTO->getTitle()]);
+                return false;
+            }
+
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($testDTO, [\Config\AppConstant::ToDocumentClass => \Test\Documents\Test\TestTemplateDocument::class]);
 

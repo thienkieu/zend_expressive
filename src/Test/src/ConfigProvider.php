@@ -111,6 +111,7 @@ class ConfigProvider
                 Handlers\UpdateListeningFinishHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateListeningClickToListenHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateDisconnectHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\UpdateTimeoutHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Validators\CreateQuestionValidatorAdapter::class => InvokableFactory::class,
