@@ -54,8 +54,8 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $examRemain = $examResult->getRemainTime();
         $currentTime = time();
 
-        $remainTime = $examTime - 1;
-        if ($examRemain > $remainTime) {
+        $remainTime = $remainTime -1; //$examTime - ($examTotalSpendingTime + ($currentTime - $startTime));
+       // if ($examRemain > $remainTime) {
             if ($remainTime <= 0) {
                 $dto->remainTime = $remainTime;
                 $this->finish($dto, $messages);
@@ -64,7 +64,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
                 $this->dm->flush();
             }
             
-        }
+        //}
        
         $messages[] = $this->translator->translate('Your exam has been synchonied time.');
         return true;
