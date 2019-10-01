@@ -62,7 +62,7 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
         return $questions;
     } 
 
-    public function isAddMoreTimes($question, $latestDisconnect, & $messages) {
+    public function isAddMoreTimes(&$question, $latestDisconnect, & $messages) {
         if ($question->getLatestClick() !== null && $question->getIsFinished() !== true && ($latestDisconnect - $question->getLatestClick() < $question->getDuration())) {
             $remainRepeat = $question->getRepeat();
             $question->setRepeat($remainRepeat +1);
