@@ -100,9 +100,9 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                         //TODO need to sleep here to waiting for disconnection request;
                         // or return error for user. 
                         // socket wait 15 second for notify disconnect.
-                        sleep(16);
+                        sleep(30);
                         $logger = $this->container->get(Logger::class);
-                        $logger->info('wait 15 second');
+                        $logger->info('wait 30 second');
                         $examResultDocument = $this->dm->refresh($examResultDocument);
                     } 
 
@@ -111,7 +111,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                         $logger = $this->container->get(Logger::class);
                         $logger->info('add 20 second');
                         $examRemain = $examResultDocument->getRemainTime();
-                        $examResultDocument->setRemainTime($examRemain + 15);
+                        $examResultDocument->setRemainTime($examRemain + 20);
                     }
 
                     $listeningService = $this->container->get(DoExamResultListeningService::class);
