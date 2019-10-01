@@ -54,7 +54,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $examRemain = $examResult->getRemainTime();
         $currentTime = time();
 
-        $remainTime = $examTime - ($examTotalSpendingTime + ($currentTime - $startTime));
+        $remainTime = $examTime - 1;
         if ($examRemain > $remainTime) {
             if ($remainTime <= 0) {
                 $dto->remainTime = $remainTime;
