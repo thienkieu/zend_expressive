@@ -109,9 +109,9 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                     // socket wait 15 second for notify disconnect.
                     if ($dto->reason !== \Config\AppConstant::DisconnectReason_Refresh) {
                         $logger = $this->container->get(Logger::class);
-                        $logger->info('add 15 second');
+                        $logger->info('add 20 second');
                         $examRemain = $examResultDocument->getRemainTime();
-                        $examResultDocument->setRemainTime($examRemain + 15);
+                        $examResultDocument->setRemainTime($examRemain + 20);
                     }
 
                     $listeningService = $this->container->get(DoExamResultListeningService::class);
