@@ -85,6 +85,16 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
 
             $examResultDocument->setLatestDisconnect(null);
            
+        } else {
+            $listeningQuestions = $this->getListeningQuestion($examResultDocument);
+            foreach ($listeningQuestions as $question) {
+                if ($question->getLatestClick() !== null ) {
+                    $question->setLatestClick(null);
+                    return true;
+                }
+            }
+
+            $examResultDocument->setLatestDisconnect(null);
         }
         
         return $ret;
