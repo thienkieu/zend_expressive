@@ -113,6 +113,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                     $listeningService = $this->container->get(DoExamResultListeningService::class);
                     $needUpdate = $listeningService->correctRemainRepeatListeningQuestion($dto->reason, $examResultDocument);
                     $examResultDocument->setLatestConnectionTime(time());
+                    $examResultDocument->setLatestDisconnect(null);
                     $this->dm->flush();                    
 
                     $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
