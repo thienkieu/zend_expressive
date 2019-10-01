@@ -36,7 +36,7 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
         $startTime = $examResultDocument->getLatestConnectionTime();
         $remainTime = $examTime - ($examTotalSpendingTime + ($currentTime - $startTime));
         if ($examRemain > $remainTime) {
-            $examResultDocument->setRemainTime($remainTime);
+            //$examResultDocument->setRemainTime($remainTime);
         }                
         
         $examResultDocument->setTotalSpendingTime($examTotalSpendingTime + ($currentTime - $startTime));
