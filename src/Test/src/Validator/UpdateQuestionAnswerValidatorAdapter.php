@@ -37,7 +37,7 @@ class UpdateQuestionAnswerValidatorAdapter implements ValidatorAdapterInterface
         foreach ($validators as $validator) {
             $messages = $validator->getMessages();
             foreach ($messages as $key => $message) {
-                $error[$key][] = $message;
+                $error[] = $message;
             }
         }
         
