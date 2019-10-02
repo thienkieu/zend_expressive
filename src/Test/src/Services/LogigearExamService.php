@@ -40,6 +40,7 @@ class LogigearExamService extends ExamService
                 $questionsForSection = [];
                 $questions = $section->getQuestions(); 
                 $isAllWriting = true;
+                $hasInputQuestionMark = false;
                 foreach ($questions as $question) {
                     $questionInfo = $question->getQuestionInfo();
                     
@@ -55,6 +56,10 @@ class LogigearExamService extends ExamService
                     $testQuestionDTO->setGenerateFrom(\Config\AppConstant::Pickup);
                     $testQuestionDTO->setQuestionInfo($q);
                     
+                    if ($questionInfo->getMark()) {
+                        $hasInputQuestionMark = true;
+                    }
+
                     $questionsForSection[] = $testQuestionDTO;
                     if (!$logigearTypeService->isWritingQuestion($q)) {
                         $isAllWriting = false;
@@ -66,7 +71,7 @@ class LogigearExamService extends ExamService
                 $sectionForDoExam->setName($section->getName());
                 $sectionForDoExam->setDescription($section->getDescription());
                 $sectionForDoExam->setQuestions($questionsForSection);    
-                if ($isAllWriting) {
+                if ($isAllWriting && !$hasInputQuestionMark) {
                     $sectionForDoExam->setMark(\Config\AppConstant::DefaultWritingMark);
                 }
                 

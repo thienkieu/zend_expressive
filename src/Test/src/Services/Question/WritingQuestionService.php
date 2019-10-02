@@ -20,6 +20,4 @@ class WritingQuestionService extends QuestionService
     }
 
     public function caculateMark(&$questionDocument) {}
-    
-
 }
