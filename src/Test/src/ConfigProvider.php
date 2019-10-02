@@ -115,6 +115,7 @@ class ConfigProvider
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Validators\CreateQuestionValidatorAdapter::class => InvokableFactory::class,
+                Validators\UpdateQuestionAnswerValidatorAdapter::class => InvokableFactory::class,
                 Middlewares\RequestToSectionDTOMiddleware::class => InvokableFactory::class,
                 Services\TestService::class => \Infrastructure\Factory\BaseFactory::class,
                 
