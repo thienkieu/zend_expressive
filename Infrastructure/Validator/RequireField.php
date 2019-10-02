@@ -49,14 +49,33 @@ class RequireField extends AbstractValidator {
     protected function checkRequiredProperty($object, $fields) {
         if (empty($fields) ) return true;
         $field = array_shift($fields);
-       
+        $field = \explode(':', $field);
+        
+        $type = 'string';
+        if (count($field) > 1) {
+            $type = $field[1];
+        }
+        $field = $field[0];
+        
+
         $values = null;        
         if (property_exists($object, $field)) {
             $values = $object->{$field};          
         }
         
         $isSuccess = true;
-        if (empty($values) && $values !== false) {
+        if($type === 'int') {
+            $isNumber  = is_numeric($values);
+            if (empty($isNumber)) {
+                $this->error($field);
+                $isSuccess = false;
+                return $isSuccess;
+            } 
+
+            return true;
+        }
+        
+        if (empty($values) && $values !== false ) {
             $this->error($field);
             $isSuccess = false;
         }

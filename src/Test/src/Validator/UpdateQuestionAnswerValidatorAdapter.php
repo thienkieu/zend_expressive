@@ -50,15 +50,10 @@ class UpdateQuestionAnswerValidatorAdapter implements ValidatorAdapterInterface
     public function valid(ServerRequestInterface $request, ResponseInterface & $messageResponse): bool
     {
         $validData = $request->getParsedBody();
-        $messageFormat = 'Field \'%field%\' can not empty';
-        $messageKey = '%field%';
-
         $testValidator = new RequireField(
             $this->container->get(\Config\AppConstant::Translator),
-            $messageKey,
-            $messageFormat,
             [
-                'mark' => 'mark',
+                'mark' => 'mark:int',
             ]
         );
 
