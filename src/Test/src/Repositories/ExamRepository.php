@@ -131,7 +131,7 @@ class ExamRepository extends DocumentRepository
         $queryBuilder = $this->createQueryBuilder();
         if (!empty($filterData->getId())) {
             $queryBuilder
-                ->addOr($queryBuilder->expr()->field('id')->equals($dto->getId()));
+                ->addAnd($queryBuilder->expr()->field('id')->equals($filterData->getId()));
         }
 
         if (!empty($filterData->getTitle())) {
