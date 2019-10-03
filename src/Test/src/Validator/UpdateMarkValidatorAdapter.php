@@ -25,7 +25,7 @@ class UpdateMarkValidatorAdapter implements ValidatorAdapterInterface
     }
     public function isHandleValid($routerName, $request) : bool
     {
-        if ($routerName === \Config\AppRouterName::UpdateQuestionAnswer||
+        if ($routerName === \Config\AppRouterName::UpdateQuestionMark||
             $routerName === \Config\AppRouterName::UpdateSectionMark) {
             return true;
         }
