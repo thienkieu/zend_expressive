@@ -33,11 +33,12 @@ class UpdateQuestionAnswerValidatorAdapter implements ValidatorAdapterInterface
     }
 
     protected function showErrorMessage($validators, & $responseMessage) {
+        $translate = $this->container->get(\Config\AppConstant::Translator);
         $error = [];
         foreach ($validators as $validator) {
             $messages = $validator->getMessages();
             foreach ($messages as $key => $message) {
-                $error[] = $message;
+                $error[] = $translate->translate($this-> $message);
             }
         }
         
