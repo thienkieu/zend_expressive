@@ -114,7 +114,11 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                         $logger = $this->container->get(Logger::class);
                         $logger->info('add 20 second');
                         $examRemain = $examResultDocument->getRemainTime();
-                        $examResultDocument->setRemainTime($examRemain + 20);
+                        $examTime = $examResultDocument->getTime();
+                        if ($examTime < ($examRemain + 20)) {
+                            $examResultDocument->setRemainTime($examRemain + 20);
+                        }
+                        
                     }
 
                     $listeningService = $this->container->get(DoExamResultListeningService::class);
