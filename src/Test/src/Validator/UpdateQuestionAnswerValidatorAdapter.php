@@ -53,7 +53,7 @@ class UpdateQuestionAnswerValidatorAdapter implements ValidatorAdapterInterface
         $testValidator = new RequireField(
             $this->container->get(\Config\AppConstant::Translator),
             [
-                'score' => 'mark:int',
+                'mark' => 'mark:int',
             ]
         );
 
