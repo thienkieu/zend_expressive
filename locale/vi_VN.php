@@ -76,7 +76,7 @@ return array(
     "Your cannot finish this exam because this exam have been finished!" => "You cannot finish the exam because it has been finished!",
     "You do not have permission" => "You do not have permission",
     "Your PIN is invalid." => "Your PIN is invalid.",
-    "Must have at least one sub question." => "Please add at least one sub question.",
+    "Must have at least one sub question." => "Please add at least one question.",
     "Must have at least one answer for question." => "Please add at least one answer for this question.",
     "Must have at least one correct answer for question." => "Please add at least one correct answer for this question.",
     "The format file is incorrect, Please use the template of online test system." => "The format file is incorrect. Please use the template of online test system.",
