@@ -82,7 +82,8 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
                     $ret = true;
                 }
             }
-
+           
+            $examResultDocument->setLatestConnectionTime(null);
             $examResultDocument->setLatestDisconnect(null);
            
         } else {
@@ -94,6 +95,7 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
                 }
             }
 
+            $examResultDocument->setLatestConnectionTime(null);
             $examResultDocument->setLatestDisconnect(null);
         }
         
