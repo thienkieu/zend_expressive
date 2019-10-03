@@ -111,6 +111,6 @@ return [
         \Test\Validator\CreateExamWithSectionValidatorAdapter::class,
         \Test\Validator\EnterPinValidatorAdapter::class,
         \Test\Validator\CreateSourceValidatorAdapter::class,
-        \Test\Validator\UpdateQuestionAnswerValidatorAdapter::class,
+        \Test\Validator\UpdateMarkValidatorAdapter::class,
     ],
 ];

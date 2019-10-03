@@ -9,5 +9,6 @@ abstract class AppRouterName
     const CreateQuestion = 'questions.create';
     const UpdateQuestion = 'questions.update';
     const CreateSource = 'question.source.create';
-    const UpdateQuestionAnswer = 'exam.updateQuestionMark';
+    const UpdateQuestionMark = 'exam.updateQuestionMark';
+    const UpdateSectionMark = 'exam.updateSectionMark';
 }

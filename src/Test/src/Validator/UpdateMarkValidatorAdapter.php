@@ -12,7 +12,7 @@ use Zend\Diactoros\Response\JsonResponse;
 use Infrastructure\Validator\ValidatorAdapterInterface;
 use Infrastructure\Validator\RequireField;
 
-class UpdateQuestionAnswerValidatorAdapter implements ValidatorAdapterInterface
+class UpdateMarkValidatorAdapter implements ValidatorAdapterInterface
 {
     protected $container;
 
@@ -25,7 +25,8 @@ class UpdateQuestionAnswerValidatorAdapter implements ValidatorAdapterInterface
     }
     public function isHandleValid($routerName, $request) : bool
     {
-        if ($routerName === \Config\AppRouterName::UpdateQuestionAnswer) {
+        if ($routerName === \Config\AppRouterName::UpdateQuestionAnswer||
+            $routerName === \Config\AppRouterName::UpdateSectionMark) {
             return true;
         }
 
