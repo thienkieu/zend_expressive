@@ -103,9 +103,12 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                         sleep(30);
                         $logger = $this->container->get(Logger::class);
                         $logger->info('wait 30 second');
-                        $examResultDocument = $this->dm->refresh($examResultDocument);
+                        
                     } 
 
+                    if (!$examResultDocument) {
+                        $examResultDocument = $examResultRepository->getExamResult($examDocument->getId(), $candidate->getId(), '');
+                    }
                     // socket wait 15 second for notify disconnect.
                     if ($dto->reason !== \Config\AppConstant::DisconnectReason_Refresh) {
                         $logger = $this->container->get(Logger::class);
