@@ -129,6 +129,11 @@ class ExamRepository extends DocumentRepository
 
     protected function getFilterQuery($filterData) {
         $queryBuilder = $this->createQueryBuilder();
+        if (!empty($filterData->getId())) {
+            $queryBuilder
+                ->addOr($queryBuilder->expr()->field('id')->equals($dto->getId()));
+        }
+
         if (!empty($filterData->getTitle())) {
             $queryBuilder
                 ->addOr($queryBuilder->expr()->field('test.title')->equals(new \MongoRegex('/.*'.$filterData->getTitle().'*/i')))

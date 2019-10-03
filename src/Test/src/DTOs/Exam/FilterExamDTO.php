@@ -11,6 +11,8 @@ class FilterExamDTO {
     protected $candidateIdOrNameOrEmail;
     protected $fromDate;
     protected $toDate;
+    protected $id;
+    
     
     /**
      * Get the value of toDate
@@ -135,6 +137,26 @@ class FilterExamDTO {
     public function setCandidateIdOrNameOrEmail($candidateIdOrNameOrEmail)
     {
         $this->candidateIdOrNameOrEmail = $candidateIdOrNameOrEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
 
         return $this;
     }
