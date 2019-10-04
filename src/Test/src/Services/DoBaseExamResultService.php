@@ -149,6 +149,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
             return false;
         }
 
+        $section = $this->getSection($examResult, $dto);
         $questionDocument = $this->getQuestion($examResult, $dto);
         if (!$questionDocument) {
             $messages[] = $this->translator->translate('Question not found');
@@ -156,7 +157,8 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         }
 
         $questionDocument->setComment($dto->getComment());
-
+        $section->setCandidateMark(null);
+        
         $questionService  = $this->container->get(QuestionServiceInterface::class);
         $questionService->setCandidateMark($questionDocument, $dto->getMark());
         
