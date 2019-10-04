@@ -77,10 +77,7 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
         if ($disconenctReason !== \Config\AppConstant::DisconnectReason_Refresh) {
             $listeningQuestions = $this->getListeningQuestion($examResultDocument);
             foreach ($listeningQuestions as $question) {
-                $needUpdate = $this->isAddMoreTimes($question, $examResultDocument->getLatestDisconnect(), $messages);
-                if ($needUpdate) {
-                    $ret = true;
-                }
+                $this->isAddMoreTimes($question, $examResultDocument->getLatestDisconnect(), $messages);
             }
            
             $examResultDocument->setLatestConnectionTime(null);
@@ -91,7 +88,6 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
             foreach ($listeningQuestions as $question) {
                 if ($question->getLatestClick() !== null ) {
                     $question->setLatestClick(null);
-                    return true;
                 }
             }
 
@@ -99,6 +95,6 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
             $examResultDocument->setLatestDisconnect(null);
         }
         
-        return $ret;
+        return true;
     }
 }

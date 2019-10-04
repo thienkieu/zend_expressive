@@ -96,7 +96,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 if ($isPinValid) {
                     $latestDisconnection = $examResultDocument->getLatestDisconnect();
 
-                    if (!$latestDisconnection ||  ($examResultDocument->getLatestConnectionTime() > $latestDisconnection)) {
+                    if (!$latestDisconnection ||  ($examResultDocument->getLatestConnectionTime() && $examResultDocument->getLatestConnectionTime() > $latestDisconnection)) {
                         //TODO need to sleep here to waiting for disconnection request;
                         // or return error for user. 
                         // socket wait 15 second for notify disconnect.
