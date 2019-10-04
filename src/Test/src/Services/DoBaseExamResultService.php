@@ -201,7 +201,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $isPinValid = $this->isPinValid($dto->examId, $dto->candidateId);
         if (!$isPinValid) {
             $messages[] = $this->translator->translate('Your cannot finish this exam because this exam have been finished!');
-            return false;
+            return true;
         }
         $ret = $this->synchronyTime($dto, $outRemainTime, $messages);
         $ret = $this->calculatorExamMark($dto, $messages);

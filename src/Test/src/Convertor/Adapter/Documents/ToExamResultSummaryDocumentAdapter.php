@@ -69,7 +69,7 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
                 }
                 
                 if ($questionInfo instanceof \Test\Documents\Test\WritingQuestionDocument) {
-                    $sectionMark = $questionInfo->getMark() ? $questionInfo->getMark(): $subQuestionCount * \Config\AppConstant::DefaultSubQuestionMark;
+                    $sectionMark = $questionInfo->getMark() ? $questionInfo->getMark():  \Config\AppConstant::DefaultWritingMark;
                 } else {
                     $sectionMark += $questionInfo->getMark() ? $questionInfo->getMark(): $subQuestionCount * \Config\AppConstant::DefaultSubQuestionMark;
                 }
@@ -79,7 +79,7 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
             $summary = new \Test\Documents\Exam\ExamResultSummaryDocument();
             $summary->setName($section->getName());
             $existingSectionCandidateMark = $section->getCandidateMark();
-            if ($existingSectionCandidateMark || $existingSectionCandidateMark === 0|| $existingSectionCandidateMark === "0") {
+            if ($existingSectionCandidateMark || $existingSectionCandidateMark === 0 || $existingSectionCandidateMark === "0") {
                 $summary->setCandidateMark($existingSectionCandidateMark);
             } else {
                 $summary->setCandidateMark($candidateMark);
