@@ -6,7 +6,7 @@ namespace Test\Convertor\Adapter\Documents;
 
 use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use is_numeric;
 class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
     protected $convertor;
@@ -45,6 +45,7 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
         $summaries = new ArrayCollection();      
         $sections = $examResultDocument->getTest()->getSections();
         foreach($sections as $section) {
+            
             $questions = $section->getQuestions();
             $candidateMark = 0;
             $isScored = false;
@@ -79,10 +80,10 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
             $summary = new \Test\Documents\Exam\ExamResultSummaryDocument();
             $summary->setName($section->getName());
             $existingSectionCandidateMark = $section->getCandidateMark();
-            if ($existingSectionCandidateMark || $existingSectionCandidateMark === 0 || $existingSectionCandidateMark === "0") {
-                $summary->setCandidateMark($existingSectionCandidateMark);
-            } else {
+            if (!is_numeric($existingSectionCandidateMark) && $existingSectionCandidateMark !== 0 && $existingSectionCandidateMark !== "0") {
                 $summary->setCandidateMark($candidateMark);
+            } else {
+                $summary->setCandidateMark($existingSectionCandidateMark);
             }
             
             if ($section->getComment()) {
@@ -102,7 +103,6 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
 
             $summaries->add($summary);
         }
-        
         return $summaries;
     }
 }
