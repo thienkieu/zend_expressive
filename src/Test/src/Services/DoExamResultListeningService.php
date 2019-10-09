@@ -6,6 +6,7 @@ namespace Test\Services;
 
 use Infrastructure\Interfaces\HandlerInterface;
 use time;
+use property_exists;
 class DoExamResultListeningService implements DoExamResultListeningServiceInterface, HandlerInterface
 {
     protected $container;
@@ -39,8 +40,8 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
             //$examResultDocument->setRemainTime($remainTime);
         }                
         
-        if ($dto->reason === 'ping timeout') {
-            $examResultDocument->setRemainTime($examRemain + 5);
+        if (property_exists($dto, 'reason') && $dto->reason === 'ping timeout') {
+            $examResultDocument->setRemainTime($examRemain + 10);
         }
 
         $examResultDocument->setTotalSpendingTime($examTotalSpendingTime + ($currentTime - $startTime));
