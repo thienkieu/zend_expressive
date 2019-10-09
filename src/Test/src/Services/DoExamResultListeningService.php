@@ -39,6 +39,10 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
             //$examResultDocument->setRemainTime($remainTime);
         }                
         
+        if ($dto->reason === 'ping timeout') {
+            $examResultDocument->setRemainTime($examRemain + 5);
+        }
+
         $examResultDocument->setTotalSpendingTime($examTotalSpendingTime + ($currentTime - $startTime));
         $examResultDocument->setLatestDisconnect($currentTime);
 
