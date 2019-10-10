@@ -30,13 +30,14 @@ class ListeningQuestionService extends QuestionService
     }
 
     public function createQuestion($dto, &$messages, &$outDTO) {
+        $path = $dto->getPath();
+                
         $isUrl = \Infrastructure\CommonFunction::isURI($path);
         if (\Infrastructure\CommonFunction::isURI($path) === true) {
             $path = \Infrastructure\CommonFunction::replaceHost($path);
             $dto->setPath($path);
         } else {
             $fileName = basename($dto->getPath());
-            $path = $dto->getPath();
             $dto->setDuration($this->getDuration($path));
 
             $mediaQuestionFolder = \Config\AppConstant::MediaQuestionFolder.\Config\AppConstant::DS.date('YmdHis');
