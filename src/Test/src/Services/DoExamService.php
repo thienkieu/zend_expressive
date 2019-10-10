@@ -97,7 +97,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                     $latestDisconnectTime = $examResultDocument->getLatestDisconnect();
                     $latestConnectTime = $examResultDocument->getLatestConnectionTime();
                     if (!$latestDisconnectTime || $latestConnectTime > $latestDisconnectTime) {
-                        sleep(15000);
+                        sleep(15);
                     }
 
                     if ($examResultDocument) {
