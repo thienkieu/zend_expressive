@@ -135,16 +135,21 @@ class ExamRepository extends DocumentRepository
         }
 
         if (!empty($filterData->getTitle())) {
-            $queryBuilder
+            $queryBuilder->addAnd(
+                $queryBuilder->expr()
                 ->addOr($queryBuilder->expr()->field('test.title')->equals(new \MongoRegex('/'.$filterData->getTitle().'/i')))
-                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoRegex('/.'.$filterData->getTitle().'/i')));
+                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoRegex('/'.$filterData->getTitle().'/i')))
+            );
+
         }
 
         if (!empty($filterData->getCandidateIdOrNameOrEmail())) {
-            $queryBuilder
+            $queryBuilder->addAnd(
+                $queryBuilder->expr()
                 ->addOr($queryBuilder->expr()->field('candidates.objectId')->equals($filterData->getCandidateIdOrNameOrEmail()))
                 ->addOr($queryBuilder->expr()->field('candidates.email')->equals(new \MongoRegex('/'.$filterData->getCandidateIdOrNameOrEmail().'/i')))
-                ->addOr($queryBuilder->expr()->field('candidates.name')->equals(new \MongoRegex('/'.$filterData->getCandidateIdOrNameOrEmail().'/i')));
+                ->addOr($queryBuilder->expr()->field('candidates.name')->equals(new \MongoRegex('/'.$filterData->getCandidateIdOrNameOrEmail().'/i')))
+            );
         }
 
         $fromDate = $filterData->getFromDate();
