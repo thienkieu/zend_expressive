@@ -94,6 +94,17 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             if ($examResultDocument) {
                 $isPinValid = $examResultDocument->getCandidate()->getIsPinValid();
                 if ($isPinValid) {
+                    $latestDisconnectTime = $examResultDocument->getLatestDisconnect();
+                    $latestConnectTime = $examResultDocument->getLatestConnectionTime();
+                    if (!$latestDisconnectTime || $latestConnectTime > $latestDisconnectTime) {
+                        sleep(15000);
+                    }
+
+                    if ($examResultDocument) {
+                        $this->dm->refresh($examResultDocument);
+                    } else {
+                        $examResultDocument = $examResultRepository->getExamResult($examDocument->getId(), $candidate->getId(), '');
+                    }
                     
                     // socket wait 15 second for notify disconnect.
                     /*if ($dto->reason !== \Config\AppConstant::DisconnectReason_Refresh) {
