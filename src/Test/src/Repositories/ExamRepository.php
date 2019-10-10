@@ -155,7 +155,7 @@ class ExamRepository extends DocumentRepository
         $fromDate = $filterData->getFromDate();
         $toDate = $filterData->getToDate();
         if (!empty($fromDate) && !empty($toDate)) {
-            $queryBuilder = $queryBuilder->addAnd(
+            $queryBuilder->addAnd(
                 $queryBuilder->expr()
                     ->field('startDate')->gte($fromDate)
                     ->field('startDate')->lte($toDate)
@@ -164,7 +164,7 @@ class ExamRepository extends DocumentRepository
         }
 
         if (!empty($fromDate) && empty($toDate)) {
-            $queryBuilder = $queryBuilder->addAnd(
+            $queryBuilder->addAnd(
                 $queryBuilder->expr()
                     ->field('startDate')->gte($fromDate)
             );
@@ -172,7 +172,7 @@ class ExamRepository extends DocumentRepository
         }
 
         if (empty($fromDate) && !empty($toDate)) {
-            $queryBuilder = $queryBuilder->addAnd(
+            $queryBuilder->addAnd(
                 $queryBuilder->expr()
                     ->field('startDate')->lte($toDate)
             );
