@@ -38,7 +38,7 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
         $currentSpending = $currentTime - $startTime;
         $remainTime = $examTime - ($examTotalSpendingTime + $currentSpending);        
         if ($examRemain > $remainTime) {
-            if (property_exists($dto, 'reason') && $dto->reason === 'ping timeout') {
+            if (property_exists($dto, 'reason') && ($dto->reason === 'ping timeout' || $dto->reason === 'client namespace disconnect')) {
                 $remainTime += 5;
                 $currentSpending -= 5;
             }
