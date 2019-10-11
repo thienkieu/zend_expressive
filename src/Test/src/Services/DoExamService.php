@@ -96,15 +96,15 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 if ($isPinValid) {
                     $latestDisconnectTime = $examResultDocument->getLatestDisconnect();
                     $latestConnectTime = $examResultDocument->getLatestConnectionTime();
-                    /*if (!$latestDisconnectTime || $latestConnectTime > $latestDisconnectTime) {
+                    if (!$latestDisconnectTime || $latestConnectTime > $latestDisconnectTime) {
                         sleep(15);
-                    }*/
+                    }
 
-                    /*if ($examResultDocument) {
+                    if ($examResultDocument) {
                         $this->dm->refresh($examResultDocument);
                     } else {
                         $examResultDocument = $examResultRepository->getExamResult($examDocument->getId(), $candidate->getId(), '');
-                    }*/
+                    }
                     
                     // socket wait 15 second for notify disconnect.
                     /*if ($dto->reason !== \Config\AppConstant::DisconnectReason_Refresh) {
@@ -121,12 +121,9 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                     
                     $listeningService = $this->container->get(DoExamResultListeningService::class);
                     $needUpdate = $listeningService->correctRemainRepeatListeningQuestion($dto->reason, $examResultDocument);
-                    if ($latestDisconnectTime) {
-                        $examResultDocument->setLatestConnectionTime(time());
-                        $examResultDocument->setLatestDisconnect(null);
-                    }
                     
-                    
+                    $examResultDocument->setLatestConnectionTime(time());
+                    $examResultDocument->setLatestDisconnect(null);
                     $this->dm->flush();                    
 
                     $results = $documentToDTOConvertor->convertToDTO($examResultDocument);
