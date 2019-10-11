@@ -86,8 +86,8 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
                 $this->isAddMoreTimes($question, $examResultDocument->getLatestDisconnect(), $messages);
             }
            
-            $examResultDocument->setLatestConnectionTime(null);
-            $examResultDocument->setLatestDisconnect(null);
+            //$examResultDocument->setLatestConnectionTime(null);
+            //$examResultDocument->setLatestDisconnect(null);
            
         } else {
             $listeningQuestions = $this->getListeningQuestion($examResultDocument);
@@ -97,8 +97,8 @@ class DoExamResultListeningService implements DoExamResultListeningServiceInterf
                 }
             }
 
-            $examResultDocument->setLatestConnectionTime(null);
-            $examResultDocument->setLatestDisconnect(null);
+           // $examResultDocument->setLatestConnectionTime(null);
+           // $examResultDocument->setLatestDisconnect(null);
         }
         
         return true;
