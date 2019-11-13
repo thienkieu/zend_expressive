@@ -18,6 +18,9 @@ class SectionDocument
   /** @ODM\Field(type="string") */
   private $description;
 
+  /** @ODM\Field(type="boolean") */
+  private $isToeic;
+
   /** @ODM\Field(type="float") */
   private $mark;
 
@@ -186,6 +189,26 @@ class SectionDocument
   public function setComment($comment)
   {
     $this->comment = $comment;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isToeic
+   */ 
+  public function getIsToeic()
+  {
+    return $this->isToeic;
+  }
+
+  /**
+   * Set the value of isToeic
+   *
+   * @return  self
+   */ 
+  public function setIsToeic($isToeic)
+  {
+    $this->isToeic = $isToeic;
 
     return $this;
   }

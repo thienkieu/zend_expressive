@@ -11,6 +11,7 @@ class UpdateSectionMarkDTO implements \JsonSerializable
     protected $sectionId; 
     protected $comment;
     protected $mark;
+    protected $isToeic;
 
     public function jsonSerialize() {
         $ret = new \stdClass();
@@ -19,7 +20,8 @@ class UpdateSectionMarkDTO implements \JsonSerializable
         $ret->sectionId = $this->getSectionId();
         $ret->comment = $this->getComment();
         $ret->mark = $this->getMark();
-          
+        $ret->isToeic = $this->getIsToeic();
+        
         return $ret;
     }
 
@@ -119,6 +121,26 @@ class UpdateSectionMarkDTO implements \JsonSerializable
     public function setMark($mark)
     {
         $this->mark = $mark;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isToeic
+     */ 
+    public function getIsToeic()
+    {
+        return $this->isToeic;
+    }
+
+    /**
+     * Set the value of isToeic
+     *
+     * @return  self
+     */ 
+    public function setIsToeic($isToeic)
+    {
+        $this->isToeic = $isToeic;
 
         return $this;
     }

@@ -12,6 +12,7 @@ class SectionDTO implements \JsonSerializable
     protected $mark;
     protected $candidateMark;
     protected $comment;
+    protected $isToeic;
     
     /**
      * @var QuestionDTO[]
@@ -110,7 +111,9 @@ class SectionDTO implements \JsonSerializable
         $ret->description = $this->getDescription(); 
         $ret->comment = $this->getComment();
         $ret->id = $this->getId();   
+        $ret->isToeic = $this->getIsToeic();
         $questions = $this->getQuestions();
+        
         $dtoQuestions = [];
         foreach ($questions as $question) {
             $info = json_decode(json_encode($question->getQuestionInfo()));
@@ -200,6 +203,26 @@ class SectionDTO implements \JsonSerializable
     public function setComment($comment)
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+    
+    /**
+     * Get the value of isToeic
+     */ 
+    public function getIsToeic()
+    {
+        return $this->isToeic;
+    }
+
+    /**
+     * Set the value of isToeic
+     *
+     * @return  self
+     */ 
+    public function setIsToeic($isToeic)
+    {
+        $this->isToeic = $isToeic;
 
         return $this;
     }
