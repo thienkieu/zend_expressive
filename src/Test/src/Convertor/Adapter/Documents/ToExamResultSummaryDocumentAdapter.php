@@ -84,6 +84,8 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
                 $summary->setCandidateMark($candidateMark);
             } else {
                 $summary->setCandidateMark($existingSectionCandidateMark);
+                $summary->setIsToeic($section->getIsToeic());
+                $summary->setToeicExpirationDate($section->getToeicExpirationDate());
             }
             
             if ($section->getComment()) {

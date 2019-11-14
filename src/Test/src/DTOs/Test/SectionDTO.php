@@ -13,6 +13,7 @@ class SectionDTO implements \JsonSerializable
     protected $candidateMark;
     protected $comment;
     protected $isToeic;
+    protected $toeicExpirationDate;
     
     /**
      * @var QuestionDTO[]
@@ -112,6 +113,8 @@ class SectionDTO implements \JsonSerializable
         $ret->comment = $this->getComment();
         $ret->id = $this->getId();   
         $ret->isToeic = $this->getIsToeic();
+        $ret->toeicExpirationDate = $this->getToeicExpirationDate() ? $this->getToeicExpirationDate()->format(\Config\AppConstant::DateTimeFormat) : '';
+        
         $questions = $this->getQuestions();
         
         $dtoQuestions = [];
@@ -223,6 +226,26 @@ class SectionDTO implements \JsonSerializable
     public function setIsToeic($isToeic)
     {
         $this->isToeic = $isToeic;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of toeicExpirationDate
+     */ 
+    public function getToeicExpirationDate()
+    {
+        return $this->toeicExpirationDate;
+    }
+
+    /**
+     * Set the value of toeicExpirationDate
+     *
+     * @return  self
+     */ 
+    public function setToeicExpirationDate($toeicExpirationDate)
+    {
+        $this->toeicExpirationDate = $toeicExpirationDate;
 
         return $this;
     }

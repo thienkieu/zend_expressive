@@ -12,6 +12,7 @@ class UpdateSectionMarkDTO implements \JsonSerializable
     protected $comment;
     protected $mark;
     protected $isToeic;
+    protected $toeicExpirationDate;
 
     public function jsonSerialize() {
         $ret = new \stdClass();
@@ -21,6 +22,7 @@ class UpdateSectionMarkDTO implements \JsonSerializable
         $ret->comment = $this->getComment();
         $ret->mark = $this->getMark();
         $ret->isToeic = $this->getIsToeic();
+        $ret->toeicExpirationDate = $this->getToeicExpirationDate();
         
         return $ret;
     }
@@ -141,6 +143,26 @@ class UpdateSectionMarkDTO implements \JsonSerializable
     public function setIsToeic($isToeic)
     {
         $this->isToeic = $isToeic;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of toeicExpirationDate
+     */ 
+    public function getToeicExpirationDate()
+    {
+        return $this->toeicExpirationDate;
+    }
+
+    /**
+     * Set the value of toeicExpirationDate
+     *
+     * @return  self
+     */ 
+    public function setToeicExpirationDate($toeicExpirationDate)
+    {
+        $this->toeicExpirationDate = $toeicExpirationDate;
 
         return $this;
     }

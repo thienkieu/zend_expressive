@@ -120,6 +120,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
             return false;
         }
 
+        $sectionDocument->setToeicExpirationDate($dto->getToeicExpirationDate());
         $sectionDocument->setIsToeic($dto->getIsToeic());
         $sectionDocument->setComment($dto->getComment());
         $sectionDocument->setCandidateMark($dto->getMark());

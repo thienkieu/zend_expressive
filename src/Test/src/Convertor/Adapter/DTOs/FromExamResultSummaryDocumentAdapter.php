@@ -35,7 +35,9 @@ class FromExamResultSummaryDocumentAdapter implements ConvertDocumentToDTOAdapte
         $dto->setComments($document->getComments());
         $dto->setIsScored($document->getIsScored());
         $dto->setCandidateMark(sprintf("%01.2f", $document->getCandidateMark()));
-        
+        $dto->setIsToeic($document->getIsToeic());
+        $dto->setToeicExpirationDate($document->getToeicExpirationDate());
+
         return $dto;
     }
     

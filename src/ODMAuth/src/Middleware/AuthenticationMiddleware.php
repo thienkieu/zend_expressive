@@ -36,9 +36,16 @@ class AuthenticationMiddleware extends \Zend\Expressive\Authentication\Authentic
      * {@inheritDoc}
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
-    {
+    {   
         $config = $this->container->get(\Config\AppConstant::AppConfig);
         $authenticationExcludeUrl = $config[\Config\AppConstant::AuthenticationExcludeUrl];
+        
+        $token = $request->getHeader('Authorization');
+        $authenticationExcludeToken = $config[\Config\AppConstant::authenticationExcludeToken];
+        if (count($token) > 0 && in_array($token[0], $authenticationExcludeToken)) {
+            return $handler->handle($request);
+        }
+        
         $rotuer = $request->getAttribute(RouteResult::class);
         $routerName = $rotuer->getMatchedRouteName(); 
         if ($routerName && !in_array($routerName, $authenticationExcludeUrl)) { 

@@ -12,6 +12,8 @@ class ExamResultSummaryDTO implements \JsonSerializable
     protected $comments;
     protected $candidateMark;
     protected $isScored;
+    protected $isToeic;
+    protected $toeicExpirationDate;
 
     public function jsonSerialize() {
         $ret = new \stdClass();
@@ -21,6 +23,8 @@ class ExamResultSummaryDTO implements \JsonSerializable
         $ret->comments = $this->getComments() ? $this->getComments(): '';
         $ret->candidateMark = $this->getCandidateMark();
         $ret->isScored = $this->getIsScored();
+        $ret->isToeic = $this->getIsToeic();
+        $ret->toeicExpirationDate = $this->getToeicExpirationDate() ? $this->getToeicExpirationDate()->format(\Config\AppConstant::DateTimeFormat) : '';
 
         return $ret;
     }
@@ -141,6 +145,46 @@ class ExamResultSummaryDTO implements \JsonSerializable
     public function setComments($comments)
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isToeic
+     */ 
+    public function getIsToeic()
+    {
+        return $this->isToeic;
+    }
+
+    /**
+     * Set the value of isToeic
+     *
+     * @return  self
+     */ 
+    public function setIsToeic($isToeic)
+    {
+        $this->isToeic = $isToeic;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of toeicExpirationDate
+     */ 
+    public function getToeicExpirationDate()
+    {
+        return $this->toeicExpirationDate;
+    }
+
+    /**
+     * Set the value of toeicExpirationDate
+     *
+     * @return  self
+     */ 
+    public function setToeicExpirationDate($toeicExpirationDate)
+    {
+        $this->toeicExpirationDate = $toeicExpirationDate;
 
         return $this;
     }

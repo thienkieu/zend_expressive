@@ -102,7 +102,8 @@ abstract class AppConstant
     const MarkInputTypeManual = 'manual';
     
     const AuthenticationExcludeUrl = 'authenticationExcludeUrl';  
-    
+    const authenticationExcludeToken = 'authenticationExcludeToken';  
+
     const DisconnectReason_Refresh = 'reload';
     const DisconnectReason_Network = 'Network';   
 }

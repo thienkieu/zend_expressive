@@ -21,6 +21,9 @@ class SectionDocument
   /** @ODM\Field(type="boolean") */
   private $isToeic;
 
+  /** @ODM\Field(type="date") */
+  protected $toeicExpirationDate;
+
   /** @ODM\Field(type="float") */
   private $mark;
 
@@ -209,6 +212,26 @@ class SectionDocument
   public function setIsToeic($isToeic)
   {
     $this->isToeic = $isToeic;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of toeicExpirationDate
+   */ 
+  public function getToeicExpirationDate()
+  {
+    return $this->toeicExpirationDate;
+  }
+
+  /**
+   * Set the value of toeicExpirationDate
+   *
+   * @return  self
+   */ 
+  public function setToeicExpirationDate($toeicExpirationDate)
+  {
+    $this->toeicExpirationDate = $toeicExpirationDate;
 
     return $this;
   }

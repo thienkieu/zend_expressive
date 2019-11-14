@@ -114,6 +114,10 @@ return [
        // 'candidates' => 'http://localhost:12346/Portal/ExcuteByCommand/GetCandiates'
     ],
     
+    'authenticationExcludeToken' => [
+        'Bearer CRMbackend'
+    ],
+
     'authenticationExcludeUrl' => [
         'exam.doExam',
         'api.publickey',

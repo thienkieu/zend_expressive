@@ -37,6 +37,7 @@ class ToSectionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         $document->setCandidateMark($dto->getCandidateMark());
         $document->setComment($dto->getComment());
         $document->setIsToeic($dto->getIsToeic());
+        $document->setToeicExpirationDate($dto->getToeicExpirationDate());
             
         $questions = $dto->getQuestions();
         foreach($questions as $question) {

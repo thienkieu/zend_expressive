@@ -23,8 +23,14 @@ class ExamResultSummaryDocument
   /** @ODM\Field(type="hash") */
   protected $comments;
 
-   /** @ODM\Field(type="bool") */
-   protected $isScored;
+  /** @ODM\Field(type="bool") */
+  protected $isScored;
+
+  /** @ODM\Field(type="date") */
+  protected $toeicExpirationDate;
+
+  /** @ODM\Field(type="bool") */
+  protected $isToeic;
 
   /** @ODM\Field(type="float") */
   protected $mark;
@@ -168,6 +174,46 @@ class ExamResultSummaryDocument
   public function setComments($comments)
   {
     $this->comments = $comments;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isToeic
+   */ 
+  public function getIsToeic()
+  {
+    return $this->isToeic;
+  }
+
+  /**
+   * Set the value of isToeic
+   *
+   * @return  self
+   */ 
+  public function setIsToeic($isToeic)
+  {
+    $this->isToeic = $isToeic;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of toeicExpirationDate
+   */ 
+  public function getToeicExpirationDate()
+  {
+    return $this->toeicExpirationDate;
+  }
+
+  /**
+   * Set the value of toeicExpirationDate
+   *
+   * @return  self
+   */ 
+  public function setToeicExpirationDate($toeicExpirationDate)
+  {
+    $this->toeicExpirationDate = $toeicExpirationDate;
 
     return $this;
   }
