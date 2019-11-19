@@ -148,7 +148,10 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
     }
 
     public function getLatestExamJoined($dto) {
-        $queryBuilder = $this->createQueryBuilder();
+        //echo $this->documentName;die;
+        $queryBuilder = $this->createAggregationBuilder()
+            ->hydrate(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class)
+            ->match();
 
         if (isset($dto->candidateType) && !empty($dto->candidateType)) {
             $queryBuilder->field('candidate.type')->equals($dto->candidateType);
@@ -167,10 +170,28 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
             $queryBuilder->field('startDate')->gte($date);
         }
 
-        $examResult = $queryBuilder->select(['time','title', 'startDate', 'examId', 'candidate', 'resultSummary'])
+        $queryBuilder->project()   
+                    ->includeFields(['time','title', 'startDate', 'examId', 'candidate', 'resultSummary']);
+                    //->excludeFields(['candidates'])
+
+        $examResult = $queryBuilder
         ->sort('startDate', 'desc')
-        ->distinct('candidate.objectId')
-        ->getQuery()
+        ->group()
+           ->field('id')
+           ->expression('$id')
+           ->field('startDate')
+           ->last('$startDate')
+           ->field('candidate')
+           ->last('$candidate')
+           ->field('resultSummary')
+           ->last('$resultSummary') 
+           ->field('examType')
+           ->last('$examType') 
+           ->field('examId')
+           ->last('$examId') 
+           ->field('title')
+           ->last('$title')
+           
         ->execute();
         
         return $examResult;

@@ -358,12 +358,13 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
     public function getLatestExamJoined(& $exams, $dto) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-        $documents = $examResultRepository->getExamJoined($dto);
+        $documents = $examResultRepository->getLatestExamJoined($dto);
 
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
         $exams = [];
         foreach ($documents as $exam) {
+            //echo '<pre>'.print_r($exam, true).'</pre>'; die;
             $dto = $documentToDTOConvertor->convertToDTO($exam);
             $exams[] = $dto;
         }
