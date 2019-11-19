@@ -175,23 +175,22 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
                     //->excludeFields(['candidates'])
 
         $examResult = $queryBuilder
-        ->sort('startDate', 'desc')
+        ->sort('startDate', 'asc')
         ->group()
-           ->field('id')
-           ->expression('$id')
-           ->field('startDate')
-           ->last('$startDate')
-           ->field('candidate')
-           ->last('$candidate')
-           ->field('resultSummary')
-           ->last('$resultSummary') 
-           ->field('examType')
-           ->last('$examType') 
-           ->field('examId')
-           ->last('$examId') 
-           ->field('title')
-           ->last('$title')
-           
+            ->field('id')
+            ->expression('$candidate.objectId')
+            ->field('startDate')
+            ->last('$startDate')
+            ->field('candidate')
+            ->last('$candidate')
+            ->field('resultSummary')
+            ->last('$resultSummary') 
+            ->field('examType')
+            ->last('$examType') 
+            ->field('examId')
+            ->last('$examId') 
+            ->field('title')
+            ->last('$title')
         ->execute();
         
         return $examResult;
