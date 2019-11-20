@@ -1,0 +1,19 @@
+I. Deploy backend server
+	1. Install PHP server
+	2. Add virtual host backend.onlinetest.logigear.com to PHP server 
+	3. Start PHP server port 80 for backend
+
+II. Deploy frontend server
+	1. Add virtual host onlinetest.logigear.com to PHP server 
+	2. Start PHP server port 80 for frontend
+	
+III. Deploy nodejs server
+	1. Install nodejs server
+	2. Install Cluster and PM2 to nodejs 
+	3. Start nodejs server port 3000 with PM2 start bin/cluster.js
+	
+IV. Integration with CRM
+	1. Add crm url to config file
+	2. Update crm webconfig file, Please refer to crm_setting.png
+	
+	
