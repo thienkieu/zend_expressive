@@ -2,6 +2,9 @@ I. Deploy backend server
 	1. Install PHP server
 	2. Add virtual host backend.onlinetest.logigear.com to PHP server 
 	3. Start PHP server port 80 for backend
+	4. Increase upload max size > 25M
+		upload_max_filesize = 20M
+		post_max_size = 21M
 
 II. Deploy frontend server
 	1. Add virtual host onlinetest.logigear.com to PHP server 
