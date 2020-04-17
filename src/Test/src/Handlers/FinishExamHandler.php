@@ -25,6 +25,12 @@ class FinishExamHandler implements RequestHandlerInterface
     {
         $messages = [];
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
+        $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class);
+        $examOfCandidateInfo = $doExamAuthorizationService->getCandidateInfo();
+        
+        $dto->examId = $examOfCandidateInfo->examId;
+        $dto->candidateId = $examOfCandidateInfo->candidateId;
+        
         $doExamResultService = $this->container->get(DoExamResultServiceInterface::class);
         $ret = $doExamResultService->finish($dto, $messages);
 

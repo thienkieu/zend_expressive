@@ -15,11 +15,13 @@ class PinService implements PinServiceInterface, HandlerInterface
     private $container;
     private $dm;
     private $options;
+    private $translator;
 
     public function __construct($container, $options) {
         $this->container = $container;
         $this->options = $options;
-        $this->dm = $this->container->get('documentManager');        
+        $this->dm = $this->container->get('documentManager'); 
+        $this->translator = $this->container->get(\Config\AppConstant::Translator);       
     }
 
     public function isHandler($dto, $options = []){
@@ -57,6 +59,10 @@ class PinService implements PinServiceInterface, HandlerInterface
 
         $listeningService = $this->container->get(DoExamResultListeningService::class);
         $examResultDocument = $examResultRepository->findOneBy(['examId'=>$examId, 'candidate.id'=>$candiateId]);
+        if (!$examResultDocument) {
+            $messages[] = $this->translator->translate('Your pin is still valid.');
+            return false; 
+        }
         $examResultDocument->setLatestConnectionTime(null);
         $examResultDocument->setLatestDisconnect(null);
         

@@ -103,6 +103,7 @@ abstract class AppConstant
     
     const AuthenticationExcludeUrl = 'authenticationExcludeUrl';  
     const authenticationExcludeToken = 'authenticationExcludeToken';  
+    const authenticationRequirePin = 'authenticationRequirePin';
 
     const DisconnectReason_Refresh = 'reload';
     const DisconnectReason_Network = 'Network';   

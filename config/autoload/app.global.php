@@ -124,7 +124,7 @@ return [
         'home',
         'api.token',
         'exam.enterPin',
-        'exam.updateAnswer',
+        'user.updateAnswer',
         'exam.synchronyTime',
         'exam.finish',
         'question.types',
@@ -143,5 +143,17 @@ return [
         'exam.clickToListen',
         'exam.updateDisconnect',
         'exam.updateTimeout'
+    ],
+
+    'authenticationRequirePin' => [
+        'exam.doExam',
+        'user.updateAnswer',
+        'exam.synchronyTime',
+        'exam.finish',
+        'exam.listeningFinished',
+        'exam.clickToListen',
+        'exam.updateDisconnect',
+        'exam.updateTimeout'
     ]
+
 ];

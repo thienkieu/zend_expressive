@@ -21,6 +21,7 @@ return [
         'exam.addResult'    =>   \Test\DTOs\ExamResult\ExamResultDTO::class,
         'test.viewSampleExam' => \Test\DTOs\Test\BaseTestDTO::class,
         'exam.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,
+        'user.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,
         'exam.updateQuestionMark' => \Test\DTOs\ExamResult\UpdateQuestionMarkDTO::class,
         'exam.updateSectionMark' => \Test\DTOs\ExamResult\UpdateSectionMarkDTO::class,
         'question.type.create'  => \Test\DTOs\Question\TypeDTO::class,

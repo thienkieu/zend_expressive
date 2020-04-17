@@ -35,7 +35,7 @@ class ConfigProvider
             'home',
             'api.token',
             'exam.enterPin',
-            'exam.updateAnswer',
+            'user.updateAnswer',
             'exam.synchronyTime',
             'exam.finish',
             'question.types',

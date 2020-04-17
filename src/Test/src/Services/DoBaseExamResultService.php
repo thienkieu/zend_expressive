@@ -277,6 +277,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
     public function updateAnswer($dto, & $messages) {
         try {
+            
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
             $document = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId());
             if (!$document) {
@@ -286,7 +287,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
             $isPinValid = $this->isPinValid($dto->getExamId(), $dto->getCandidateId());
             if (!$isPinValid) {
-                $messages[] = $this->translator->translate('Your cannot finish this exam because this exam have been finished!');
+                $messages[] = $this->translator->translate('Your pin ins not valid.');
                 return false;
             }
 
@@ -312,7 +313,8 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
     }
 
     protected function updateSubQuestionAnswer(& $examResult, $dto) {        
-    
+        $ex = new \Test\Exceptions\UpdateAnswerException('There isnot service to handle update answer');
+        throw $ex;
     }
 
     protected function getSection(& $examResult, $dto) {

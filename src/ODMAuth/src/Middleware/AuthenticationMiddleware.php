@@ -16,6 +16,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Zend\Expressive\Authentication\AuthenticationInterface;
 use Zend\Expressive\Authentication\UserInterface;
 use Zend\Expressive\Router\RouteResult;
+use Config\AppConstant;
+use Zend\Diactoros\Response\JsonResponse;
 
 class AuthenticationMiddleware extends \Zend\Expressive\Authentication\AuthenticationMiddleware
 {
@@ -40,34 +42,50 @@ class AuthenticationMiddleware extends \Zend\Expressive\Authentication\Authentic
         $config = $this->container->get(\Config\AppConstant::AppConfig);
         $authenticationExcludeUrl = $config[\Config\AppConstant::AuthenticationExcludeUrl];
         
+
+        //Don't verify for hardcode token form other system such as CRM
         $token = $request->getHeader('Authorization');
         $authenticationExcludeToken = $config[\Config\AppConstant::authenticationExcludeToken];
         if (count($token) > 0 && in_array($token[0], $authenticationExcludeToken)) {
             return $handler->handle($request);
         }
         
+        //Require login for specify url
         $rotuer = $request->getAttribute(RouteResult::class);
         $routerName = $rotuer->getMatchedRouteName(); 
         if ($routerName && !in_array($routerName, $authenticationExcludeUrl)) { 
             $user = $this->auth->authenticate($request);
-            if (null !== $user) {
+            if ($user) {
                 $authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class, ['user' => $user]);
                 $authorizationService->setUser($user);
                 $ok = $authorizationService->isAllow($user->getIdentity(), $routerName, $messages);
                 if ($ok) {
                     return $handler->handle($request->withAttribute(UserInterface::class, $user));
-                }                
+                } else {
+                    $translator = $this->container->get(AppConstant::Translator);
+                    return new JsonResponse([
+                        'isSuccess' => false, 
+                        'messages'  => $translator->translate('You donot have permissions'),
+                        'data' => new \stdClass(),
+                    ], 403);
+                }             
             }
 
             return $this->auth->unauthorizedResponse($request);
         }
+        
+        $authenticationRequirePin = $config[\Config\AppConstant::authenticationRequirePin];
+        if ($routerName && in_array($routerName, $authenticationRequirePin)) {
+            $user = $this->auth->authenticate($request);
+            if ($user) {
+                $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class, ['user' => $user]);
+                $doExamAuthorizationService->setCandidateInfo($user);
+                return $handler->handle($request);
+            }
 
-        $user = $this->auth->authenticate($request);
-        if ($user) {
-            $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class, ['user' => $user]);
-            $doExamAuthorizationService->setCandidateInfo($user);
+            return $this->auth->unauthorizedResponse($request);
         }
-
+        
         return $handler->handle($request);
     }
 }

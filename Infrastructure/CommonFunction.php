@@ -73,10 +73,10 @@ class CommonFunction
         if ($data === null) $data = new \stdClass();
         
         return new JsonResponse([
-            'isSuccess' => $status,      
+            'isSuccess' => $status, 
             'messages'  => $messages,
             'data' => $data
-        ]);
+        ], $status === true ? 200 : 400);
     }
 
     public static function getPageNumber($data, $defaultValue) {
