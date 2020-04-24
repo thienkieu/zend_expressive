@@ -110,8 +110,8 @@ class ConfigProvider
                 Handlers\GetExamTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateListeningFinishHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateListeningClickToListenHandler::class => \Infrastructure\Factory\BaseFactory::class,
-                Handlers\UpdateDisconnectHandler::class => \Infrastructure\Factory\BaseFactory::class,
-                Handlers\UpdateTimeoutHandler::class => \Infrastructure\Factory\BaseFactory::class,
+               
+               
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Validators\CreateQuestionValidatorAdapter::class => InvokableFactory::class,
@@ -142,7 +142,7 @@ class ConfigProvider
                 Services\Interfaces\ExportServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\ExportService::class => \Infrastructure\Factory\BaseFactory::class,
 
-                Services\DoExamResultListeningServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                
                 Services\DoExamResultListeningService::class => \Infrastructure\Factory\BaseFactory::class,
 
 
@@ -172,6 +172,8 @@ class ConfigProvider
                 Services\DoExamResultWritingService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoExamResultRepeatTimesService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoBaseExamResultService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\TrackingConnectServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\TrackingConnectService::class => \Infrastructure\Factory\BaseFactory::class,
             ],
 
             'aliases' => [

@@ -10,4 +10,6 @@ Interface DoExamAuthorizationServiceInterface
 {
     public function setCandidateInfo($candidateInfo);
     public function getCandidateInfo();
+    public function getToken();
+    public function setToken($token);
 }

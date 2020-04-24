@@ -20,6 +20,7 @@ use Tuupola\Middleware\CorsMiddleware;
 use Infrastructure\i18n\LocaleMiddleware;
 use Infrastructure\Convertor\RequestToDTOMiddleware;
 use Infrastructure\Middleware\UploadFileMiddleware;
+use Infrastructure\Middleware\LogMiddleware;
 use ODMAuth\Middleware\AuthenticationMiddleware;
 
 /**
@@ -64,12 +65,11 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     
     $app->pipe(LocaleMiddleware::class);
     $app->pipe(CorsMiddleware::class);
+    $app->pipe(LogMiddleware::class);
     $app->pipe(AuthenticationMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);    
     $app->pipe(BodyParamsMiddleware::class);
     $app->pipe(UploadFileMiddleware::class);
-    
-    
     $app->pipe(RequestToDTOMiddleware::class);
     // Seed the UrlHelper with the routing results:
     $app->pipe(UrlHelperMiddleware::class);

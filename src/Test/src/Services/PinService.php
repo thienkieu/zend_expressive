@@ -57,22 +57,9 @@ class PinService implements PinServiceInterface, HandlerInterface
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultDocument::class);
         $newPin = \Infrastructure\CommonFunction::generateUniquePin(1);
 
-        $listeningService = $this->container->get(DoExamResultListeningService::class);
-        $examResultDocument = $examResultRepository->findOneBy(['examId'=>$examId, 'candidate.id'=>$candiateId]);
-        if (!$examResultDocument) {
-            $messages[] = $this->translator->translate('Your pin is still valid.');
-            return false; 
-        }
-        $examResultDocument->setLatestConnectionTime(null);
-        $examResultDocument->setLatestDisconnect(null);
-        
-        $needUpdate = $listeningService->correctRemainRepeatListeningQuestion(\Config\AppConstant::DisconnectReason_Network, $examResultDocument);
-        if ($needUpdate) {
-            $this->dm->flush();
-        }       
-
-        $result =  $examRepository->refreshPin($examId, $candiateId, $newPin[0]);
-        if ($result['ok'] != 1) {
+        $examStatus =  $examRepository->refreshPin($examId, $candiateId, $newPin[0]);
+        $examResultStatus =  $examRepository->refreshPin($examId, $candiateId, $newPin[0]);
+        if ($examStatus['ok'] != 1 ) {
             $messages[] = $this->translator->translate('There is problem with refresh pin with candidate \'%candidateId%\', Please check with admin.', ['%candidateId%' => $candiateId]);
             return false; 
         }

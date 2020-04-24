@@ -80,7 +80,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
 
             $doExamAuthorizationService = $this->container->get(\ODMAuth\Services\Interfaces\DoExamAuthorizationServiceInterface::class);
             $examOfCandidateInfo = $doExamAuthorizationService->getCandidateInfo();
-
+            $token = $doExamAuthorizationService->getToken();
             $candidates = $examDocument->getCandidates();
             $candidate = $candidates[0];
             
@@ -89,36 +89,33 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 return false;
             }
 
+            $trackingConnect = $this->container->get(\Test\Services\TrackingConnectServiceInterface::class);
+            
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
             $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
             $examResultDocument = $examResultRepository->getExamResult($examDocument->getId(), $candidate->getId(), '');
             if ($examResultDocument) {
                 $isPinValid = $examResultDocument->getCandidate()->getIsPinValid();
                 if ($isPinValid) {
-                    $latestDisconnectTime = $examResultDocument->getLatestDisconnect();
+                    $latestDisconnectTime = $trackingConnect->getLatestDisconnect($token);
                     $latestConnectTime = $examResultDocument->getLatestConnectionTime();
-                    if (!$latestDisconnectTime || $latestConnectTime > $latestDisconnectTime) {
-                        sleep(15);
-                    }
-
-                    if ($examResultDocument) {
-                        $this->dm->refresh($examResultDocument);
-                    } else {
-                        $examResultDocument = $examResultRepository->getExamResult($examDocument->getId(), $candidate->getId(), '');
-                    }
+                    $examRemain = $examResultDocument->getRemainTime();
+                   
                     
-                    // socket wait 15 second for notify disconnect.
-                    /*if ($dto->reason !== \Config\AppConstant::DisconnectReason_Refresh) {
-                        $logger = $this->container->get(Logger::class);
-                        $logger->info('add 20 second');
-                        $examRemain = $examResultDocument->getRemainTime();
-                        $examTime = $examResultDocument->getTime();
-                        if ($examTime < ($examRemain + 20)) {
-                            $examResultDocument->setRemainTime($examRemain + 20);
-                        }
-                        
-                    }*/
+                    $examTotalSpendingTime = $examResultDocument->getTotalSpendingTime() ? $examResultDocument->getTotalSpendingTime() : 0;
+                    $examTime = $examResultDocument->getTime() * 60;
 
+                    $currentSpending = $latestDisconnectTime - $latestConnectTime;
+                    $remainTime = $examTime - ($examTotalSpendingTime + $currentSpending);        
+                    if ($examRemain > $remainTime) {
+                        if ($remainTime > $examTime ) $remainTime = $examTime;
+                        if ($currentSpending < 0 ) $currentSpending = 0;
+                        $examResultDocument->setRemainTime($remainTime);
+                    }                
+                            
+                    $examResultDocument->setTotalSpendingTime($examTotalSpendingTime + $currentSpending);
+                    $examResultDocument->setLatestDisconnect($latestDisconnectTime);
+                    
                     
                     $listeningService = $this->container->get(DoExamResultListeningService::class);
                     $needUpdate = $listeningService->correctRemainRepeatListeningQuestion($dto->reason, $examResultDocument);
@@ -131,6 +128,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                     $this->updateRemainingListeningTime($results);
                     $this->inValidPin($examDocument->getId(), $candidate->getId());
                     return true;
+
                 } 
                 
                 $messages[] = $this->translator->translate('Your pin \'%pin%\' is not valid, Please notify to admin to get new pin', ['%pin%' => $dto->pin]);

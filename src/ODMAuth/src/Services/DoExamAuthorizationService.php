@@ -18,6 +18,7 @@ class DoExamAuthorizationService implements Interfaces\DoExamAuthorizationServic
     protected $options;
     protected $translator= null;
     protected $candidateInfo = null;
+    protected $token = null;
 
     public function __construct($container, $options = []) {
         $this->container = $container;
@@ -44,5 +45,13 @@ class DoExamAuthorizationService implements Interfaces\DoExamAuthorizationServic
 
     public function getCandidateInfo() {
         return $this->candidateInfo;
+    }
+
+    public function setToken($token) {
+        $this->token = $token;
+    }
+
+    public function getToken() {
+        return $this->token;
     }
 }

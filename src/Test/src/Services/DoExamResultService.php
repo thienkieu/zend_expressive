@@ -28,15 +28,24 @@ class DoExamResultService extends DoBaseExamResultService
         }
 
         $subQuestions = $questionInfo->getSubQuestions();
-
+        $hasUserChoose = false;
         foreach ($subQuestions as $subQuestion) {
             if ($subQuestion->getId() == $dto->getSubQuestionId()) {
                 $answers = $subQuestion->getAnswers();
                 foreach ($answers as $answer) {
-                    $answer->setIsUserChoice($this->getAnswerStatus($answer->getId(), $dto->getAnswers()));
+                    $answerStatus = $this->getAnswerStatus($answer->getId(), $dto->getAnswers());
+                    if($answerStatus === true) {
+                        $hasUserChoose = true;
+                    }
+                    $answer->setIsUserChoice($answerStatus);
                 }
                 break;
             }
+        }
+
+        if ($hasUserChoose === false) {
+            $message = $this->translator->translate('cannot found your answer');
+            throw new \Test\Exceptions\UpdateAnswerException($message); 
         }
     }
 

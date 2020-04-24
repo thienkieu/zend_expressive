@@ -45,9 +45,7 @@ return [
         \Test\Services\Interfaces\ExportServiceInterface::class => [
             \Test\Services\ExportService::class,
         ],
-        \Test\Services\DoExamResultListeningServiceInterface::class => [
-            \Test\Services\DoExamResultListeningService::class,
-        ],
+        
         \Test\Services\Question\QuestionServiceInterface::class => [
             \Test\Services\Question\ReadingQuestionService::class,
             \Test\Services\Question\WritingQuestionService::class,
@@ -67,5 +65,9 @@ return [
             \Test\Services\DoExamResultListeningClickToListenService::class,
             \Test\Services\DoBaseExamResultService::class,
         ],
+        
+        \Test\Services\TrackingConnectServiceInterface::class => [
+            \Test\Services\TrackingConnectService::class
+        ]
     ],
 ];

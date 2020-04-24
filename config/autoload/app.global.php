@@ -59,7 +59,7 @@ return [
             [
                 'name' => 'stream',
                 'options' => [
-                    'stream' => $dir.'/../Logs/'.date('Y-m-d').'.txt',
+                    'stream' => $dir.'/../Logs/'.date('Y-m-d-H').'.txt',
                     'filters' => [
                         'allMessages' => [
                             'name' => 'priority',
@@ -113,6 +113,14 @@ return [
         'candidates' => 'http://192.168.190.92:8089/Portal/ExcuteByCommand/GetCandiates'
        // 'candidates' => 'http://localhost:12346/Portal/ExcuteByCommand/GetCandiates'
     ],
+
+    'TRACKING_CONNECT' => [
+        'latestDisConnectURL' => 'http://localhost:3000/getLatestDisconenct',
+        'writeLogURL' => 'http://localhost:3000/writeLog',
+        'enableLogFile' => true,
+
+       // 'candidates' => 'http://localhost:12346/Portal/ExcuteByCommand/GetCandiates'
+    ],
     
     'authenticationExcludeToken' => [
         'Bearer CRMbackend'
@@ -141,8 +149,7 @@ return [
         'exam.exportExamResultSummary',
         'exam.listeningFinished',
         'exam.clickToListen',
-        'exam.updateDisconnect',
-        'exam.updateTimeout'
+       
     ],
 
     'authenticationRequirePin' => [
@@ -152,8 +159,6 @@ return [
         'exam.finish',
         'exam.listeningFinished',
         'exam.clickToListen',
-        'exam.updateDisconnect',
-        'exam.updateTimeout'
     ]
 
 ];

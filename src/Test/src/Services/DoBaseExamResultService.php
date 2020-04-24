@@ -34,43 +34,6 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         return false;
     }
 
-    public function updateTimeoutExam($dto, &$messages) {
-        $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
-        $examResult = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
-        if (!$examResult) {
-            $messages[] = $this->translator->translate('Exam not found');
-            return false;
-        }
-
-        $latestDisconnect = $examResult->getLatestDisconnect();
-        if ($latestDisconnect) {
-            $messages[] = $this->translator->translate('Do not decrease time when candidate disconnect');
-            return false;
-        }
-
-        $examTime = $examResult->getTime() * 60;
-        $startTime = $examResult->getLatestConnectionTime();
-        $examTotalSpendingTime = $examResult->getTotalSpendingTime() ? $examResult->getTotalSpendingTime() : 0;
-        $examRemain = $examResult->getRemainTime();
-        $currentTime = time();
-
-        $examRemain = $examRemain - 15; //$examTime - ($examTotalSpendingTime + ($currentTime - $startTime));
-       // if ($examRemain > $remainTime) {
-            if ($examRemain <= 0) {
-                $dto->remainTime = $examRemain;
-                $this->finish($dto, $messages);
-            } else {
-                $examResult->setRemainTime($examRemain);
-                $this->dm->flush();
-            }
-            
-        //}
-       
-        $messages[] = $this->translator->translate('Your exam has been synchonied time.');
-        return true;
-
-    }
-
     public function removeExamResultByExamId($examId) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $examResultRepository->removeResultByExamId($examId);
@@ -293,7 +256,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
             $remaintTime = $document->getRemainTime();
             if ($remaintTime <= 0) {
-                $messages[] = $this->translator->translate('Your answer have been updated!');
+                $messages[] = $this->translator->translate('Exam is timeout!');
                 return false; 
             }
 

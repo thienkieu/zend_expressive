@@ -73,6 +73,10 @@ abstract class AppConstant
     
     //external site
     const CRM = 'CRM';
+    const TRACKING_CONNECT = 'TRACKING_CONNECT';
+    const LatestDisConnectURL = 'latestDisConnectURL';
+    const WriteLogURL = 'writeLogURL';
+    const EnableLogFile = 'enableLogFile';
     const Candidate = 'candidates';
 
     // pagination config

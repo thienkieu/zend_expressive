@@ -16,6 +16,22 @@ use time;
 
 class ExamResultHasSectionTestRepository extends DocumentRepository
 {
+    public function refreshPin($examId, $candidateId) {
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+                    ->updateOne()
+                    
+                    ->field('examId')->equals($examId)
+                    ->field('candidate.id')->equals($candidateId)
+                    
+                    ->field('candidate.$.isPinValid')->set(true)
+                    ->getQuery()
+                    ->execute();
+        
+        return $result;
+
+    }
+
     public function inValidPinByCandidateId($examId, $candidateId) {
         $queryBuilder = $this->createQueryBuilder();
         $result = $queryBuilder
