@@ -9,7 +9,7 @@ use time;
  * @ODM\Document(collection="exam_result")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField("type")
- * @ODM\DiscriminatorMap({"testWithSection"="ExamResultHasSectionTestDocument", "normal"="ExamResultNormalDocument"})
+ * @ODM\DiscriminatorMap({"testWithSection"=Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class, "normal"=Test\Documents\ExamResult\ExamResultNormalDocument::class})
  */
 
 class ExamResultDocument
@@ -18,7 +18,7 @@ class ExamResultDocument
   /** @ODM\Id */
   protected $id;
 
-  /** @ODM\EmbedOne(targetDocument="CandidateDocument") */
+  /** @ODM\EmbedOne(targetDocument=Test\Documents\ExamResult\CandidateDocument::class) */
   private $candidate;
 
   /** @ODM\Field(type="string") */
@@ -51,7 +51,7 @@ class ExamResultDocument
   /** @ODM\Field(type="int") */
   protected $totalSpendingTime;
 
-  /** @ODM\EmbedMany(targetDocument="\Test\Documents\Exam\ExamResultSummaryDocument") */
+  /** @ODM\EmbedMany(targetDocument=Test\Documents\Exam\ExamResultSummaryDocument::class) */
   protected $resultSummary;
 
   /**

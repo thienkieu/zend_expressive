@@ -4,7 +4,7 @@ namespace ODMAuth\Documents;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /** 
- * @ODM\Document(collection="oauth_permissions", repositoryClass="\ODMAuth\Repositories\PermissionRepository")
+ * @ODM\Document(collection="oauth_permissions", repositoryClass=ODMAuth\Repositories\PermissionRepository::class)
  */
 
 class PermissionDocument

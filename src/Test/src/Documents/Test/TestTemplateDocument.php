@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="test_template", repositoryClass="\Test\Repositories\TestTemplateRepository")
+ * @ODM\Document(collection="test_template", repositoryClass=Test\Repositories\TestTemplateRepository::class)
  */
 
 class TestTemplateDocument
@@ -25,11 +25,11 @@ class TestTemplateDocument
   /** @ODM\Field(type="date") */
   protected $createDate;
 
-  /** @ODM\EmbedMany(targetDocument="SectionDocument") */
+  /** @ODM\EmbedMany(targetDocument=Test\Documents\Test\SectionDocument::class) */
   private $sections;
   
   /**
-  * @ODM\ReferenceOne(targetDocument="\ODMAuth\Documents\UserDocument", storeAs="id")
+  * @ODM\ReferenceOne(targetDocument=ODMAuth\Documents\UserDocument::class, storeAs="id")
   */
   private $user;
 

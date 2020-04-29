@@ -2,17 +2,17 @@
 declare(strict_types=1);
 
 namespace ODMAuth\Repositories;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 class PermissionRepository extends DocumentRepository
 {
     public function getPermissions($filterData, $itemPerPage, $pageNumber) {
+        $totalDocumentQuery = $this->getFilterQuery($filterData);
+        $totalDocument = $totalDocumentQuery->count()->getQuery()->execute();        
+        
         $filterQuery = $this->getFilterQuery($filterData);
-        $totalDocument = $filterQuery->getQuery()->execute()->count();        
-        
-        
         if (!empty($itemPerPage)) {
-            $filterQuery = $filterQuery->limit($itemPerPage)
+            $filterQuery = $filterQuery->limit((int)$itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1));
         }
         

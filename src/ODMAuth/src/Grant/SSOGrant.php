@@ -50,11 +50,12 @@ class SSOGrant extends AbstractGrant
         ResponseTypeInterface $responseType,
         DateInterval $accessTokenTTL
     ) {
+        
         // Validate request
         $client = $this->validateClient($request);
         $scopes = $this->validateScopes($this->getRequestParameter('scope', $request, $this->defaultScope));
         $user = $this->validateUser($request, $client);
-
+       
         // Finalize the requested scopes
         $finalizedScopes = $this->scopeRepository->finalizeScopes($scopes, $this->getIdentifier(), $client, $user->getIdentifier());
 
@@ -62,6 +63,7 @@ class SSOGrant extends AbstractGrant
         $accessToken = $this->issueAccessToken($accessTokenTTL, $client, $user->getIdentifier(), $finalizedScopes);
         $refreshToken = $this->issueRefreshToken($accessToken);
 
+       
         // Send events to emitter
         $this->getEmitter()->emit(new RequestEvent(RequestEvent::ACCESS_TOKEN_ISSUED, $request));
         $this->getEmitter()->emit(new RequestEvent(RequestEvent::REFRESH_TOKEN_ISSUED, $request));

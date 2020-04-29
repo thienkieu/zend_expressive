@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="oauth_access_tokens", repositoryClass="\ODMAuth\Repositories\AccessTokenRepository")
+ * @ODM\Document(collection="oauth_access_tokens", repositoryClass=ODMAuth\Repositories\AccessTokenRepository::class)
  */
 
 class AccessTokenDocument

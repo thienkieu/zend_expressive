@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="type", repositoryClass="\Test\Repositories\TypeRepository")
+ * @ODM\Document(collection="type", repositoryClass=Test\Repositories\TypeRepository::class)
  */
 
 class TypeDocument
@@ -22,7 +22,7 @@ class TypeDocument
   protected $subTypes;
 
   /**
-  * @ODM\ReferenceOne(targetDocument="TypeDocument", storeAs="id")
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\TypeDocument::class, storeAs="id")
   */
   private $parentType;
 

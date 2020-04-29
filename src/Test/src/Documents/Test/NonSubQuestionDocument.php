@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class NonSubQuestionDocument extends QuestionDocument
 {
-    /** @ODM\EmbedMany(targetDocument="\Test\Documents\Question\AnswerDocument") */
+    /** @ODM\EmbedMany(targetDocument=Test\Documents\Question\AnswerDocument::class) */
     private $answers;
 
     public function __construct()

@@ -330,7 +330,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $obj = $repository->find("5caac4c7ce10c916c8007032");
                
         $builder = $dm->createQueryBuilder(array(Documents\ReadingSectionDocument::class, Documents\ListeningSectionDocument::class));
-        $builder = $builder->field('questions.content')->equals(new \MongoRegex('/.*'.$content.'.*/i'));
+        $builder = $builder->field('questions.content')->equals(new \MongoDB\BSON\Regex($content, 'i'));
         $query = $builder->getQuery();
         $documents = $query->execute();
 

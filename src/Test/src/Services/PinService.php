@@ -45,7 +45,7 @@ class PinService implements PinServiceInterface, HandlerInterface
     public function inValidPin($examId, $candidateId) {
         $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
         $result =  $examRepository->inValidPinByCandidateId($examId, $candidateId);
-        if ($result['ok'] != 1) {
+        if ($result->isAcknowledged() !== true) {
             $message = $this->translator->translate('There is problem with update pin \'%pin%\', Please refresh new pin.', ['%pin%' => $pin]);
             throw new \Test\Exceptions\GenerateQuestionException($message); 
         }
@@ -59,7 +59,8 @@ class PinService implements PinServiceInterface, HandlerInterface
 
         $examStatus =  $examRepository->refreshPin($examId, $candiateId, $newPin[0]);
         $examResultStatus =  $examRepository->refreshPin($examId, $candiateId, $newPin[0]);
-        if ($examStatus['ok'] != 1 ) {
+        
+        if ($examStatus->isAcknowledged() !== true ) {
             $messages[] = $this->translator->translate('There is problem with refresh pin with candidate \'%candidateId%\', Please check with admin.', ['%candidateId%' => $candiateId]);
             return false; 
         }

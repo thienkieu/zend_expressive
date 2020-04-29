@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="oauth_mapping_function", repositoryClass="\ODMAuth\Repositories\PermissionRepository")
+ * @ODM\Document(collection="oauth_mapping_function", repositoryClass=ODMAuth\Repositories\PermissionRepository::class)
  */
 
 class MappingFunctionDocument

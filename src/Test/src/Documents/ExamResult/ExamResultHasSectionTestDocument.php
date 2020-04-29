@@ -5,12 +5,12 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(repositoryClass="\Test\Repositories\ExamResultHasSectionTestRepository")
+ * @ODM\Document(repositoryClass=Test\Repositories\ExamResultHasSectionTestRepository::class)
  */
 
 class ExamResultHasSectionTestDocument extends ExamResultDocument
 {
-  /** @ODM\EmbedOne(targetDocument="TestWithSectionDocument") */
+  /** @ODM\EmbedOne(targetDocument=Test\Documents\ExamResult\TestWithSectionDocument::class) */
   private $test;
 
   /**

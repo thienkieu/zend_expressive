@@ -19,6 +19,7 @@ return [
             $dir.'/App/src/Entity'
         ],
     ],
+    'autoloadPath' => $dir.'/../vendor/autoload.php',
     'nonsqldb' => [
         'mongodb-connection' => 'mongodb://192.168.191.79:27017/demo_2608',
         'document-path' => [

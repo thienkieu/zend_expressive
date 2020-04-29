@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="oauth_groups", repositoryClass="\ODMAuth\Repositories\GroupsRepository")
+ * @ODM\Document(collection="oauth_groups", repositoryClass=ODMAuth\Repositories\GroupsRepository::class)
  */
 
 class GroupsDocument
@@ -20,10 +20,10 @@ class GroupsDocument
   private $description;
 
 
-  /** @ODM\ReferenceMany(targetDocument="PermissionDocument", storeAs="id") */
+  /** @ODM\ReferenceMany(targetDocument=ODMAuth\Documents\PermissionDocument::class, storeAs="id") */
   private $permissionDocument;
 
-  /** @ODM\ReferenceMany(targetDocument="UserDocument", storeAs="id") */
+  /** @ODM\ReferenceMany(targetDocument=ODMAuth\Documents\UserDocument::class storeAs="id") */
   private $userDocument;
 
   public function __construct() {

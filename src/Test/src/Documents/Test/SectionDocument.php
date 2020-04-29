@@ -33,7 +33,7 @@ class SectionDocument
   /** @ODM\Field(type="string") */
   private $comment;
 
-  /** @ODM\EmbedMany(targetDocument="QuestionInfoDocument") */
+  /** @ODM\EmbedMany(targetDocument=Test\Documents\Test\QuestionInfoDocument::class) */
   private $questions;
 
   public function __construct()

@@ -7,7 +7,8 @@ if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
     return false;
 }
 
-require 'vendor/autoload.php';
+$loader = require 'vendor/autoload.php';
+
 
 /**
  * Self-called anonymous function that creates its own scope and keep the global namespace clean.

@@ -6,6 +6,7 @@ namespace App\Factory;
 
 use Psr\Container\ContainerInterface;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\MongoDB\Connection;
 use Doctrine\ODM\MongoDB\Configuration;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -23,6 +24,11 @@ class DoctrineODMFactory
         if (isset($appConfig['nonsqldb_'.$environment])) {
             $dbConfig = $appConfig['nonsqldb_'.$environment];
         }
+
+        global $loader;
+    
+        $loader->add('Documents', $dbConfig['document-path']);
+        AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
         $client = new Client($dbConfig['mongodb-connection'], [], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
         $connection = new Connection($client);
@@ -44,9 +50,9 @@ class DoctrineODMFactory
         
         
 
-        AnnotationDriver::registerAnnotationClasses();
+       // AnnotationDriver::registerAnnotationClasses();
         
-        $dm = DocumentManager::create($connection, $config);
+        $dm = DocumentManager::create($client, $config);
         
         return $dm;
     }

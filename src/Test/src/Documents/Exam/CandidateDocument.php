@@ -34,7 +34,7 @@ class CandidateDocument
   /** @ODM\Field(type="boolean") */
   protected $isPinValid = true;
 
-  /** @ODM\EmbedMany(targetDocument="\Test\Documents\Exam\ExamResultSummaryDocument") */
+  /** @ODM\EmbedMany(targetDocument=Test\Documents\Exam\ExamResultSummaryDocument::class) */
   protected $resultSummary;
 
   public function __construct()

@@ -5,7 +5,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="source", repositoryClass="\Test\Repositories\SourceRepository")
+ * @ODM\Document(collection="source", repositoryClass=Test\Repositories\SourceRepository::class)
+ * @ODM\Index(keys={"name"="text"})
  */
 
 class SourceDocument

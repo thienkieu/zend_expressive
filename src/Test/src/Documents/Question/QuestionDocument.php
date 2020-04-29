@@ -5,10 +5,10 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="questions", repositoryClass="\Test\Repositories\QuestionRepository")
+ * @ODM\Document(collection="questions", repositoryClass=Test\Repositories\QuestionRepository::class)
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField("documentType")
- * @ODM\DiscriminatorMap({"reading"="ReadingQuestionDocument", "listening"="ListeningQuestionDocument", "writing"="WritingQuestionDocument", "nonSub"="NonSubQuestionDocument", "verbal"="VerbalQuestionDocument", "normal"="QuestionDocument"})
+ * @ODM\DiscriminatorMap({"reading"=Test\Documents\Question\ReadingQuestionDocument::class, "listening"=Test\Documents\Question\ListeningQuestionDocument::class, "writing"=Test\Documents\Question\WritingQuestionDocument::class, "nonSub"=Test\Documents\Question\NonSubQuestionDocument::class, "verbal"=Test\Documents\Question\VerbalQuestionDocument::class, "normal"=Test\Documents\Question\QuestionDocument::class})
  */
 
 class QuestionDocument
@@ -23,7 +23,7 @@ class QuestionDocument
   protected $order;
 
   /**
-  * @ODM\ReferenceOne(targetDocument="TypeDocument", simple=true)
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\TypeDocument::class, storeAs="id")
   */
   protected $type;
 
@@ -34,7 +34,7 @@ class QuestionDocument
   protected $parentTypeId;
 
   /**
-  * @ODM\ReferenceOne(targetDocument="SourceDocument", simple=true)
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\SourceDocument::class, storeAs="id")
   */
   protected $source;
   

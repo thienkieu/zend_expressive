@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class TestWithSectionDocument extends BaseTestDocument
 {
-  /** @ODM\EmbedMany(targetDocument="\Test\Documents\Test\SectionDocument") */
+  /** @ODM\EmbedMany(targetDocument=Test\Documents\Test\SectionDocument::class) */
   private $sections;
   
   public function __construct()

@@ -10,16 +10,17 @@ declare(strict_types=1);
 
 namespace Test\Repositories;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
 
 class TestTemplateRepository extends DocumentRepository
 {
     public function getTemplateWithPagination($filterData, $itemPerPage, $pageNumber) {
+        $totalDocumentQuery = $this->getFilterQuery($filterData);
+        $totalDocument = $totalDocumentQuery->count()->getQuery()->execute(); 
+
         $filterQuery = $this->getFilterQuery($filterData);
-        $totalDocument = $filterQuery->getQuery()->execute()->count();  
-          
-        $data = $filterQuery->limit($itemPerPage)
+        $data = $filterQuery->limit((int)$itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1))
                                     ->sort('createDate', 'desc')
                                     ->getQuery()
@@ -34,8 +35,8 @@ class TestTemplateRepository extends DocumentRepository
         $queryBuilder = $this->createQueryBuilder();
         if (!empty($filterData->title)) {
             $queryBuilder
-                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoRegex('/.*'.$filterData->title.'*/i')))
-                ->addOr($queryBuilder->expr()->field('sections.description')->equals(new \MongoRegex('/.*'.$filterData->title.'*/i')));
+                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoDB\BSON\Regex($filterData->title, 'i')))
+                ->addOr($queryBuilder->expr()->field('sections.description')->equals(new \MongoDB\BSON\Regex($filterData->title, 'i')));
             
         }
         

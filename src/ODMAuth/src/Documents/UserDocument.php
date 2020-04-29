@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="oauth_users", repositoryClass="\ODMAuth\Repositories\UserRepository")
+ * @ODM\Document(collection="oauth_users", repositoryClass=ODMAuth\Repositories\UserRepository::class)
  */
 
 class UserDocument
@@ -28,7 +28,7 @@ class UserDocument
   /** @ODM\Field(type="string") */
   private $lastName;
 
-  /** @ODM\ReferenceMany(targetDocument="PermissionDocument", storeAs="id") */
+  /** @ODM\ReferenceMany(targetDocument=ODMAuth\Documents\PermissionDocument::class, storeAs="id") */
   private $permissionDocument;
 
   public function __construct() {

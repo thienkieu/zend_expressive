@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="oauth_clients", repositoryClass="\ODMAuth\Repositories\ClientRepository")
+ * @ODM\Document(collection="oauth_clients", repositoryClass=ODMAuth\Repositories\ClientRepository::class)
  */
 
 class ClientDocument

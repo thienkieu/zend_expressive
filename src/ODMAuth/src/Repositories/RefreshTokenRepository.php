@@ -28,10 +28,9 @@ class RefreshTokenRepository extends AbstractRepository implements RefreshTokenR
         $refreshTokenDocument->setId($refreshTokenEntity->getIdentifier());
         $refreshTokenDocument->setAccessTokenId($refreshTokenEntity->getAccessToken()->getIdentifier());
         $refreshTokenDocument->setRevoked(0);
-        $refreshTokenDocument->setExpiresAt(date(
-            'Y-m-d H:i:s',
+        $refreshTokenDocument->setExpiresAt(
             $refreshTokenEntity->getExpiryDateTime()->getTimestamp()
-        ));
+        );
 
         try{
             $this->dm->persist($refreshTokenDocument);

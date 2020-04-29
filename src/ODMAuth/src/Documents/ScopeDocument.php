@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="oauth_scopes", repositoryClass="\ODMAuth\Repositories\ScopeRepository")
+ * @ODM\Document(collection="oauth_scopes", repositoryClass=ODMAuth\Repositories\ScopeRepository::class)
  */
 
 class ScopeDocument

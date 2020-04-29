@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Test\Repositories;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 class BaseTestRepository extends DocumentRepository
 {

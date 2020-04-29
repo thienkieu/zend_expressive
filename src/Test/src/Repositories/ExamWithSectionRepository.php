@@ -86,7 +86,7 @@ class ExamWithSectionRepository extends DocumentRepository
         //echo '<pre>'.print_r($command, true).'</pre>'; die;
 
         $candidateDocument = null;
-        $document = $command->getSingleResult();
+        $document = $command->current();
         
         return $document;
     }

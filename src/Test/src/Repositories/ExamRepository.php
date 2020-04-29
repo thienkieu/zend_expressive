@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Test\Repositories;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
 use  Doctrine\MongoDB\Query\Expr;
 use date;
@@ -81,7 +81,7 @@ class ExamRepository extends DocumentRepository
         //echo '<pre>'.print_r($command, true).'</pre>'; die;
 
         $candidateDocument = null;
-        $document = $command->getSingleResult();
+        $document = $command->current();
         
        
         return $document;
@@ -106,17 +106,19 @@ class ExamRepository extends DocumentRepository
         //echo '<pre>'.print_r($command, true).'</pre>'; die;
 
         $candidateDocument = null;
-        $document = $command->getSingleResult();
+        $document = $command->current();
         
         return $document;
     }
 
     public function getExamWithPagination($filterCriterial, $itemPerPage, $pageNumber) {
+        $totalDocumentQuery = $this->getFilterQuery($filterCriterial);
+        $totalDocument = $totalDocumentQuery->count()->getQuery()->execute(); 
+
         $filterQuery = $this->getFilterQuery($filterCriterial);
-        $totalDocument = $filterQuery->getQuery()->execute()->count();    
         $queryArray = $filterQuery->getQueryArray();
         //echo '<pre>'.print_r($queryArray, true).'</pre>'; die;
-        $data = $filterQuery->limit($itemPerPage)
+        $data = $filterQuery->limit((int)$itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1))
                                     ->sort('createDate', 'desc')
                                     ->getQuery()
@@ -137,8 +139,11 @@ class ExamRepository extends DocumentRepository
         if (!empty($filterData->getTitle())) {
             $queryBuilder->addAnd(
                 $queryBuilder->expr()
-                ->addOr($queryBuilder->expr()->field('test.title')->equals(new \MongoRegex('/'.$filterData->getTitle().'/i')))
-                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoRegex('/'.$filterData->getTitle().'/i')))
+                ->addOr($queryBuilder->expr()->field('test.title') ->equals(new \MongoDB\BSON\Regex($filterData->getTitle(), 'i')))
+                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoDB\BSON\Regex($filterData->getTitle(), 'i')))
+
+                ->addOr($queryBuilder->expr()->field('test.title')->equals(new \MongoDB\BSON\Regex($filterData->getTitle(), 'i')))
+                ->addOr($queryBuilder->expr()->field('title')->equals(new \MongoDB\BSON\Regex($filterData->getTitle(), 'i')))
             );
 
         }
@@ -147,8 +152,8 @@ class ExamRepository extends DocumentRepository
             $queryBuilder->addAnd(
                 $queryBuilder->expr()
                 ->addOr($queryBuilder->expr()->field('candidates.objectId')->equals($filterData->getCandidateIdOrNameOrEmail()))
-                ->addOr($queryBuilder->expr()->field('candidates.email')->equals(new \MongoRegex('/'.$filterData->getCandidateIdOrNameOrEmail().'/i')))
-                ->addOr($queryBuilder->expr()->field('candidates.name')->equals(new \MongoRegex('/'.$filterData->getCandidateIdOrNameOrEmail().'/i')))
+                ->addOr($queryBuilder->expr()->field('candidates.email')->equals(new \MongoDB\BSON\Regex($filterData->getCandidateIdOrNameOrEmail(), 'i')))
+                ->addOr($queryBuilder->expr()->field('candidates.name')->equals(new \MongoDB\BSON\Regex($filterData->getCandidateIdOrNameOrEmail(), 'i')))
             );
         }
 

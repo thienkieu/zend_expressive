@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Test\Repositories;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
 use  Doctrine\MongoDB\Query\Expr;
 use date;
@@ -29,20 +29,22 @@ class QuestionRepository extends DocumentRepository
                             ->field('numberSubQuestion')->gte($numberSubQuestion)
                         ->sample(1)
                         ->execute()
-                        ->getSingleResult();
+                        ->current();
         
         return $question;
     }
 
     public function getQuestionWithPagination($filterData, $itemPerPage, $pageNumber) {
+        $totolDocumentQuery = $filterQuery = $this->getFilterQuery($filterData);
+        $totalDocument = $totolDocumentQuery->count()->getQuery()->execute();
+
         $filterQuery = $this->getFilterQuery($filterData);
-        $totalDocument = $filterQuery->getQuery()->execute()->count();        
         $filterQuery = $filterQuery->field('type')->prime(true)
                             ->field('source')->prime(true);
         
         
         if (!empty($itemPerPage)) {
-            $filterQuery = $filterQuery->limit($itemPerPage)
+            $filterQuery = $filterQuery->limit((int)$itemPerPage)
                                     ->skip($itemPerPage*($pageNumber-1));
         }
         
@@ -57,16 +59,15 @@ class QuestionRepository extends DocumentRepository
 
     public function getFilterQuery($filterData) {
         $builder = $this->createQueryBuilder();
-        
         $content = '';
         if (isset($filterData->content)) {
             $content = $filterData->content;
         }
         if ($content) {
             $builder = $builder
-                            ->addOr($builder->expr()->field('content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
-                            ->addOr($builder->expr()->field('subQuestions.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')))
-                            ->addOr($builder->expr()->field('subQuestions.answers.content')->equals(new \MongoRegex('/.*'.$filterData->content.'.*/i')));
+                            ->addOr($builder->expr()->field('content')->equals(new \MongoDB\BSON\Regex($filterData->content, 'i')))
+                            ->addOr($builder->expr()->field('subQuestions.content')->equals(new \MongoDB\BSON\Regex($filterData->content,'i')))
+                            ->addOr($builder->expr()->field('subQuestions.answers.content')->equals(new \MongoDB\BSON\Regex($filterData->content, 'i')));
         }
         
         $type = '';

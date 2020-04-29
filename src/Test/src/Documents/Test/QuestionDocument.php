@@ -20,12 +20,12 @@ class QuestionDocument
   private $content;
 
   /**
-  * @ODM\ReferenceOne(targetDocument="\Test\Documents\Question\TypeDocument", simple=true)
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\TypeDocument::class, storeAs="id")
   */
   private $type;
 
   /**
-  * @ODM\ReferenceOne(targetDocument="\Test\Documents\Question\SourceDocument", simple=true)
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\SourceDocument::class, storeAs="id")
   */
   private $source;
 

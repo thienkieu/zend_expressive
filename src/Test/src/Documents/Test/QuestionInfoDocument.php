@@ -15,14 +15,7 @@ class QuestionInfoDocument
   /** @ODM\Field(type="string") */
   private $generateFrom;
 
-  /** @ODM\EmbedOne(discriminatorMap={
-   *     "reading"="ReadingQuestionDocument",
-   *     "writing"="WritingQuestionDocument",
-   *     "listening"="ListeningQuestionDocument",
-   *     "random"="RandomQuestionDocument",
-   *     "verbal"="VerbalQuestionDocument", 
-   *     "nonsubquestion"="NonSubQuestionDocument" 
-   *   }) */
+  /** @ODM\EmbedOne(discriminatorMap={"reading"=Test\Documents\Test\ReadingQuestionDocument::class,"writing"=Test\Documents\Test\WritingQuestionDocument::class, "listening"=Test\Documents\Test\ListeningQuestionDocument::class, "random"=Test\Documents\Test\RandomQuestionDocument::class,"verbal"=Test\Documents\Test\VerbalQuestionDocument::class,"nonsubquestion"=Test\Documents\Test\NonSubQuestionDocument::class}) */
   private $questionInfo;
 
   /**

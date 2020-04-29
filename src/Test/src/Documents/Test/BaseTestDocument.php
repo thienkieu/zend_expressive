@@ -4,10 +4,10 @@ namespace Test\Documents\Test;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /** 
- * @ODM\Document(collection="test", repositoryClass="\Test\Repositories\BaseTestRepository")
+ * @ODM\Document(collection="test", repositoryClass=Test\Repositories\BaseTestRepository::class)
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField("type")
- * @ODM\DiscriminatorMap({"testGroup"="TestWithSectionDocument", "normal"="NormalTestDocument", "crm"="CRMTestDocument"})
+ * @ODM\DiscriminatorMap({"testGroup"=Test\Documents\Test\TestWithSectionDocument::class, "normal"=Test\Documents\Test\NormalTestDocument::class, "crm"=Test\Documents\Test\CRMTestDocument::class})
  */
 
 class BaseTestDocument

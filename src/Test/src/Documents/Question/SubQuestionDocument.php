@@ -26,7 +26,7 @@ class SubQuestionDocument
   /** @ODM\Field(type="float") */
   private $mark;
 
-  /** @ODM\EmbedMany(targetDocument="AnswerDocument") */
+  /** @ODM\EmbedMany(targetDocument=Test\Documents\Question\AnswerDocument::class) */
   private $answers;
 
   public function __construct()

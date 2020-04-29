@@ -90,6 +90,7 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
             $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
             $typeDocuments = $typeRepository->findParentType();
             
+            
             foreach($typeDocuments as $parent) {
                 $types[] = $documentToDTOConvertor->convertToDTO($parent);            
             }

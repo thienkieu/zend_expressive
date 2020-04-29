@@ -27,7 +27,7 @@ class WritingQuestionRepository extends QuestionRepository
                             ->field('source')->notIn($sources)                         
                         ->sample(1)
                         ->execute()
-                        ->getSingleResult();
+                        ->current();
         
         return $question;
     }

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Test\Repositories;
 
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
 use  Doctrine\MongoDB\Query\Expr;
 use date;

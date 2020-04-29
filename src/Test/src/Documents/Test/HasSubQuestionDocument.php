@@ -16,7 +16,7 @@ class HasSubQuestionDocument extends QuestionDocument
   /** @ODM\Field(type="int") */
   private $numberCorrectSubQuestion;
 
-  /** @ODM\EmbedMany(targetDocument="\Test\Documents\Question\SubQuestionDocument") */
+  /** @ODM\EmbedMany(targetDocument=Test\Documents\Question\SubQuestionDocument::class) */
   private $subQuestions;
   
   public function __construct()

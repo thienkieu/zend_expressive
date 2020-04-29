@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document(collection="exam", repositoryClass="\Test\Repositories\ExamRepository")
+ * @ODM\Document(collection="exam", repositoryClass=Test\Repositories\ExamRepository::class)
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  */
 
@@ -37,12 +37,12 @@ class ExamDocument
   protected $isStarted;
   
   
-  /** @ODM\EmbedMany(targetDocument="CandidateDocument") */
+  /** @ODM\EmbedMany(targetDocument=Test\Documents\Exam\CandidateDocument::class) */
   private $candidates;
   
   /** @ODM\EmbedOne(discriminatorMap={
-   *     "withSection"="\Test\Documents\ExamResult\TestWithSectionDocument",
-   *     "normal"="\Test\Documents\ExamResult\BaseTestDocument",
+   *     "withSection"=Test\Documents\ExamResult\TestWithSectionDocument::class,
+   *     "normal"=Test\Documents\ExamResult\BaseTestDocument::class,
    * }) 
    */
   private $test;
@@ -166,7 +166,7 @@ class ExamDocument
   }
 
   /**
-   * Get "withSection"="\Test\Documents\ExamResult\TestWithSectionDocument",
+   * Get "withSection"=Test\Documents\ExamResult\TestWithSectionDocument::class,
    */ 
   public function getTest()
   {
@@ -174,7 +174,7 @@ class ExamDocument
   }
 
   /**
-   * Set "withSection"="\Test\Documents\ExamResult\TestWithSectionDocument",
+   * Set "withSection"=Test\Documents\ExamResult\TestWithSectionDocument::class,
    *
    * @return  self
    */ 

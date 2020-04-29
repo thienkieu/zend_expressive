@@ -47,14 +47,14 @@ class AccessTokenRepository extends AbstractRepository implements AccessTokenRep
         $accessTokenDocument->setClientId( $accessTokenEntity->getClient()->getIdentifier());
         $accessTokenDocument->setScopes( $this->scopesToString($accessTokenEntity->getScopes()));
         $accessTokenDocument->setRevoked(0);
-        $accessTokenDocument->setExpiresAt(date(
-            'Y-m-d H:i:s',
+        $accessTokenDocument->setExpiresAt(
             $accessTokenEntity->getExpiryDateTime()->getTimestamp()
-        ));
+        );
               
         try {
             $this->dm->persist($accessTokenDocument);
             $this->dm->flush(); 
+            
         }
         catch(\Exception $e) {
             throw UniqueTokenIdentifierConstraintViolationException::create();
