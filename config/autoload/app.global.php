@@ -27,7 +27,7 @@ return [
             $dir.'/Test/src/Documents',
             $dir.'/ODMAuth/src/Documents',
         ],
-        'proxy-path' =>  $dir.'/Proxies',
+        'proxy-path' =>  $dir.'/../Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
         'dbname' => 'demo_2608',
     ],
@@ -38,7 +38,7 @@ return [
             $dir.'/Test/src/Documents',
             $dir.'/ODMAuth/src/Documents',
         ],
-        'proxy-path' =>  $dir.'/Proxies',
+        'proxy-path' =>  $dir.'/../Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
         'dbname' => 'onlinetest_dev',
     ],
@@ -50,7 +50,7 @@ return [
             $dir.'/Test/src/Documents',
             $dir.'/ODMAuth/src/Documents',
         ],
-        'proxy-path' =>  $dir.'/Proxies',
+        'proxy-path' =>  $dir.'/../Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
         'dbname' => 'onlinetest_demo',
     ],
@@ -87,7 +87,8 @@ return [
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'application/zip',
             'application/x-zip-compressed',            
-            'audio/mp3'
+            'audio/mp3',
+            'audio/mpeg'
         ],
         'extensions' => [
             'image' =>
@@ -119,6 +120,7 @@ return [
         'latestDisConnectURL' => 'http://localhost:3000/getLatestDisconenct',
         'writeLogURL' => 'http://localhost:3000/writeLog',
         'enableLogFile' => true,
+        'enableLogRemote' => false,
 
        // 'candidates' => 'http://localhost:12346/Portal/ExcuteByCommand/GetCandiates'
     ],

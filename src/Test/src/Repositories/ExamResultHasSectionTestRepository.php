@@ -111,9 +111,11 @@ class ExamResultHasSectionTestRepository extends DocumentRepository
                     ->match()
                         ->field('id')->equals($id)
                         ->field('test.sections.questions.questionInfo.isScored')->equals(false)
-                    
-                    ->execute()->count();
-        return !!$count;
+                        ->count('count')->execute()->current();
+
+                        //echo "<pre>".print_r($count['count'], true)."</pre>";die;;
+                   // ->execute();
+        return !!$count['count'];
     }
 
     public function getExamNotStartedByTestId($testId) {

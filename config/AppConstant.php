@@ -77,6 +77,8 @@ abstract class AppConstant
     const LatestDisConnectURL = 'latestDisConnectURL';
     const WriteLogURL = 'writeLogURL';
     const EnableLogFile = 'enableLogFile';
+    const EnableLogRemote = 'enableLogRemote';
+    
     const Candidate = 'candidates';
 
     // pagination config

@@ -51,7 +51,7 @@ class ExamResultDocument
   /** @ODM\Field(type="int") */
   protected $totalSpendingTime;
 
-  /** @ODM\EmbedMany(targetDocument=Test\Documents\Exam\ExamResultSummaryDocument::class) */
+  /** @ODM\EmbedMany(targetDocument=Test\Documents\Exam\ExamResultSummaryDocument::class, strategy="set") */
   protected $resultSummary;
 
   /**

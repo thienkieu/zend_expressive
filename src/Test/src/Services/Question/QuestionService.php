@@ -243,7 +243,14 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             foreach($images as $image) {
                 $path =  \Infrastructure\CommonFunction::getRealPath($image);
                 if ($path !== false && strpos($path, 'http://') === false) {
-                    \Infrastructure\CommonFunction::moveFileToFolder($path, \realpath($mediaFolder));                    
+                    $realPathMediaFolder = \realpath($mediaFolder);
+
+                    if (dirname(dirname($path)) === dirname($realPathMediaFolder)) {
+                        \Infrastructure\CommonFunction::copyFileToFolder($path, $realPathMediaFolder);
+                    } else {
+                        \Infrastructure\CommonFunction::moveFileToFolder($path, $realPathMediaFolder);
+                    }
+                  
                     $mediaFolder.\basename($path);
                     $content = str_replace($image, \Config\AppConstant::HOST_REPLACE.'/'.$mediaFolder.'/'.\basename($path), $content);
                 } 

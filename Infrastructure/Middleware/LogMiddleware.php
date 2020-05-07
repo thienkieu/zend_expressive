@@ -31,6 +31,7 @@ class LogMiddleware implements MiddlewareInterface
             $trackingConnectConfig = $appConfig[\Config\AppConstant::TRACKING_CONNECT];
             $writeLogURL = $trackingConnectConfig[\Config\AppConstant::WriteLogURL];
             $enableLogFile = $trackingConnectConfig[\Config\AppConstant::EnableLogFile];
+            $enableLogRemote = $trackingConnectConfig[\Config\AppConstant::EnableLogRemote];
            
             $logObject = [
                 'token' => $request->getHeader('Authorization'),
@@ -43,8 +44,10 @@ class LogMiddleware implements MiddlewareInterface
                 $logger = $this->container->get(\Zend\Log\Logger::class);
                 $logger->info(print_r($logObject, true));
             }
-            $this->writeLogAsyn($writeLogURL,  $logObject );
             
+            if ($enableLogRemote === true) {
+                $this->writeLogAsyn($writeLogURL,  $logObject );
+            }
         }
        
         

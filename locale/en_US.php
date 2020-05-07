@@ -8,7 +8,7 @@ return array(
     'There is error when parsed excel file, Please check with admin' => 'There is an error when parsing excel file. Please check with admin.',
     'Your test have been created successfull!' => 'Your test has been created successfully!',
     'Please upload media file.' => 'Please upload media file!',
-    'Source is not exist.' => 'Source %sourceName% does not exist. Please check spelling or create a new source first!',
+    'Source is not exist.' => 'Source "%sourceName%" does not exist. Please check spelling or create a new source first!',
     'File name is not exist.' => 'File %fileName% does not exist. Please update the media file and upload again.',
     'File is not correct format.' => 'File %file% is incorrect format.',
     'Answer can not empty at question' => 'Answer %answerIndex% cannot be empty at line %lineNumber%.',

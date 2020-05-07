@@ -29,16 +29,16 @@ return [
     'debug' => true,
     ConfigAggregator::ENABLE_CACHE => false,
     'nonsqldb' => [
-        //'mongodb-connection' => 'mongodb://localhost:27017/onlinetest',
-        'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds253017.mlab.com:53017/onlinetest_demo',
+        'mongodb-connection' => 'mongodb://localhost:27017/onlinetest',
+        //'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds253017.mlab.com:53017/onlinetest_demo?retryWrites=false',
         'document-path' => [
             $dir.'/App/src/Documents',
             $dir.'/Test/src/Documents',
             $dir.'/ODMAuth/src/Documents',
         ],
-        'proxy-path' =>  $dir.'/Proxies',
+        'proxy-path' =>  $dir.'/../Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
-        'dbname' => 'onlinetest_demo',
+        'dbname' => 'onlinetest',
     ],
     'CRM' => [
         'candidates' => 'http://192.168.190.92:8089/Portal/ExcuteByCommand/GetCandiates'

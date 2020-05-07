@@ -52,7 +52,7 @@ class DoctrineODMFactory
 
        // AnnotationDriver::registerAnnotationClasses();
         
-        $dm = DocumentManager::create($client, $config);
+        $dm = DocumentManager::create(null, $config);
         
         return $dm;
     }
