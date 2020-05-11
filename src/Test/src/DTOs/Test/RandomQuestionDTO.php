@@ -15,6 +15,9 @@ class RandomQuestionDTO extends Question implements \JsonSerializable
     
     protected $numberSubQuestion;
 
+    protected $isKeepQuestionOrder;
+
+    
     /**
      * Get the value of isDifferentSource
      *
@@ -66,8 +69,29 @@ class RandomQuestionDTO extends Question implements \JsonSerializable
         $ret->typeId = $this->getTypeId();
         $ret->numberSubQuestion = $this->getNumberSubQuestion();    
         $ret->isDifferentSource = $this->getIsDifferentSource(); 
+        $ret->isKeepQuestionOrder = $this->getIsKeepQuestionOrder();
         $ret->mark = $this->getMark();        
         
         return $ret;
+    }
+
+    /**
+     * Get the value of isKeepQuestionOrder
+     */ 
+    public function getIsKeepQuestionOrder()
+    {
+        return $this->isKeepQuestionOrder;
+    }
+
+    /**
+     * Set the value of isKeepQuestionOrder
+     *
+     * @return  self
+     */ 
+    public function setIsKeepQuestionOrder($isKeepQuestionOrder)
+    {
+        $this->isKeepQuestionOrder = $isKeepQuestionOrder;
+
+        return $this;
     }
 }

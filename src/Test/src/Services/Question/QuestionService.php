@@ -75,7 +75,11 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         }
     }
 
-    protected function limitSubQuestion($questionDTO, $numberSubQuestion) {
+    protected function limitSubQuestion($questionDTO, $numberSubQuestion, $isKeepQuestionOrder = false) {
+        if ($isKeepQuestionOrder === true) {
+            return $this->limitSubQuestionKeepOrder($questionDTO, $numberSubQuestion);
+        } 
+
         $subQuestions = $questionDTO->getSubQuestions();        
         $maxRand = count($subQuestions) - 1;
         $ret = [];
@@ -83,13 +87,48 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
          for ($i=0; $i < $numberSubQuestion ; $i++) {
             $index = mt_rand(0, $maxRand);
             $qArray = array_splice($subQuestions, $index, 1);            
-            $q = $qArray[0];                       
+            $q = $qArray[0];  
+            
             $ret[] = $q;
 
             $maxRand = $maxRand - 1;
         }
-        
+
         return $ret;
+    }
+
+    protected function limitSubQuestionKeepOrder($questionDTO, $numberSubQuestion) {
+        $subQuestions = $questionDTO->getSubQuestions();        
+        $maxRand = count($subQuestions) - 1;
+        $ret = [];
+
+        $questionsIndex =  range(0, $maxRand);
+         for ($i=0; $i < $numberSubQuestion ; $i++) {
+            $index = mt_rand(0, $maxRand);
+            $questionIndex = array_splice($questionsIndex, $index, 1); 
+
+            $qArray = array_splice($subQuestions, $index, 1);            
+            $q = $qArray[0];  
+            
+            $qIndex = new \stdClass();
+            $qIndex->index = $questionIndex[0];
+            $qIndex->content = $q;
+            $ret[] = $qIndex;
+
+            $maxRand = $maxRand - 1;
+        }
+        
+        usort($ret, function($a, $b) {
+            if ($a->index==$b->index) return 0;
+            return ($a->index < $b->index) ? -1 : 1;
+        });
+
+        $questions = [];
+        foreach($ret as $q) {
+            $questions[] = $q->content;
+        }
+        
+        return $questions;
     }
 
     protected function updateQuestionMark(&$questionDTO, $numberSubQuestion) {
@@ -137,7 +176,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
         $numberSubQuestion = 0;
         if (!($ret instanceof \Test\DTOs\Question\WritingQuestionDTO || $ret instanceof \Test\DTOs\Question\VerbalQuestionDTO || $ret instanceof \Test\DTOs\Question\NonSubQuestionDTO)) {
-            $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion());
+            $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion(), $questionDTO->getIsKeepQuestionOrder());
             $ret->setSubQuestions($subQuestions);
             $numberSubQuestion =  $questionDTO->getNumberSubQuestion();
         }

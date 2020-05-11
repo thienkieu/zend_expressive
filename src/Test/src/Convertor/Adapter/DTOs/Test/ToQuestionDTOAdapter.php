@@ -63,6 +63,11 @@ class ToQuestionDTOAdapter extends ToDTOAdapter {
         }
         
         $dto->setIsDifferentSource($jsonObject->isDifferentSource);
+        if (isset($jsonObject->isKeepQuestionOrder)) {
+            $dto->setIsKeepQuestionOrder(!!$jsonObject->isKeepQuestionOrder);
+        } else {
+            $dto->setIsKeepQuestionOrder(false);
+        }
         
         if (isset($jsonObject->mark)) $dto->setMark($jsonObject->mark);
         

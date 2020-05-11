@@ -45,6 +45,7 @@ class ToRandomQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
         $document->setType($typeDocument);
 
         $document->setIsDifferentSource($dto->getIsDifferentSource());
+        $document->setIsKeepQuestionOrder($dto->getIsKeepQuestionOrder());
         $document->setNumberSubQuestion($dto->getNumberSubQuestion());
         $document->setReferId(uniqid('', true));
         $document->setMark($dto->getMark());
