@@ -7,6 +7,11 @@ if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
     return false;
 }
 
+if (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 70200) {
+    echo "Require PHP 7.2 or larger.";
+    exit();
+}
+
 $loader = require 'vendor/autoload.php';
 
 
