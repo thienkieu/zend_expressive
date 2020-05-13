@@ -59,14 +59,16 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $candidateDocuments  = $existExamObj->getCandidates();
         $isDoneManualInputMark = true;
         foreach($candidateDocuments as $candidate) {
-            $resultSummary = $candidate->getResultSummary();
-            if ($resultSummary->isEmpty()) {
-                $isDoneManualInputMark = false;
-            } else {
-                foreach($resultSummary as $resultItem) {
-                    if (!$resultItem->getIsScored()) {
-                        $isDoneManualInputMark = false;
-                        break;
+            if ($candidate->getIsPinValid() === false) {
+                $resultSummary = $candidate->getResultSummary();
+                if ($resultSummary->isEmpty()) {
+                    $isDoneManualInputMark = false;
+                } else {
+                    foreach($resultSummary as $resultItem) {
+                        if (!$resultItem->getIsScored()) {
+                            $isDoneManualInputMark = false;
+                            break;
+                        }
                     }
                 }
             }

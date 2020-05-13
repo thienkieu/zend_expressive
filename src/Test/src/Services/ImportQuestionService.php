@@ -67,7 +67,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         try {
             
             if (isset($dtoObject->media)) {
-                $this->imageFiles = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.date('Ymd');
+                $this->imageFiles = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.date('YmdHis');
                 if (!file_exists($this->imageFiles)) {
                     mkdir($this->imageFiles, 0777, true);
                 }
