@@ -12,6 +12,9 @@ return [
             \Infrastructure\DataParser\ExcelParserService::class,
             \Infrastructure\DataParser\WordParserService::class,      
         ],
+        \Infrastructure\Services\Interfaces\LogInterface::class => [
+            \Infrastructure\Services\LogService::class,     
+        ],
 
         \Test\Services\Interfaces\TestServiceInterface::class => [
             \Test\Services\TestService::class,

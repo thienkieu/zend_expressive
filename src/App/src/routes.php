@@ -16,4 +16,5 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->post('/verify-cors', App\Handler\VerifyCORSConfigHandler::class, 'verifyCORS');
     
     $app->get('/viewLog', App\Handler\GetLogHandler::class, 'log');
+    $app->post('/clientWriteLog', App\Handler\ClientLogHandler::class, 'clientWriteLog');
 };

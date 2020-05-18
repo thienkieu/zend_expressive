@@ -34,15 +34,21 @@ return [
             Infrastructure\Middleware\UploadFileMiddleware::class => Infrastructure\Factory\BaseFactory::class,
             Infrastructure\Middleware\LogMiddleware::class => Infrastructure\Factory\BaseFactory::class,
 
+            Infrastructure\Services\Interfaces\LogInterface::class => Infrastructure\Factory\ServiceFactory::class,
             Infrastructure\DataParser\DataParserInterface::class => Infrastructure\Factory\ServiceFactory::class,
             Infrastructure\DataParser\ExcelParserService::class => Infrastructure\Factory\BaseFactory::class,
             Infrastructure\DataParser\WordParserService::class => Infrastructure\Factory\BaseFactory::class,
             Infrastructure\DataParser\HtmlFormatAdapter::class => Infrastructure\Factory\BaseFactory::class,
-            
+            Infrastructure\Services\LogService::class => Infrastructure\Factory\BaseFactory::class,
 
             Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware::class => Infrastructure\Factory\BodyParamsMiddlewareFactory::class,
             
             Tuupola\Middleware\CorsMiddleware::class => Infrastructure\Factory\CorsMiddlewareFactory::class,
-        ]
+        ],
+        'delegators' => [
+            Zend\Stratigility\Middleware\ErrorHandler::class => [
+                Infrastructure\Factory\LoggingErrorListenerDelegatorFactory::class,
+            ],
+        ],
     ]
 ];

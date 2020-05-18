@@ -120,7 +120,7 @@ return [
         'latestDisConnectURL' => 'http://localhost:3000/getLatestDisconenct',
         'writeLogURL' => 'http://localhost:3000/writeLog',
         'enableLogFile' => true,
-        'enableLogRemote' => false,
+        'enableLogRemote' => true,
 
        // 'candidates' => 'http://localhost:12346/Portal/ExcuteByCommand/GetCandiates'
     ],
@@ -130,14 +130,11 @@ return [
     ],
 
     'authenticationExcludeUrl' => [
-        'exam.doExam',
         'api.publickey',
         'home',
         'api.token',
         'exam.enterPin',
-        'user.updateAnswer',
         'exam.synchronyTime',
-        'exam.finish',
         'question.types',
         'question.sources',
         'exam.types',
@@ -147,9 +144,9 @@ return [
         'exam.exportPin',
         'exam.examJoined',
         'exam.latestExamJoined',
-        'question.importTemplate',
         'log',
         'exam.exportExamResultSummary',
+        'clientWriteLog',
         'exam.listeningFinished',
         'exam.clickToListen',
        

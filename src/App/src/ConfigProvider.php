@@ -49,7 +49,8 @@ class ConfigProvider
                 Handler\GetPublicKeyHandler::class => Factory\GetPublicKeyHandlerFactory::class,
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
                 Handler\ViewPageHandler::class => Handler\ViewPageHandlerFactory::class,   
-                Handler\GetLogHandler::class => \Infrastructure\Factory\BaseFactory::class,   
+                Handler\GetLogHandler::class => \Infrastructure\Factory\BaseFactory::class,  
+                Handler\ClientLogHandler::class => \Infrastructure\Factory\BaseFactory::class,  
                 
                 Validator\ValidatorMiddleware::class => Factory\ValidatorMiddlewareFactory::class,                  
             ],

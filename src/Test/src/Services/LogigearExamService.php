@@ -37,6 +37,7 @@ class LogigearExamService extends ExamService
 
             $logigearTypeService = $this->container->get(TypeServiceInterface::class);
             foreach ($sections as $section) {
+                $sectionMark = 0;
                 $questionsForSection = [];
                 $questions = $section->getQuestions(); 
                 $isAllWriting = true;
@@ -49,7 +50,7 @@ class LogigearExamService extends ExamService
                     $q = $questionService->generateQuestion($question, $sources[$questionInfo->getTypeId()], $questionIds, $keepCorrectAnswer);
                     $sources[$q->getTypeId()][] = $q->getSourceId();
                     $questionIds[] = $q->getId();
-                
+                    $sectionMark = $sectionMark + $q->getMark();
 
                     $testQuestionDTO = new \Test\DTOs\Test\QuestionDTO();
                     $testQuestionDTO->setId($q->getId());
@@ -74,6 +75,12 @@ class LogigearExamService extends ExamService
                 if ($isAllWriting && !$hasInputQuestionMark) {
                     $sectionForDoExam->setMark(\Config\AppConstant::DefaultWritingMark);
                 }
+
+                if (!$isAllWriting) {
+                    $sectionForDoExam->setMark($sectionMark);
+                }
+
+                
                 
                 $sectionsForDoExam[] = $sectionForDoExam;
             }
