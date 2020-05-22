@@ -23,7 +23,214 @@ class ConfigProvider
     {
         return [
             'dependencies' => $this->getDependencies(),
-            'authenticationExcludeUrl' => $this->getAuthenticationExcludeUrl()
+            'authenticationExcludeUrl' => $this->getAuthenticationExcludeUrl(),
+            'validatorRequestAdapters' => $this->getValidatorRequestAdapters(),
+            'convertorDocumentToDTOAdapters' => $this->getConvertorDocumentToDTOAdapters(),
+            'convertorDTOAdapters' => $this->getConvertorDTOAdapters(),
+            'convertorDocumentAdapters' => $this->getConvertorDocumentAdapters(),
+            'resolveService' => $this->getResolveService(),
+            'requestToDTO' => $this->getRequestToDTOClass()
+        ];
+    }
+
+    public function getRequestToDTOClass(): array {
+        return [
+            'section.create' => \Test\DTOs\SectionDTO::class,
+            'test.create'   => \Test\DTOs\Test\BaseTestDTO::class,
+            'test.createTemplate'   => \Test\DTOs\Test\BaseTestDTO::class,
+            'test.update'   => \Test\DTOs\Test\BaseTestDTO::class,
+            'question.source.create'   => \Test\DTOs\Question\SourceDTO::class,
+            'question.source.update'   => \Test\DTOs\Question\SourceDTO::class,
+            'question.source.delete'   => \Test\DTOs\Question\SourceDTO::class,
+            'exam.create' => \Test\DTOs\Exam\ExamDTO::class,
+            'exam.update' => \Test\DTOs\Exam\ExamDTO::class,
+            'exam.updateTest' => \Test\DTOs\Exam\EditTestOfExamDTO::class,
+            'exam.exams'    =>   \Test\DTOs\Exam\FilterExamDTO::class,
+            'exam.exportExamResultSummary'    =>   \Test\DTOs\Exam\FilterExamDTO::class,
+            'exam.listeningFinished'    =>   \Test\DTOs\ExamResult\ListeningQuestionListeningFinishedDTO::class,
+            'exam.clickToListen'    =>   \Test\DTOs\ExamResult\ListeningQuestionClickToListenDTO::class,
+            'exam.addResult'    =>   \Test\DTOs\ExamResult\ExamResultDTO::class,
+            'test.viewSampleExam' => \Test\DTOs\Test\BaseTestDTO::class,
+            'exam.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,
+            'user.updateAnswer' => \Test\DTOs\ExamResult\UserAnswerDTO::class,
+            'exam.updateQuestionMark' => \Test\DTOs\ExamResult\UpdateQuestionMarkDTO::class,
+            'exam.updateSectionMark' => \Test\DTOs\ExamResult\UpdateSectionMarkDTO::class,
+            'question.type.create'  => \Test\DTOs\Question\TypeDTO::class,
+            'questions.create'  => \Test\DTOs\Question\QuestionDTO::class,
+            'questions.update'  => \Test\DTOs\Question\QuestionDTO::class,
+        ];
+    }
+
+    public function getResolveService(): array {
+        return [
+            \Test\Services\Interfaces\TestServiceInterface::class => [
+                \Test\Services\TestService::class,
+                \Test\Services\AdvanceTestService::class,        
+            ], 
+            \Test\Services\Interfaces\TestTemplateServiceInterface::class => [
+                \Test\Services\TestTemplateService::class,       
+            ], 
+            \Test\Services\ImportQuestionServiceInterface::class => [
+                \Test\Services\ImportQuestionService::class,
+            ],
+            \Test\Services\CandidateServiceInterface::class => [
+                \Test\Services\CandidateService::class,
+            ],
+            \Test\Services\Interfaces\SourceServiceInterface::class => [
+                \Test\Services\SourceService::class,
+            ],
+            \Test\Services\Interfaces\TypeServiceInterface::class => [
+                \Test\Services\LogigearTypeService::class,
+                \Test\Services\TypeService::class,
+            ],
+            \Test\Services\ExamServiceInterface::class => [
+                \Test\Services\EmptyTestExamService::class,
+                \Test\Services\VerbalExamService::class,
+                \Test\Services\LogigearExamService::class,
+                \Test\Services\ExamService::class,
+            ],
+            \Test\Services\DoExamServiceInterface::class => [
+                \Test\Services\DoExamService::class,
+            ],
+            \Test\Services\Interfaces\ExportServiceInterface::class => [
+                \Test\Services\ExportService::class,
+            ],
+            
+            \Test\Services\Question\QuestionServiceInterface::class => [
+                \Test\Services\Question\ReadingQuestionService::class,
+                \Test\Services\Question\WritingQuestionService::class,
+                \Test\Services\Question\ListeningQuestionService::class,
+                \Test\Services\Question\VerbalQuestionService::class,
+                \Test\Services\Question\QuestionService::class,
+            ],
+            \Test\Services\PinServiceInterface::class => [
+                \Test\Services\PinService::class,
+            ],
+    
+            \Test\Services\DoExamResultServiceInterface::class => [
+                \Test\Services\DoExamResultService::class,
+                \Test\Services\DoExamResultWritingService::class,
+                \Test\Services\DoExamResultRepeatTimesService::class,
+                \Test\Services\DoExamResultListeningFinishService::class,
+                \Test\Services\DoExamResultListeningClickToListenService::class,
+                \Test\Services\DoBaseExamResultService::class,
+            ],
+            
+            \Test\Services\TrackingConnectServiceInterface::class => [
+                \Test\Services\TrackingConnectService::class
+            ]
+        ];
+    }
+
+    public function getConvertorDocumentAdapters(): array {
+        return [
+            \Test\Convertor\Adapter\Documents\ToListeningDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToReadingDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToWritingDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToVerbalDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToTestTemplateDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToTestDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToSubQuestionDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToSourceDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToSubTypeDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToTypeDocumentAdapter::class,
+            
+            \Test\Convertor\Adapter\Documents\ToSectionDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\Test\ToRandomQuestionDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\Test\ToQuestionDocumentAdapter::class,
+    
+            \Test\Convertor\Adapter\Documents\ToExamDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToCandidateDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToExamResultDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToTestEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToListeningEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToVerbalEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToWritingEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToReadingEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToNonSubQuestionDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToNonSubQuestionEmbedDocumentAdapter::class,
+            
+            \Test\Convertor\Adapter\Documents\ExamResult\ToExamResultCandidateDocumentAdapter::class,
+        ];
+    }
+    public function getConvertorDTOAdapters(): array {
+        return [
+            \Test\Convertor\Adapter\DTOs\ToListeningDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToReadingDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToVerbalDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToNonSubQuestionDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToWritingDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToSourceDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToTypeDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToSubTypeDTOAdapter::class,
+            
+            \Test\Convertor\Adapter\DTOs\Test\ToTestTemplateSectionDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\ToTestWithSectionDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\ToSectionDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\ToQuestionDTOAdapter::class,  
+            \Test\Convertor\Adapter\DTOs\Exam\ToExamHasSectionTestDTOAdapter::class,  
+            \Test\Convertor\Adapter\DTOs\Exam\ToCandidateDTOAdapter::class,  
+            \Test\Convertor\Adapter\DTOs\Exam\ToEditTestOfExamDTOAdapter::class,  
+            \Test\Convertor\Adapter\DTOs\Exam\ToPinDTOAdapter::class,  
+            \Test\Convertor\Adapter\DTOs\Exam\ToPinInfoDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToPickupAnswerDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToUpdateRepeatTimesDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToUpdateWritingAnswerDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\UpdateQuestionMarkDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\UpdateSectionMarkDTOAdapter::class,
+    
+            \ODMAuth\Convertor\Adapter\DTOs\ToAssignUserPermissionDTOAdapter::class,
+    
+            \Test\Convertor\Adapter\DTOs\ExamResult\ToExamResultHasSectionTestDTOAdapter::class,
+        ];
+    }
+
+    public function getConvertorDocumentToDTOAdapters(): array {
+        return [
+            \Test\Convertor\Adapter\DTOs\FromListeningDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromReadingDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromWritingDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromVerbalDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromSubQuestionDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromSourceDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromTypeDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromSubTypeDocumentAdapter::class,
+            
+            \Test\Convertor\Adapter\DTOs\FromNonSubQuestionDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromQuestionDocumentAdapter::class,
+            
+            
+            \Test\Convertor\Adapter\DTOs\FromAnswerDocumentAdapter::class,
+            
+            \Test\Convertor\Adapter\DTOs\Test\FromQuestionDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\FromSectionTestDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\FromTestWithSectionDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\FromReadingEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\FromListeningEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\FromNonSubEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\FromWritingEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\FromVerbalEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\Test\FromRandomQuestionDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromExamResultSummaryDocumentAdapter::class,
+            
+            \Test\Convertor\Adapter\DTOs\FromCandidateDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromExamDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromTestWithSectionEmbedDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromExamResultHasSectionTestDocumentAdapter::class,
+    
+            \Test\Convertor\Adapter\DTOs\Test\FromTestTemplateDocumentAdapter::class,
+        ];
+    }
+
+    public function getValidatorRequestAdapters(): array {
+        return [
+            //\Test\Validator\CreateReadingSectionValidatorAdapter::class,
+            \Test\Validator\CreateQuestionValidatorAdapter::class,        
+            \Test\Validator\CreateTestWithSectionValidatorAdapter::class,
+            \Test\Validator\CreateExamWithSectionValidatorAdapter::class,
+            \Test\Validator\EnterPinValidatorAdapter::class,
+            \Test\Validator\CreateSourceValidatorAdapter::class,
+            \Test\Validator\UpdateMarkValidatorAdapter::class,
         ];
     }
 

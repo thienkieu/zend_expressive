@@ -10,7 +10,7 @@ use Test\Enum\DTOName;
 class ToUpdateWritingAnswerDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::UserAnswerDTO && !empty($dtoObject->writingContent)) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::UserAnswerDTO && isset($dtoObject->writingContent)) {
             return true;
         }
 

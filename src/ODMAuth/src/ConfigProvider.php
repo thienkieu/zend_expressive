@@ -27,6 +27,9 @@ class ConfigProvider
     {
         return [
             'dependencies' => $this->getDependencies(), 
+            'convertorDocumentToDTOAdapters' => $this->getConvertorDocumentToDTOAdapters(),
+            'convertorDTOAdapters' => $this->getConvertorDTOAdapters(),
+            'requestToDTO' => $this->getRequestToDTOClass(),
             'authentication' => [
                 'private_key'    => __DIR__ . '/../data/private.key',
                 'public_key'     => __DIR__ . '/../data/public.key',
@@ -51,6 +54,24 @@ class ConfigProvider
                 ],
         
             ]        
+        ];
+    }
+
+    public function getRequestToDTOClass(): array {
+        return [
+            'odmauth.assignUserPermission'  => \ODMAuth\DTOs\AssignUserPermissionDTO::class,
+        ];
+    }
+
+    public function getConvertorDTOAdapters(): array {
+        return [
+            \ODMAuth\Convertor\Adapter\DTOs\ToAssignUserPermissionDTOAdapter::class,
+        ];
+    }
+
+    public function getConvertorDocumentToDTOAdapters(): array {
+        return [    
+            \ODMAuth\Convertor\Adapter\DTOs\FromPermissionDocumentAdapter::class
         ];
     }
 

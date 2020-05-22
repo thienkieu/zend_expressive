@@ -116,6 +116,7 @@ class VerbalExamService extends ExamService implements HandlerInterface
                 $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter(null, null);
                 $summaries = $adapter->convert($examResultDocument);
                 $candidate->setResultSummary($summaries);
+                $candidate->setIsPinValid(false);
             }
             
             $this->dm->flush();
