@@ -17,6 +17,9 @@ class RandomQuestionDocument extends HasSubQuestionDocument
     /** @ODM\Field(type="bool") */
     protected $isKeepQuestionOrder;
 
+    /** @ODM\Field(type="bool") */
+    protected $isRandomAnswer;
+    
     /**
      * Get the value of isDifferentSource
      */ 
@@ -53,6 +56,26 @@ class RandomQuestionDocument extends HasSubQuestionDocument
     public function setIsKeepQuestionOrder($isKeepQuestionOrder)
     {
         $this->isKeepQuestionOrder = $isKeepQuestionOrder;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isRandomAnswer
+     */ 
+    public function getIsRandomAnswer()
+    {
+        return $this->isRandomAnswer;
+    }
+
+    /**
+     * Set the value of isRandomAnswer
+     *
+     * @return  self
+     */ 
+    public function setIsRandomAnswer($isRandomAnswer)
+    {
+        $this->isRandomAnswer = $isRandomAnswer;
 
         return $this;
     }

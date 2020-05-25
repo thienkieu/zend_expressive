@@ -75,9 +75,9 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         }
     }
 
-    protected function limitSubQuestion($questionDTO, $numberSubQuestion, $isKeepQuestionOrder = false) {
+    protected function limitSubQuestion($questionDTO, $numberSubQuestion, $isKeepQuestionOrder = false, $isRandomAnswer = false) {
         if ($isKeepQuestionOrder === true) {
-            return $this->limitSubQuestionKeepOrder($questionDTO, $numberSubQuestion);
+            return $this->limitSubQuestionKeepOrder($questionDTO, $numberSubQuestion, $isRandomAnswer);
         } 
 
         $subQuestions = $questionDTO->getSubQuestions();        
@@ -88,7 +88,9 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             $index = mt_rand(0, $maxRand);
             $qArray = array_splice($subQuestions, $index, 1);            
             $q = $qArray[0];  
-            
+            if ($isRandomAnswer === true) {
+                $this->randomAnswer($q);
+            }
             $ret[] = $q;
 
             $maxRand = $maxRand - 1;
@@ -97,7 +99,27 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $ret;
     }
 
-    protected function limitSubQuestionKeepOrder($questionDTO, $numberSubQuestion) {
+    protected function randomAnswer(& $subQuestionDTO) {
+        $answers = $subQuestionDTO->getAnswers();
+        $maxRand = count($answers) - 1;
+        $numberAnswer = $maxRand + 1; 
+        $ret = [];
+
+        for ($i = 0; $i < $numberAnswer ; $i++) {
+            $index = mt_rand(0, $maxRand);
+            $qArray = array_splice($answers, $index, 1);            
+            $w = $qArray[0];  
+            
+            $ret[] = $w;
+
+            $maxRand = $maxRand - 1;
+        }
+
+        $subQuestionDTO->setAnswers($ret);
+        
+    }
+
+    protected function limitSubQuestionKeepOrder($questionDTO, $numberSubQuestion, $isRandomAnswer) {
         $subQuestions = $questionDTO->getSubQuestions();        
         $maxRand = count($subQuestions) - 1;
         $ret = [];
@@ -112,6 +134,9 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             
             $qIndex = new \stdClass();
             $qIndex->index = $questionIndex[0];
+            if ($isRandomAnswer === true) {
+                $this->randomAnswer($q);
+            }
             $qIndex->content = $q;
             $ret[] = $qIndex;
 
@@ -176,7 +201,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
         $numberSubQuestion = 0;
         if (!($ret instanceof \Test\DTOs\Question\WritingQuestionDTO || $ret instanceof \Test\DTOs\Question\VerbalQuestionDTO || $ret instanceof \Test\DTOs\Question\NonSubQuestionDTO)) {
-            $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion(), $questionDTO->getIsKeepQuestionOrder());
+            $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion(), $questionDTO->getIsKeepQuestionOrder(), $questionDTO->getIsRandomAnswer());  
             $ret->setSubQuestions($subQuestions);
             $numberSubQuestion =  $questionDTO->getNumberSubQuestion();
         }

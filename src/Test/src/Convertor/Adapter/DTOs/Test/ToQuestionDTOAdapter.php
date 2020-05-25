@@ -68,6 +68,12 @@ class ToQuestionDTOAdapter extends ToDTOAdapter {
         } else {
             $dto->setIsKeepQuestionOrder(false);
         }
+
+        if (isset($jsonObject->randomAnswer)) {
+            $dto->setIsRandomAnswer((!!$jsonObject->randomAnswer));
+        } else {
+            $dto->setIsRandomAnswer(false);
+        }
         
         if (isset($jsonObject->mark)) $dto->setMark($jsonObject->mark);
         
