@@ -37,6 +37,19 @@ class ToExamResultDocumentAdapter implements ConvertDTOAToDocumentAdapterInterfa
         $document->setTime($dto->getTime());
         $document->setExamType($dto->getExamType());
         
+        $userService = $this->container->get(\ODMAuth\Services\Interfaces\UserServiceInterface::class);
+        $user = $userService->getUserById($dto->getUser());
+        $document->setUser($user);
+
+        $platformService = $this->container->get(\Test\Services\Interfaces\PlatformServiceInterface::class);
+        $platformDocument = $platformService->getPlatformById($dto->getPlatform());
+        if (!$platformDocument) {
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $message = $translator->translate('Platform not found, please check it again.');
+            throw new \Infrastructure\Exceptions\DataException($message);
+        }
+        $document->setPlatform($platformDocument);
+
         $candidateDocument = $this->convertor->convertToDocument($dto->getCandidate(), $options);
         $document->setCandidate($candidateDocument); 
 

@@ -32,6 +32,11 @@ class FromNonSubEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInter
         $content = \Infrastructure\CommonFunction::revertToHost($document->getContent());
         $dto->setContent($content);
 
+        $dto->setPlatform($document->getPlatform()->getName());
+        $dto->setPlatformId($document->getPlatform()->getId());
+
+        $dto->setUser($document->getUser()->getId());
+        
         $dto->setSource($document->getSource()->getName());
         $dto->setSourceId($document->getSource()->getId());
         

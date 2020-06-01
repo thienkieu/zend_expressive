@@ -16,7 +16,7 @@ use date;
 
 class WritingQuestionRepository extends QuestionRepository
 {
-    public function generateRandomQuestion($typeId, $numberSubQuestion, $sources, $notInQuestions, $toClass) {
+    public function generateRandomQuestion($typeId, $numberSubQuestion, $sources, $notInQuestions, $toClass, $platform, $user) {
         $aggregationBuilder = $this->createAggregationBuilder();
         $question = $aggregationBuilder
                         ->hydrate($toClass)
@@ -24,7 +24,8 @@ class WritingQuestionRepository extends QuestionRepository
                             ->addOr($aggregationBuilder->matchExpr()->field('typeId')->equals($typeId))
                             ->addOr($aggregationBuilder->matchExpr()->field('parentTypeId')->equals($typeId))
                             ->field('id')->notIn($notInQuestions) 
-                            ->field('source')->notIn($sources)                         
+                            ->field('source')->notIn($sources) 
+                            ->field('platform')->equals($platform)                        
                         ->sample(1)
                         ->execute()
                         ->current();

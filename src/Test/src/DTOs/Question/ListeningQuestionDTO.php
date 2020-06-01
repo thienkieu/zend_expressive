@@ -10,7 +10,7 @@ class ListeningQuestionDTO extends QuestionDTO implements \JsonSerializable
     protected $repeat;
     protected $duration;
     private $numberCorrectSubQuestion;
-     
+    
     /**
      * Get the value of repeat
      */ 

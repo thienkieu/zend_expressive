@@ -17,6 +17,7 @@ abstract class DTOName
     const QuestionDTO = \Test\DTOs\Question\QuestionDTO::class;
     const SourceDTO = \Test\DTOs\Question\SourceDTO::class;
     const TypeDTO = \Test\DTOs\Question\TypeDTO::class;
+    const PlatformDTO = \Test\DTOs\PlatformDTO::class;
     const SubTypeDTO = \Test\DTOs\Question\SubTypeDTO::class;
     const PinDTO = \Test\DTOs\Exam\PinDTO::class;
     const PinInfoDTO = \Test\DTOs\Exam\PinInfoDTO::class;

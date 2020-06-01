@@ -173,7 +173,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $questionInfo->getQuestionInfo();
     }
 
-    protected function generateRandomQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer = false) {
+    protected function generateRandomQuestion($citerial, $notInsources, $notInQuestions, $platform, $user, $keepCorrectAnswer = false) {
         $questionDTO = $citerial->getQuestionInfo();        
         $toClass = $this->getClassName($questionDTO->getType(), $questionDTO->getSubType());
         $questionRepository = $this->dm->getRepository($toClass);
@@ -183,7 +183,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             $questionnotInsources = [];
         }
         
-        $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $questionnotInsources, $notInQuestions, $toClass);
+        $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $questionnotInsources, $notInQuestions, $toClass, $platform, $user);
         if (!$question) {
             $generateQuestionCiterial = [
                 '%type%' => $questionDTO->getType(),
@@ -211,7 +211,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $ret;
     }
 
-    public function generateQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer = false) {
+    public function generateQuestion($citerial, $notInsources, $notInQuestions, $platform, $user, $keepCorrectAnswer = false) {
         
         if ($citerial->getGenerateFrom() !== \Config\AppConstant::Random) {
             $ret = $this->generatePickupQuestion($citerial);
@@ -225,7 +225,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             return $ret;
         }
 
-        return $this->generateRandomQuestion($citerial, $notInsources, $notInQuestions, $keepCorrectAnswer);
+        return $this->generateRandomQuestion($citerial, $notInsources, $notInQuestions, $platform, $user, $keepCorrectAnswer);
     }
 
     public function getQuestions($dto, $pageNumber, $itemPerPage, $isShowCorrectAnswer = false) {

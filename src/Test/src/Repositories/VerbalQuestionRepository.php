@@ -16,14 +16,15 @@ use date;
 
 class VerbalQuestionRepository extends QuestionRepository
 {
-    public function generateRandomQuestion($typeId, $numberSubQuestion, $sources, $notInQuestions, $toClass) {
+    public function generateRandomQuestion($typeId, $numberSubQuestion, $sources, $notInQuestions, $toClass, $platform, $user) {
         $aggregationBuilder = $this->createAggregationBuilder();
         $question = $aggregationBuilder
                         ->hydrate($toClass)
                         ->match()
                             ->field('type')->equals($typeId)
                             ->field('id')->notIn($notInQuestions) 
-                            ->field('source')->notIn($sources)                         
+                            ->field('source')->notIn($sources)  
+                            ->field('platform')->equals($platform)                      
                         ->sample(1)
                         ->execute()
                         ->current();

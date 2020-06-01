@@ -39,6 +39,10 @@ class TestWithSectionRepository extends DocumentRepository
                 ->addOr($queryBuilder->expr()->field('sections.description')->equals(new \MongoDB\BSON\Regex($filterData->title, 'i')));
             
         }
+
+        if (!empty($filterData->platform)) {
+            $queryBuilder->field('platform')->equals($filterData->platform);
+        }
         
         return $queryBuilder;
     }

@@ -58,6 +58,7 @@ class ConfigProvider
             'question.type.create'  => \Test\DTOs\Question\TypeDTO::class,
             'questions.create'  => \Test\DTOs\Question\QuestionDTO::class,
             'questions.update'  => \Test\DTOs\Question\QuestionDTO::class,
+            'platform.create'  => \Test\DTOs\PlatformDTO::class,
         ];
     }
 
@@ -118,6 +119,12 @@ class ConfigProvider
             
             \Test\Services\TrackingConnectServiceInterface::class => [
                 \Test\Services\TrackingConnectService::class
+            ],
+            \Test\Services\Interfaces\PlatformServiceInterface::class => [
+                \Test\Services\PlatformService::class
+            ],
+            \Test\Services\Interfaces\MigrationServiceInterface::class => [
+                \Test\Services\MigrationService::class
             ]
         ];
     }
@@ -134,6 +141,7 @@ class ConfigProvider
             \Test\Convertor\Adapter\Documents\ToSourceDocumentAdapter::class,
             \Test\Convertor\Adapter\Documents\ToSubTypeDocumentAdapter::class,
             \Test\Convertor\Adapter\Documents\ToTypeDocumentAdapter::class,
+            \Test\Convertor\Adapter\Documents\ToPlatformDocumentAdapter::class,
             
             \Test\Convertor\Adapter\Documents\ToSectionDocumentAdapter::class,
             \Test\Convertor\Adapter\Documents\Test\ToRandomQuestionDocumentAdapter::class,
@@ -162,6 +170,7 @@ class ConfigProvider
             \Test\Convertor\Adapter\DTOs\ToWritingDTOAdapter::class,
             \Test\Convertor\Adapter\DTOs\ToSourceDTOAdapter::class,
             \Test\Convertor\Adapter\DTOs\ToTypeDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToPlatformDTOAdapter::class,
             \Test\Convertor\Adapter\DTOs\ToSubTypeDTOAdapter::class,
             
             \Test\Convertor\Adapter\DTOs\Test\ToTestTemplateSectionDTOAdapter::class,
@@ -194,6 +203,7 @@ class ConfigProvider
             \Test\Convertor\Adapter\DTOs\FromSubQuestionDocumentAdapter::class,
             \Test\Convertor\Adapter\DTOs\FromSourceDocumentAdapter::class,
             \Test\Convertor\Adapter\DTOs\FromTypeDocumentAdapter::class,
+            \Test\Convertor\Adapter\DTOs\FromPlatformDocumentAdapter::class,
             \Test\Convertor\Adapter\DTOs\FromSubTypeDocumentAdapter::class,
             
             \Test\Convertor\Adapter\DTOs\FromNonSubQuestionDocumentAdapter::class,
@@ -317,8 +327,9 @@ class ConfigProvider
                 Handlers\GetExamTypeHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateListeningFinishHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\UpdateListeningClickToListenHandler::class => \Infrastructure\Factory\BaseFactory::class,
-               
-               
+                Handlers\CreatePlatformHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\GetPlatformHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\MigrationHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Validators\CreateQuestionValidatorAdapter::class => InvokableFactory::class,
@@ -329,6 +340,11 @@ class ConfigProvider
                 Services\TestTemplateService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\Interfaces\TestTemplateServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 
+                Services\PlatformService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\Interfaces\PlatformServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+
+                Services\MigrationService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\Interfaces\MigrationServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
 
                 Services\AdvanceTestService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\Interfaces\TestServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,

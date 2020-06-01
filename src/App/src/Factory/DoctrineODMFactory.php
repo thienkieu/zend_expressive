@@ -30,8 +30,8 @@ class DoctrineODMFactory
         $loader->add('Documents', $dbConfig['document-path']);
         AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
-        $client = new Client($dbConfig['mongodb-connection'], [], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
-        $connection = new Connection($client);
+        //$client = new Client($dbConfig['mongodb-connection'], [], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
+        //$connection = new Connection($client);
 
         $config = new Configuration();
         $config->setProxyDir($dbConfig['proxy-path']);

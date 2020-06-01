@@ -32,6 +32,8 @@ class ToTestWithSectionDTOAdapter extends ToDTOAdapter {
         $testId = isset($jsonObject->id) ? $jsonObject->id: '';
         $dtoObject->setId($testId);
         
+        $dtoObject->setPlatform($jsonObject->platform);
+        
         $sectionDTOs = [];
         foreach ($jsonObject->sections as $jsonSection) {
             $section = $this->convertor->convertToDTO($jsonSection, [\Config\AppConstant::DTOKey => \Test\DTOs\Test\SectionDTO::class]);

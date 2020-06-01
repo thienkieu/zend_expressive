@@ -73,7 +73,7 @@ class ExamRepository extends DocumentRepository
                 ->match()
                     ->field('candidates.pin')->equals($pin)       
                 ->project()   
-                    ->includeFields(['title', 'startDate', 'test', 'time','type'])                
+                    ->includeFields(['title', 'startDate', 'test', 'time','type', 'platform', 'user'])                
                     ->excludeFields(['candidates'])
                     ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
                     
@@ -182,6 +182,11 @@ class ExamRepository extends DocumentRepository
                     ->field('startDate')->lte($toDate)
             );
                 
+        }
+        
+        if (!empty($filterData->getPlatform())) {
+            $queryBuilder->field('platform')->equals($filterData->getPlatform());
+
         }
 
         return $queryBuilder;

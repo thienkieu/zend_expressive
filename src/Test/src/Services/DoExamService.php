@@ -135,6 +135,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
                 return false;
             }
 
+
             $examDTO = $documentToDTOConvertor->convertToDTO($examDocument, [\Config\AppConstant::ShowCorrectAnswer => true]);
             $examService = $this->container->get(ExamServiceInterface::class);            
            
@@ -157,9 +158,12 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $examResult->setTime($examDTO->getTime());
             $examResult->setTitle($examDTO->getTitle());
             $examResult->setStartDate($examDTO->getStartDate());
+            $examResult->setPlatform($examDTO->getPlatform());
+            $examResult->setUser($examDTO->getUser());
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $examResultDocument = $dtoToDocumentConvertor->convertToDocument($examResult, [\Config\AppConstant::ToDocumentClass => \Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class]);
+            
             $examResultDocument->setRemainTime($examDTO->getTime() * 60);
             $examResultDocument->setLatestConnectionTime(time());
             $this->dm->persist($examResultDocument);

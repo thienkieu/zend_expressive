@@ -11,6 +11,8 @@ class QuestionDTO
     protected $content;
     protected $subType;
     protected $typeId;
+    protected $platformId;
+    protected $platform;
     protected $source;
     protected $sourceId;
     protected $mark;
@@ -18,6 +20,7 @@ class QuestionDTO
     protected $candidateMark;
     protected $order;
     protected $systemType;
+    protected $user;
 
     
      /**
@@ -35,10 +38,13 @@ class QuestionDTO
         $ret->id = $this->getId();
         $ret->source = $this->getSource();
         $ret->sourceId = $this->getSourceId();
+        $ret->platform = $this->getPlatform();
+        $ret->platformId = $this->getPlatformId();
         $ret->mark = $this->getMark();
         $ret->comment = $this->getComment();
         $ret->candidateMark = $this->getCandidateMark();
         $ret->systemType = $this->getSystemType();
+        $ret->user = $this->getUser();
         
         return $ret;
     }
@@ -325,6 +331,66 @@ class QuestionDTO
     public function setSystemType($systemType)
     {
         $this->systemType = $systemType;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of platform
+     */ 
+    public function getPlatform()
+    {
+        return $this->platform;
+    }
+
+    /**
+     * Set the value of platform
+     *
+     * @return  self
+     */ 
+    public function setPlatform($platform)
+    {
+        $this->platform = $platform;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of platformId
+     */ 
+    public function getPlatformId()
+    {
+        return $this->platformId;
+    }
+
+    /**
+     * Set the value of platformId
+     *
+     * @return  self
+     */ 
+    public function setPlatformId($platformId)
+    {
+        $this->platformId = $platformId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -38,6 +38,12 @@ class FromNonSubDocumentAdapter implements ConvertDocumentToDTOAdapterInterface 
         $dto->setSubType($document->getType()->getName());
         $dto->setTypeId($document->getType()->getId());
         
+        $dto->setPlatform($document->getPlatform()->getName());
+        $dto->setPlatformId($document->getPlatform()->getId());
+        $dto->setUser($document->getUser()->getId());
+        
+        $dto->setUser($document->getUser()->getId());
+
         $dto->setId($document->getId());
         $dto->setCandidateMark($document->getCandidateMark());
         $dto->setMark($document->getMark());

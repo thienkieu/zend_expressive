@@ -23,7 +23,7 @@ class GroupsDocument
   /** @ODM\ReferenceMany(targetDocument=ODMAuth\Documents\PermissionDocument::class, storeAs="id") */
   private $permissionDocument;
 
-  /** @ODM\ReferenceMany(targetDocument=ODMAuth\Documents\UserDocument::class storeAs="id") */
+  /** @ODM\ReferenceMany(targetDocument=ODMAuth\Documents\UserDocument::class, storeAs="id") */
   private $userDocument;
 
   public function __construct() {

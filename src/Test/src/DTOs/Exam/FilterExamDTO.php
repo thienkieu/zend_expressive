@@ -12,6 +12,7 @@ class FilterExamDTO {
     protected $fromDate;
     protected $toDate;
     protected $id;
+    protected $platform;
     
     
     /**
@@ -157,6 +158,26 @@ class FilterExamDTO {
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of platform
+     */ 
+    public function getPlatform()
+    {
+        return $this->platform;
+    }
+
+    /**
+     * Set the value of platform
+     *
+     * @return  self
+     */ 
+    public function setPlatform($platform)
+    {
+        $this->platform = $platform;
 
         return $this;
     }

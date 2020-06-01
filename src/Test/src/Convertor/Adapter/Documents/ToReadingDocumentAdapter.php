@@ -8,6 +8,7 @@ use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 use Test\Services\Interfaces\SourceServiceInterface;
 use Test\Services\Interfaces\TypeServiceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Test\Services\Interfaces\PlatformServiceInterface;
 
 class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
@@ -53,6 +54,21 @@ class ToReadingDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface 
         
         $document->setSource($sourceDocument);
         
+        $authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class);
+        $user = $authorizationService->getUser();
+        $document->setUser($user);
+        
+        $platformService = $this->container->get(PlatformServiceInterface::class);
+        $platformDocument = $platformService->getPlatformById($dto->getPlatformId());
+        if (!$platformDocument) {
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $message = $translator->translate('Platform not found, please check it again.');
+            throw new \Infrastructure\Exceptions\DataException($message);
+        }
+        $document->setPlatform($platformDocument);
+        $document->setPlatformId($platformDocument->getId());
+
+
         $typeService = $this->container->get(TypeServiceInterface::class);
         $typeDocument = $typeService->getTypeById($dto->getTypeId());
         if (!$typeDocument) {

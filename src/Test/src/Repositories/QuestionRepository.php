@@ -17,7 +17,7 @@ use date;
 
 class QuestionRepository extends DocumentRepository
 {
-    public function generateRandomQuestion($typeId, $numberSubQuestion, $sources, $notInQuestions, $toClass) {
+    public function generateRandomQuestion($typeId, $numberSubQuestion, $sources, $notInQuestions, $toClass, $platform, $user) {
         $aggregationBuilder = $this->createAggregationBuilder();
         $question = $aggregationBuilder
                         ->hydrate($toClass)
@@ -27,6 +27,7 @@ class QuestionRepository extends DocumentRepository
                             ->field('source')->notIn($sources)
                             ->field('id')->notIn($notInQuestions)
                             ->field('numberSubQuestion')->gte($numberSubQuestion)
+                            ->field('platform')->equals($platform)
                         ->sample(1)
                         ->execute()
                         ->current();
@@ -63,6 +64,7 @@ class QuestionRepository extends DocumentRepository
         if (isset($filterData->content)) {
             $content = $filterData->content;
         }
+        
         if ($content) {
             $builder = $builder
                             ->addOr($builder->expr()->field('content')->equals(new \MongoDB\BSON\Regex($filterData->content, 'i')))
@@ -92,6 +94,14 @@ class QuestionRepository extends DocumentRepository
         }
         if ($source) {
             $builder->field('source')->equals($source);
+        }
+
+        $platform = "";
+        if (isset($filterData->platform)) {
+            $platform = $filterData->platform;
+        }
+        if ($platform) {
+            $builder->field('platform')->equals($platform);
         }
 
         return $builder;

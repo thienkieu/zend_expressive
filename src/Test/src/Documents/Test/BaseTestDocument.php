@@ -21,6 +21,16 @@ class BaseTestDocument
   /** @ODM\Field(type="date") */
   protected $createDate;
 
+  /**
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\PlatformDocument::class, storeAs="id")
+  */
+  private $platform;
+  
+    /**
+  * @ODM\ReferenceOne(targetDocument=ODMAuth\Documents\UserDocument::class, storeAs="id")
+  */
+  private $user;
+  
   public function __construct()
   {
     $this->createDate = new \DateTime();
@@ -83,6 +93,46 @@ class BaseTestDocument
   public function setCreateDate($createDate)
   {
     $this->createDate = $createDate;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of platform
+   */ 
+  public function getPlatform()
+  {
+    return $this->platform;
+  }
+
+  /**
+   * Set the value of platform
+   *
+   * @return  self
+   */ 
+  public function setPlatform($platform)
+  {
+    $this->platform = $platform;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of user
+   */ 
+  public function getUser()
+  {
+    return $this->user;
+  }
+
+  /**
+   * Set the value of user
+   *
+   * @return  self
+   */ 
+  public function setUser($user)
+  {
+    $this->user = $user;
 
     return $this;
   }

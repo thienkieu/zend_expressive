@@ -7,6 +7,7 @@ namespace Test\Convertor\Adapter\Documents;
 use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 use Test\Services\Interfaces\SourceServiceInterface;
 use Test\Services\Interfaces\TypeServiceInterface;
+use Test\Services\Interfaces\PlatformServiceInterface;
 
 
 class ToListeningEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
@@ -51,6 +52,20 @@ class ToListeningEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
         }
         $document->setSource($sourceDocument);
         
+        $userService = $this->container->get(\ODMAuth\Services\Interfaces\UserServiceInterface::class);
+        $user = $userService->getUserById($dto->getUser());
+        $document->setUser($user);
+        
+        $platformService = $this->container->get(PlatformServiceInterface::class);
+        $platformDocument = $platformService->getPlatformById($dto->getPlatformId());
+        if (!$platformDocument) {
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $message = $translator->translate('Platform not found, please check it again.');
+            throw new \Infrastructure\Exceptions\DataException($message);
+        }
+        $document->setPlatform($platformDocument);
+        $document->setPlatformId($platformDocument->getId());
+
         $typeService = $this->container->get(TypeServiceInterface::class);
         $typeDocument = $typeService->getTypeById($dto->getTypeId());
         if (!$typeDocument) {

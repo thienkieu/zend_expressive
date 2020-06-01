@@ -27,14 +27,26 @@ class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
         return false;
     }
 
+    protected function getDTOObject() {
+        return new \Test\DTOs\Question\QuestionDTO();
+    }
+
     public function convert($document, $options = []) {
-        $dto = new \Test\DTOs\Question\QuestionDTO();
+        $dto = $this->getDTOObject();
+
         $dto->setContent($document->getContent());
         $dto->setOrder($document->getOrder());
+
         $dto->setSource($document->getSource()->getName());
         $dto->setSourceId($document->getSource()->getId());
+
         $dto->setTypeId($document->getType()->getId());
         
+        $dto->setUser($document->getUser()->getId());
+        
+        $dto->setPlatform($document->getPlatform()->getName());
+        $dto->setPlatformId($document->getPlatform()->getId());
+
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         
         $answersDocuments = $document->getAnswers();

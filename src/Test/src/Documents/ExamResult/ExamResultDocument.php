@@ -21,6 +21,17 @@ class ExamResultDocument
   /** @ODM\EmbedOne(targetDocument=Test\Documents\ExamResult\CandidateDocument::class) */
   private $candidate;
 
+ /**
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\PlatformDocument::class, storeAs="id")
+  */
+  protected $platform;
+  
+    /**
+  * @ODM\ReferenceOne(targetDocument=ODMAuth\Documents\UserDocument::class, storeAs="id")
+  */
+  protected $user;
+  
+
   /** @ODM\Field(type="string") */
   protected $examId;
 
@@ -320,6 +331,46 @@ class ExamResultDocument
   public function setTotalSpendingTime($totalSpendingTime)
   {
     $this->totalSpendingTime = $totalSpendingTime;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of platform
+   */ 
+  public function getPlatform()
+  {
+    return $this->platform;
+  }
+
+  /**
+   * Set the value of platform
+   *
+   * @return  self
+   */ 
+  public function setPlatform($platform)
+  {
+    $this->platform = $platform;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of user
+   */ 
+  public function getUser()
+  {
+    return $this->user;
+  }
+
+  /**
+   * Set the value of user
+   *
+   * @return  self
+   */ 
+  public function setUser($user)
+  {
+    $this->user = $user;
 
     return $this;
   }

@@ -27,8 +27,11 @@ class GetTestHandler implements RequestHandlerInterface
         $pageNumber = \Infrastructure\CommonFunction::getPageNumber($queryData, \Config\AppConstant::PageNumber);
         $itemPerPage = \Infrastructure\CommonFunction::getItemPerPage($queryData, \Config\AppConstant::ItemPerPage);
         $title = \Infrastructure\CommonFunction::getValue($queryData, 'title');
+        $platform = \Infrastructure\CommonFunction::getValue($queryData, 'platform');
         $filterData = new \stdClass();
         $filterData->title = $title;
+        $filterData->platform = $platform;
+        
 
         $testService = $this->container->get(TestServiceInterface::class);
         $ok = $testService->getTests($tests, $messages, $filterData, $pageNumber, $itemPerPage);

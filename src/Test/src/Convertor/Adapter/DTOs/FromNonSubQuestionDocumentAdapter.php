@@ -36,6 +36,10 @@ class FromNonSubQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterIn
         $dto->setType($document->getType()->getParentType()->getName());
         $dto->setTypeId($document->getType()->getId());
 
+        $dto->setPlatform($document->getPlatform()->getName());
+        $dto->setPlatformId($document->getPlatform()->getId());
+        $dto->setUser($document->getUser()->getId());
+        
         $dto->setSource($document->getSource()->getName());
         $dto->setSourceId($document->getSource()->getId()); 
         

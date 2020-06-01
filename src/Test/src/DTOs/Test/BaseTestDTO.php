@@ -12,6 +12,10 @@ class BaseTestDTO
 
     protected $referId;
     
+    protected $platform;
+
+    protected $user;
+    
     /**
      * Get the value of title
      */ 
@@ -68,6 +72,46 @@ class BaseTestDTO
     public function setReferId($referId)
     {
         $this->referId = $referId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of platform
+     */ 
+    public function getPlatform()
+    {
+        return $this->platform;
+    }
+
+    /**
+     * Set the value of platform
+     *
+     * @return  self
+     */ 
+    public function setPlatform($platform)
+    {
+        $this->platform = $platform;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

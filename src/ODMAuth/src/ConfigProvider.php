@@ -30,6 +30,7 @@ class ConfigProvider
             'convertorDocumentToDTOAdapters' => $this->getConvertorDocumentToDTOAdapters(),
             'convertorDTOAdapters' => $this->getConvertorDTOAdapters(),
             'requestToDTO' => $this->getRequestToDTOClass(),
+            'resolveService' => $this->getResolveService(),
             'authentication' => [
                 'private_key'    => __DIR__ . '/../data/private.key',
                 'public_key'     => __DIR__ . '/../data/public.key',
@@ -75,6 +76,14 @@ class ConfigProvider
         ];
     }
 
+    public function getResolveService(): array {
+        return [
+            \ODMAuth\Services\Interfaces\UserServiceInterface::class => [
+                \ODMAuth\Services\UserService::class,        
+            ]
+        ];
+    }
+
     /**
      * Returns the container dependencies
      */
@@ -114,6 +123,10 @@ class ConfigProvider
 
                 Services\AuthorizationService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoExamAuthorizationService::class => \Infrastructure\Factory\BaseFactory::class,
+
+                Services\UserService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\Interfaces\UserServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+
 
 
             ],

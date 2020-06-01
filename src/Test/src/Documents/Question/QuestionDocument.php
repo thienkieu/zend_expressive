@@ -27,6 +27,14 @@ class QuestionDocument
   */
   protected $type;
 
+  /**
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\PlatformDocument::class, storeAs="id")
+  */
+  protected $platform;
+
+  /** @ODM\Field(type="string") */
+  protected $platformId;
+
   /** @ODM\Field(type="string") */
   protected $typeId;
 
@@ -37,6 +45,11 @@ class QuestionDocument
   * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\SourceDocument::class, storeAs="id")
   */
   protected $source;
+
+  /**
+  * @ODM\ReferenceOne(targetDocument=ODMAuth\Documents\UserDocument::class, storeAs="id")
+  */
+  protected $user;
   
   /** @ODM\Field(type="float") */
   protected $mark;
@@ -226,6 +239,66 @@ class QuestionDocument
   public function setParentTypeId($parentTypeId)
   {
     $this->parentTypeId = $parentTypeId;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of platform
+   */ 
+  public function getPlatform()
+  {
+    return $this->platform;
+  }
+
+  /**
+   * Set the value of platform
+   *
+   * @return  self
+   */ 
+  public function setPlatform($platform)
+  {
+    $this->platform = $platform;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of platformId
+   */ 
+  public function getPlatformId()
+  {
+    return $this->platformId;
+  }
+
+  /**
+   * Set the value of platformId
+   *
+   * @return  self
+   */ 
+  public function setPlatformId($platformId)
+  {
+    $this->platformId = $platformId;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of user
+   */ 
+  public function getUser()
+  {
+    return $this->user;
+  }
+
+  /**
+   * Set the value of user
+   *
+   * @return  self
+   */ 
+  public function setUser($user)
+  {
+    $this->user = $user;
 
     return $this;
   }

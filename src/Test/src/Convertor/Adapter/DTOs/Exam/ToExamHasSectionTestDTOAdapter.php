@@ -36,6 +36,8 @@ class ToExamHasSectionTestDTOAdapter extends ToDTOAdapter {
         if (isset($jsonObject->id)) {
             $dtoObject->setId($jsonObject->id);    
         }  
+
+        $dtoObject->setPlatform($jsonObject->platform);
         
         $date = \Infrastructure\CommonFunction::convertToDateTimeFormat($jsonObject->startDate);
         if ($date === false) {

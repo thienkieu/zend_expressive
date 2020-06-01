@@ -32,13 +32,19 @@ class LogService implements Interfaces\LogInterface {
         }
     }
 
-    public function writeLogAsyn($url, $params, $type='POST')
+    public function writeLogAsyn($url, $params = [], $type='POST')
     {
-        foreach ($params as $key => &$val) {
-            if (is_array($val)) $val = implode(',', $val);
-            $post_params[] = $key.'='.urlencode($val);
+        $post_string = '';
+        if (\is_array($params)) {
+            foreach ($params as $key => &$val) {
+                if (is_array($val)) $val = implode(',', $val);
+                $post_params[] = $key.'='.urlencode($val);
+            }
+
+            $post_string = implode('&', $post_params);
         }
-        $post_string = implode('&', $post_params);
+        
+        
 
         $parts=parse_url($url);
 

@@ -75,4 +75,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/coordinator/question/importTemplate', Test\Handlers\DownloadImportQuestionTemplateHandler::class, 'question.importTemplate');
 
     $app->get('/coordinator/question/type', Test\Handlers\GetTypeHandler::class, 'question.types');
+
+    $app->post('/platform/create', Test\Handlers\CreatePlatformHandler::class, 'platform.create');
+    $app->get('/platform', Test\Handlers\GetPlatformHandler::class, 'platform');
+    $app->get('/migration', Test\Handlers\MigrationHandler::class, 'test.migration');
 };
