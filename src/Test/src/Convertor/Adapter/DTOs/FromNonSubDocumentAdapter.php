@@ -19,7 +19,7 @@ class FromNonSubDocumentAdapter implements ConvertDocumentToDTOAdapterInterface 
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
-        if ($document instanceof \Test\Documents\NonSubQuestionDocument) {
+        if ($document instanceof \Test\Documents\Question\NonSubQuestionDocument) {
             return true;
         }
 

@@ -28,10 +28,11 @@ class GetTypeHandler implements RequestHandlerInterface
         $pageNumber = isset($queryData['pageNumber']) ? $queryData['pageNumber'] : 1;
         $itemPerPage = isset($queryData['itemPerPage']) ? $queryData['itemPerPage'] : 25;
         $content = isset($queryData['content']) ? $queryData['content'] : '';
+        $platform = isset($queryData['platform']) ? $queryData['platform'] : '';
         
         $typeService = $this->container->get(TypeServiceInterface::class);
        
-        $data = $typeService->getTypes($content, $messages, $pageNumber, $itemPerPage);
+        $data = $typeService->getTypes($platform, $content, $messages, $pageNumber, $itemPerPage);
 
         return \Infrastructure\CommonFunction::buildResponseFormat(true, [], $data);        
     }

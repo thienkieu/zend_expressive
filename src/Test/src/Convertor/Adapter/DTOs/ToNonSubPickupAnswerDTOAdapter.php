@@ -7,10 +7,10 @@ namespace Test\Convertor\Adapter\DTOs;
 use Infrastructure\Convertor\ToDTOAdapter;
 use Test\Enum\DTOName;
 
-class ToPickupAnswerDTOAdapter extends ToDTOAdapter {
+class ToNonSubPickupAnswerDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::UserAnswerDTO && !empty($dtoObject->answers) && !empty($dtoObject->subQuestionId)) {
+        if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::UserAnswerDTO && !empty($dtoObject->answers) && !empty($dtoObject->nonSub)) {
             return true;
         }
 
@@ -18,6 +18,6 @@ class ToPickupAnswerDTOAdapter extends ToDTOAdapter {
     }
     
     public function getDTOClass() {
-        return \Test\DTOs\ExamResult\PickupAnswerDTO::class;
+        return \Test\DTOs\ExamResult\NonSubPickupAnswerDTO::class;
     }
 }

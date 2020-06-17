@@ -45,7 +45,7 @@
         "doctrine/orm": "2.6.3",
         "gumlet/php-image-resize": "^1.9",
         "netresearch/jsonmapper": "2.1.0",
-        "ocramius/proxy-manager": "2.3.0",
+        "ocramius/proxy-manager": "2.2.3",
         "phpoffice/phpspreadsheet": "^1.7",
         "phpseclib/phpseclib": "^2.0",
         "shuchkin/simplexls": "^0.9.4",
@@ -97,6 +97,7 @@
         "development-enable": "zf-development-mode enable",
         "development-status": "zf-development-mode status",
         "expressive": "expressive --ansi",
+		"doctrine": "doctrine",
         "check": [
             "@cs-check",
             "@test"

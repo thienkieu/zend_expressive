@@ -11,7 +11,7 @@ use Config\AppConstant;
 class ToNonSubQuestionDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        $type = isset($dtoObject->type) ? $dtoObject->type: '';
+        $type = isset($dtoObject->renderType) ? $dtoObject->renderType: '';
         if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::QuestionDTO && $type === \Config\AppConstant::NonSub) {
             return true;
         }

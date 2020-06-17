@@ -31,8 +31,6 @@ class ToTestTemplateSectionDTOAdapter extends ToDTOAdapter {
         $testId = isset($jsonObject->id) ? $jsonObject->id: '';
         $dtoObject->setId($testId);
 
-        $dtoObject->setPlatform($jsonObject->platform);
-        
         $mediaFolder = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.date('Ymdhis');
         \Infrastructure\CommonFunction::createFolder($mediaFolder);
         $path =  \Infrastructure\CommonFunction::getRealPath($jsonObject->path);

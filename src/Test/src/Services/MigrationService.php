@@ -38,6 +38,16 @@ class MigrationService implements Interfaces\MigrationServiceInterface, HandlerI
         }
     }
 
+    protected function migrationQuestionType($platform) {
+        $typeReposity = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);
+        $types = $typeReposity->findAll();
+        foreach($types as $type) {
+            $type->setPlatform($platform);
+            $type->setRenderName($type->getName());
+            //$type->setUser($user);
+        }
+    }
+
     protected function migrationTest($platform, $user) {
         $testRepo = $this->dm->getRepository(\Test\Documents\Test\BaseTestDocument::class);
         $tests = $testRepo->findAll();
@@ -133,11 +143,13 @@ class MigrationService implements Interfaces\MigrationServiceInterface, HandlerI
         $platformService = $this->container->get(\Test\Services\Interfaces\PlatformServiceInterface::class);
         $defaultPlatform = $platformService->getPlatformByName('English'); 
 
-        $this->migrationQuestion($defaultPlatform, $user);
+        /*$this->migrationQuestion($defaultPlatform, $user);
         $this->migrationTest($defaultPlatform, $user);
         $this->migrationTestTemplate($defaultPlatform, $user);
         $this->migrationExam($defaultPlatform, $user);
         $this->migrationExamResult($defaultPlatform, $user);
+        */
+        $this->migrationQuestionType($defaultPlatform);
 
         $this->dm->flush();
 

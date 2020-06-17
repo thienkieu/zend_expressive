@@ -11,7 +11,7 @@ use Config\AppConstant;
 class ToVerbalDTOAdapter extends ToDTOAdapter {
     public function isHandleConvertToDTO($dtoObject, $options = []) : bool
     {
-        $type = isset($dtoObject->subType) ? $dtoObject->subType: '';
+        $type = isset($dtoObject->renderType) ? $dtoObject->renderType: '';
         if (isset($options[\Config\AppConstant::DTOKey]) && $options[\Config\AppConstant::DTOKey] === DTOName::QuestionDTO && $type === DTOName::Verbal ) {
             return true;
         }

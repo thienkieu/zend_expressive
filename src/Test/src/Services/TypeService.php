@@ -9,6 +9,7 @@ use Zend\Log\Logger;
 use Infrastructure\Convertor\DTOToDocumentConvertorInterface;
 use Infrastructure\Convertor\DocumentToDTOConvertorInterface;
 use Infrastructure\Interfaces\HandlerInterface;
+use Test\Services\Interfaces\PlatformServiceInterface;
 
 class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
 {
@@ -82,13 +83,13 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
         return true;
     }
 
-    public function getTypes($content, & $messages, $pageNumber = 1, $itemPerPage = 25) {
+    public function getTypes($platform, $content, & $messages, $pageNumber = 1, $itemPerPage = 25) {
         $types = [];
         if (!$this->types) {
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
             $typeRepository = $this->dm->getRepository(\Test\Documents\Question\TypeDocument::class);  
-            $typeDocuments = $typeRepository->findParentType();
+            $typeDocuments = $typeRepository->getTypes($platform, $content);
             
             
             foreach($typeDocuments as $parent) {
@@ -133,6 +134,15 @@ class TypeService implements Interfaces\TypeServiceInterface, HandlerInterface
             $document = $dtoToDocumentConvertor->convertToDocument($dto);
             
             $document->setParentType($parentType);
+            
+            $platformService = $this->container->get(PlatformServiceInterface::class);
+            $platformDocument = $platformService->getPlatformById($dto->getPlatform());
+            if (!$platformDocument) {
+                $translator = $this->container->get(\Config\AppConstant::Translator);
+                $message = $translator->translate('Platform not found, please check it again.');
+                throw new \Infrastructure\Exceptions\DataException($message);
+            }
+            $document->setPlatform($platformDocument);
             
             $this->dm->persist($document);
             $this->dm->flush();

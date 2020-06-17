@@ -19,6 +19,8 @@ class RandomQuestionDTO extends Question implements \JsonSerializable
 
     protected $isRandomAnswer;
     
+    protected $platform;
+    
     /**
      * Get the value of isDifferentSource
      *
@@ -113,6 +115,26 @@ class RandomQuestionDTO extends Question implements \JsonSerializable
     public function setIsRandomAnswer($isRandomAnswer)
     {
         $this->isRandomAnswer = $isRandomAnswer;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of platform
+     */ 
+    public function getPlatform()
+    {
+        return $this->platform;
+    }
+
+    /**
+     * Set the value of platform
+     *
+     * @return  self
+     */ 
+    public function setPlatform($platform)
+    {
+        $this->platform = $platform;
 
         return $this;
     }

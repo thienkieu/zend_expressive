@@ -11,8 +11,6 @@ class BaseTestDTO
     protected $id;
 
     protected $referId;
-    
-    protected $platform;
 
     protected $user;
     
@@ -76,25 +74,6 @@ class BaseTestDTO
         return $this;
     }
 
-    /**
-     * Get the value of platform
-     */ 
-    public function getPlatform()
-    {
-        return $this->platform;
-    }
-
-    /**
-     * Set the value of platform
-     *
-     * @return  self
-     */ 
-    public function setPlatform($platform)
-    {
-        $this->platform = $platform;
-
-        return $this;
-    }
 
     /**
      * Get the value of user

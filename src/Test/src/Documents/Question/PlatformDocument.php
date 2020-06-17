@@ -1,5 +1,5 @@
 <?php
-namespace Test\Documents;
+namespace Test\Documents\Question;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,7 +17,7 @@ class PlatformDocument
   private $name;
 
   /**
-  * @ODM\ReferenceOne(targetDocument=Test\Documents\PlatformDocument::class, storeAs="id")
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\PlatformDocument::class, storeAs="id")
   */
   private $parentPlatform;
   

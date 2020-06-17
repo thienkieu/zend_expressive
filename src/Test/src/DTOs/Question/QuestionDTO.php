@@ -21,7 +21,7 @@ class QuestionDTO
     protected $order;
     protected $systemType;
     protected $user;
-
+    protected $renderType;
     
      /**
      * @var SubQuestionDTO[]
@@ -45,7 +45,7 @@ class QuestionDTO
         $ret->candidateMark = $this->getCandidateMark();
         $ret->systemType = $this->getSystemType();
         $ret->user = $this->getUser();
-        
+        $ret->renderType = $this->getRenderType();
         return $ret;
     }
 
@@ -391,6 +391,26 @@ class QuestionDTO
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of renderType
+     */ 
+    public function getRenderType()
+    {
+        return $this->renderType;
+    }
+
+    /**
+     * Set the value of renderType
+     *
+     * @return  self
+     */ 
+    public function setRenderType($renderType)
+    {
+        $this->renderType = $renderType;
 
         return $this;
     }

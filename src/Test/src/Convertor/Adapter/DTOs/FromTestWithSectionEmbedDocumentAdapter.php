@@ -37,7 +37,6 @@ class FromTestWithSectionEmbedDocumentAdapter implements ConvertDocumentToDTOAda
 
         $logger = $this->container->get(\Zend\Log\Logger::class);
        
-        $dto->setPlatform($document->getPlatform()->getId());
         $dto->setUser($document->getUser()->getId());
         $sections = $document->getSections();
         $sectionDTO = [];

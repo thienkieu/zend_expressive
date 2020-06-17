@@ -30,7 +30,10 @@ class DoctrineODMFactory
         $loader->add('Documents', $dbConfig['document-path']);
         AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
-        //$client = new Client($dbConfig['mongodb-connection'], [], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
+        //$logService = $container->get(\Infrastructure\Services\Interfaces\LogInterface::class);
+        //$logService->writeLog($dbConfig['mongodb-connection']);
+        
+        $client = new Client($dbConfig['mongodb-connection'], [], ['typeMap' => ['root' => 'array', 'document' => 'array']]);
         //$connection = new Connection($client);
 
         $config = new Configuration();
@@ -42,7 +45,7 @@ class DoctrineODMFactory
 
         
         $config->setAutoGenerateHydratorClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);
-        $config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);
+        $config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_EVAL);
         //config->setMetadataCacheImpl(new ApcuCache());
         
 
@@ -52,7 +55,7 @@ class DoctrineODMFactory
 
        // AnnotationDriver::registerAnnotationClasses();
         
-        $dm = DocumentManager::create(null, $config);
+        $dm = DocumentManager::create($client, $config);
         
         return $dm;
     }

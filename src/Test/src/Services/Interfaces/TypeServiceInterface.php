@@ -7,7 +7,7 @@ namespace Test\Services\Interfaces;
 
 interface TypeServiceInterface
 {
-    public function getTypes($content, & $messages, $pageNumber = 1, $itemPerPage = 25);
+    public function getTypes($platform, $content, & $messages, $pageNumber = 1, $itemPerPage = 25);
 
     public function createType($dto, & $returnDTO, & $messages);
 

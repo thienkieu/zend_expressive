@@ -43,7 +43,8 @@ class FromNonSubEmbedDocumentAdapter implements ConvertDocumentToDTOAdapterInter
         $dto->setType($document->getType()->getParentType()->getName());
         $dto->setSubType($document->getType()->getName());
         $dto->setTypeId($document->getType()->getId());
-        
+        $dto->setRenderType($document->getType()->getRenderName());
+
         $dto->setId($document->getId());
         $dto->setCandidateMark($document->getCandidateMark());
         $dto->setMark($document->getMark());

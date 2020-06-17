@@ -54,7 +54,7 @@ class PlatformService implements Interfaces\PlatformServiceInterface, HandlerInt
             }            
         }
 
-        $platformRepository = $this->dm->getRepository(\Test\Documents\PlatformDocument::class);  
+        $platformRepository = $this->dm->getRepository(\Test\Documents\Question\PlatformDocument::class);  
         return $platformRepository->getPlatformByName($parentName, $subPlatformName);
     }
 
@@ -63,14 +63,14 @@ class PlatformService implements Interfaces\PlatformServiceInterface, HandlerInt
             $this->platforms[$id];
         }
 
-        $platformRepository = $this->dm->getRepository(\Test\Documents\PlatformDocument::class);  
+        $platformRepository = $this->dm->getRepository(\Test\Documents\Question\PlatformDocument::class);  
         return $platformRepository->find($id);
     }
         
     public function getAllPlatforms(& $ret) {
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
-        $platformRepository = $this->dm->getRepository(\Test\Documents\PlatformDocument::class);  
+        $platformRepository = $this->dm->getRepository(\Test\Documents\Question\PlatformDocument::class);  
         $platformDocuments = $platformRepository->findAll();
 
         $ret = [];
@@ -87,7 +87,7 @@ class PlatformService implements Interfaces\PlatformServiceInterface, HandlerInt
         if (!$this->platforms) {
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
 
-            $platformRepository = $this->dm->getRepository(\Test\Documents\PlatformDocument::class);  
+            $platformRepository = $this->dm->getRepository(\Test\Documents\Question\PlatformDocument::class);  
             $platformDocuments = $platformRepository->findParentPlatform();
             
             

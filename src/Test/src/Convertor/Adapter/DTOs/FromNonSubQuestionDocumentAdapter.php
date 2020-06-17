@@ -29,12 +29,17 @@ class FromNonSubQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterIn
 
     public function convert($document, $options = []) {
         $dto = new \Test\DTOs\Question\NonSubQuestionDTO();
-        $dto->setContent($document->getContent());
+        
+        $content = \Infrastructure\CommonFunction::revertToHost($document->getContent());
+        $dto->setContent($content);
+        
         $dto->setOrder($document->getOrder());
+        $dto->setId($document->getId());
 
         $dto->setSubType($document->getType()->getName());
         $dto->setType($document->getType()->getParentType()->getName());
         $dto->setTypeId($document->getType()->getId());
+        $dto->setRenderType($document->getType()->getRenderName());
 
         $dto->setPlatform($document->getPlatform()->getName());
         $dto->setPlatformId($document->getPlatform()->getId());

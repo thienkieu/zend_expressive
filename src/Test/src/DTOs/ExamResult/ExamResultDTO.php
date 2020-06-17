@@ -15,7 +15,6 @@ class ExamResultDTO implements \JsonSerializable
     protected $remainingTime;
     protected $resultSummary;
     protected $examType;
-    protected $platform;
     protected $user;
     
     public function jsonSerialize() {
@@ -29,7 +28,6 @@ class ExamResultDTO implements \JsonSerializable
         $ret->remainingTime = $this->getRemainingTime();
         $ret->resultSummary = $this->getResultSummary();
         $ret->examType = $this->getExamType();
-        $ret->platform = $this->getPlatform();
         
         return $ret;
     }
@@ -211,26 +209,6 @@ class ExamResultDTO implements \JsonSerializable
     public function setExamType($examType)
     {
         $this->examType = $examType;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of platform
-     */ 
-    public function getPlatform()
-    {
-        return $this->platform;
-    }
-
-    /**
-     * Set the value of platform
-     *
-     * @return  self
-     */ 
-    public function setPlatform($platform)
-    {
-        $this->platform = $platform;
 
         return $this;
     }

@@ -12,19 +12,26 @@ namespace Test\Repositories;
 
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
-use  Doctrine\MongoDB\Query\Expr;
+use  Doctrine\ODM\MongoDB\Query\Expr;
 use date;
 
 class TypeRepository extends DocumentRepository
 {
-    public function getTypes() {
-        $builder = $this->createAggregationBuilder();
+    public function getTypes($platform, $content) {
+        $builder = $this->createQueryBuilder();
+        if ($platform) {
+            $builder = $builder->field('platform')->equals($platform);
+        }
+
+        if ($content) {
+            $builder = $builder->field('name')->equals(new \MongoDB\BSON\Regex($content, 'i'));
+        }
+
         $documents = $builder
-                    ->group()
-                        ->field('parentType')
-                    
-                    ->execute();
-        echo count($documents);die;
+                        ->field('parentType')->equals(null)
+                        ->getQuery()                    
+                        ->execute();
+        
         return $documents;
     }
 

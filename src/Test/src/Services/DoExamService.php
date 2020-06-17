@@ -158,7 +158,6 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             $examResult->setTime($examDTO->getTime());
             $examResult->setTitle($examDTO->getTitle());
             $examResult->setStartDate($examDTO->getStartDate());
-            $examResult->setPlatform($examDTO->getPlatform());
             $examResult->setUser($examDTO->getUser());
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);

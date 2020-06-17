@@ -28,7 +28,7 @@ class QuestionDocument
   protected $type;
 
   /**
-  * @ODM\ReferenceOne(targetDocument=Test\Documents\PlatformDocument::class, storeAs="id")
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\PlatformDocument::class, storeAs="id")
   */
   protected $platform;
 

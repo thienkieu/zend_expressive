@@ -81,6 +81,12 @@ class ToNonSubQuestionEmbedDocumentAdapter implements ConvertDTOAToDocumentAdapt
             $document->addAnswer($a);
         }
         
+        $mark = $dto->getMark();
+        if (!$mark) {
+            $mark = \Config\AppConstant::DefaultSubQuestionMark;
+        }
+        $document->setMark($mark);
+
         return $document;            
     }
 }

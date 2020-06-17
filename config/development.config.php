@@ -29,7 +29,7 @@ return [
     'debug' => true,
     ConfigAggregator::ENABLE_CACHE => false,
     'nonsqldb' => [
-        'mongodb-connection' => 'mongodb://localhost:27017/onlinetest',
+        'mongodb-connection' => 'mongodb://192.168.190.92:27017/onlinetest',
         //'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds253017.mlab.com:53017/onlinetest_demo?retryWrites=false',
         'document-path' => [
             $dir.'/App/src/Documents',

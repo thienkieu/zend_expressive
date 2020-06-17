@@ -14,7 +14,6 @@ class ExamDTO implements \JsonSerializable
     protected $startDate; 
     protected $isScored;
     protected $type;
-    protected $platform;
     protected $user;
 
     public function jsonSerialize() {
@@ -27,7 +26,6 @@ class ExamDTO implements \JsonSerializable
         $ret->isScored = $this->getIsScored();
         $ret->startDate = $this->getStartDate()->format(\Config\AppConstant::DateTimeFormat); 
         $ret->type = $this->getType();
-        $ret->platform = $this->getPlatform();
           
         return $ret;
     }
@@ -192,26 +190,6 @@ class ExamDTO implements \JsonSerializable
     public function setType($type)
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of platform
-     */ 
-    public function getPlatform()
-    {
-        return $this->platform;
-    }
-
-    /**
-     * Set the value of platform
-     *
-     * @return  self
-     */ 
-    public function setPlatform($platform)
-    {
-        $this->platform = $platform;
 
         return $this;
     }

@@ -10,6 +10,8 @@ class TypeDTO implements \JsonSerializable
     protected $name; 
     protected $parentName;
     protected $isManualScored;
+    protected $platform;
+    protected $renderName;
     
     /**
      * @var TypeDTO[]
@@ -22,6 +24,8 @@ class TypeDTO implements \JsonSerializable
         $ret->name = $this->getName();
         $ret->isManualScored = $this->getIsManualScored();
         $ret->subType = $this->getSubTypes();
+        $ret->platform = $this->getPlatform();
+        $ret->renderName = $this->getRenderName();
         
         return $ret;
     }
@@ -126,6 +130,45 @@ class TypeDTO implements \JsonSerializable
     public function setSubTypes($subTypes)
     {
         $this->subTypes = $subTypes;
+
+        return $this;
+    }
+    /**
+     * Get the value of platform
+     */ 
+    public function getPlatform()
+    {
+        return $this->platform;
+    }
+
+    /**
+     * Set the value of platform
+     *
+     * @return  self
+     */ 
+    public function setPlatform($platform)
+    {
+        $this->platform = $platform;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of renderName
+     */ 
+    public function getRenderName()
+    {
+        return $this->renderName;
+    }
+
+    /**
+     * Set the value of renderName
+     *
+     * @return  self
+     */ 
+    public function setRenderName($renderName)
+    {
+        $this->renderName = $renderName;
 
         return $this;
     }

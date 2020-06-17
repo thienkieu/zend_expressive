@@ -16,8 +16,8 @@ class TestWithSectionDTO extends BaseTestDTO implements \JsonSerializable
         $ret->id = $this->getId();
         $ret->referId = $this->getReferId() ? $this->getReferId(): '';
         $ret->title = $this->getTitle();
-        $ret->sections = $this->getSections(); 
-        $ret->platform = $this->getPlatform();      
+        $ret->sections = $this->getSections();  
+        $ret->user = $this->getUser();      
         return $ret;
     }
 

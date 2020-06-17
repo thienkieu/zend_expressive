@@ -34,7 +34,6 @@ class FromTestWithSectionDocumentAdapter implements ConvertDocumentToDTOAdapterI
         $dto->setTitle($document->getTitle());
         $dto->setId($document->getId());
 
-        $dto->setPlatform($document->getPlatform()->getId());
         $dto->setUser($document->getUser()->getId());
         
         $sectionDocuments = $document->getSections();

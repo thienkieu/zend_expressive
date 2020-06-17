@@ -120,7 +120,7 @@ return [
         'latestDisConnectURL' => 'http://localhost:3000/getLatestDisconenct',
         'writeLogURL' => 'http://localhost:3000/writeLog',
         'enableLogFile' => true,
-        'enableLogRemote' => true,
+        'enableLogRemote' => false,
 
        // 'candidates' => 'http://localhost:12346/Portal/ExcuteByCommand/GetCandiates'
     ],

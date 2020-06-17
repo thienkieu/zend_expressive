@@ -13,7 +13,7 @@ namespace Test\Repositories;
 use MongoDB\BSON\Regex;
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
-use  Doctrine\MongoDB\Query\Expr;
+use  Doctrine\ODM\MongoDB\Query\Expr;
 use date;
 
 class SourceRepository extends DocumentRepository

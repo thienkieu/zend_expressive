@@ -39,7 +39,6 @@ class FromExamDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
         $dto->setType($document->getType());
        
         $dto->setUser($document->getUser()->getId());
-        $dto->setPlatform($document->getPlatform()->getId());
         $candiateDocuments = $document->getCandidates();
         $candiateDTOs = [];
         foreach($candiateDocuments as $candiate) {

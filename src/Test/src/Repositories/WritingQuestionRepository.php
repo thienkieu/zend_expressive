@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Test\Repositories;
 
 use Doctrine\ODM\Tools\Pagination\Paginator;
-use  Doctrine\MongoDB\Query\Expr;
+use  Doctrine\ODM\MongoDB\Query\Expr;
 use date;
 
 class WritingQuestionRepository extends QuestionRepository
@@ -35,7 +35,7 @@ class WritingQuestionRepository extends QuestionRepository
     
     public function getCandidateInfo($pin) {
         
-        $expr = new Expr();
+        $expr = new Expr($this->getDocumentManager());
         $equalPin = $expr->field('candidate.pin')->equals($pin);
 
         $builder = $this->createAggregationBuilder();

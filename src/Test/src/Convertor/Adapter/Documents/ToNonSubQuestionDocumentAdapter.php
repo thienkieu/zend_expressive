@@ -8,6 +8,7 @@ use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 use Test\Services\Interfaces\SourceServiceInterface;
 use Test\Services\Interfaces\TypeServiceInterface;
 use Test\Services\Interfaces\PlatformServiceInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ToNonSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface {
     protected $container;
@@ -33,8 +34,7 @@ class ToNonSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
     }
     
     public function convert($dto, $options = []) 
-    {  
-       
+    {         
         $sourceService = $this->container->get(SourceServiceInterface::class);
         $sourceDocument = $sourceService->getSourceByName($dto->getSource());
         if (!$sourceDocument) {
@@ -83,6 +83,7 @@ class ToNonSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
         $document->setTypeId($typeDocument->getId());
         $document->setParentTypeId($typeDocument->getParentType()->getId());
         
+        $answerDocuments = new ArrayCollection();
         $answers = $dto->getAnswers();
         foreach($answers as $answer){
             $a = new \Test\Documents\Question\AnswerDocument();
@@ -90,9 +91,11 @@ class ToNonSubQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
             $a->setIsCorrect(!!$answer->getIsCorrect());
             $a->setIsUserChoice(!!$answer->getIsUserChoice());
             $a->setOrder($answer->getOrder());  
-            $document->addAnswer($a);
+            $answerDocuments->add($a);
+            
         }
-        
+        $document->setAnswers($answerDocuments);
+
         return $document;            
     }
 }

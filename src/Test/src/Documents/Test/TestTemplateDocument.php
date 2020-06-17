@@ -33,11 +33,6 @@ class TestTemplateDocument
   */
   private $user;
 
-  /**
-  * @ODM\ReferenceOne(targetDocument=Test\Documents\PlatformDocument::class, storeAs="id")
-  */
-  private $platform;
-
   public function __construct()
   {
     $this->sections = new ArrayCollection();
@@ -196,23 +191,4 @@ class TestTemplateDocument
     return $this;
   }
 
-  /**
-   * Get the value of platform
-   */ 
-  public function getPlatform()
-  {
-    return $this->platform;
-  }
-
-  /**
-   * Set the value of platform
-   *
-   * @return  self
-   */ 
-  public function setPlatform($platform)
-  {
-    $this->platform = $platform;
-
-    return $this;
-  }
 }

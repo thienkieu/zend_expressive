@@ -173,7 +173,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $questionInfo->getQuestionInfo();
     }
 
-    protected function generateRandomQuestion($citerial, $notInsources, $notInQuestions, $platform, $user, $keepCorrectAnswer = false) {
+    protected function generateRandomQuestion($citerial, $notInsources, $notInQuestions, $user, $keepCorrectAnswer = false) {
         $questionDTO = $citerial->getQuestionInfo();        
         $toClass = $this->getClassName($questionDTO->getType(), $questionDTO->getSubType());
         $questionRepository = $this->dm->getRepository($toClass);
@@ -182,8 +182,15 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         if (!$citerial->getQuestionInfo()->getIsDifferentSource()) {
             $questionnotInsources = [];
         }
+
+        $platformId = $citerial->getQuestionInfo()->getPlatform();
+        if (!$platformId) {
+            $platformService = $this->container->get(\Test\Services\Interfaces\PlatformServiceInterface::class);
+            $defaultPlatform = $platformService->getPlatformByName('English'); 
+            $platformId = $defaultPlatform->getId();
+        }
         
-        $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $questionnotInsources, $notInQuestions, $toClass, $platform, $user);
+        $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $questionnotInsources, $notInQuestions, $toClass, $platformId, $user);
         if (!$question) {
             $generateQuestionCiterial = [
                 '%type%' => $questionDTO->getType(),
@@ -211,7 +218,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $ret;
     }
 
-    public function generateQuestion($citerial, $notInsources, $notInQuestions, $platform, $user, $keepCorrectAnswer = false) {
+    public function generateQuestion($citerial, $notInsources, $notInQuestions, $user, $keepCorrectAnswer = false) {
         
         if ($citerial->getGenerateFrom() !== \Config\AppConstant::Random) {
             $ret = $this->generatePickupQuestion($citerial);
@@ -225,7 +232,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             return $ret;
         }
 
-        return $this->generateRandomQuestion($citerial, $notInsources, $notInQuestions, $platform, $user, $keepCorrectAnswer);
+        return $this->generateRandomQuestion($citerial, $notInsources, $notInQuestions, $user, $keepCorrectAnswer);
     }
 
     public function getQuestions($dto, $pageNumber, $itemPerPage, $isShowCorrectAnswer = false) {
@@ -329,6 +336,9 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $content = $this->moveImageToQuestionFolder($content);
         $dto->setContent($content);
 
+        $logService = $this->container->get(\Infrastructure\Services\Interfaces\LogInterface::class);
+        $logService->writeLog($dto);
+        
         $existingDocument = null;
         $id = $dto->getId();
         if (!empty($id)) {

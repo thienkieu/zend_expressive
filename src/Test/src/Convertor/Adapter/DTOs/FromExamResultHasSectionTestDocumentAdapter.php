@@ -40,7 +40,6 @@ class FromExamResultHasSectionTestDocumentAdapter implements ConvertDocumentToDT
         $dto->setExamId($document->getExamId());
         $dto->setStartDate($document->getStartDate());
         $dto->setExamType($document->getExamType());
-        $dto->setPlatform($document->getPlatform()->getId());
         
         $candiateDocument = $document->getCandidate();
         $candiateDTO = $this->convertor->convertToDTO($candiateDocument, $options);

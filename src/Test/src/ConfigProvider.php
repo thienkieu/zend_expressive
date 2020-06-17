@@ -98,6 +98,7 @@ class ConfigProvider
             ],
             
             \Test\Services\Question\QuestionServiceInterface::class => [
+                \Test\Services\Question\NonSubQuestionService::class,
                 \Test\Services\Question\ReadingQuestionService::class,
                 \Test\Services\Question\WritingQuestionService::class,
                 \Test\Services\Question\ListeningQuestionService::class,
@@ -109,6 +110,7 @@ class ConfigProvider
             ],
     
             \Test\Services\DoExamResultServiceInterface::class => [
+                \Test\Services\DoExamResultNonSubService::class,
                 \Test\Services\DoExamResultService::class,
                 \Test\Services\DoExamResultWritingService::class,
                 \Test\Services\DoExamResultRepeatTimesService::class,
@@ -183,6 +185,7 @@ class ConfigProvider
             \Test\Convertor\Adapter\DTOs\Exam\ToPinDTOAdapter::class,  
             \Test\Convertor\Adapter\DTOs\Exam\ToPinInfoDTOAdapter::class,
             \Test\Convertor\Adapter\DTOs\ToPickupAnswerDTOAdapter::class,
+            \Test\Convertor\Adapter\DTOs\ToNonSubPickupAnswerDTOAdapter::class,
             \Test\Convertor\Adapter\DTOs\ToUpdateRepeatTimesDTOAdapter::class,
             \Test\Convertor\Adapter\DTOs\ToUpdateWritingAnswerDTOAdapter::class,
             \Test\Convertor\Adapter\DTOs\UpdateQuestionMarkDTOAdapter::class,
@@ -381,6 +384,7 @@ class ConfigProvider
                 Services\Question\QuestionServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
                 Services\Question\QuestionService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\Question\WritingQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
+                Services\Question\NonSubQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\Question\ReadingQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\Question\ListeningQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\Question\VerbalQuestionService::class => \Infrastructure\Factory\BaseFactory::class,
@@ -389,6 +393,7 @@ class ConfigProvider
                 Services\PinService::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Services\DoExamResultServiceInterface::class => \Infrastructure\Factory\ServiceFactory::class,
+                Services\DoExamResultNonSubService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoExamResultService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoExamResultListeningFinishService::class => \Infrastructure\Factory\BaseFactory::class,
                 Services\DoExamResultListeningClickToListenService::class => \Infrastructure\Factory\BaseFactory::class,

@@ -12,7 +12,7 @@ namespace Test\Repositories;
 
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
-use  Doctrine\MongoDB\Query\Expr;
+use  Doctrine\ODM\MongoDB\Query\Expr;
 use date;
 
 class ExamRepository extends DocumentRepository
@@ -73,7 +73,7 @@ class ExamRepository extends DocumentRepository
                 ->match()
                     ->field('candidates.pin')->equals($pin)       
                 ->project()   
-                    ->includeFields(['title', 'startDate', 'test', 'time','type', 'platform', 'user'])                
+                    ->includeFields(['title', 'startDate', 'test', 'time','type', 'user'])                
                     ->excludeFields(['candidates'])
                     ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
                     
@@ -89,7 +89,7 @@ class ExamRepository extends DocumentRepository
 
     public function getCandidateInfo($pin) {
         
-        $expr = new Expr();
+        $expr = new Expr($this->getDocumentManager());
         $equalPin = $expr->field('candidate.pin')->equals($pin);
 
         $builder = $this->createAggregationBuilder();
@@ -98,7 +98,7 @@ class ExamRepository extends DocumentRepository
                 ->match()
                     ->field('candidates.pin')->equals($pin)       
                 ->project()   
-                    ->includeFields(['title', 'startDate'])                
+                    ->includeFields(['title', 'startDate', 'user'])                
                     ->field('candidates')
                     ->filter('$candidates', "candidate", $builder->expr()->eq('$$candidate.pin', $pin))
                     
@@ -184,11 +184,6 @@ class ExamRepository extends DocumentRepository
                 
         }
         
-        if (!empty($filterData->getPlatform())) {
-            $queryBuilder->field('platform')->equals($filterData->getPlatform());
-
-        }
-
         return $queryBuilder;
     }
 

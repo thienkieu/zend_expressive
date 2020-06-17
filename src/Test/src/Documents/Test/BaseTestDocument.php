@@ -21,11 +21,6 @@ class BaseTestDocument
   /** @ODM\Field(type="date") */
   protected $createDate;
 
-  /**
-  * @ODM\ReferenceOne(targetDocument=Test\Documents\PlatformDocument::class, storeAs="id")
-  */
-  private $platform;
-  
     /**
   * @ODM\ReferenceOne(targetDocument=ODMAuth\Documents\UserDocument::class, storeAs="id")
   */
@@ -93,26 +88,6 @@ class BaseTestDocument
   public function setCreateDate($createDate)
   {
     $this->createDate = $createDate;
-
-    return $this;
-  }
-
-  /**
-   * Get the value of platform
-   */ 
-  public function getPlatform()
-  {
-    return $this->platform;
-  }
-
-  /**
-   * Set the value of platform
-   *
-   * @return  self
-   */ 
-  public function setPlatform($platform)
-  {
-    $this->platform = $platform;
 
     return $this;
   }

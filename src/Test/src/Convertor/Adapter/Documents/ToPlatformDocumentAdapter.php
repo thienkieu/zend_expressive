@@ -30,7 +30,7 @@ class ToPlatformDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface
     
     public function convert($dtoObject, $options = []) 
     {
-        $document = new \Test\Documents\PlatformDocument();
+        $document = new \Test\Documents\Question\PlatformDocument();
         $document->setName($dtoObject->getName());
         
         return $document;            

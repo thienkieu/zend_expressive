@@ -12,7 +12,7 @@ namespace Test\Repositories;
 
 use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 use Doctrine\ODM\Tools\Pagination\Paginator;
-use  Doctrine\MongoDB\Query\Expr;
+use  Doctrine\ODM\MongoDB\Query\Expr;
 use date;
 
 class PlatformRepository extends DocumentRepository

@@ -21,7 +21,7 @@ class FromPlatformDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
 
     public function isHandleConvertDocumentToDTO($document, $options = []) : bool
     {
-        if ($document instanceof \Test\Documents\PlatformDocument) {
+        if ($document instanceof \Test\Documents\Question\PlatformDocument) {
             return true;
         }
 
@@ -34,7 +34,7 @@ class FromPlatformDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
         $dto->setName($document->getName());
         
         $dm = $this->container->get(\Config\AppConstant::DocumentManager);
-        $repository = $dm->getRepository(\Test\Documents\PlatformDocument::class);
+        $repository = $dm->getRepository(\Test\Documents\Question\PlatformDocument::class);
         
         $subPlatformDocuments = $repository->findBy(['parentPlatform' => $document->getId()]);
 

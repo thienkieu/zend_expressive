@@ -47,7 +47,7 @@ class LogigearExamService extends ExamService
                     
                     if (!isset($sources[$questionInfo->getTypeId()])) $sources[$questionInfo->getTypeId()] = [];
                     
-                    $q = $questionService->generateQuestion($question, $sources[$questionInfo->getTypeId()], $questionIds, $test->getPlatform(), $test->getUser(), $keepCorrectAnswer);
+                    $q = $questionService->generateQuestion($question, $sources[$questionInfo->getTypeId()], $questionIds, $test->getUser(), $keepCorrectAnswer);
                     $sources[$q->getTypeId()][] = $q->getSourceId();
                     $questionIds[] = $q->getId();
                     $sectionMark = $sectionMark + $q->getMark();
@@ -89,8 +89,7 @@ class LogigearExamService extends ExamService
             $testForDoExam->setSections($sectionsForDoExam);
             $testForDoExam->setId($test->getId());
             $testForDoExam->setTitle($test->getTitle());
-            $testForDoExam->setReferId($test->getReferId());
-            $testForDoExam->setPlatform($test->getPlatform());
+            $testForDoExam->setReferId($test->getReferId());            
             $testForDoExam->setUser($test->getUser());
             
             return $testForDoExam;

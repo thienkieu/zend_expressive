@@ -32,13 +32,16 @@ class FromTypeDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
         $dto = new \Test\DTOs\Question\TypeDTO();
         $dto->setId($document->getId());
         $dto->setName($document->getName());
+        $dto->setRenderName($document->getRenderName());
         $dto->setIsManualScored($document->getIsManualScored());
-        
+        $dto->setPlatform($document->getPlatform()->getId());
+
         $dm = $this->container->get(\Config\AppConstant::DocumentManager);
         $repository = $dm->getRepository(\Test\Documents\Question\TypeDocument::class);
         
         $subTypeDocuments = $repository->findBy(['parentType' => $document->getId()]);
 
+        
         $subTypeDTO = [];
         
         foreach($subTypeDocuments as $subTypeDocument) {
@@ -46,6 +49,8 @@ class FromTypeDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
             $subDTO->setId($subTypeDocument->getId());
             $subDTO->setName($subTypeDocument->getName());
             $subDTO->setIsManualScored($subTypeDocument->getIsManualScored());
+            $subDTO->setPlatform($subTypeDocument->getPlatform()->getId());
+            $subDTO->setRenderName($subTypeDocument->getRenderName());
             $subTypeDTO[] =  $subDTO;
         }
         $dto->setSubTypes($subTypeDTO);

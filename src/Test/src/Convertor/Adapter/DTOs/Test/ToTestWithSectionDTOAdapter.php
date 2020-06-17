@@ -32,7 +32,9 @@ class ToTestWithSectionDTOAdapter extends ToDTOAdapter {
         $testId = isset($jsonObject->id) ? $jsonObject->id: '';
         $dtoObject->setId($testId);
         
-        $dtoObject->setPlatform($jsonObject->platform);
+        if (isset($jsonObject->user)) {
+            $dtoObject->setUser($jsonObject->user);
+        }
         
         $sectionDTOs = [];
         foreach ($jsonObject->sections as $jsonSection) {

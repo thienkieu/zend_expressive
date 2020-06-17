@@ -16,6 +16,9 @@ class TypeDocument
   /** @ODM\Field(type="string") */
   private $name;
 
+   /** @ODM\Field(type="string") */
+   private $renderName;
+
   /** @ODM\Field(type="bool") */
   private $isManualScored;
 
@@ -25,6 +28,11 @@ class TypeDocument
   * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\TypeDocument::class, storeAs="id")
   */
   private $parentType;
+
+  /**
+  * @ODM\ReferenceOne(targetDocument=Test\Documents\Question\PlatformDocument::class, storeAs="id")
+  */
+  private $platform;
 
   /**
    * Class constructor.
@@ -145,4 +153,44 @@ class TypeDocument
 
     return $this;
   }
+
+  /**
+   * Get the value of platform
+   */ 
+  public function getPlatform()
+  {
+    return $this->platform;
+  }
+
+  /**
+   * Set the value of platform
+   *
+   * @return  self
+   */ 
+  public function setPlatform($platform)
+  {
+    $this->platform = $platform;
+
+    return $this;
+  }
+
+   /**
+    * Get the value of renderName
+    */ 
+   public function getRenderName()
+   {
+      return $this->renderName;
+   }
+
+   /**
+    * Set the value of renderName
+    *
+    * @return  self
+    */ 
+   public function setRenderName($renderName)
+   {
+      $this->renderName = $renderName;
+
+      return $this;
+   }
 }

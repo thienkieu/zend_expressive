@@ -141,8 +141,10 @@ class TestService implements Interfaces\TestServiceInterface, HandlerInterface
         $testDocuments = $testRepository->getTestWithPagination($filterData, $itemPerPage, $pageNumber);
         $documents = $testDocuments['tests'];
         
+
         $tests = [];
         foreach ($documents as $test) {
+            
             $dto = $documentToDTOConvertor->convertToDTO($test, [\Config\AppConstant::ShowCorrectAnswer => true]);
             $tests[] = $dto;
         }

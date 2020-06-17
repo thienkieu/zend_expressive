@@ -41,6 +41,7 @@ class FromQuestionDocumentAdapter implements ConvertDocumentToDTOAdapterInterfac
         $dto->setSourceId($document->getSource()->getId());
 
         $dto->setTypeId($document->getType()->getId());
+        $dto->setRenderType($document->getType()->getRenderName());
         
         $dto->setUser($document->getUser()->getId());
         
