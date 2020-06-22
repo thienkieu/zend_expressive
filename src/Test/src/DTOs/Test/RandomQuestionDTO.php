@@ -19,7 +19,6 @@ class RandomQuestionDTO extends Question implements \JsonSerializable
 
     protected $isRandomAnswer;
     
-    protected $platform;
     
     /**
      * Get the value of isDifferentSource
@@ -74,7 +73,9 @@ class RandomQuestionDTO extends Question implements \JsonSerializable
         $ret->isDifferentSource = $this->getIsDifferentSource(); 
         $ret->isKeepQuestionOrder = $this->getIsKeepQuestionOrder();
         $ret->randomAnswer = $this->getIsRandomAnswer();
-        $ret->mark = $this->getMark();        
+        $ret->mark = $this->getMark(); 
+        $ret->renderType = $this->getRenderType();
+        $ret->platform = $this->getPlatform();       
         
         return $ret;
     }
@@ -115,26 +116,6 @@ class RandomQuestionDTO extends Question implements \JsonSerializable
     public function setIsRandomAnswer($isRandomAnswer)
     {
         $this->isRandomAnswer = $isRandomAnswer;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of platform
-     */ 
-    public function getPlatform()
-    {
-        return $this->platform;
-    }
-
-    /**
-     * Set the value of platform
-     *
-     * @return  self
-     */ 
-    public function setPlatform($platform)
-    {
-        $this->platform = $platform;
 
         return $this;
     }

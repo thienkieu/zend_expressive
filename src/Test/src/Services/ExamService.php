@@ -382,14 +382,25 @@ class ExamService implements ExamServiceInterface, HandlerInterface
     public function getTypes() {
         $verbal = new \stdClass();
         $verbal->value = 'Verbal';
-        $verbal->name = $this->translator->translate('Verbal Exam Type');
+        $verbal->name = $this->translator->translate('Verbal (English Exam)');
 
         $skill = new \stdClass();
         $skill->value = 'Skill';
-        $skill->name = $this->translator->translate('Skill Exam Type');
+        $skill->name = $this->translator->translate('Skill (English Exam)');
+
+        $taSkill = new \stdClass();
+        $taSkill->value = 'TA_Skill';
+        $taSkill->name = $this->translator->translate('TA theory');
+        
+        $taPractice = new \stdClass();
+        $taPractice->value = 'TA_Practice';
+        $taPractice->name = $this->translator->translate('TA practice');
+        
         return [
             $skill,
             $verbal,
+            $taSkill,
+            $taPractice
         ];
     }
 }

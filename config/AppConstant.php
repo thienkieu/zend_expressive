@@ -28,6 +28,7 @@ abstract class AppConstant
     const Writing = 'Writing';
     const Listening = 'Listening';
     const Verbal = 'Verbal';
+    const TA_Practice = 'TA_Practice';
     const Other = 'Other';
     const NonSub = 'NonSub';
 

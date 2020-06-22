@@ -55,7 +55,9 @@ class ToQuestionDTOAdapter extends ToDTOAdapter {
         $dto->setType($jsonObject->type);
         $dto->setTypeId($jsonObject->typeId);
         $dto->setSubType($jsonObject->subType);
-
+        $dto->setPlatform($jsonObject->platform);
+        $dto->setRenderType($jsonObject->renderType);
+        
         if (empty($jsonObject->typeId)) {
             $typeService = $this->container->get(\Test\Services\Interfaces\TypeServiceInterface::class);
             $typeDTO = $typeService->getTypeByName($jsonObject->type);

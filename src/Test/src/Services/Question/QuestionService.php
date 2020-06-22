@@ -42,6 +42,10 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             break;
             case \Config\AppConstant::Other:
                 return \Test\Documents\Question\VerbalQuestionDocument::class;
+            break;
+            case \Config\AppConstant::Verbal:
+                return \Test\Documents\Question\VerbalQuestionDocument::class;
+            break;
             case \Config\AppConstant::NonSub:
                 return \Test\Documents\Question\NonSubQuestionDocument::class;
             break;
@@ -175,7 +179,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
     protected function generateRandomQuestion($citerial, $notInsources, $notInQuestions, $user, $keepCorrectAnswer = false) {
         $questionDTO = $citerial->getQuestionInfo();        
-        $toClass = $this->getClassName($questionDTO->getType(), $questionDTO->getSubType());
+        $toClass = $this->getClassName($questionDTO->getRenderType(), $questionDTO->getSubType());
         $questionRepository = $this->dm->getRepository($toClass);
         
         $questionnotInsources = $notInsources;
@@ -185,9 +189,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
 
         $platformId = $citerial->getQuestionInfo()->getPlatform();
         if (!$platformId) {
-            $platformService = $this->container->get(\Test\Services\Interfaces\PlatformServiceInterface::class);
-            $defaultPlatform = $platformService->getPlatformByName('English'); 
-            $platformId = $defaultPlatform->getId();
+            throw new \Test\Exceptions\GenerateQuestionException($this->translator->translate('Platform is required.'));
         }
         
         $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $questionnotInsources, $notInQuestions, $toClass, $platformId, $user);
@@ -335,10 +337,7 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $content = \Infrastructure\CommonFunction::replaceHost($dto->getContent());
         $content = $this->moveImageToQuestionFolder($content);
         $dto->setContent($content);
-
-        $logService = $this->container->get(\Infrastructure\Services\Interfaces\LogInterface::class);
-        $logService->writeLog($dto);
-        
+ 
         $existingDocument = null;
         $id = $dto->getId();
         if (!empty($id)) {

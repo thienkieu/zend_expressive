@@ -20,7 +20,7 @@ class VerbalExamService extends ExamService implements HandlerInterface
 
     
     public function isHandler($dto, $options = []){
-        if ($dto instanceof \Test\DTOs\Exam\ExamDTO  && $dto->getType() === \Config\AppConstant::Verbal) {
+        if ($dto instanceof \Test\DTOs\Exam\ExamDTO  && ( $dto->getType() === \Config\AppConstant::Verbal || $dto->getType() === \Config\AppConstant::TA_Practice) ) {
             return true;
         }
 

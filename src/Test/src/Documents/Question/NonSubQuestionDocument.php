@@ -5,10 +5,10 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /** 
- * @ODM\Document
+ * @ODM\Document(repositoryClass=Test\Repositories\NonSubQuestionRepository::class)
  */
 
-class NonSubQuestionDocument extends QuestionDocument
+ class NonSubQuestionDocument extends QuestionDocument
 {
     /** @ODM\EmbedMany(targetDocument=Test\Documents\Question\AnswerDocument::class) */
     private $answers;

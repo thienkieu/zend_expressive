@@ -3,8 +3,7 @@
 declare(strict_types=1);
 
 namespace Test\Convertor\Adapter\Documents\Test;
-
-
+use Test\Services\Interfaces\PlatformServiceInterface;
 use Infrastructure\Convertor\ConvertDTOAToDocumentAdapterInterface;
 use Test\Services\Interfaces\TypeServiceInterface;
 
@@ -43,6 +42,15 @@ class ToRandomQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInt
             throw new \Infrastructure\Exceptions\DataException($message);
         }
         $document->setType($typeDocument);
+
+        $platformService = $this->container->get(PlatformServiceInterface::class);
+        $platformDocument = $platformService->getPlatformById($dto->getPlatform());
+        if (!$platformDocument) {
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $message = $translator->translate('Platform not found, please check it again.');
+            throw new \Infrastructure\Exceptions\DataException($message);
+        }
+        $document->setPlatform($platformDocument);
 
         $document->setIsDifferentSource($dto->getIsDifferentSource());
         $document->setIsKeepQuestionOrder($dto->getIsKeepQuestionOrder());
