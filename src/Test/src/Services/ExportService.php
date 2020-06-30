@@ -551,13 +551,20 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $questions = $questionsResult['questions'];
         $questionIndex = 1;
         $startIndex = 5; 
-        $maxColumHeader = 78;  
+        $maxColumHeader = 79;  
         $headerIndex = 5;   
+        $latestColumn = 79;
         foreach($questions as $question) {
             $startIndex += 1;
             //QuestionIndex
             $startColumnIndex = 66;
             $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $questionIndex);
+            //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
+            $startColumnIndex += 1;
+
+            //Platform
+            $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getPlatform());
+            //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getFont()->setBold(true);
             //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
@@ -579,7 +586,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $startColumnIndex += 1;
 
             //ImageFile/Audio
-            if ($question->getType() === \Config\AppConstant::Listening) {
+            if ($question->getRenderType() === \Config\AppConstant::Listening) {
 				$path = $this->getRealPath($question->getPath());
 				if ($path !== false && strpos($path, 'http://') === false) {
                 //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
@@ -589,7 +596,27 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                 //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
                 //$sheet->getCell(chr($startColumnIndex).$startIndex)->getHyperlink()->setUrl($path);
             } 
-            if ($question->getType() === \Config\AppConstant::Reading) {
+
+            if ($question->getRenderType() === \Config\AppConstant::NonSub) {
+                $images = \Infrastructure\CommonFunction::extractImages($question->getContent());
+                if ($images) {
+                    $baseImageName = [];
+                    foreach($images as $image) {
+                        $path = $this->getRealPath($image);
+						if ($path !== false && strpos($path, 'http://') === false) {
+                        //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
+							$zip->addFile($path, \basename($path));
+							$baseImageName[] = basename($path);
+						}
+                    }
+                    
+                    $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \implode(',',$baseImageName));
+                }
+                //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
+                //$sheet->getCell(chr($startColumnIndex).$startIndex)->getHyperlink()->setUrl($images);
+            }
+
+            if ($question->getRenderType() === \Config\AppConstant::Reading) {
                 $images = \Infrastructure\CommonFunction::extractImages($question->getContent());
                 if ($images) {
                     $baseImageName = [];
@@ -613,13 +640,13 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
             //Repeat
             $repeat = '';
-            if ($question->getType() === \Config\AppConstant::Listening) $repeat = $question->getRepeat();
+            if ($question->getRenderType() === \Config\AppConstant::Listening) $repeat = $question->getRepeat();
             $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $repeat);
             //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
 
             //Content
-            if ($question->getType() === \Config\AppConstant::Reading) {
+            if ($question->getRenderType() === \Config\AppConstant::Reading || $question->getRenderType() === \Config\AppConstant::NonSub) {
                 $content = preg_replace_callback('(<img.*src="(.*?)".*/>)', function ($matches) {
                     if (count($matches) > 0) {
                         $image = $this->getRealPath($matches[1]);
@@ -639,7 +666,6 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $startColumnIndex += 1;
 
             $subQuestions = $question->getSubQuestions();
-            
             foreach($subQuestions as $subQuestion) {
                 $startColumnIndexSubQuestion = $startColumnIndex;
 
@@ -663,6 +689,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                     if ($startColumnIndexAnswer > $maxColumHeader) {
                         $this->setCellValue($sheet, chr($startColumnIndexAnswer).$headerIndex, 'Answer '.($startColumnIndexAnswer - $maxColumHeader + 4));
                         $sheet->getColumnDimension(chr($startColumnIndexAnswer))->setWidth(30);
+                        if ($latestColumn < $startColumnIndexAnswer) {
+                            $latestColumn = $startColumnIndexAnswer ;
+                        } 
                     }
                     $this->setCellValue($sheet, chr($startColumnIndexAnswer).$startIndex, $this->toRichTextFromHTML($answer->getContent()));
                     $sheet->getStyle(chr($startColumnIndexAnswer).$startIndex)->getAlignment()->setWrapText(true);
@@ -681,6 +710,41 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                 $startIndex += 1;
             }
 
+            //Answers for nonSub
+
+            if ($question->getRenderType() === \Config\AppConstant::NonSub) {
+                $answers = $question->getAnswers();
+                $startColumnIndexAnswer = $startColumnIndex + 2;
+                $correctAnswerColumn = chr($startColumnIndex +1).$startIndex;
+                $isCorrectIndex = '';
+                $answerindex = 1;
+
+                foreach($answers as $answer) {
+                    //Answer
+                    if ($startColumnIndexAnswer > $maxColumHeader) {
+                        $this->setCellValue($sheet, chr($startColumnIndexAnswer).$headerIndex, 'Answer '.($startColumnIndexAnswer - $maxColumHeader + 4));
+                        $sheet->getColumnDimension(chr($startColumnIndexAnswer))->setWidth(30);
+                        if ($latestColumn < $startColumnIndexAnswer) {
+                            $latestColumn = $startColumnIndexAnswer ;
+                        } 
+                    }
+
+                    $this->setCellValue($sheet, chr($startColumnIndexAnswer).$startIndex, $this->toRichTextFromHTML($answer->getContent()));
+                    $sheet->getStyle(chr($startColumnIndexAnswer).$startIndex)->getAlignment()->setWrapText(true);
+                    //$this->setBorderCell($sheet, chr($startColumnIndexAnswer).$startIndex);
+                    $startColumnIndexAnswer += 1;
+                    
+                    if ($answer->getIsCorrect()) {
+                        $isCorrectIndex = $answerindex;
+                    }
+
+                    $answerindex +=1;                    
+                }
+
+                $this->setCellValue($sheet, $correctAnswerColumn, $isCorrectIndex);
+            }
+
+
             if ($subQuestions) {
                 $startIndex += -1;
             }
@@ -690,7 +754,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         }
        
         if ($startIndex > 5) {
-            $this->setBorderCell($sheet, 'B5:'.chr($maxColumHeader).$startIndex);
+            $this->setBorderCell($sheet, 'B5:'.chr($latestColumn).$startIndex);
         }
 
         $writer = new Xlsx($spreadsheet);

@@ -13,7 +13,8 @@ use Infrastructure\Interfaces\HandlerInterface;
 class VerbalQuestionService extends QuestionService
 {
     public function isHandler($param, $options = []){
-        if (isset($options['document']) && $options['document'] instanceof \Test\Documents\Test\VerbalQuestionDocument){
+        if ((isset($options['document']) && $options['document'] instanceof \Test\Documents\Test\VerbalQuestionDocument)||
+        (isset($options[\Config\AppConstant::DTOKey]) && ($options[\Config\AppConstant::DTOKey] instanceof \Test\DTOs\Test\QuestionDTO) && ($options[\Config\AppConstant::DTOKey])->getQuestionInfo()->getRenderType() === \Config\AppConstant::Verbal)){
             return true;
         }
         return false;
@@ -21,5 +22,8 @@ class VerbalQuestionService extends QuestionService
 
     public function caculateMark(&$questionDocument) {}
     
+    protected function limitSubQuestion($questionDTO, $numberSubQuestion, $isKeepQuestionOrder = false, $isRandomAnswer = false) {
+        return [];
+    }
 
 }

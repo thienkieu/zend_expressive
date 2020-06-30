@@ -22,7 +22,6 @@ class LogigearExamService extends ExamService
         try {
             $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
             $sectionsForDoExam = [];
-            $questionService = $this->container->get(QuestionServiceInterface::class);
             
             $sections = [];
             if (method_exists($test, 'getSections')) {
@@ -46,6 +45,8 @@ class LogigearExamService extends ExamService
                     $questionInfo = $question->getQuestionInfo();
                     
                     if (!isset($sources[$questionInfo->getTypeId()])) $sources[$questionInfo->getTypeId()] = [];
+                    
+                    $questionService = $this->container->build(QuestionServiceInterface::class, [\Config\AppConstant::DTOKey => $question]);
                     
                     $q = $questionService->generateQuestion($question, $sources[$questionInfo->getTypeId()], $questionIds, $test->getUser(), $keepCorrectAnswer);
                     $sources[$q->getTypeId()][] = $q->getSourceId();
@@ -77,7 +78,7 @@ class LogigearExamService extends ExamService
                 }
 
                 if (!$isAllWriting) {
-                    $sectionForDoExam->setMark($sectionMark);
+                   // $sectionForDoExam->setMark($sectionMark);
                 }
 
                 

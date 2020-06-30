@@ -82,7 +82,7 @@ class PlatformService implements Interfaces\PlatformServiceInterface, HandlerInt
         return true;
     }
 
-    public function getPlatforms($content, & $messages, $pageNumber = 1, $itemPerPage = 25) {
+    public function getPlatforms($content,  & $messages, $pageNumber = 1, $itemPerPage = 25) {
         $platforms = [];
         if (!$this->platforms) {
             $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
@@ -151,6 +151,16 @@ class PlatformService implements Interfaces\PlatformServiceInterface, HandlerInt
         }
 
                
+    }
+
+    public function isExistPlatformName($platformName, &$messages) {
+        $platformRepository = $this->dm->getRepository(\Test\Documents\Question\PlatformDocument::class);  
+        $platform = $platformRepository->findOneBy(['name' => $platformName]);
+        if (!$platform) {
+            return false;
+        }
+        
+        return true;
     }
 
     public function migrationPlatformForQuestion() {

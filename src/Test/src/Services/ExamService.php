@@ -204,7 +204,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         try {
             $testForDoExam = new \Test\DTOs\Test\TestWithSectionDTO();
             $sectionsForDoExam = [];
-            $questionService = $this->container->get(QuestionServiceInterface::class);
+            
         
             $sections = $test->getSections();
             $sources = [];
@@ -221,6 +221,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                     
                     if (!isset($sources[$questionInfo->getTypeId()])) $sources[$questionInfo->getTypeId()] = [];
                     
+                    $questionService = $this->container->build(QuestionServiceInterface::class, [\Config\AppConstant::DTOKey => $question]);
                     $q = $questionService->generateQuestion($question, $sources[$questionInfo->getTypeId()], $questionIds, $test->getUser(), $keepCorrectAnswer);
                     $sources[$q->getTypeId()][] = $q->getSourceId();
                     $questionIds[] = $q->getId();
@@ -337,6 +338,20 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         $documents = $query->execute();
 
         return $document;
+    }
+
+    public function completeExam($id, &$messages) {
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $examDocument = $examRepository->find($id);
+        if (!$examDocument) {
+            $messages[] = $this->translator->translate('The exam doesnot exist, Please check it again.');
+            return false;
+        }
+        $examDocument->setIsScored(true);
+        $this->dm->flush();
+
+        $messages[] = $this->translator->translate('The exam score have been updated successfully!');
+        return true;
     }
 
     public function deleteExam($id, &$messages) {

@@ -21,7 +21,7 @@ return [
     ],
     'autoloadPath' => $dir.'/../vendor/autoload.php',
     'nonsqldb' => [
-        'mongodb-connection' => 'mongodb://192.168.191.79:27017/demo_2608',
+        'mongodb-connection' => 'mongodb://192.168.190.92:27017/onlinetest',
         'document-path' => [
             $dir.'/App/src/Documents',
             $dir.'/Test/src/Documents',
@@ -29,7 +29,7 @@ return [
         ],
         'proxy-path' =>  $dir.'/../Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
-        'dbname' => 'demo_2608',
+        'dbname' => 'onlinetest',
     ],
     'nonsqldb_dev' => [
         'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243897.mlab.com:43897/onlinetest_dev',

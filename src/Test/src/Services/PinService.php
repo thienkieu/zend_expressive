@@ -57,6 +57,25 @@ class PinService implements PinServiceInterface, HandlerInterface
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultDocument::class);
         $newPin = \Infrastructure\CommonFunction::generateUniquePin(1);
 
+        $examDocument = $examRepository->find($examId);
+        $doExamService = $this->container->get(\Test\Services\DoExamServiceInterface::class);
+        if (!$doExamService->isAllowAccessExam($examDocument)){
+            $messages[] = $this->translator->translate('Cannot refresh pin. Your exam was over.');
+            return false; 
+        }
+
+        $examResult = $examResultRepository->findOneBy([
+            'examId' => $examId,
+            'candidate.id' => $candiateId
+        ]);
+        if ($examResult) {
+            $resultSummary = $examResult->getResultSummary();
+            if (count($resultSummary) > 0) {
+                $messages[] = $this->translator->translate('Cannot refresh pin. Your exam have been finished.');
+                return false; 
+                
+            }
+        }
         $examStatus =  $examRepository->refreshPin($examId, $candiateId, $newPin[0]);
         $examResultStatus =  $examRepository->refreshPin($examId, $candiateId, $newPin[0]);
         

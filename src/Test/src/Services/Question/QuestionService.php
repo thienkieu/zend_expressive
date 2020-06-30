@@ -209,12 +209,10 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         $ret->setMark($questionDTO->getMark());
 
         $numberSubQuestion = 0;
-        if (!($ret instanceof \Test\DTOs\Question\WritingQuestionDTO || $ret instanceof \Test\DTOs\Question\VerbalQuestionDTO || $ret instanceof \Test\DTOs\Question\NonSubQuestionDTO)) {
-            $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion(), $questionDTO->getIsKeepQuestionOrder(), $questionDTO->getIsRandomAnswer());  
-            $ret->setSubQuestions($subQuestions);
-            $numberSubQuestion =  $questionDTO->getNumberSubQuestion();
-        }
-
+        $subQuestions = $this->limitSubQuestion($ret, $questionDTO->getNumberSubQuestion(), $questionDTO->getIsKeepQuestionOrder(), $questionDTO->getIsRandomAnswer());  
+        $ret->setSubQuestions($subQuestions);
+        $numberSubQuestion = count($subQuestions);
+        
         $this->correctQuestionMark($ret, $numberSubQuestion);
 
         return $ret;

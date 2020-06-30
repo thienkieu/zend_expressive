@@ -7,31 +7,47 @@ namespace Test\Services;
 use Infrastructure\Interfaces\HandlerInterface;
 use Test\Exceptions\ImportQuestionException;
 use Test\Services\Interfaces\SourceServiceInterface;
+use Test\Services\Interfaces\PlatformServiceInterface;
 use Test\Services\Interfaces\TypeServiceInterface;
 use Infrastructure\DataParser\DataParserInterface;
 
 class ImportQuestionService implements ImportQuestionServiceInterface, HandlerInterface
 {
+    
     private $id = 1;
-    private $type = 2;
-    private $subType = 3;
-    private $source = 4;
-    private $fileName = 5;
-    private $repeatTime = 6;
-    private $content = 7;
-    private $question = 8;
-    private $correctAnswers = 9;
-    private $answer = 10;
+    private $platform = 2;
+    private $type = 3;
+    private $subType = 4;
+    private $source = 5;
+    private $fileName = 6;
+    private $repeatTime = 7;
+    private $content = 8;
+    private $question = 9;
+    private $correctAnswers = 10;
+    private $answer = 11;
     private $rowDataIndex = 5;
     
+    private $TAPlatform = \Config\AppConstant::TestArchiect_Platform;
+    private $EnglishPlatform = \Config\AppConstant::English_Platform;
+
     private $readingType = \Config\AppConstant::Reading;
     private $listeningType = \Config\AppConstant::Listening;
     private $writingType = \Config\AppConstant::Writing;
+
+    private $TAReadingType = \Config\AppConstant::TAReading;
+    private $TAListeningType = \Config\AppConstant::TAListening;
+    private $TAWritingType = \Config\AppConstant::TAWriting;
+    private $TAOther = \Config\AppConstant::TAOther;
+    private $TANonSub = \Config\AppConstant::NonSubTitle;
+    private $TALab = \Config\AppConstant::TALab;
+
+
     private $imageFiles;
     
     private $container;
     private $translator;
     private $sourceService;
+    private $platformService;
     private $typService;
     private $dataParser;
     private $rowIndex = 0;
@@ -44,6 +60,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         $this->container = $container;
         $this->translator = $this->container->get(\Config\AppConstant::Translator);
         $this->sourceService = $this->container->get(SourceServiceInterface::class);  
+        $this->platformService = $this->container->get(PlatformServiceInterface::class);  
         $this->typeService = $this->container->get(TypeServiceInterface::class);       
         $this->dataParser = $this->container->build(DataParserInterface::class, [DataParserInterface::FileTypeKey => 'excel']);
         $this->imageFiles = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.date('YmdHis');
@@ -60,8 +77,6 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     protected function processContent($data) {
 
     }
-
-    
 
     public function importQuestion($dtoObject, & $dto, & $messages) {
         try {
@@ -97,56 +112,130 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                 $row = $this->dataParser->current();
                 $previousId = $row[$this->id];
                 
-                switch($row[$this->type]) {
-                    case $this->readingType:        
-                        $question = $this->buildReadingQuestion($row, $this->rowIndex + 1);
-                        if ($question )                        
-                        while(true){
-                            $subQuestion = $this->buildSubQuestion($row, $this->rowIndex + 1);
-                            $question->addSubQuestion($subQuestion);
-                            
-                            $row = $this->getNextRow();                            
-                            if(!$row || !empty($row[$this->id])) {
-                                break;
-                            }
+                switch($row[$this->platform]) {
+                    case $this->EnglishPlatform :
+                        switch($row[$this->type]) {
+                            case $this->readingType:        
+                                $question = $this->buildReadingQuestion($row, $this->rowIndex + 1);
+                                if ($question )                        
+                                while(true){
+                                    $subQuestion = $this->buildSubQuestion($row, $this->rowIndex + 1);
+                                    $question->addSubQuestion($subQuestion);
+                                    
+                                    $row = $this->getNextRow();                            
+                                    if(!$row || !empty($row[$this->id])) {
+                                        break;
+                                    }
+                                }
+                                
+                                $dm->persist($question);
+                                continue;                        
+                            break;
+
+                            case $this->listeningType: 
+                                $question = $this->buildListeningQuestion($row, $this->rowIndex + 1);                        
+                                while(true){
+                                    $subQuestion = $this->buildSubQuestion($row, $this->rowIndex + 1);
+                                    $question->addSubQuestion($subQuestion);
+
+                                    $row = $this->getNextRow();                            
+                                    if(!$row || !empty($row[$this->id])) {
+                                        break;
+                                    }
+                                }
+                                $dm->persist($question);
+                                continue;   
+                            break;
+
+                            case $this->writingType: 
+                                $question = $this->buildWritingQuestion($row, $this->rowIndex + 1);                        
+                                $row = $this->getNextRow(); 
+                                
+                                $dm->persist($question);
+                                continue;   
+                            break;
+
+                            default:
+                                if (empty($row[$this->type])) {
+                                    $error = $this->translator->translate('Type is not empty at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
+                                } else {
+                                    $error = $this->translator->translate('Type is not valid at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
+                                }
+                                
+                                throw new ImportQuestionException($error);
+                                $row = $this->getNextRow(); 
+                            break;
                         }
-                        
-                        $dm->persist($question);
-                        continue;                        
                     break;
+                    case $this->TAPlatform:
+                        switch($row[$this->type]) {
+                            case $this->TAReadingType:        
+                                $question = $this->buildReadingQuestion($row, $this->rowIndex + 1);
+                                if ($question )                        
+                                while(true){
+                                    $subQuestion = $this->buildSubQuestion($row, $this->rowIndex + 1);
+                                    $question->addSubQuestion($subQuestion);
+                                    
+                                    $row = $this->getNextRow();                            
+                                    if(!$row || !empty($row[$this->id])) {
+                                        break;
+                                    }
+                                }
+                                
+                                $dm->persist($question);
+                                continue;                        
+                            break;
 
-                    case $this->listeningType: 
-                        $question = $this->buildListeningQuestion($row, $this->rowIndex + 1);                        
-                        while(true){
-                            $subQuestion = $this->buildSubQuestion($row, $this->rowIndex + 1);
-                            $question->addSubQuestion($subQuestion);
+                            case $this->TAListeningType: 
+                                $question = $this->buildListeningQuestion($row, $this->rowIndex + 1);                        
+                                while(true){
+                                    $subQuestion = $this->buildSubQuestion($row, $this->rowIndex + 1);
+                                    $question->addSubQuestion($subQuestion);
 
-                            $row = $this->getNextRow();                            
-                            if(!$row || !empty($row[$this->id])) {
-                                break;
-                            }
+                                    $row = $this->getNextRow();                            
+                                    if(!$row || !empty($row[$this->id])) {
+                                        break;
+                                    }
+                                }
+                                $dm->persist($question);
+                                continue;   
+                            break;
+
+                            case $this->TAOther: 
+                                if ($row[$this->subType] === $this->TANonSub){
+                                    $question = $this->buildNonSubQuestion($row, $this->rowIndex + 1); 
+                                    $dm->persist($question);
+                                }
+                                if ($row[$this->subType] === $this->TALab){
+                                    $question = $this->buildWritingQuestion($row, $this->rowIndex + 1); 
+                                    $dm->persist($question);
+                                }
+                                $row = $this->getNextRow();
+                                continue;   
+                            break;
+
+                            case $this->TAWritingType: 
+                                $question = $this->buildWritingQuestion($row, $this->rowIndex + 1);                        
+                                $row = $this->getNextRow(); 
+                                
+                                $dm->persist($question);
+                                continue;   
+                            break;
+
+                            default:
+                                if (empty($row[$this->type])) {
+                                    $error = $this->translator->translate('Type is not empty at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
+                                } else {
+                                    $error = $this->translator->translate('Type is not valid at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
+                                }
+                                
+                                throw new ImportQuestionException($error);
+                                $row = $this->getNextRow(); 
+                            break;
                         }
-                        $dm->persist($question);
-                        continue;   
                     break;
-
-                    case $this->writingType: 
-                        $question = $this->buildWritingQuestion($row, $this->rowIndex + 1);                        
-                        $row = $this->getNextRow(); 
-                        
-                        $dm->persist($question);
-                        continue;   
-                    break;
-
-                    default:
-                        if (empty($row[$this->type])) {
-                            $error = $this->translator->translate('Type is not empty at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
-                        } else {
-                            $error = $this->translator->translate('Type is not valid at line %lineNumber%.', ['%lineNumber%'=> $this->rowIndex + 1]);
-                        }
-                        
-                        throw new ImportQuestionException($error);
-                        $row = $this->getNextRow(); 
+                    default: 
+                        throw new ImportQuestionException('not support');
                     break;
                 }
                 
@@ -196,6 +285,7 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
     }
 
     protected function buidGeneralQuestion($data, &$question, $lineNumber) {
+        $this->validPlatform($data[$this->platform], $question, $lineNumber);
         $this->validSource($data[$this->source], $question, $lineNumber);
         $this->validType($data[$this->type], $data[$this->subType], $question, $lineNumber);
         $question->setContent($data[$this->content]);
@@ -209,11 +299,37 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         }
         $question->setSource($sourceDocument);
 
+        $platformDocument = $this->platformService->getPlatformByName($data[$this->platform]);
+        if (!$platformDocument) {
+            $translator = $this->container->get(\Config\AppConstant::Translator);
+            $message = $translator->translate('Platform is not exist.', ['%platformName%'=>$data[$this->platform]]);
+            throw new ImportQuestionException($message);
+        }
+        $question->setPlatform($platformDocument);
+        
         $typeDocument = $this->typeService->getTypeByName($data[$this->type], $data[$this->subType]);
         $question->setType($typeDocument);
         $question->setTypeId($typeDocument->getId());
         $question->setParentTypeId($typeDocument->getParentType()->getId());
 
+        $authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class);
+        $user = $authorizationService->getUser();
+        $question->setUser($user);
+
+    }
+
+    protected function validPlatform($platform, &$question, $lineNumber) {
+        if (!$platform || empty($platform) || !trim($platform, ' ')) {
+            $error = $this->translator->translate('Platform cannot empty.', ['%lineNumber%'=> $lineNumber]);
+            throw new ImportQuestionException($error);
+        }
+
+        $platform = trim($platform, ' ');
+        $isExistPlatform = $this->platformService->isExistPlatformName($platform, $messages);
+        if (!$isExistPlatform) {
+            $error = $this->translator->translate('Platform is not exist.', ['%sourceName%'=> $source]);
+            throw new ImportQuestionException($error);
+        }
     }
 
     protected function validSource($source, &$question, $lineNumber) {
@@ -256,6 +372,50 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             throw new ImportQuestionException($error);
         }
 
+    }
+
+    protected function buildNonSubQuestion($data, $lineNumber){
+        $readingQuestion = new \Test\Documents\Question\NonSubQuestionDocument();
+        $this->buidGeneralQuestion($data, $readingQuestion, $lineNumber);
+
+        $content = $readingQuestion->getContent();
+        if (empty($content)) {
+            $translatorParams = [
+                '%lineNumber%' => $lineNumber
+            ];
+            $error = $this->translator->translate('Content content can not empty', $translatorParams);
+            throw new ImportQuestionException($error);
+        }
+
+        $images = $data[$this->fileName];
+
+        if (!empty($images)) {
+            $images = \explode(',', $images);
+            foreach ($images as $image) {
+                $realPath = realpath($this->imageFiles);
+
+                if (!file_exists($realPath.'/'.$image)) {
+                    $error = $this->translator->translate('File name is not exist.', ['%fileName%'=> $image]);
+                    throw new ImportQuestionException($error);
+                }
+
+                $fileExtension = explode('.', $image);
+                $isSupportFileType = $this->isSupportMediaFile($fileExtension[count($fileExtension) -1], \Config\AppConstant::ImageExtension);
+                
+                if (!$isSupportFileType) {
+                    $error = $this->translator->translate('File type %fileName% is not support.', ['%fileName%'=> $fileExtension[count($fileExtension) -1]]);
+                    throw new ImportQuestionException($error);
+                }
+
+                $content = str_replace('['.trim($image,' ').']', '<div class="online-test-question-image"><img src="'.\Config\AppConstant::HOST_REPLACE.'/'.$this->imageFiles.'/'.$image.'"/></div>', $content);
+            }
+            
+        }
+        
+        $readingQuestion->setContent($content);
+        $answers = $this->buildAnswers($data, $lineNumber);
+        $readingQuestion->setAnswers($answers);
+        return $readingQuestion;
     }
 
     protected function buildReadingQuestion($data, $lineNumber){
@@ -392,6 +552,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
         
         return $subQuestion;
     }
+
+    
 
     protected function hasValueAfterColumn($data, $column) {
         $numberColumns = count($data);

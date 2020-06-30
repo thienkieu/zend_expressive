@@ -29,7 +29,6 @@ class ViewExamResultHandler implements RequestHandlerInterface
         $user = $request->getAttribute(UserInterface::class);
         $doExamResultService = $this->container->get(DoExamResultServiceInterface::class);
         $ret = $doExamResultService->getExamResult($dto, $messages, $examResultDTO);
-
         $authorizationService = $this->container->get(AuthenticationInterface::class);
         $user = $authorizationService->authenticate($request);
         if ($user && $user->getIdentity()) {

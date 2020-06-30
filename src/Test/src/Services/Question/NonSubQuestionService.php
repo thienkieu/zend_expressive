@@ -13,7 +13,8 @@ use Infrastructure\Interfaces\HandlerInterface;
 class NonSubQuestionService extends QuestionService
 {
     public function isHandler($param, $options = []){
-        if (isset($options['document']) && $options['document'] instanceof \Test\Documents\Test\NonSubQuestionDocument){
+        if ((isset($options['document']) && $options['document'] instanceof \Test\Documents\Test\NonSubQuestionDocument)|| 
+            (isset($options[\Config\AppConstant::DTOKey]) && ($options[\Config\AppConstant::DTOKey] instanceof \Test\DTOs\Test\QuestionDTO) && ($options[\Config\AppConstant::DTOKey])->getQuestionInfo()->getRenderType() === \Config\AppConstant::NonSub)){
             return true;
         }
         return false;
@@ -46,5 +47,13 @@ class NonSubQuestionService extends QuestionService
         
         return 0;
     }
-    
+
+
+    protected function limitSubQuestion($questionDTO, $numberSubQuestion, $isKeepQuestionOrder = false, $isRandomAnswer = false) {
+        if ($isRandomAnswer === true) {
+            $this->randomAnswer($questionDTO);
+        }
+        return [];
+    }
+
 }
