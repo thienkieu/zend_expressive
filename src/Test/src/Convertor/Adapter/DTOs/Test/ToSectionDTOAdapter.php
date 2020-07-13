@@ -29,6 +29,8 @@ class ToSectionDTOAdapter extends ToDTOAdapter {
         $dtoObject = new \Test\DTOs\Test\SectionDTO();
         $dtoObject->setName($jsonObject->name);
         $dtoObject->setDescription($jsonObject->description);
+        $dtoObject->setIsOption($jsonObject->isOptionQuestion);
+        $dtoObject->setRequiredQuestion($jsonObject->numberOptionQuestion);
         
         $mark = 0;
         if (isset($jsonObject->mark)) $mark = $jsonObject->mark;

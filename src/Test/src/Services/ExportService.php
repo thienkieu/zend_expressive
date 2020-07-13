@@ -486,7 +486,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         }
 
         $typeService  = $this->container->get(Interfaces\TypeServiceInterface::class);
-        $typeDocuments = $typeService->getTypes('', $messsages);
+        $typeDocuments = $typeService->getTypes('', '', $messsages);
         $types = $typeDocuments->type;
         $typeIndex = 2;
         $subTypeIndex = 2;

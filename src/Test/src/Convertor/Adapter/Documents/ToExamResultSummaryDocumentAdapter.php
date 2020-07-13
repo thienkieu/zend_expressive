@@ -44,18 +44,16 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
     {   
         $summaries = new ArrayCollection();      
         $sections = $examResultDocument->getTest()->getSections();
+        $examResultService = $this->container->get(\Test\Services\DoExamResultServiceInterface::class);
         foreach($sections as $section) {
             
             $questions = $section->getQuestions();
             $candidateMark = 0;
-            $isScored = false;
+            $isScored = $examResultService->isScoredSection($section);
             $sectionMark = 0;
             $comments = [];
             foreach($questions as $question) {
                 $questionInfo = $question->getQuestionInfo();
-                if($questionInfo->getIsScored()) {
-                    $isScored = true;
-                }
                 
                 $comment = $questionInfo->getComment();
                 if (!empty($comment)) {

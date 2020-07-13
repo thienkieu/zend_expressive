@@ -231,7 +231,7 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                     $testQuestionDTO->setId($q->getId());
                     $testQuestionDTO->setGenerateFrom(\Config\AppConstant::Pickup);
                     $testQuestionDTO->setQuestionInfo($q);
-                    
+                
                     $questionsForSection[] = $testQuestionDTO;
                 }
 
@@ -239,7 +239,8 @@ class ExamService implements ExamServiceInterface, HandlerInterface
                 $sectionForDoExam->setName($section->getName());
                 $sectionForDoExam->setDescription($section->getDescription());
                 $sectionForDoExam->setQuestions($questionsForSection);    
-                
+                $sectionForDoExam->setIsOption($section->getIsOption());
+                $sectionForDoExam->setRequiredQuestion($section->getRequiredQuestion());
                 $sectionsForDoExam[] = $sectionForDoExam;
             }
 

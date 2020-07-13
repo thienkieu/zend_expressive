@@ -33,6 +33,12 @@ class SectionDocument
   /** @ODM\Field(type="string") */
   private $comment;
 
+  /** @ODM\Field(type="boolean") */
+  private $isOption;
+
+  /** @ODM\Field(type="int") */
+  private $requiredQuestion;
+
   /** @ODM\EmbedMany(targetDocument=Test\Documents\Test\QuestionInfoDocument::class) */
   private $questions;
 
@@ -232,6 +238,46 @@ class SectionDocument
   public function setToeicExpirationDate($toeicExpirationDate)
   {
     $this->toeicExpirationDate = $toeicExpirationDate;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of isOption
+   */ 
+  public function getIsOption()
+  {
+    return $this->isOption;
+  }
+
+  /**
+   * Set the value of isOption
+   *
+   * @return  self
+   */ 
+  public function setIsOption($isOption)
+  {
+    $this->isOption = $isOption;
+
+    return $this;
+  }
+
+  /**
+   * Get the value of requiredQuestion
+   */ 
+  public function getRequiredQuestion()
+  {
+    return $this->requiredQuestion;
+  }
+
+  /**
+   * Set the value of requiredQuestion
+   *
+   * @return  self
+   */ 
+  public function setRequiredQuestion($requiredQuestion)
+  {
+    $this->requiredQuestion = $requiredQuestion;
 
     return $this;
   }

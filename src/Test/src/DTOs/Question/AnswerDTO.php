@@ -11,7 +11,7 @@ class AnswerDTO implements \JsonSerializable
     protected $isCorrect;
     protected $order;
     protected $isUserChoice;
-    
+    protected $referId;
 
     /**
      * Get the value of isCorrect
@@ -60,6 +60,7 @@ class AnswerDTO implements \JsonSerializable
         $ret->order = $this->getOrder();
         $ret->isUserChoice = $this->getIsUserChoice() ? $this->getIsUserChoice(): false;
         $ret->id = $this->getId();
+        $ret->referId = $this->getReferId();
         return $ret;
     }
 
@@ -120,6 +121,26 @@ class AnswerDTO implements \JsonSerializable
     public function setIsUserChoice($isUserChoice)
     {
         $this->isUserChoice = $isUserChoice;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of referId
+     */ 
+    public function getReferId()
+    {
+        return $this->referId;
+    }
+
+    /**
+     * Set the value of referId
+     *
+     * @return  self
+     */ 
+    public function setReferId($referId)
+    {
+        $this->referId = $referId;
 
         return $this;
     }

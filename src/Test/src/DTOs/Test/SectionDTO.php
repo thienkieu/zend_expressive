@@ -14,6 +14,8 @@ class SectionDTO implements \JsonSerializable
     protected $comment;
     protected $isToeic;
     protected $toeicExpirationDate;
+    protected $requiredQuestion;
+    protected $isOption;
     
     /**
      * @var QuestionDTO[]
@@ -114,6 +116,8 @@ class SectionDTO implements \JsonSerializable
         $ret->id = $this->getId();   
         $ret->isToeic = $this->getIsToeic();
         $ret->toeicExpirationDate = $this->getToeicExpirationDate() ? $this->getToeicExpirationDate()->format(\Config\AppConstant::DateTimeFormat) : '';
+        $ret->isOptionQuestion = $this->getIsOption();
+        $ret->numberOptionQuestion = $this->getRequiredQuestion();
         
         $questions = $this->getQuestions();
         
@@ -246,6 +250,46 @@ class SectionDTO implements \JsonSerializable
     public function setToeicExpirationDate($toeicExpirationDate)
     {
         $this->toeicExpirationDate = $toeicExpirationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of requiredQuestion
+     */ 
+    public function getRequiredQuestion()
+    {
+        return $this->requiredQuestion;
+    }
+
+    /**
+     * Set the value of requiredQuestion
+     *
+     * @return  self
+     */ 
+    public function setRequiredQuestion($requiredQuestion)
+    {
+        $this->requiredQuestion = $requiredQuestion;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isOption
+     */ 
+    public function getIsOption()
+    {
+        return $this->isOption;
+    }
+
+    /**
+     * Set the value of isOption
+     *
+     * @return  self
+     */ 
+    public function setIsOption($isOption)
+    {
+        $this->isOption = $isOption;
 
         return $this;
     }

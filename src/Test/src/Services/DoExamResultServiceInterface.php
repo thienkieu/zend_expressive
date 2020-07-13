@@ -6,6 +6,8 @@ namespace Test\Services;
 
 interface DoExamResultServiceInterface
 {
+    public function isScoredSection($section);
+    public function isExamResultScored($examResult);
     public function updateAnswer($dto, & $messages);
     public function updateQuestionMark($dto, & $messages);
     public function updateSectionMark($dto, & $messages);

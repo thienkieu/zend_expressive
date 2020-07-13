@@ -71,7 +71,7 @@ class PinService implements PinServiceInterface, HandlerInterface
         if ($examResult) {
             $resultSummary = $examResult->getResultSummary();
             if (count($resultSummary) > 0) {
-                $messages[] = $this->translator->translate('Cannot refresh pin. Your exam have been finished.');
+                $messages[] = $this->translator->translate('Cannot refresh PIN. This candidate finished the exam.');
                 return false; 
                 
             }

@@ -73,6 +73,9 @@ class LogigearExamService extends ExamService
                 $sectionForDoExam->setName($section->getName());
                 $sectionForDoExam->setDescription($section->getDescription());
                 $sectionForDoExam->setQuestions($questionsForSection);    
+                $sectionForDoExam->setIsOption($section->getIsOption());
+                $sectionForDoExam->setRequiredQuestion($section->getRequiredQuestion());
+                
                 if ($isAllWriting && !$hasInputQuestionMark) {
                     $sectionForDoExam->setMark(\Config\AppConstant::DefaultWritingMark);
                 }

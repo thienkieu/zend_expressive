@@ -200,15 +200,96 @@ class MigrationService implements Interfaces\MigrationServiceInterface, HandlerI
 
     }
 
+    protected function isWritingOptionSection($section) {
+        $questions = $section->getQuestions();
+        if (count($questions) == 2) {
+            $isAllWriting = true;
+            foreach($questions as $question) {
+                $q = $question->getQuestionInfo();
+                if($q->getType()->getParentType()->getName() !== "Writing"){
+                    $isAllWriting = false;
+                    break;
+                }
+            }
+
+            return $isAllWriting;
+        }
+        
+        return false;
+    }
+
+    protected function migrationAddOptionSection() {
+        $examRepo = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $exams = $examRepo->findAll();
+        foreach($exams as $exam) {
+            $test = $exam->getTest();
+            $sections = $test->getSections();
+            foreach($sections as $section){
+                if($this->isWritingOptionSection($section)) {
+                    $section->setIsOption(true);
+                    $section->setRequiredQuestion(1);
+                }else {
+                    $section->setIsOption(false);
+                }
+                
+            }
+        }
+
+        $examResultRepo = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultDocument::class);
+        $examResults = $examResultRepo->findAll();
+        foreach($examResults as $examResult) {
+            $test = $examResult->getTest();
+            $sections = $test->getSections();
+            foreach($sections as $section){
+                if($this->isWritingOptionSection($section)) {
+                    $section->setIsOption(true);
+                    $section->setRequiredQuestion(1);
+                }else {
+                    $section->setIsOption(false);
+                }
+            }
+        }
+
+        $testRepo = $this->dm->getRepository(\Test\Documents\Test\BaseTestDocument::class);
+        $tests = $testRepo->findAll();
+        foreach($tests as $test) {
+            $sections = $test->getSections();
+            foreach($sections as $section){
+                if($this->isWritingOptionSection($section)) {
+                    $section->setIsOption(true);
+                    $section->setRequiredQuestion(1);
+                }else {
+                    $section->setIsOption(false);
+                }
+            }
+        }
+
+        $testTemplateRepo = $this->dm->getRepository(\Test\Documents\Test\TestTemplateDocument::class);
+        $tests = $testTemplateRepo->findAll();
+        foreach($tests as $test) {
+            $sections = $test->getSections();
+            foreach($sections as $section){
+                if($this->isWritingOptionSection($section)) {
+                    $section->setIsOption(true);
+                    $section->setRequiredQuestion(1);
+                }else {
+                    $section->setIsOption(false);
+                }
+            }
+        }
+
+    }
+
     public function migration() {
-        $authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class);
-        $user = $authorizationService->getUser();
+        //$authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class);
+        //$user = $authorizationService->getUser();
 
-        $platformService = $this->container->get(\Test\Services\Interfaces\PlatformServiceInterface::class);
-        $defaultPlatform = $platformService->getPlatformByName('English'); 
+        //$platformService = $this->container->get(\Test\Services\Interfaces\PlatformServiceInterface::class);
+        //$defaultPlatform = $platformService->getPlatformByName('English'); 
 
-        $this->migrationTest($defaultPlatform, $user);
-        $this->migrationExam($defaultPlatform, $user);
+        $this->migrationAddOptionSection();
+        //$this->migrationTest($defaultPlatform, $user);
+        //$this->migrationExam($defaultPlatform, $user);
 
         /*$this->migrationQuestion($defaultPlatform, $user);
         

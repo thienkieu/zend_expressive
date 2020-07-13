@@ -99,7 +99,7 @@ class VerbalExamService extends ExamService implements HandlerInterface
 
             $dtoToDocumentConvertor = $this->container->get(DTOToDocumentConvertorInterface::class);
             $document = $dtoToDocumentConvertor->convertToDocument($examDTO, $options);
-            
+            $document->setIsScored(false);
             if (!empty($existExamId)) {
                 $examResultService->removeExamResultByExamId($existExamId);
             }
@@ -113,7 +113,7 @@ class VerbalExamService extends ExamService implements HandlerInterface
             $candidates = $document->getCandidates();
             foreach($candidates as $candidate) {
                 $examResultDocument = $this->generateTestForExam($document, $candidate, $messages);
-                $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter(null, null);
+                $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter($this->container, null);
                 $summaries = $adapter->convert($examResultDocument);
                 $candidate->setResultSummary($summaries);
                 $candidate->setIsPinValid(false);

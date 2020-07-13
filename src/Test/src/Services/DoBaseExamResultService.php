@@ -61,12 +61,51 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         }
 
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class, [\Config\AppConstant::ShowCorrectAnswer => true]);
+
         $examResultDTO = $documentToDTOConvertor->convertToDTO($examResult, [\Config\AppConstant::ShowCorrectAnswer => true]);
         return true;
     }
 
     public function updateDoneExamResult($examResultId) {
         
+    }
+
+    public function isExamResultScored($examResult) {
+        $sections =  $examResult->getTest()->getSections();
+        foreach ($sections as $section) {
+            if (!$this->isScoredSection($section)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function isScoredSection($section) {
+        $isOptionSection = $section->getIsOption();
+        if ($isOptionSection) {
+            $numberQuestionRequired = $section->getRequiredQuestion();
+            $questions = $section->getQuestions();
+            $aNumberQuestionScored = 0;
+            foreach ($questions as $question) {
+                $questionInfo = $question->getQuestionInfo(); 
+                if ($questionInfo->getIsScored()) {
+                    $aNumberQuestionScored += 1;
+                }                                               
+            }
+
+            return $aNumberQuestionScored >= $numberQuestionRequired;
+        } else {
+            $questions = $section->getQuestions();
+            foreach ($questions as $question) {
+                $questionInfo = $question->getQuestionInfo(); 
+                if (!$questionInfo->getIsScored()) {
+                    return false;
+                }                                               
+            }
+
+            return true;
+        }
     }
 
     public function updateSectionMark($dto, & $messages) {
@@ -94,8 +133,14 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
 
         $this->dm->flush();
         $examResult = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), '');
-        $hasQuestionNotScored = $examResultRepository->hasQuestionNotScored($examResult->getId());
+        /*$hasQuestionNotScored = $examResultRepository->hasQuestionNotScored($examResult->getId());
         if (!$hasQuestionNotScored) {
+            $examResult->setIsDone(true);
+            $this->dm->flush();
+        }*/
+
+        $isScored = $this->isExamResultScored($examResult);
+        if ($isScored) {
             $examResult->setIsDone(true);
             $this->dm->flush();
         }
@@ -129,8 +174,14 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         
         $this->dm->flush();
         $examResult = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), '');
-        $hasQuestionNotScored = $examResultRepository->hasQuestionNotScored($examResult->getId());
+        /*$hasQuestionNotScored = $examResultRepository->hasQuestionNotScored($examResult->getId());
         if (!$hasQuestionNotScored) {
+            $examResult->setIsDone(true);
+            $this->dm->flush();
+        }*/
+
+        $isScored = $this->isExamResultScored($examResult);
+        if ($isScored) {
             $examResult->setIsDone(true);
             $this->dm->flush();
         }
@@ -144,7 +195,7 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $examResult = $examResultRepository->getExamResult($examId, $candidateId, '');
 
-        $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter(null, null);
+        $adapter = new \Test\Convertor\Adapter\Documents\ToExamResultSummaryDocumentAdapter($this->container, null);
         $summaries = $adapter->convert($examResult);
         
         $examService = $this->container->get(ExamServiceInterface::class);

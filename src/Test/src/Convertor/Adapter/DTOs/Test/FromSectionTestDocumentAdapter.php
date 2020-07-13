@@ -39,7 +39,9 @@ class FromSectionTestDocumentAdapter implements ConvertDocumentToDTOAdapterInter
         $dto->setComment($document->getComment());
         $dto->setIsToeic($document->getIsToeic());
         $dto->setToeicExpirationDate($document->getToeicExpirationDate());
-        
+        $dto->setIsOption($document->getIsOption());
+        $dto->setRequiredQuestion($document->getRequiredQuestion());
+
         $questionDocuments = $document->getQuestions();
         $questionDTOs = [];
         foreach($questionDocuments as $question) {

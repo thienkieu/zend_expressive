@@ -10,6 +10,7 @@ class SubQuestionDTO implements \JsonSerializable
     protected $content;
     protected $order;
     protected $mark;
+    protected $referId;
 
     /**
      * Class constructor.
@@ -74,6 +75,7 @@ class SubQuestionDTO implements \JsonSerializable
         $ret->order = $this->getOrder();
         $ret->id = $this->getId();
         $ret->mark = $this->getMark();
+        $ret->referId = $this->getReferId();
         return $ret;
     }
 
@@ -133,6 +135,26 @@ class SubQuestionDTO implements \JsonSerializable
     public function setMark($mark)
     {
         $this->mark = $mark;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of referId
+     */ 
+    public function getReferId()
+    {
+        return $this->referId;
+    }
+
+    /**
+     * Set the value of referId
+     *
+     * @return  self
+     */ 
+    public function setReferId($referId)
+    {
+        $this->referId = $referId;
 
         return $this;
     }

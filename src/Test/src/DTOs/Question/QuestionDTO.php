@@ -22,6 +22,7 @@ class QuestionDTO
     protected $systemType;
     protected $user;
     protected $renderType;
+    protected $referId;
     
      /**
      * @var SubQuestionDTO[]
@@ -46,6 +47,7 @@ class QuestionDTO
         $ret->systemType = $this->getSystemType();
         $ret->user = $this->getUser();
         $ret->renderType = $this->getRenderType();
+        $ret->referId = $this->getReferId();
         return $ret;
     }
 
@@ -411,6 +413,26 @@ class QuestionDTO
     public function setRenderType($renderType)
     {
         $this->renderType = $renderType;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of referId
+     */ 
+    public function getReferId()
+    {
+        return $this->referId;
+    }
+
+    /**
+     * Set the value of referId
+     *
+     * @return  self
+     */ 
+    public function setReferId($referId)
+    {
+        $this->referId = $referId;
 
         return $this;
     }
