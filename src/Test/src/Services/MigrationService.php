@@ -65,8 +65,7 @@ class MigrationService implements Interfaces\MigrationServiceInterface, HandlerI
         }
 
         if (
-            $name === 'Verbal' || 
-            $name === 'Other'
+            $name === 'Verbal'
         ) {
             return 'Verbal';
         }
@@ -108,8 +107,13 @@ class MigrationService implements Interfaces\MigrationServiceInterface, HandlerI
             }
 
             if (
-                $type->getName() === 'Verbal' || 
                 $type->getName() === 'Other'
+            ) {
+                $type->setRenderName('Other');
+            }
+			
+			if (
+                $type->getName() === 'Verbal'
             ) {
                 $type->setRenderName('Verbal');
             }
@@ -146,11 +150,9 @@ class MigrationService implements Interfaces\MigrationServiceInterface, HandlerI
             foreach($sections as $section){
                 $questions = $section->getQuestions();
                 foreach($questions as $question) {
-                    if ($question->getGenerateFrom() === 'pickup') {
-                        $q = $question->getQuestionInfo();
-                        $q->setPlatform($platform);
-                        $q->setUser($user);
-                    }
+                    $q = $question->getQuestionInfo();
+                    $q->setPlatform($platform);
+                    $q->setUser($user);
                 }
             }
         }
@@ -280,24 +282,100 @@ class MigrationService implements Interfaces\MigrationServiceInterface, HandlerI
 
     }
 
-    public function migration() {
-        //$authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class);
-        //$user = $authorizationService->getUser();
+    public function addTestArchitectType() {
+        $platformService = $this->container->get(\Test\Services\Interfaces\PlatformServiceInterface::class);
+        $defaultPlatform = $platformService->getPlatformByName('TestArchitect'); 
 
-        //$platformService = $this->container->get(\Test\Services\Interfaces\PlatformServiceInterface::class);
-        //$defaultPlatform = $platformService->getPlatformByName('English'); 
+        $typeDocument = new  \Test\Documents\Question\TypeDocument();
+        $typeDocument->setPlatform($defaultPlatform);
+        $typeDocument->setName('TA writing');
+        $typeDocument->setIsManualScored(true);
+        $typeDocument->setRenderName('Writing');
+        $this->dm->persist($typeDocument);
+
+        $cshaptypeDocument = new  \Test\Documents\Question\TypeDocument();
+        $cshaptypeDocument->setPlatform($defaultPlatform);
+        $cshaptypeDocument->setName('C#');
+        $cshaptypeDocument->setIsManualScored(true);
+        $cshaptypeDocument->setRenderName('Writing');
+        $cshaptypeDocument->setParentType($typeDocument);
+        $this->dm->persist($cshaptypeDocument);
+
+
+        $javaTypeDocument = new  \Test\Documents\Question\TypeDocument();
+        $javaTypeDocument->setPlatform($defaultPlatform);
+        $javaTypeDocument->setName('Java');
+        $javaTypeDocument->setIsManualScored(true);
+        $javaTypeDocument->setRenderName('Writing');
+        $javaTypeDocument->setParentType($typeDocument);
+        $this->dm->persist($javaTypeDocument);
+
+        $taOthertypeDocument = new  \Test\Documents\Question\TypeDocument();
+        $taOthertypeDocument->setPlatform($defaultPlatform);
+        $taOthertypeDocument->setName('TA other');
+        $taOthertypeDocument->setIsManualScored(true);
+        $taOthertypeDocument->setRenderName('Other');
+        $this->dm->persist($taOthertypeDocument);
+
+        $labTypeDocument = new  \Test\Documents\Question\TypeDocument();
+        $labTypeDocument->setPlatform($defaultPlatform);
+        $labTypeDocument->setName('Lab');
+        $labTypeDocument->setIsManualScored(true);
+        $labTypeDocument->setRenderName('Verbal');
+        $labTypeDocument->setParentType($taOthertypeDocument);
+        $this->dm->persist($labTypeDocument);
+
+        $nonSubTypeDocument = new  \Test\Documents\Question\TypeDocument();
+        $nonSubTypeDocument->setPlatform($defaultPlatform);
+        $nonSubTypeDocument->setName('Non sub question');
+        $nonSubTypeDocument->setIsManualScored(true);
+        $nonSubTypeDocument->setRenderName('NonSub');
+        $nonSubTypeDocument->setParentType($taOthertypeDocument);
+        $this->dm->persist($nonSubTypeDocument);
+
+        $taReadingtypeDocument = new  \Test\Documents\Question\TypeDocument();
+        $taReadingtypeDocument->setPlatform($defaultPlatform);
+        $taReadingtypeDocument->setName('TA reading');
+        $taReadingtypeDocument->setIsManualScored(false);
+        $taReadingtypeDocument->setRenderName('Reading');
+        $this->dm->persist($taReadingtypeDocument);
+
+        $taScriptTypeDocument = new  \Test\Documents\Question\TypeDocument();
+        $taScriptTypeDocument->setPlatform($defaultPlatform);
+        $taScriptTypeDocument->setName('TA script');
+        $taScriptTypeDocument->setIsManualScored(false);
+        $taScriptTypeDocument->setRenderName('Reading');
+        $taScriptTypeDocument->setParentType($taReadingtypeDocument);
+        $this->dm->persist($taScriptTypeDocument);
+
+        $manualScriptTypeDocument = new  \Test\Documents\Question\TypeDocument();
+        $manualScriptTypeDocument->setPlatform($defaultPlatform);
+        $manualScriptTypeDocument->setName('Manual test script');
+        $manualScriptTypeDocument->setIsManualScored(false);
+        $manualScriptTypeDocument->setRenderName('Reading');
+        $manualScriptTypeDocument->setParentType($taReadingtypeDocument);
+        $this->dm->persist($manualScriptTypeDocument);
+    }
+
+    public function migration() {
+        $authorizationService = $this->container->get(\ODMAuth\Services\Interfaces\AuthorizationServiceInterface::class);
+        $user = $authorizationService->getUser();
+
+        $platformService = $this->container->get(\Test\Services\Interfaces\PlatformServiceInterface::class);
+        $defaultPlatform = $platformService->getPlatformByName('English'); 
 
         $this->migrationAddOptionSection();
-        //$this->migrationTest($defaultPlatform, $user);
-        //$this->migrationExam($defaultPlatform, $user);
+        $this->migrationTest($defaultPlatform, $user);
+        $this->migrationExam($defaultPlatform, $user);
 
-        /*$this->migrationQuestion($defaultPlatform, $user);
+        $this->migrationQuestion($defaultPlatform, $user);
         
         $this->migrationTestTemplate($defaultPlatform, $user);
         
         $this->migrationExamResult($defaultPlatform, $user);
         $this->migrationQuestionType($defaultPlatform);
-        */
+        
+        $this->addTestArchitectType();
 
         $this->dm->flush();
 

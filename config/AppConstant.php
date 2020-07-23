@@ -32,15 +32,15 @@ abstract class AppConstant
     const Other = 'Other';
     const NonSub = 'NonSub';
 
-    const NonSubTitle = 'Non Sub Question';
+    const NonSubTitle = 'Non sub question';
     const TALab = 'Lab';
-    const TAReading = 'TA Reading';
-    const TAWriting = 'TA Writing';
-    const TAListening = 'TA Listening';
-    const TAOther = 'TA Other';
+    const TAReading = 'TA reading';
+    const TAWriting = 'TA writing';
+    const TAListening = 'TA listening';
+    const TAOther = 'TA other';
 
     const English_Platform = "English";
-    const TestArchiect_Platform = "TestArchiect";
+    const TestArchiect_Platform = "TestArchitect";
     /**
      * Generate type
      */

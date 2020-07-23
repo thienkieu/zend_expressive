@@ -235,7 +235,8 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
                         }
                     break;
                     default: 
-                        throw new ImportQuestionException('not support');
+                        $error = $this->translator->translate('Subject is not supported at line '. ($this->rowIndex + 1).'.');
+                        throw new ImportQuestionException($error);
                     break;
                 }
                 
@@ -530,6 +531,33 @@ class ImportQuestionService implements ImportQuestionServiceInterface, HandlerIn
             $error = $this->translator->translate('Content content can not empty', $translatorParams);
             throw new ImportQuestionException($error);
         }
+
+        $images = $data[$this->fileName];
+
+        if (!empty($images)) {
+            $images = \explode(',', $images);
+            foreach ($images as $image) {
+                $realPath = realpath($this->imageFiles);
+
+                if (!file_exists($realPath.'/'.$image)) {
+                    $error = $this->translator->translate('File name is not exist.', ['%fileName%'=> $image]);
+                    throw new ImportQuestionException($error);
+                }
+
+                $fileExtension = explode('.', $image);
+                $isSupportFileType = $this->isSupportMediaFile($fileExtension[count($fileExtension) -1], \Config\AppConstant::ImageExtension);
+                
+                if (!$isSupportFileType) {
+                    $error = $this->translator->translate('File type %fileName% is not support.', ['%fileName%'=> $fileExtension[count($fileExtension) -1]]);
+                    throw new ImportQuestionException($error);
+                }
+
+                $content = str_replace('['.trim($image,' ').']', '<div class="online-test-question-image"><img src="'.\Config\AppConstant::HOST_REPLACE.'/'.$this->imageFiles.'/'.$image.'"/></div>', $content);
+            }
+            
+        }
+        
+        $writingQuestion->setContent($content);
 
         return $writingQuestion;
     }

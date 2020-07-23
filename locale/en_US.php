@@ -87,5 +87,5 @@ return array(
     "The test template is not found, Please check it again." => "The test template is not found, Please check it again.",
     "Type is not empty at line %lineNumber%." => "Type cannot be empty at line %lineNumber%.",
     "There is existed %TITLE%. Please enter another title" => "The name has been used in another template.",
-    "Field mark is required." => "Field score is required.",
+    "Field mark is required." => "Score field is required.",
 );

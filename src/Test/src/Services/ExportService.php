@@ -206,7 +206,10 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 
             foreach($questions as $question) {
                 $questionInfo = $question->getQuestionInfo();
-                switch($questionInfo->getType()) {
+                switch($questionInfo->getRenderType()) {
+                    case \Config\AppConstant::NonSub :
+                        $startIndex = $this->exportNonSubQuestion($sheet, $questionInfo, $questionIndex, $startIndex +1);
+                        break;
                     case \Config\AppConstant::Reading :
                         $startIndex = $this->exportReadingQuestion($sheet, $questionInfo, $questionIndex, $startIndex +1);
                     break;
@@ -277,6 +280,29 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             ],
         ];
         $this->setCellStyle($sheet, $cell, $styleArray);   
+    }
+
+
+    protected function exportNonSubQuestion($sheet, $questionInfo, $questionIndex, $startRow) {
+        $richText = new \PhpOffice\PhpSpreadsheet\RichText\RichText(); 
+        $boldText = $richText->createTextRun($questionIndex.') ');
+        $boldText->getFont()->setBold(true);
+        
+        $content = $this->toRichTextFromHTML($questionInfo->getContent());
+        $this->addRichTextToRichText($content, $richText);
+        
+        $sheet->getCell('B'.$startRow)->setValue($richText);
+
+        $styleArray = [
+            'alignment' => [
+                'wrapText' => TRUE,
+                'indent' => 0,
+            ],
+        ];
+        $this->setCellStyle($sheet, 'B'.$startRow, $styleArray);                
+        $startRow = $this->exportAnswer($sheet, $questionInfo->getAnswers(), $startRow+1);                    
+
+        return $startRow+1;
     }
 
 
@@ -475,13 +501,22 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $spreadsheet->setActiveSheetIndex(1);
         $sheet = $spreadsheet->getActiveSheet();
 
+        $subjectIndex = 2;
+        $subjectService  = $this->container->get(Interfaces\PlatformServiceInterface::class);
+        $subjectDocuments = $subjectService->getPlatforms('', $messsages, 1, 2000);
+        $subjects = $subjectDocuments->platforms;
+        foreach($subjects as $subject) {
+            $this->setCellValue($sheet, 'B'.$subjectIndex, $subject->getName());
+            $subjectIndex++;
+        }
+
         $sourceService  = $this->container->get(Interfaces\SourceServiceInterface::class);
         $sourceDocuments = $sourceService->getSources('', $messsages, 1, 2000);
         $sources = $sourceDocuments['sources'];
         
         $sourceIndex = 2;
         foreach($sources as $source) {
-            $this->setCellValue($sheet, 'D'.$sourceIndex, $source->getName());
+            $this->setCellValue($sheet, 'E'.$sourceIndex, $source->getName());
             $sourceIndex++;
         }
 
@@ -491,9 +526,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $typeIndex = 2;
         $subTypeIndex = 2;
         foreach($types as $type) {
-            $this->setCellValue($sheet, 'B'.$typeIndex, $type->getName());
+            $this->setCellValue($sheet, 'C'.$typeIndex, $type->getName());
             foreach($type->getSubTypes() as $subType) {
-                $this->setCellValue($sheet, 'C'.$subTypeIndex, $subType->getName());
+                $this->setCellValue($sheet, 'D'.$subTypeIndex, $subType->getName());
                 $subTypeIndex++;
             }
             
@@ -506,27 +541,46 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             (new DataValidation())
                 ->setType(DataValidation::TYPE_LIST)
                 ->setShowDropDown(true)
-                ->setFormula1('Data!$B$2:$B$'.($typeIndex-1))
+                ->setFormula1('Data!$B$2:$B$'.($subjectIndex-1))
         );
         
         $validation = $sheet->setDataValidation('D6:D1048576',
             (new DataValidation())
                 ->setType(DataValidation::TYPE_LIST)
                 ->setShowDropDown(true)
-                ->setFormula1('Data!$C$2:$C$'.($subTypeIndex-1))
+                ->setFormula1('Data!$C$2:$C$'.($typeIndex-1))
         );
-        
+
+
         $validation = $sheet->setDataValidation('E6:E1048576',
             (new DataValidation())
                 ->setType(DataValidation::TYPE_LIST)
                 ->setShowDropDown(true)
-                ->setFormula1('Data!$D$2:$D$'.($sourceIndex-1))
+                ->setFormula1('Data!$D$2:$D$'.($subTypeIndex-1))
+        );
+        
+        $validation = $sheet->setDataValidation('F6:F1048576',
+            (new DataValidation())
+                ->setType(DataValidation::TYPE_LIST)
+                ->setShowDropDown(true)
+                ->setFormula1('Data!$E$2:$E$'.($sourceIndex-1))
         );
 
         $spreadsheet->setActiveSheetIndex(0);
         $writer = new Xlsx($spreadsheet);
         return true;
     }
+
+    public function addUniqueFile($zip, $filePath) {
+        if($zip->locateName(basename($filePath)) === false) {
+            $zip->addFile($filePath, basename($filePath));
+            return basename($filePath);
+        }else {
+            $appendTime = microtime().'_'.basename($filePath);
+            $zip->addFile($filePath, $appendTime);
+            return $appendTime;
+        } 
+    } 
 
     public function exportQuestion($dto, &$messages, &$writer) {
         $mediaFolder = \Config\AppConstant::MediaQuestionFolder . \Config\AppConstant::DS.'Export'.\Config\AppConstant::DS.date('Ymdhis');
@@ -590,14 +644,17 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
 				$path = $this->getRealPath($question->getPath());
 				if ($path !== false && strpos($path, 'http://') === false) {
                 //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
-					$zip->addFile($path, basename($path));
-					$this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \basename($path));
+                    $uniqueName = $this->addUniqueFile($zip, $path);
+                    $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $uniqueName);
 				}
                 //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
                 //$sheet->getCell(chr($startColumnIndex).$startIndex)->getHyperlink()->setUrl($path);
             } 
 
-            if ($question->getRenderType() === \Config\AppConstant::NonSub) {
+                   
+            /*if ($question->getRenderType() === \Config\AppConstant::Reading || 
+                $question->getRenderType() === \Config\AppConstant::NonSub || 
+                $question->getRenderType() === \Config\AppConstant::Writing) {
                 $images = \Infrastructure\CommonFunction::extractImages($question->getContent());
                 if ($images) {
                     $baseImageName = [];
@@ -605,8 +662,9 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                         $path = $this->getRealPath($image);
 						if ($path !== false && strpos($path, 'http://') === false) {
                         //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
-							$zip->addFile($path, \basename($path));
-							$baseImageName[] = basename($path);
+                            $uniqueName = $this->addUniqueFile($zip, $path);
+                            $baseImageName[] = $uniqueName;
+                            
 						}
                     }
                     
@@ -614,26 +672,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
                 }
                 //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
                 //$sheet->getCell(chr($startColumnIndex).$startIndex)->getHyperlink()->setUrl($images);
-            }
-
-            if ($question->getRenderType() === \Config\AppConstant::Reading) {
-                $images = \Infrastructure\CommonFunction::extractImages($question->getContent());
-                if ($images) {
-                    $baseImageName = [];
-                    foreach($images as $image) {
-                        $path = $this->getRealPath($image);
-						if ($path !== false && strpos($path, 'http://') === false) {
-                        //\Infrastructure\CommonFunction::moveFileToFolder($path, $mediaFolder);
-							$zip->addFile($path, \basename($path));
-							$baseImageName[] = basename($path);
-						}
-                    }
-                    
-                    $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, \implode(',',$baseImageName));
-                }
-                //$sheet->getStyle(chr($startColumnIndex).$startIndex)->getAlignment()->setWrapText(true);
-                //$sheet->getCell(chr($startColumnIndex).$startIndex)->getHyperlink()->setUrl($images);
-            }
+            }*/
             //$this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $question->getSource());
             //$this->setBorderCell($sheet, chr($startColumnIndex).$startIndex);
             $startColumnIndex += 1;
@@ -646,16 +685,24 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $startColumnIndex += 1;
 
             //Content
-            if ($question->getRenderType() === \Config\AppConstant::Reading || $question->getRenderType() === \Config\AppConstant::NonSub) {
-                $content = preg_replace_callback('(<img.*src="(.*?)".*/>)', function ($matches) {
+            $baseImageName = [];    
+            if ($question->getRenderType() === \Config\AppConstant::Reading || 
+                $question->getRenderType() === \Config\AppConstant::NonSub || 
+                $question->getRenderType() === \Config\AppConstant::Writing) {
+                $content = preg_replace_callback('(<img.*src="(.*?)".*/>)', function ($matches) use($zip, &$baseImageName) {
                     if (count($matches) > 0) {
                         $image = $this->getRealPath($matches[1]);
+                        
+
                         if ($image) {
-                            return '['.basename($image).']';
+                            $uniqueName = $this->addUniqueFile($zip, $image);
+                            $baseImageName[] = $uniqueName;
+                            return '['.$uniqueName.']';
                         }                        
                     }
                     return '';
                 }, $question->getContent());
+                $this->setCellValue($sheet, chr($startColumnIndex - 2).$startIndex, \implode(',',$baseImageName));
                 $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $this->toRichTextFromHTML($content));
             } else {
                 $this->setCellValue($sheet, chr($startColumnIndex).$startIndex, $this->toRichTextFromHTML($question->getContent()));
