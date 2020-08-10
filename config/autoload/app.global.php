@@ -21,7 +21,7 @@ return [
     ],
     'autoloadPath' => $dir.'/../vendor/autoload.php',
     'nonsqldb' => [
-        'mongodb-connection' => 'mongodb://192.168.190.92:27017/onlinetest',
+        'mongodb-connection' => 'mongodb://192.168.190.92:27017/online_test',
         'document-path' => [
             $dir.'/App/src/Documents',
             $dir.'/Test/src/Documents',
@@ -29,7 +29,7 @@ return [
         ],
         'proxy-path' =>  $dir.'/../Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
-        'dbname' => 'onlinetest',
+        'dbname' => 'online_test',
     ],
     'nonsqldb_dev' => [
         'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243897.mlab.com:43897/onlinetest_dev',
@@ -108,7 +108,7 @@ return [
     ],
 
     'CORS' => [
-        'headers.allow' => ['Content-Type','Accept-Language','Authorization']
+        'headers.allow' => ['Content-Type','Accept-Language','Authorization','clientBuild']
     ],
 
     'CRM' => [
@@ -129,6 +129,14 @@ return [
         'Bearer CRMbackend'
     ],
 
+    'clientConfig' => [
+        'clientBuild' => '2.0',
+        'requestTime' => 10000, // 10 seconds,
+        'versionLinkNumber' => 'clientbuild_2.0.1',
+        'executeJavascriptOnInit' => 'console.log("remote command");'
+
+    ],
+
     'authenticationExcludeUrl' => [
         'api.publickey',
         'home',
@@ -147,6 +155,7 @@ return [
         'log',
         'exam.exportExamResultSummary',
         'clientWriteLog',
+        'clientConfig',
         'exam.listeningFinished',
         'exam.clickToListen',
        

@@ -229,6 +229,22 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         return true;
     }
     
+    public function finishRestore($dto, & $messages) {
+        $outRemainTime = 0;
+        $dto->remainTime = 0;
+        /*$isPinValid = $this->isPinValid($dto->examId, $dto->candidateId);
+        if (!$isPinValid) {
+            $messages[] = $this->translator->translate('Your cannot finish this exam because this exam have been finished!');
+            return true;
+        }*/
+        //$ret = $this->synchronyTime($dto, $outRemainTime, $messages);
+        $ret = $this->calculatorExamMark($dto, $messages);
+        //$ret = $this->inValidPin($dto, $messages);
+        $ret = $this->updateResultSummary($dto->examId, $dto->candidateId);
+
+        return true;
+    }
+    
     public function inValidPin($dto, & $messages) {
         $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
         $document = $examResultRepository->getExamResult($dto->examId, $dto->candidateId, '');
@@ -310,6 +326,43 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
                 $messages[] = $this->translator->translate('Exam is timeout!');
                 return false; 
             }
+
+            if (!$document) {
+                $messages[] = $this->translator->translate('There isnot exist question with', ['%questionId%' => $dto->getQuestionId()]);
+                return false;
+            }
+            
+            $this->updateSubQuestionAnswer($document, $dto);
+            $this->dm->flush();
+
+            return true;
+        }catch(\Test\Exceptions\UpdateAnswerException $ex) {
+            $messages[] = $ex->getMessage();
+            return false;
+        }
+    }
+
+    public function updateAnswerResult($dto, & $messages) {
+        try {
+            
+            $examResultRepository = $this->dm->getRepository(\Test\Documents\ExamResult\ExamResultHasSectionTestDocument::class);
+            $document = $examResultRepository->getExamResult($dto->getExamId(), $dto->getCandidateId(), $dto->getQuestionId());
+            if (!$document) {
+                $messages[] = $this->translator->translate('Exam not found');
+                return false;
+            }
+
+            /*$isPinValid = $this->isPinValid($dto->getExamId(), $dto->getCandidateId());
+            if (!$isPinValid) {
+                $messages[] = $this->translator->translate('Your pin ins not valid.');
+                return false;
+            }
+
+            $remaintTime = $document->getRemainTime();
+            if ($remaintTime <= 0) {
+                $messages[] = $this->translator->translate('Exam is timeout!');
+                return false; 
+            }*/
 
             if (!$document) {
                 $messages[] = $this->translator->translate('There isnot exist question with', ['%questionId%' => $dto->getQuestionId()]);

@@ -254,6 +254,7 @@ class ConfigProvider
             'api.publickey',
             'home',
             'api.token',
+            'test.restoreResult',
             'exam.enterPin',
             'user.updateAnswer',
             'exam.synchronyTime',
@@ -333,6 +334,7 @@ class ConfigProvider
                 Handlers\CreatePlatformHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\GetPlatformHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\MigrationHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\RestoreResultFromLogHandler::class => \Infrastructure\Factory\BaseFactory::class,
 
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Validators\CreateQuestionValidatorAdapter::class => InvokableFactory::class,

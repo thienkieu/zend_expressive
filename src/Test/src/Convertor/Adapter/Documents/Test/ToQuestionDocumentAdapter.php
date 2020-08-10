@@ -40,8 +40,6 @@ class ToQuestionDocumentAdapter implements ConvertDTOAToDocumentAdapterInterface
        
         $questionInfo = $this->convertor->convertToDocument($dto->getQuestionInfo(), $options);                
         if (!$questionInfo) {
-            $logService = $this->container->get(\Infrastructure\Services\Interfaces\LogInterface::class);
-            $logService->writeLog($dto);
             $translator = $this->container->get(\Config\AppConstant::Translator);
             $message = $translator->translate('The question is not support.');
             throw new \Infrastructure\Exceptions\DataException($message);

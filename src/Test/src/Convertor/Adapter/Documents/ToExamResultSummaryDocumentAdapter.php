@@ -47,14 +47,17 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
         $examResultService = $this->container->get(\Test\Services\DoExamResultServiceInterface::class);
         foreach($sections as $section) {
             
+            
             $questions = $section->getQuestions();
             $candidateMark = 0;
             $isScored = $examResultService->isScoredSection($section);
             $sectionMark = 0;
             $comments = [];
+            $optionQuestionMark =  0;
+            $totalQuestionInSection = 0;
             foreach($questions as $question) {
                 $questionInfo = $question->getQuestionInfo();
-                
+                $totalQuestionInSection += 1;
                 $comment = $questionInfo->getComment();
                 if (!empty($comment)) {
                     $comments[] = $comment;
@@ -67,11 +70,27 @@ class ToExamResultSummaryDocumentAdapter implements ConvertDTOAToDocumentAdapter
                     $subQuestionCount = $subQuestions->count();
                 }
                 
+                $m = 0;
                 if ($questionInfo instanceof \Test\Documents\Test\WritingQuestionDocument) {
-                    $sectionMark = $questionInfo->getMark() ? $questionInfo->getMark():  \Config\AppConstant::DefaultWritingMark;
-                } else {
-                    $sectionMark += $questionInfo->getMark() ? $questionInfo->getMark(): $subQuestionCount * \Config\AppConstant::DefaultSubQuestionMark;
+                    $m += $questionInfo->getMark() ? $questionInfo->getMark():  \Config\AppConstant::DefaultWritingMark;
+                }else if ($questionInfo instanceof \Test\Documents\Test\NonSubQuestionDocument) {
+                    $m += $questionInfo->getMark() ? $questionInfo->getMark(): \Config\AppConstant::DefaultSubQuestionMark;
+                }else {
+                    $m += $questionInfo->getMark() ? $questionInfo->getMark(): $subQuestionCount * \Config\AppConstant::DefaultSubQuestionMark;
                 }
+                
+                $sectionMark += $m;
+                $optionQuestionMark = $m;
+            }
+
+            $isOptionSection =  $section->getIsOption();
+            $requiredNumberQuestion = $section->getRequiredQuestion();
+
+            if ($isOptionSection === true) {
+                if (!$requiredNumberQuestion) {
+                    $requiredNumberQuestion = $totalQuestionInSection;
+                }
+                $sectionMark = $optionQuestionMark * $requiredNumberQuestion;
                 
             }
 

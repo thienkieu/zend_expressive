@@ -33,7 +33,8 @@ return [
             Infrastructure\Validator\ValidatorRequestInterface::class => Infrastructure\Validator\ValidatorRequestFactory::class,
             Infrastructure\Middleware\UploadFileMiddleware::class => Infrastructure\Factory\BaseFactory::class,
             Infrastructure\Middleware\LogMiddleware::class => Infrastructure\Factory\BaseFactory::class,
-
+            Infrastructure\Middleware\VerifyClientBuidMiddleware::class => Infrastructure\Factory\BaseFactory::class,
+            
             Infrastructure\Services\Interfaces\LogInterface::class => Infrastructure\Factory\ServiceFactory::class,
             Infrastructure\DataParser\DataParserInterface::class => Infrastructure\Factory\ServiceFactory::class,
             Infrastructure\DataParser\ExcelParserService::class => Infrastructure\Factory\BaseFactory::class,

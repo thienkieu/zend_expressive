@@ -395,6 +395,17 @@ class ExamService implements ExamServiceInterface, HandlerInterface
         return $examDTOs;
     }
 
+    public function getTypeName($typeId) {
+        $types = $this->getTypes();
+        foreach($types as $type) {
+            if ($type->value === $typeId) {
+                return $type->name;
+            }
+        }
+
+        return '';
+    }
+
     public function getTypes() {
         $verbal = new \stdClass();
         $verbal->value = 'Verbal';

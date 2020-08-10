@@ -15,6 +15,7 @@ class ExamDTO implements \JsonSerializable
     protected $isScored;
     protected $type;
     protected $user;
+    protected $typeName;
 
     public function jsonSerialize() {
         $ret = new \stdClass();
@@ -26,6 +27,7 @@ class ExamDTO implements \JsonSerializable
         $ret->isScored = $this->getIsScored();
         $ret->startDate = $this->getStartDate()->format(\Config\AppConstant::DateTimeFormat); 
         $ret->type = $this->getType();
+        $ret->typeName = $this->getTypeName();
           
         return $ret;
     }
@@ -210,6 +212,26 @@ class ExamDTO implements \JsonSerializable
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of typeName
+     */ 
+    public function getTypeName()
+    {
+        return $this->typeName;
+    }
+
+    /**
+     * Set the value of typeName
+     *
+     * @return  self
+     */ 
+    public function setTypeName($typeName)
+    {
+        $this->typeName = $typeName;
 
         return $this;
     }

@@ -81,11 +81,12 @@ return array(
     "Must have at least one correct answer for question." => "Please add at least one correct answer for this question.",
     "The format file is incorrect, Please use the template of online test system." => "The format file is incorrect. Please use the template of online test system.",
     "Your source have been created successfully!" => "Your source has been created successfully!",
-    "Your test template have been created successfull!" => 'Your test template have been created successfull!',
+    "Your test template have been created successfull!" => 'Your test template have been created successfully!',
     "There is error with create test template, Please check admin site" => 'There is error with create test template, Please check admin site',
     "Your test template have been deleted successfully!" => "Your test template have been deleted successfully!",
     "The test template is not found, Please check it again." => "The test template is not found, Please check it again.",
     "Type is not empty at line %lineNumber%." => "Type cannot be empty at line %lineNumber%.",
     "There is existed %TITLE%. Please enter another title" => "The name has been used in another template.",
     "Field mark is required." => "Field score is required.",
+    "Invalid application version. Please clear your browser's cache." => "Invalid application version. Please clear your browser's cache.",
 );

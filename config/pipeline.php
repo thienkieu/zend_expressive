@@ -21,6 +21,7 @@ use Infrastructure\i18n\LocaleMiddleware;
 use Infrastructure\Convertor\RequestToDTOMiddleware;
 use Infrastructure\Middleware\UploadFileMiddleware;
 use Infrastructure\Middleware\LogMiddleware;
+use Infrastructure\Middleware\VerifyClientBuidMiddleware;
 use ODMAuth\Middleware\AuthenticationMiddleware;
 
 /**
@@ -66,6 +67,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->pipe(LocaleMiddleware::class);
     $app->pipe(CorsMiddleware::class);
     $app->pipe(LogMiddleware::class);
+    $app->pipe(VerifyClientBuidMiddleware::class);
     $app->pipe(AuthenticationMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);    
     $app->pipe(BodyParamsMiddleware::class);

@@ -36,16 +36,21 @@ class TrackingConnectService implements TrackingConnectServiceInterface, Handler
         $client->setUri($latestDisconnectURL);
         $client->setParameterGet(['token'=>$token]);
 
-        $response = $client->send();
-        if ($response->isSuccess()) {
-            $disconnecTime = json_decode($response->getBody());
-            //$logger = $this->container->get(\Zend\Log\Logger::class);
-            //$logger->info($disconnecTime);
-            $latest = $disconnecTime[0];
-            return $latest->connectTime/1000;
-        } else {
+        try {
+            $response = $client->send();
+            if ($response->isSuccess()) {
+                $disconnecTime = json_decode($response->getBody());
+                //$logger = $this->container->get(\Zend\Log\Logger::class);
+                //$logger->info($disconnecTime);
+                $latest = $disconnecTime[0];
+                return \floor($latest->connectTime/1000);
+            } else {
+                return time();
+            }
+        } catch(\Exception $e) {
             return time();
         }
+        
     }
     
 }

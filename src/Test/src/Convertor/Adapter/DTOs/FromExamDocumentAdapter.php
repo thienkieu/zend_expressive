@@ -37,7 +37,9 @@ class FromExamDocumentAdapter implements ConvertDocumentToDTOAdapterInterface {
         $dto->setTime($document->getTime());
         $dto->setStartDate($document->getStartDate());
         $dto->setType($document->getType());
-       
+        $examService = $this->container->get(\Test\Services\ExamServiceInterface::class);
+        $dto->setTypeName($examService->getTypeName($document->getType()));
+        
         $dto->setUser($document->getUser()->getId());
         $candiateDocuments = $document->getCandidates();
         $candiateDTOs = [];

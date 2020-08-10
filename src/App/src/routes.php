@@ -17,4 +17,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     
     $app->get('/viewLog', App\Handler\GetLogHandler::class, 'log');
     $app->post('/clientWriteLog', App\Handler\ClientLogHandler::class, 'clientWriteLog');
+
+    $app->get('/system/config', App\Handler\ClientConfigHandler::class, 'clientConfig');
 };

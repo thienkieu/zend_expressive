@@ -51,7 +51,8 @@ class ConfigProvider
                 Handler\ViewPageHandler::class => Handler\ViewPageHandlerFactory::class,   
                 Handler\GetLogHandler::class => \Infrastructure\Factory\BaseFactory::class,  
                 Handler\ClientLogHandler::class => \Infrastructure\Factory\BaseFactory::class,  
-                
+
+                Handler\ClientConfigHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Validator\ValidatorMiddleware::class => Factory\ValidatorMiddlewareFactory::class,                  
             ],
         ];

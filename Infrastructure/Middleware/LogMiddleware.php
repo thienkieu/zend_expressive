@@ -25,22 +25,31 @@ class LogMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {   
+        $start=hrtime(true);
+        $idUniqu = uniqid('execute_');
         $rotuer = $request->getAttribute(\Zend\Expressive\Router\RouteResult::class);
         $routerName = $rotuer->getMatchedRouteName(); 
-        if ($routerName !== 'home') {
+        $logService = $this->container->get(LogInterface::class);
+        //if ($routerName !== 'home') {
             $logObject = [
                 'token' => $request->getHeader('Authorization'),
                 'data' => (string) $request->getBody(),
                 'param' => $request->getQueryParams(),
-                'routerName' =>  $routerName
+                'routerName' =>  $routerName,
+                'uniqid' => $idUniqu
             ];
            
-            $logService = $this->container->get(LogInterface::class);
+            
             $logService->writeLog($logObject);
-        }
+       // }
        
         
         $response = $handler->handle($request);
+        $end=hrtime(true);
+        $eta=$end-$start;  
+        $milisecond = $eta/1e+6;
+        $logObject['execution_time'] = $milisecond;
+        $logService->writeLog($logObject);
         return $response;
     }
 }

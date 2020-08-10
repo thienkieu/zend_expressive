@@ -309,6 +309,15 @@ class MigrationService implements Interfaces\MigrationServiceInterface, HandlerI
         $javaTypeDocument->setRenderName('Writing');
         $javaTypeDocument->setParentType($typeDocument);
         $this->dm->persist($javaTypeDocument);
+		
+		$generalTypeDocument = new  \Test\Documents\Question\TypeDocument();
+        $generalTypeDocument->setPlatform($defaultPlatform);
+        $generalTypeDocument->setName('General');
+        $generalTypeDocument->setIsManualScored(true);
+        $generalTypeDocument->setRenderName('Writing');
+        $generalTypeDocument->setParentType($typeDocument);
+        $this->dm->persist($generalTypeDocument);
+		
 
         $taOthertypeDocument = new  \Test\Documents\Question\TypeDocument();
         $taOthertypeDocument->setPlatform($defaultPlatform);
@@ -380,5 +389,44 @@ class MigrationService implements Interfaces\MigrationServiceInterface, HandlerI
         $this->dm->flush();
 
         return true;
+    }
+
+    public function restoreResultFromLog() {
+        $examId ='';
+        $candidateId = '';
+        $messages = [];
+        $messages1 = [];
+        if ($file = fopen(__DIR__."/answer.json", "r")) {
+            
+            while(!feof($file)) {
+                $line = fgets($file);
+                if (!empty($line)){
+                    $jsonData = json_decode($line);
+                    
+                    $convertorToDTO = $this->container->get(\Infrastructure\Convertor\RequestToDTOConvertorInterface::class);
+                    if (!$jsonData) {
+                        echo $line;
+                    }
+                    $dto = $convertorToDTO->convertToDTO($jsonData, [\Config\AppConstant::DTOKey => \Test\DTOs\ExamResult\UserAnswerDTO::class]);
+                    $examId = $jsonData->examId;
+                    $candidateId = $jsonData->candidateId;
+                    echo "<pre>".print_r($dto, true);
+                    $exExamResultService = $this->container->build(\Test\Services\DoExamResultServiceInterface::class, [\Config\AppConstant::DTOKey => $dto]);
+                    
+                    $messages=[];
+                    $ret = $exExamResultService->updateAnswerResult($dto, $messages);
+                    echo "<pre>".print_r($ret, true)."</pre>";
+                    echo "<pre>".print_r($messages, true)."</pre>";
+                
+                }
+            }
+            fclose($file);
+        }
+
+        $doExamResultService = $this->container->get(\Test\Services\DoExamResultServiceInterface::class);
+        $e = new \StdClass();
+        $e->examId = $examId;
+        $e->candidateId = $candidateId;
+        $doExamResultService->finishRestore($e,$messages);
     }
 }
