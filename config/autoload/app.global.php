@@ -117,7 +117,7 @@ return [
     ],
 
     'TRACKING_CONNECT' => [
-        'latestDisConnectURL' => 'http://localhost:3000/getLatestDisconenct',
+        'latestDisConnectURL' =>'http://backend.onlinetest.logigear.com:3000/getLatestDisconenct', //'http://localhost:3000/getLatestDisconenct',
         'writeLogURL' => 'http://localhost:3000/writeLog',
         'enableLogFile' => true,
         'enableLogRemote' => false,
@@ -131,14 +131,21 @@ return [
 
     'clientConfig' => [
         'clientBuild' => '2.0',
-        'requestTime' => 10000, // 10 seconds,
-        'versionLinkNumber' => 'clientbuild_2.0.1',
+        'requestTime' => 3000, // 10 seconds,
+		'timeoutRequest' => 1000,
+        'refreshAppTime' => 600000,
+        'reconnectionAttempts' => 5,
+        'reconnectionDelay' => 2000,
+		'reconnectionDelayMax' => 2000,
+		'autoSaveInterval' => 5000,
+        'versionLinkNumber' => 'clientbuild_2.0.0.2',
         'executeJavascriptOnInit' => 'console.log("remote command");'
 
     ],
 
     'authenticationExcludeUrl' => [
         'api.publickey',
+        'test.verify',
         'home',
         'api.token',
         'exam.enterPin',

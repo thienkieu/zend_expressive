@@ -165,6 +165,7 @@ class DoExamService implements DoExamServiceInterface, HandlerInterface
             
             $examResultDocument->setRemainTime($examDTO->getTime() * 60);
             $examResultDocument->setLatestConnectionTime(time());
+            $examResultDocument->setTotalSpendingTime(0);
             $this->dm->persist($examResultDocument);
             $this->dm->flush();
 

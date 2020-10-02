@@ -31,6 +31,12 @@ class ClientConfigHandler implements RequestHandlerInterface
             "configConstants" => [
                 "requestTime" => $clientConfig['requestTime'], // 10 seconds,
                 "clientBuild" => $clientConfig['clientBuild'],
+				"timeoutRequest" => $clientConfig['timeoutRequest'],
+                "refreshAppTime" => $clientConfig['refreshAppTime'],
+                "reconnectionAttempts" => $clientConfig['reconnectionAttempts'],
+				"reconnectionDelayMax" => $clientConfig['reconnectionDelayMax'],
+                "reconnectionDelay" => $clientConfig['reconnectionDelay'],
+				"autoSaveInterval" => $clientConfig['autoSaveInterval'],
             ],
             "javascript" => $clientConfig['executeJavascriptOnInit'],
 
