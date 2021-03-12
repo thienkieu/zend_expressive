@@ -455,4 +455,27 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
         
         return true;
     }
+
+    public function getListAudioOfExam($dto, & $messages, & $outDTO) {
+        $result = $this->getExamResult($dto, $messages, $examResultDTO);
+        $listeningQuestions = [];
+        if ($result) {
+            $test = $examResultDTO->getTest();
+            $sections = $test->getSections();
+            foreach($sections as $section) {
+                $questions = $section->getQuestions();
+                foreach($questions as $question) {
+                    if ($question instanceof \Test\DTOs\Question\ListeningQuestionDTO) {
+                        $listeningQuestions.push($question);
+                    }
+                }
+            }
+            
+            $outDTO = $listeningQuestions;
+            return true;
+        }
+        $outDTO = null;
+        return false;
+        
+    }
 }

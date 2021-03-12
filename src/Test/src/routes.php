@@ -83,4 +83,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/restoreResult', Test\Handlers\RestoreResultFromLogHandler::class, 'test.restoreResult');
 
     $app->post('/verifyAPI', Test\Handlers\VerifyAPIHandler::class, 'test.verify');
+    $app->get('/verifyAudio', Test\Handlers\VerifyAudioHandler::class, 'test.verifyAudio');
+    
 };
