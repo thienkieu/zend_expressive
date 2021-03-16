@@ -457,6 +457,15 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
     }
 
     public function getListAudioOfExam($dto, & $messages, & $outDTO) {
+        $examRepository = $this->dm->getRepository(\Test\Documents\Exam\ExamDocument::class);
+        $examDocument = $examRepository->getExamInfo($dto->pin);
+        $candidates = $examDocument->getCandidates();
+        $candidate = $candidates[0];
+
+        $dto = new \stdClass();
+        $dto->examId = $examDocument->getId();
+        $dto->candidateId = $candidate->getId();
+        
         $result = $this->getExamResult($dto, $messages, $examResultDTO);
         $listeningQuestions = [];
         if ($result) {
@@ -465,8 +474,9 @@ class DoBaseExamResultService implements DoExamResultServiceInterface, HandlerIn
             foreach($sections as $section) {
                 $questions = $section->getQuestions();
                 foreach($questions as $question) {
-                    if ($question instanceof \Test\DTOs\Question\ListeningQuestionDTO) {
-                        $listeningQuestions.push($question);
+                    $q = $question->getQuestionInfo();
+                    if ($q instanceof \Test\DTOs\Question\ListeningQuestionDTO) {
+                        $listeningQuestions[] = $q->getPath();
                     }
                 }
             }

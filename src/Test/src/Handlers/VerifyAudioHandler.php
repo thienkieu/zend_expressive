@@ -26,7 +26,6 @@ class VerifyAudioHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $dto = $request->getAttribute(\Config\AppConstant::DTODataFieldName);
-      
         $doExamResultService = $this->container->get(DoExamResultServiceInterface::class);
         $ok = $doExamResultService->getListAudioOfExam($dto, $messages, $outDTO);
         return \Infrastructure\CommonFunction::buildResponseFormat($ok, $messages, $outDTO);

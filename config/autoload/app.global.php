@@ -21,7 +21,7 @@ return [
     ],
     'autoloadPath' => $dir.'/../vendor/autoload.php',
     'nonsqldb' => [
-        'mongodb-connection' => 'mongodb://192.168.190.92:27017/online_test',
+        'mongodb-connection' => 'mongodb://admin:pass@localhost:27017/onlinetest',
         'document-path' => [
             $dir.'/App/src/Documents',
             $dir.'/Test/src/Documents',
@@ -165,6 +165,9 @@ return [
         'clientConfig',
         'exam.listeningFinished',
         'exam.clickToListen',
+        'verifyODM',
+        'test.verifyAudio',
+        'platform'
        
     ],
 
