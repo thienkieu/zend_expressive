@@ -21,7 +21,7 @@ return [
     ],
     'autoloadPath' => $dir.'/../vendor/autoload.php',
     'nonsqldb' => [
-        'mongodb-connection' => 'mongodb://admin:pass@localhost:27017/onlinetest',
+        'mongodb-connection' => 'mongodb://localhost:27017/onlinetest',
         'document-path' => [
             $dir.'/App/src/Documents',
             $dir.'/Test/src/Documents',
@@ -29,7 +29,7 @@ return [
         ],
         'proxy-path' =>  $dir.'/../Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
-        'dbname' => 'online_test',
+        'dbname' => 'onlinetest',
     ],
     'nonsqldb_dev' => [
         'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds243897.mlab.com:43897/onlinetest_dev',
@@ -112,12 +112,12 @@ return [
     ],
 
     'CRM' => [
-        'candidates' => 'http://192.168.190.92:8089/Portal/ExcuteByCommand/GetCandiates'
+        'candidates' => 'http://crm.logigear.com/Portal/ExcuteByCommand/GetCandiates'
        // 'candidates' => 'http://localhost:12346/Portal/ExcuteByCommand/GetCandiates'
     ],
 
     'TRACKING_CONNECT' => [
-        'latestDisConnectURL' =>'http://backend.onlinetest.logigear.com:3000/getLatestDisconenct', //'http://localhost:3000/getLatestDisconenct',
+        'latestDisConnectURL' => 'http://localhost:3000/getLatestDisconenct',
         'writeLogURL' => 'http://localhost:3000/writeLog',
         'enableLogFile' => true,
         'enableLogRemote' => false,
@@ -130,7 +130,7 @@ return [
     ],
 
     'clientConfig' => [
-        'clientBuild' => '2.0',
+        'clientBuild' => '2.1',
         'requestTime' => 3000, // 10 seconds,
 		'timeoutRequest' => 1000,
         'refreshAppTime' => 600000,
@@ -138,14 +138,12 @@ return [
         'reconnectionDelay' => 2000,
 		'reconnectionDelayMax' => 2000,
 		'autoSaveInterval' => 5000,
-        'versionLinkNumber' => 'clientbuild_2.0.0.2',
+        'versionLinkNumber' => 'clientbuild_2.0.13',
         'executeJavascriptOnInit' => 'console.log("remote command");'
-
     ],
 
     'authenticationExcludeUrl' => [
         'api.publickey',
-        'test.verify',
         'home',
         'api.token',
         'exam.enterPin',
@@ -164,10 +162,7 @@ return [
         'clientWriteLog',
         'clientConfig',
         'exam.listeningFinished',
-        'exam.clickToListen',
-        'verifyODM',
-        'test.verifyAudio',
-        'platform'
+        'exam.clickToListen'
        
     ],
 

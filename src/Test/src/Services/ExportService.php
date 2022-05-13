@@ -823,6 +823,7 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
         $candidates = $outDTO->getCandidates();
         
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+		
         $spreadsheet = $reader->load($this->templateFolder.\Config\AppConstant::DS."pinTemplate.xlsx"); 
         $sheet = $spreadsheet->getActiveSheet();
         $startIndex = 2; 
@@ -906,7 +907,12 @@ class ExportService implements Interfaces\ExportServiceInterface, HandlerInterfa
             $this->setCellValue($sheet, 'C'.$startIndex, $candidate->getObjectId());
             $this->setCellValue($sheet, 'D'.$startIndex, $candidate->getEmail());
             $this->setCellValue($sheet, 'E'.$startIndex, $candidate->getName());
-            $this->setCellValue($sheet, 'F'.$startIndex, $candidate->getPin());
+            //$this->setCellValue($sheet, 'F'.$startIndex, $candidate->getPin().'');
+			$sheet->getCell('F'.$startIndex)->setValueExplicit(
+				$candidate->getPin(),
+				\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING
+			);
+			
             $this->setBorderCell($sheet, 'B'.($startIndex-1).':F'.($startIndex));
 
             $startIndex += 2; 

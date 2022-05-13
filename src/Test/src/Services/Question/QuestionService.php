@@ -177,10 +177,6 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
         return $questionInfo->getQuestionInfo();
     }
 
-    protected function isValidGenerateQuestion($question) {
-        return true;
-    }
-
     protected function generateRandomQuestion($citerial, $notInsources, $notInQuestions, $user, $keepCorrectAnswer = false) {
         $questionDTO = $citerial->getQuestionInfo();        
         $toClass = $this->getClassName($questionDTO->getRenderType(), $questionDTO->getSubType());
@@ -196,28 +192,18 @@ class QuestionService implements QuestionServiceInterface, HandlerInterface
             throw new \Test\Exceptions\GenerateQuestionException($this->translator->translate('Platform is required.'));
         }
         
-        $repeateTimes = 0;
-        $isValidQuestion = false;
-        do {
-            $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $questionnotInsources, $notInQuestions, $toClass, $platformId, $user);
-            if (!$question) {
-                $generateQuestionCiterial = [
-                    '%type%' => $questionDTO->getType(),
-                    '%subType%' => $questionDTO->getSubType(),
-                    '%numberSubQuestion%' => $questionDTO->getNumberSubQuestion(),
-                    '%sources%' => implode(',', $notInsources)
-                ];
-                
-                throw new \Test\Exceptions\GenerateQuestionException($this->translator->translate('Cannot generate question for test'));
-            }
+        $question = $questionRepository->generateRandomQuestion($questionDTO->getTypeId(), $questionDTO->getNumberSubQuestion(), $questionnotInsources, $notInQuestions, $toClass, $platformId, $user);
+        if (!$question) {
+            $generateQuestionCiterial = [
+                '%type%' => $questionDTO->getType(),
+                '%subType%' => $questionDTO->getSubType(),
+                '%numberSubQuestion%' => $questionDTO->getNumberSubQuestion(),
+                '%sources%' => implode(',', $notInsources)
+            ];
             
-            $isValidQuestion = $this->isValidGenerateQuestion($question);
-        } while($isValidQuestion === false && $repeateTimes < 5)
-
-        if ($isValidQuestion === false) {
             throw new \Test\Exceptions\GenerateQuestionException($this->translator->translate('Cannot generate question for test'));
         }
-
+        
         $documentToDTOConvertor = $this->container->get(DocumentToDTOConvertorInterface::class);
         $ret = $documentToDTOConvertor->convertToDTO($question, [\Config\AppConstant::ShowCorrectAnswer => $keepCorrectAnswer]);
         $ret->setMark($questionDTO->getMark());
