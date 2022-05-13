@@ -29,7 +29,7 @@ return [
     'debug' => true,
     ConfigAggregator::ENABLE_CACHE => false,
     'nonsqldb' => [
-        'mongodb-connection' => 'mongodb://192.168.190.92:27017/online_test',
+        'mongodb-connection' => 'mongodb://admin:pass@mongo-dev:27017',
         //'mongodb-connection' => 'mongodb://thienkieu:Mlab0958588127@ds253017.mlab.com:53017/onlinetest_demo?retryWrites=false',
         'document-path' => [
             $dir.'/App/src/Documents',
@@ -38,7 +38,7 @@ return [
         ],
         'proxy-path' =>  $dir.'/../Proxies',
         'hydrators-path' =>  $dir.'/../Hydrators',
-        'dbname' => 'online_test',
+        'dbname' => 'onlinetest',
     ],
     'CRM' => [
         'candidates' => 'http://192.168.190.92:8089/Portal/ExcuteByCommand/GetCandiates'

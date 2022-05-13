@@ -81,6 +81,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/platform', Test\Handlers\GetPlatformHandler::class, 'platform');
     $app->get('/migration', Test\Handlers\MigrationHandler::class, 'test.migration');
     $app->get('/restoreResult', Test\Handlers\RestoreResultFromLogHandler::class, 'test.restoreResult');
-
-    $app->post('/verifyAPI', Test\Handlers\VerifyAPIHandler::class, 'test.verify');
+	$app->post('/verifyAPI', Test\Handlers\VerifyAPIHandler::class, 'test.verify');
+    $app->get('/verifyAudio', Test\Handlers\VerifyAudioHandler::class, 'test.verifyAudio');
 };

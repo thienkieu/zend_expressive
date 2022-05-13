@@ -335,8 +335,9 @@ class ConfigProvider
                 Handlers\GetPlatformHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\MigrationHandler::class => \Infrastructure\Factory\BaseFactory::class,
                 Handlers\RestoreResultFromLogHandler::class => \Infrastructure\Factory\BaseFactory::class,
-                Handlers\VerifyAPIHandler::class => \Infrastructure\Factory\BaseFactory::class,
-
+				Handlers\VerifyAPIHandler::class => \Infrastructure\Factory\BaseFactory::class,
+                Handlers\VerifyAudioHandler::class => \Infrastructure\Factory\BaseFactory::class,
+				
                 Validators\CreateSectionValidatorMiddleware::class => InvokableFactory::class,
                 Validators\CreateQuestionValidatorAdapter::class => InvokableFactory::class,
                 Validators\UpdateQuestionAnswerValidatorAdapter::class => InvokableFactory::class,
